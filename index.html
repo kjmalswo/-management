@@ -6,29 +6,29 @@
 <title>VIOLET LEDGER — 공급망 파이프라인 & 제조업 재무 최적화 시뮬레이터</title>
 <!--
 ================================================================================
-[VIOLET LEDGER V4 — FACTORY & SCM PIPELINE ARCHITECTURE ENGINE]
+[VIOLET LEDGER V4.2 — END-TO-END FACTORY SCM & STRATEGIC PRODUCT STUDIO]
 ================================================================================
-■ 핵심 게임 철학 & 스토리 라인:
-  [원자재 수급(Sourcing)] > [조달 & 입고(Inbound)] > [스마트 제작(Production)] > [운송/수출 & 물류(Outbound)]
-  이 4대 핵심 축을 유기적으로 결합하여, Factorio와 같은 공장 자동화 게임의
-  "병목(Bottleneck) 해소 및 쓰루풋(Throughput) 극대화" 쾌감을 선사합니다.
+■ 핵심 게임 철학 & 공급망 라인 스토리 전개:
+  [1. 원자재 수급(Sourcing)] > [2. 인바운드 조달(Procurement)] > 
+  [3. 스마트 제작 & 출하(Production/MES)] > [4. 글로벌 운송(수출) / 국내 물류(Logistics)]
+  전체 라인의 쓰루풋(Throughput)과 공정별 병목(Bottleneck)을 실시간 분석하고
+  제약이론(TOC)에 따라 라인 밸런싱을 최적화하는 쾌감을 제공합니다.
 
-■ 3대 핵심 게임플레이 목표:
-  1. 직관적인 재무 관리 (Financial Management & Treasury):
-     - 현금 유출입의 직관적 시각화 (Operating Cash Flow).
-     - 유휴자금 단기예금(MMF) 운용, 마이너스 통장(Revolver) 유동성 방어, 매출채권 조기 팩토링 현금화.
-     - 설비투자(CAPEX)를 통한 공정 속도 및 라인 증설.
-  2. 엔드투엔드 라인 최적화 (End-to-End Pipeline Balancing):
-     - 수급 -> 조달 -> 제작 -> 물류로 이어지는 각 공정 간 용량 불균형(Mismatch) 실시간 탐지.
-     - 병목 공정(Bottleneck Stage)을 실시간으로 식별하고 설비 업그레이드 및 자재 보충으로 밸런스 100% 달성.
-  3. 플레이어가 원하는 맞춤형 상품 제작 & 판매 성취감 (Product Studio):
-     - 업종별로 플레이어가 목표로 하는 전략 제품(하이엔드 플래그십, 매스 마켓 대량생산 모델, 하이퍼 테크 스페셜)을
-       직접 기획/선택하여 BOM 수급부터 최종 글로벌 수출 및 국내 물류 완판까지 달성하는 깊은 성취감 부여.
-
-■ 유지된 개발 원칙:
-  - 단일 파일 완결성(HTML/CSS/JS) 및 완전 반응형 지원.
-  - VIOLET LEDGER 고유의 보라/핑크 테마, 이모지가 배제된 명확하고 세련된 타이포그래피 태그 시스템.
-  - 인터랙티브 스포트라이트 튜토리얼 시스템, 직관적 피드백 모달 및 실시간 캔버스 차트.
+■ 주요 시스템 업데이트 내역:
+  1. 정밀 상품 기획 스튜디오 (Deep Custom Product Studio):
+     - 정해진 완제품 선택 방식을 전면 폐지.
+     - 상품명 직접 작명, 세부 카테고리 분류, 라인업 등급(엔트리 / 중급형 / 플래그십 / 하이퍼),
+       하우징 마감 공법, 4대 BOM 원자재 투입 배수, 목표 마진율, 출고가격을 세세하게 설정.
+     - 플레이어가 원하는 사양으로 직접 설계하여 양산 및 글로벌 시장 완판까지 이어지는 깊은 성취감 부여.
+  2. 상단 직관적 컨트롤 & 초기화 기능:
+     - 우측 상단에 '경영 데이터 초기화' 버튼 신설 (언제든 새로운 전략으로 재시작 가능).
+     - UI 전반에서 '팩토리오 뷰' 표현을 제거하고 정통 제조업 용어(공정 밸런서, 실시간 라인 관제)로 정제.
+  3. 직관적인 재무·자금 운용 (Treasury & Working Capital):
+     - 실시간 영업현금 유출입 스트림 시각화 (예상 매출 유입 - 원자재비 - 공장 운영비 = 순증감).
+     - 단기 유휴현금 정기예금(MMF) 운용(월 0.3% 확정 이자), 리볼버 마이너스 대출 유동성 방어,
+       매출채권 조기 팩토링 현금화 지원.
+  4. 기존 개발 지침 및 방향성 100% 유지:
+     - 단일 파일 완결성(HTML/CSS/JS), 무이모지 세련된 태그 시스템, 보라/핑크 테마 유지.
 ================================================================================
 -->
 <style>
@@ -257,10 +257,16 @@ button { cursor: pointer; }
   color: #fff;
   box-shadow: var(--shadow-pink-glow);
 }
-.btn.green {
-  background: linear-gradient(135deg, #10b981 0%, var(--green) 100%);
-  border-color: transparent;
-  color: #fff;
+.btn.danger-outline {
+  border-color: #fca5a5;
+  color: var(--red);
+  background: #fff8f8;
+}
+.btn.danger-outline:hover {
+  border-color: var(--red);
+  background: #fee2e2;
+  color: #991b1b;
+  transform: translateY(-2px);
 }
 .btn.sm { padding: 6px 11px; font-size: 12px; border-radius: 8px; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
@@ -355,6 +361,9 @@ button { cursor: pointer; }
 .valuePill { padding: 3px 8px; border-radius: 8px; background: var(--purple-light); color: var(--purple-vivid); font-weight: 900; font-size: 11.5px; }
 .hint { font-size: 11px; color: var(--muted); line-height: 1.45; margin-top: 6px; font-weight: 600; }
 .field input[type=range] { width: 100%; accent-color: var(--purple-vivid); cursor: pointer; height: 6px; border-radius: 4px; }
+.field select, .field input[type=text] {
+  width: 100%; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 8px; font-weight: 700;
+}
 
 .metricGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .metric { padding: 12px; border: 1px solid #efeaf5; border-radius: 11px; background: linear-gradient(180deg, #ffffff 0%, #faf9fc 100%); }
@@ -374,7 +383,7 @@ button { cursor: pointer; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
 /* =========================================================
-   FACTORIO STYLE PIPELINE VISUALIZER & BOTTLENECK CARDS
+   공급망 파이프라인 밸런서 & 병목 시각화
 ========================================================= */
 .pipeline-belt-board {
   border: 2px solid var(--purple-mid);
@@ -428,7 +437,7 @@ button { cursor: pointer; }
   100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
 }
 .stream-node.bottleneck::after {
-  content: "현재 최대 병목 지점";
+  content: "현재 최대 병목";
   position: absolute;
   top: -10px;
   right: 10px;
@@ -468,52 +477,63 @@ button { cursor: pointer; }
 }
 
 /* =========================================================
-   PRODUCT STUDIO (플레이어가 원하는 제품 제작 기획실)
+   정밀 맞춤형 상품 기획 스튜디오 (PRODUCT STUDIO)
 ========================================================= */
-.product-studio-grid {
+.studio-layout {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+  align-items: stretch;
 }
-.product-blueprint-card {
+.tier-selector-group {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 6px;
+}
+.tier-card-btn {
+  border: 1.5px solid var(--line);
   background: #ffffff;
-  border: 2px solid var(--line);
-  border-radius: 15px;
-  padding: 16px;
+  padding: 10px 8px;
+  border-radius: 11px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.tier-card-btn:hover { border-color: var(--purple); }
+.tier-card-btn.active {
+  border-color: var(--purple-vivid);
+  background: linear-gradient(180deg, #ffffff 0%, #f6f0ff 100%);
+  box-shadow: var(--shadow-sm);
+}
+.tier-card-btn strong { display: block; font-size: 12.5px; color: var(--ink); }
+.tier-card-btn span { display: block; font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+
+.blueprint-card {
+  background: linear-gradient(135deg, #201738 0%, #150e24 100%);
+  color: #ffffff;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  cursor: pointer;
-  transition: var(--transition);
   position: relative;
-  min-height: 230px;
+  overflow: hidden;
+  border: 1px solid #4a3869;
 }
-.product-blueprint-card:hover {
-  border-color: var(--purple-mid);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-}
-.product-blueprint-card.activeProduct {
-  border-color: var(--purple-vivid);
-  background: linear-gradient(180deg, #ffffff 0%, #f6f0ff 100%);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.16);
-}
-.product-blueprint-card.activeProduct::before {
-  content: "현재 공장 주력 생산 상품";
+.blueprint-card::before {
+  content: "";
   position: absolute;
-  top: -10px;
-  right: 14px;
-  background: linear-gradient(135deg, var(--purple-vivid), var(--purple-dark));
-  color: #fff;
-  font-size: 10.5px;
-  font-weight: 900;
-  padding: 3px 9px;
-  border-radius: 6px;
-  box-shadow: var(--shadow-sm);
+  top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--purple-vivid), var(--pink));
 }
+.bp-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.bp-title { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; color: #fff; }
+.bp-category { font-size: 12px; color: #c4b5fd; font-weight: 700; margin-top: 2px; }
 
 /* =========================================================
-   TREASURY CASHFLOW STREAM (직관적 자금 운용 뷰)
+   직관적 자금 운용 스트림
 ========================================================= */
 .cashflow-flow-card {
   background: linear-gradient(135deg, #ffffff 0%, #fbf9ff 100%);
@@ -613,12 +633,12 @@ button { cursor: pointer; }
   .two, .three, .four { grid-template-columns: 1fr; }
   .pipeline-stream { grid-template-columns: 1fr; gap: 12px; }
   .pipeline-stream-arrow { transform: rotate(90deg); margin: 4px 0; }
-  .product-studio-grid { grid-template-columns: 1fr; }
+  .studio-layout { grid-template-columns: 1fr; }
 }
 @media(max-width:760px) {
   .app { display: block; }
   .sidebar { height: auto; width: 100%; position: relative; border-right: 0; border-bottom: 1px solid var(--line); }
-  .topbar { padding: 0 16px; }
+  .topbar { padding: 0 16px; height: auto; flex-direction: column; gap: 10px; padding: 12px 16px; }
   .content { padding: 16px 14px 36px; }
   .kpis { grid-template-columns: repeat(2, 1fr); }
   #industrySelectorGrid { grid-template-columns: 1fr; }
@@ -628,7 +648,7 @@ button { cursor: pointer; }
 <body>
 <div class="app">
 
-<!-- 사이드바: 4대 공급망 체인과 경영 인프라 -->
+<!-- 사이드바 -->
 <aside class="sidebar">
   <div class="brand">
     <div class="logo">VL</div>
@@ -641,14 +661,14 @@ button { cursor: pointer; }
   <div class="nav-group-title">공급망 통합 관제</div>
   <div class="nav">
     <button class="active" data-tab="overview" id="nav_overview"><span>경영 종합 대시보드</span></button>
-    <button data-tab="pipeline" id="nav_pipeline"><span>라인 최적화 밸런서</span><span class="nav-badge flow">팩토리오 뷰</span></button>
+    <button data-tab="pipeline" id="nav_pipeline"><span>라인 최적화 밸런서</span><span class="nav-badge flow">실시간 관제</span></button>
   </div>
 
   <div class="nav-group-title">4대 엔드투엔드 파이프라인</div>
   <div class="nav">
     <button data-tab="sourcing" id="nav_sourcing"><span>1. 원자재 수급 계약</span><span class="nav-badge">수급</span></button>
     <button data-tab="procurement" id="nav_procurement"><span>2. 인바운드 조달 창고</span><span class="nav-badge">조달</span></button>
-    <button data-tab="factory" id="nav_factory"><span>3. 상품 제작 & 라인 MES</span><span class="nav-badge flow">제작</span></button>
+    <button data-tab="factory" id="nav_factory"><span>3. 상품 기획 & 공장 MES</span><span class="nav-badge flow">제작</span></button>
     <button data-tab="logistics" id="nav_logistics"><span>4. 운송/수출 & 국내물류</span><span class="nav-badge">운송</span></button>
   </div>
 
@@ -660,7 +680,7 @@ button { cursor: pointer; }
   </div>
   
   <div class="sidebox">
-    <div class="small">우리 기업 / 주력 상품</div>
+    <div class="small">우리 기업 / 기획 주력 상품</div>
     <div class="big" id="companyName">—</div>
     <div class="small" id="companyMeta">—</div>
   </div>
@@ -675,11 +695,12 @@ button { cursor: pointer; }
 <header class="topbar">
   <div class="period">
     <span class="badge" id="period">—</span>
-    <strong id="phase" style="font-size:14px;color:var(--ink)">전략 수립 및 라인 밸런싱 단계</strong>
+    <strong id="phase" style="font-size:14px;color:var(--ink)">월간 전략 수립 및 라인 밸런싱</strong>
   </div>
   <div class="actions">
     <button class="btn" id="startTutorialBtn">가이드 튜토리얼</button>
     <button class="btn" id="save">저장</button>
+    <button class="btn danger-outline sm" id="resetGameBtn">데이터 초기화</button>
     <button class="btn primary" id="closeMonth">월말 결산 (다음 달로) &gt;</button>
   </div>
 </header>
@@ -690,7 +711,6 @@ button { cursor: pointer; }
      1. 경영 종합 대시보드 (OVERVIEW)
 ========================================================= -->
 <section class="section active" id="overview">
-  <!-- 파이프라인 실시간 밸런스 요약 카드 (Factorio 스타일 최적화 뷰) -->
   <div class="pipeline-belt-board" id="overviewPipelineStreamCard">
     <div class="pipeline-belt-head">
       <div>
@@ -698,7 +718,7 @@ button { cursor: pointer; }
           <strong style="font-size:15px;color:var(--ink)">수급 &gt; 조달 &gt; 제작 &gt; 운송/수출 실시간 파이프라인 관제</strong>
           <span class="tag purple" id="overviewPipelineTag">라인 가동 중</span>
         </div>
-        <div class="small" style="margin-top:3px;color:var(--muted)">각 공정의 처리 용량과 쓰루풋을 비교하여 공급망 병목(붉은색)을 신속히 해소하세요.</div>
+        <div class="small" style="margin-top:3px;color:var(--muted)">각 공정의 처리 용량과 쓰루풋을 실시간 비교하여 공급망 병목(붉은색)을 신속히 해소하세요.</div>
       </div>
       <button class="btn sm primary" onclick="switchTab('pipeline')">정밀 밸런서 열기 &gt;</button>
     </div>
@@ -718,14 +738,14 @@ button { cursor: pointer; }
     <div class="card kpi display-card"><div class="kpiLabel">영업이익 (EBITDA)</div><div class="kpiValue" id="ebitda">—</div><div class="kpiSub">수익성 핵심 지표</div></div>
     <div class="card kpi display-card"><div class="kpiLabel">공장 라인 가동률</div><div class="kpiValue" id="factoryRunRate">—</div><div class="kpiSub">자재 부족 시 셧다운</div></div>
     <div class="card kpi display-card"><div class="kpiLabel">총 공급망 재고 자산</div><div class="kpiValue" id="totalInventoryVal">—</div><div class="kpiSub">원자재+운송중+완제품</div></div>
-    <div class="card kpi display-card"><div class="kpiLabel">라인 쓰루풋 효율</div><div class="kpiValue" id="kpiThroughputScore" style="color:var(--purple-dark)">—</div><div class="kpiSub">병목 최소화 지수</div></div>
+    <div class="card kpi display-card"><div class="kpiLabel">라인 쓰루풋 용량</div><div class="kpiValue" id="kpiThroughputScore" style="color:var(--purple-dark)">—</div><div class="kpiSub">최대 병목 기준</div></div>
   </div>
 
   <div class="grid two" style="margin-top:16px">
     <div class="card display-card">
       <div class="cardHead">
-        <h3>주력 상품 제작 및 출고 현황</h3>
-        <span class="tag green" id="overviewActiveProductBadge">플래그십 모델</span>
+        <h3>직접 기획한 주력 상품 사양</h3>
+        <span class="tag green" id="overviewActiveProductBadge">기획 모델</span>
       </div>
       <div class="body" id="overviewActiveProductSummary"></div>
     </div>
@@ -753,7 +773,7 @@ button { cursor: pointer; }
     </div>
     <div class="card display-card">
       <div class="cardHead">
-        <h3>실시간 경영 경보 & 긴급 처방전</h3>
+        <h3>실시간 경영 진단 & 처방전</h3>
         <span class="tag pink">즉시 대응</span>
       </div>
       <div class="body" id="overviewPrescriptionBody"></div>
@@ -762,7 +782,7 @@ button { cursor: pointer; }
 </section>
 
 <!-- =========================================================
-     2. 라인 최적화 밸런서 (FACTORIO STYLE PIPELINE)
+     2. 라인 최적화 밸런서 (THROUGHPUT BALANCER)
 ========================================================= -->
 <section class="section" id="pipeline">
   <div class="head">
@@ -795,7 +815,7 @@ button { cursor: pointer; }
 
     <div class="card display-card">
       <div class="cardHead">
-        <h3>공정 최적화 및 팩토리오 가이드</h3>
+        <h3>공정 최적화 및 라인 밸런싱 가이드</h3>
         <span class="tag purple">최적화 원리</span>
       </div>
       <div class="body">
@@ -805,7 +825,7 @@ button { cursor: pointer; }
         </div>
         <div class="notice green">
           <b>2. 조달 리드타임과 안전재고:</b><br>
-          해상 운송은 저렴하지만 2개월 걸립니다. 안전재고 목표를 35일 이상으로 설정하여 해상 화물 도착 시차를 메우세요.
+          해상 운송은 저렴하지만 2달 소요됩니다. 안전재고 목표를 35일 이상으로 설정하여 해상 화물 도착 시차를 방어하세요.
         </div>
         <div class="notice amber">
           <b>3. 조립 라인 밸런싱 (Line Balancing):</b><br>
@@ -813,7 +833,7 @@ button { cursor: pointer; }
         </div>
         <div class="notice pink">
           <b>4. 아웃바운드 운송/수출 물류:</b><br>
-          창고에 완제품이 쌓여도 수출 선적이나 국내 배송 편이 모자라면 매출 실현이 지연되고 보관비가 발생합니다.
+          창고에 완제품이 쌓여도 선적 편이 모자라면 매출 실현이 지연되고 보관비가 발생합니다.
         </div>
       </div>
     </div>
@@ -880,7 +900,7 @@ button { cursor: pointer; }
 
   <div class="card display-card" style="margin-bottom:16px">
     <div class="cardHead">
-      <h3>주력 생산 상품용 4대 핵심 원자재 실시간 비축 현황</h3>
+      <h3>기획 상품용 4대 핵심 원자재 실시간 비축 현황</h3>
       <span class="affordance-badge affordance-interactive">비상 특송 발주 지원</span>
     </div>
     <div class="body">
@@ -910,26 +930,148 @@ button { cursor: pointer; }
 </section>
 
 <!-- =========================================================
-     5. [3단계] 상품 제작 & 라인 MES (FACTORY)
+     5. [3단계] 정밀 상품 기획 & 라인 MES (PRODUCT STUDIO)
 ========================================================= -->
 <section class="section" id="factory">
   <div class="head">
     <div>
-      <h2>3단계: 상품 제작 스튜디오 & 스마트 조립 라인 (MES)</h2>
-      <p>플레이어가 제작하고자 하는 상품을 선택·기획하고, 공장의 조립 인력과 출하 정책을 제어합니다.</p>
+      <h2>3단계: 전략 상품 기획 스튜디오 & 공장 MES (Product Studio)</h2>
+      <p>원하는 상품의 이름, 카테고리, 라인업 등급, 마감 공법, 원자재 투입비율, 마진을 세세히 기획하여 개발에 착수하세요.</p>
     </div>
-    <span class="tag flow">제작 & 상업화</span>
+    <span class="tag flow">맞춤 상품 기획</span>
   </div>
 
-  <!-- 플레이어가 원하는 상품을 직접 기획/선택하는 스튜디오 -->
-  <div class="card interactive-card" style="margin-bottom:16px">
-    <div class="cardHead">
-      <h3>전략 상품 기획 스튜디오 (원하는 주력 제품 라인업을 선택하세요)</h3>
-      <span class="tag purple">제작 라인업 변경 가능</span>
+  <div class="studio-layout" style="margin-bottom:16px">
+    <!-- 좌측: 세세한 상품 기획 컨트롤 패널 -->
+    <div class="card interactive-card">
+      <div class="cardHead">
+        <h3>신규 상품 스펙 커스텀 기획실</h3>
+        <span class="affordance-badge affordance-interactive">상세 사양 조절</span>
+      </div>
+      <div class="body">
+        <!-- 1. 기본 정보 입력 -->
+        <div class="fieldGrid" style="margin-bottom:12px">
+          <div class="field">
+            <label>상품 브랜드 모델명</label>
+            <input type="text" id="studio_prodName" value="NOVA 프라임 X1">
+            <div class="hint">시장과 글로벌 바이어에게 각인될 고유 제품명입니다.</div>
+          </div>
+          <div class="field">
+            <label>세부 카테고리 분류</label>
+            <select id="studio_categorySelect"></select>
+            <div class="hint">타깃 시장 세그먼트를 정의합니다.</div>
+          </div>
+        </div>
+
+        <!-- 2. 라인업 등급 선택 -->
+        <div style="margin-bottom:12px">
+          <label style="display:block;font-size:12.5px;font-weight:800;color:var(--ink-soft);margin-bottom:4px">
+            제품 라인업 등급 (Tier)
+          </label>
+          <div class="tier-selector-group" id="tierSelectorGroup">
+            <div class="tier-card-btn" data-tier="entry" onclick="setStudioTier('entry')">
+              <strong>엔트리</strong>
+              <span>대량생산 보급형</span>
+            </div>
+            <div class="tier-card-btn" data-tier="mid" onclick="setStudioTier('mid')">
+              <strong>중급형</strong>
+              <span>스탠다드 볼륨</span>
+            </div>
+            <div class="tier-card-btn active" data-tier="flagship" onclick="setStudioTier('flagship')">
+              <strong>플래그십</strong>
+              <span>대표 프리미엄</span>
+            </div>
+            <div class="tier-card-btn" data-tier="hyper" onclick="setStudioTier('hyper')">
+              <strong>하이퍼</strong>
+              <span>초고가 한정판</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. 하우징 마감 공법 -->
+        <div style="margin-bottom:12px">
+          <label style="display:block;font-size:12.5px;font-weight:800;color:var(--ink-soft);margin-bottom:4px">
+            하우징 & 외관 마감 공법
+          </label>
+          <select id="studio_finishSelect" style="width:100%;padding:9px;border:1.5px solid var(--line);border-radius:10px;font-weight:700"></select>
+        </div>
+
+        <!-- 4. BOM 4대 원자재 투입비율 -->
+        <div style="margin-bottom:12px">
+          <label style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:var(--ink-soft);margin-bottom:4px">
+            <span>BOM 4대 원자재 투입 개수 (단위당 배수)</span>
+            <span class="valuePill" id="studio_matSummaryPill">1:1:1:1</span>
+          </label>
+          <div class="grid four" id="studio_matInputsGrid"></div>
+        </div>
+
+        <!-- 5. 목표 마진율 -->
+        <div class="field" style="margin-bottom:14px">
+          <label>
+            <span>목표 판매 마진율 (Margin)</span>
+            <span class="valuePill" id="val_studioMargin">45%</span>
+          </label>
+          <input type="range" min="15" max="150" step="5" value="45" id="input_studioMargin">
+          <div class="hint">마진율이 높을수록 대당 순이익이 커지며, 권장 출고가가 상승합니다.</div>
+        </div>
+
+        <button class="btn primary" id="launchProductBtn" style="width:100%;padding:13px;font-size:14px">
+          이 사양으로 신규 상품 설계 확정 & 양산 착수
+        </button>
+      </div>
     </div>
-    <div class="body">
-      <div class="small" style="color:var(--muted);margin-bottom:12px">상품별로 요구되는 원자재 구성, 생산 공수, 마진율 및 고객 시장 선호도가 달라집니다.</div>
-      <div class="product-studio-grid" id="productStudioGrid"></div>
+
+    <!-- 우측: 실시간 제품 블루프린트 & 경제성 시뮬레이션 -->
+    <div class="blueprint-card">
+      <div>
+        <div class="bp-head">
+          <div>
+            <div class="bp-title" id="bp_displayTitle">NOVA 프라임 X1</div>
+            <div class="bp-category" id="bp_displayCategory">IT 플래그십 디바이스</div>
+          </div>
+          <span class="tag pink" id="bp_displayTierTag">플래그십 라인업</span>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:12px;margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span style="color:#d8b4fe">기본 4대 원자재비:</span>
+            <b id="bp_rawCost">0원</b>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span style="color:#d8b4fe">외관 마감 가공비:</span>
+            <b id="bp_finishCost">0원</b>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span style="color:#d8b4fe">공정 공수 노무원가:</span>
+            <b id="bp_laborCost">0원</b>
+          </div>
+          <div style="border-top:1px dashed #6b558c;padding-top:6px;display:flex;justify-content:space-between;font-size:13px">
+            <span style="color:#fff;font-weight:800">단위당 총 제조원가:</span>
+            <b style="color:#a7f3d0" id="bp_totalUnitCost">0원</b>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+          <div style="background:rgba(255,255,255,0.06);padding:10px;border-radius:10px">
+            <span style="font-size:11px;color:#c4b5fd;display:block">확정 출고 판매가</span>
+            <strong style="font-size:17px;color:#fbcfe8;margin-top:2px;display:block" id="bp_finalPrice">0원</strong>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);padding:10px;border-radius:10px">
+            <span style="font-size:11px;color:#c4b5fd;display:block">대당 영업이익 (마진)</span>
+            <strong style="font-size:17px;color:#34d399;margin-top:2px;display:block" id="bp_unitMargin">0원</strong>
+          </div>
+        </div>
+
+        <div style="font-size:12px;line-height:1.6;color:#e9d5ff">
+          - 예상 월간 글로벌 수요: <b id="bp_estDemand">0대</b><br>
+          - 완판 시 예상 월 매출: <b id="bp_estMonthlyRev">0원</b><br>
+          - 공정 난이도 계수: <b id="bp_laborReq">1.0x</b>
+        </div>
+      </div>
+
+      <div class="notice purple" style="background:rgba(124,58,237,0.25);border-color:rgba(196,181,253,0.4);color:#fff;margin-bottom:0;margin-top:14px">
+        플레이어가 원하는 스펙을 설계하고 양산 버튼을 누르면 즉시 공장 라인과 글로벌 수출망에 투입됩니다.
+      </div>
     </div>
   </div>
 
@@ -947,7 +1089,7 @@ button { cursor: pointer; }
   <div class="grid two">
     <div class="card interactive-card">
       <div class="cardHead">
-        <h3>출하 가격 & 마케팅 수요 견인 정책</h3>
+        <h3>글로벌 마케팅 및 수요 견인 정책</h3>
         <span class="affordance-badge affordance-interactive">슬라이더 조절</span>
       </div>
       <div class="body"><div id="commercialFields" class="fieldGrid"></div></div>
@@ -1028,7 +1170,6 @@ button { cursor: pointer; }
     <span class="tag pink">자금 운용 센터</span>
   </div>
 
-  <!-- 자금 유입/유출 한눈에 보기 카드 -->
   <div class="cashflow-flow-card">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <strong style="font-size:15px;color:var(--purple-dark)">월간 실시간 현금 유출입 스트림 (Cash In / Out)</strong>
@@ -1080,7 +1221,6 @@ button { cursor: pointer; }
     </div>
   </div>
 
-  <!-- 직관적인 3대 자금 운용 버튼 패널 -->
   <div class="grid three" style="margin-bottom:16px">
     <div class="card interactive-card">
       <div class="cardHead">
@@ -1253,7 +1393,7 @@ button { cursor: pointer; }
   <div class="tut-highlight-box" id="tutHighlightBox"></div>
   <div class="tut-popover" id="tutPopover">
     <div class="tut-popover-head">
-      <span class="tut-badge" id="tutStepBadge">단계 1 / 6</span>
+      <span class="tut-badge" id="tutStepBadge">단계 1 / 5</span>
       <span style="font-size:11px;color:var(--muted);font-weight:700">인터랙티브 가이드</span>
     </div>
     <h3 class="tut-title" id="tutTitle">—</h3>
@@ -1269,7 +1409,7 @@ button { cursor: pointer; }
   </div>
 </div>
 
-<!-- 온보딩 모달: 기업명 및 4대 제조업 선택 -->
+<!-- 온보딩 모달 -->
 <div class="modal" id="startupModal">
   <div class="modalBox">
     <div class="modalHead">
@@ -1309,7 +1449,7 @@ button { cursor: pointer; }
   </div>
 </div>
 
-<!-- 조치 피드백 모달 -->
+<!-- 피드백 모달 -->
 <div class="modal" id="actionFeedbackModal">
   <div class="modalBox" style="width:min(540px, 94vw)">
     <div class="modalHead">
@@ -1324,7 +1464,7 @@ button { cursor: pointer; }
 
 <script>
 // =========================================================
-// [VIOLET LEDGER V4 ENGINE]
+// [VIOLET LEDGER V4.2 ENGINE]
 // =========================================================
 
 const $ = (id) => document.getElementById(id);
@@ -1351,7 +1491,7 @@ function toast(msg) {
 }
 
 // ---------------------------------------------------------
-// 1. 마스터 데이터베이스 (플레이어가 제작할 수 있는 다양한 제품 라인업)
+// 1. 업종별 마스터 메타데이터
 // ---------------------------------------------------------
 const DB = {
   industries: {
@@ -1359,40 +1499,12 @@ const DB = {
       id: "electronics",
       name: "IT·스마트 기기 및 반도체",
       desc: "모바일 AP, 고해상도 OLED, 대용량 배터리, 정밀 금속 바디로 구성된 최첨단 하이테크 공장",
-      products: [
-        {
-          id: "p_flagship",
-          name: "플래그십 AI 스마트폰",
-          tag: "프리미엄 모델",
-          desc: "최고 성능의 AP와 OLED를 탑재한 베스트셀러 플래그십",
-          basePrice: 1350000,
-          baseDemand: 1200,
-          matRatios: [1, 1, 1, 1],
-          laborReq: 1.0,
-          marginNote: "높은 단가와 안정적인 글로벌 수요"
-        },
-        {
-          id: "p_mass",
-          name: "보급형 울트라 태블릿",
-          tag: "대량생산 매스",
-          desc: "합리적인 부품 구성으로 박리다매 대량 출하에 특화된 모델",
-          basePrice: 650000,
-          baseDemand: 2200,
-          matRatios: [1, 1, 1, 1],
-          laborReq: 0.6,
-          marginNote: "낮은 단가, 대량 생산을 통한 규모의 경제"
-        },
-        {
-          id: "p_hyper",
-          name: "하이퍼 AI 공간 컴퓨팅 글래스",
-          tag: "하이엔드 스페셜",
-          desc: "초고마진 신개념 디바이스. 숙련된 인력과 고정밀 조립 필요",
-          basePrice: 2800000,
-          baseDemand: 600,
-          matRatios: [2, 1, 1, 2],
-          laborReq: 1.8,
-          marginNote: "극대화된 대당 마진, 엄격한 품질 관리 요구"
-        }
+      defaultProductName: "NOVA 프라임 X1",
+      categories: ["스마트폰 & 모바일", "스마트 패드 & 태블릿", "공간 컴퓨팅 웨어러블"],
+      finishes: [
+        { id: "f1", name: "친환경 리사이클 폴리머 (표준 사출)", cost: 0, quality: 85, laborMult: 1.0 },
+        { id: "f2", name: "세라믹 코팅 알루미늄 유니바디", cost: 35000, quality: 94, laborMult: 1.15 },
+        { id: "f3", name: "항공우주 그레이드 티타늄 프레임", cost: 85000, quality: 99, laborMult: 1.35 }
       ],
       materials: [
         { id: "m1", name: "AP 프로세서 (SoC)", unitCost: 240000 },
@@ -1400,6 +1512,8 @@ const DB = {
         { id: "m3", name: "고밀도 리튬 배터리 셀", unitCost: 65000 },
         { id: "m4", name: "정밀 티타늄 유니바디", unitCost: 55000 }
       ],
+      baseLaborCost: 45000,
+      baseMarketDemand: 1200,
       vendors: [
         { name: "글로벌 칩셋 파운드리", discount: 0.0, quality: 99, supplyCapa: 2500, desc: "세계 최고의 신뢰도. 무결점 품질 보장" },
         { name: "타이완 정밀 일렉트로닉스", discount: 0.08, quality: 95, supplyCapa: 2000, desc: "대량 공급에 특화된 8% 할인 파트너" },
@@ -1421,40 +1535,12 @@ const DB = {
       id: "auto",
       name: "완성차·전기차(EV) 제조",
       desc: "구동 파워트레인, 차량용 제어 컴퓨터, 기가스틸 차체, 휠&타이어로 완성되는 모빌리티 중공업",
-      products: [
-        {
-          id: "p_flagship",
-          name: "프리미엄 차세대 EV 세단",
-          tag: "프리미엄 모델",
-          desc: "장거리 항속거리와 첨단 자율주행을 탑재한 대표 전기 세단",
-          basePrice: 52000000,
-          baseDemand: 1000,
-          matRatios: [1, 1, 1, 1],
-          laborReq: 1.0,
-          marginNote: "안정적인 하이엔드 오토모티브 마진"
-        },
-        {
-          id: "p_mass",
-          name: "시티 커뮤터 도심형 콤팩트 EV",
-          tag: "대량생산 매스",
-          desc: "도심 출퇴근에 최적화된 높은 가성비의 국민 전기차",
-          basePrice: 28000000,
-          baseDemand: 1800,
-          matRatios: [1, 1, 1, 1],
-          laborReq: 0.7,
-          marginNote: "압도적인 볼륨 드라이브와 보급률 확대"
-        },
-        {
-          id: "p_hyper",
-          name: "트윈모터 럭셔리 하이퍼 GT",
-          tag: "하이엔드 스페셜",
-          desc: "슈퍼카 수준의 제로백과 럭셔리 인테리어가 결합된 드림카",
-          basePrice: 98000000,
-          baseDemand: 400,
-          matRatios: [2, 1, 1, 1],
-          laborReq: 2.0,
-          marginNote: "대당 수천만원의 압도적인 프리미엄 수익"
-        }
+      defaultProductName: "이클립스 EV 세단",
+      categories: ["도심형 콤팩트 크로스오버", "장거리 럭셔리 세단", "트윈모터 하이퍼 GT"],
+      finishes: [
+        { id: "f1", name: "표준 에코 수성도장 페인트", cost: 0, quality: 88, laborMult: 1.0 },
+        { id: "f2", name: "멀티코트 펄 도색 & 나파 가죽 인테리어", cost: 1800000, quality: 95, laborMult: 1.2 },
+        { id: "f3", name: "핸드크래프트 리얼 카본 & 알칸타라 패키지", cost: 4500000, quality: 99, laborMult: 1.4 }
       ],
       materials: [
         { id: "m1", name: "고출력 듀얼 파워트레인", unitCost: 11000000 },
@@ -1462,6 +1548,8 @@ const DB = {
         { id: "m3", name: "초고장력 기가스틸 차체", unitCost: 4200000 },
         { id: "m4", name: "고성능 에어로 휠&타이어", unitCost: 2200000 }
       ],
+      baseLaborCost: 2200000,
+      baseMarketDemand: 1000,
       vendors: [
         { name: "보쉬 모빌리티 시스템", discount: 0.0, quality: 99, supplyCapa: 2200, desc: "독일 전장 부품 명가. 최고 내구성과 안전 보장" },
         { name: "현대 다이내믹스 테크", discount: 0.07, quality: 96, supplyCapa: 1800, desc: "국내 완성차 부품 파트너. 정시 공급력 탁월" },
@@ -1483,40 +1571,12 @@ const DB = {
       id: "food",
       name: "프리미엄 식품·HMR 밀키트",
       desc: "신선 엄선 농축산물, 특제 배합 소스, 멸균 밀폐용기, 콜드체인 패키징으로 완성되는 스마트 푸드팩토리",
-      products: [
-        {
-          id: "p_flagship",
-          name: "미슐랭 셰프 특제 시그니처 밀키트",
-          tag: "프리미엄 모델",
-          desc: "유명 레스토랑의 레시피를 완벽 재현한 고급 가정간편식",
-          basePrice: 32000,
-          baseDemand: 15000,
-          matRatios: [1, 1, 1, 1],
-          laborReq: 1.0,
-          marginNote: "안정적인 정기구독 및 백화점 납품 마진"
-        },
-        {
-          id: "p_mass",
-          name: "데일리 영양 밸런스 식단팩",
-          tag: "대량생산 매스",
-          desc: "매일 부담없이 즐길 수 있는 합리적인 대중 식단",
-          basePrice: 16000,
-          baseDemand: 30000,
-          matRatios: [1, 1, 1, 1],
-          laborReq: 0.6,
-          marginNote: "엄청난 판매 회전율과 식자재 대량 조달 시너지"
-        },
-        {
-          id: "p_hyper",
-          name: "최상급 1++ 한우 스테이크 다이닝",
-          tag: "하이엔드 스페셜",
-          desc: "극상의 신선도와 특수 드라이에이징이 결합된 VIP 선물세트",
-          basePrice: 95000,
-          baseDemand: 4500,
-          matRatios: [2, 1, 1, 1],
-          laborReq: 1.6,
-          marginNote: "압도적인 객단가와 명절 선물 특수"
-        }
+      defaultProductName: "미슐랭 셰프 시그니처 정찬",
+      categories: ["원팬 데일리 가정간편식", "셰프 특제 시그니처 밀키트", "VIP 한우 프리미엄 세트"],
+      finishes: [
+        { id: "f1", name: "표준 진공 에코 파우치", cost: 0, quality: 86, laborMult: 1.0 },
+        { id: "f2", name: "친환경 생분해 멸균 밀폐 트레이", cost: 800, quality: 94, laborMult: 1.15 },
+        { id: "f3", name: "질소충전 3중 급랭 락앤락 패키지", cost: 2200, quality: 99, laborMult: 1.35 }
       ],
       materials: [
         { id: "m1", name: "엄선 신선 원료육/농산물", unitCost: 8200 },
@@ -1524,6 +1584,8 @@ const DB = {
         { id: "m3", name: "멸균 에어타이트 밀폐용기", unitCost: 1600 },
         { id: "m4", name: "콜드체인 보랭 패키징", unitCost: 1100 }
       ],
+      baseLaborCost: 1400,
+      baseMarketDemand: 15000,
       vendors: [
         { name: "하람 안심 농축산물 유통", discount: 0.0, quality: 99, supplyCapa: 35000, desc: "HACCP 최고 등급 신선 식자재 공급처" },
         { name: "CJ 프레시 솔루션", discount: 0.08, quality: 96, supplyCapa: 28000, desc: "대량 식자재 조달 전문. 8% 단가 할인" },
@@ -1545,40 +1607,12 @@ const DB = {
       id: "fashion",
       name: "기능성 아웃도어·하이엔드 패션",
       desc: "3레이어 기능성 원단, 카본 미드솔, 심리스 방수지퍼, 친환경 박스로 제조되는 어패럴 테크놀로지",
-      products: [
-        {
-          id: "p_flagship",
-          name: "올웨더 고어텍스 프로 쉘 자켓",
-          tag: "프리미엄 모델",
-          desc: "극지방 탐험과 도심을 아우르는 전천후 기능성 방수 아우터",
-          basePrice: 420000,
-          baseDemand: 2500,
-          matRatios: [1, 1, 1, 1],
-          laborReq: 1.0,
-          marginNote: "아웃도어 브랜드의 기술력을 상징하는 베스트셀러"
-        },
-        {
-          id: "p_mass",
-          name: "초경량 어반 러닝 스니커즈",
-          tag: "대량생산 매스",
-          desc: "충격 흡수 미드솔과 통기성 메쉬를 갖춘 데일리 러닝화",
-          basePrice: 155000,
-          baseDemand: 5000,
-          matRatios: [1, 1, 1, 1],
-          laborReq: 0.6,
-          marginNote: "대중적인 러닝 붐에 힘입은 폭발적 회전율"
-        },
-        {
-          id: "p_hyper",
-          name: "하이퍼 카본플레이트 레이싱 슈즈",
-          tag: "하이엔드 스페셜",
-          desc: "엘리트 마라토너를 위한 탄소섬유 반발력 극대화 모델",
-          basePrice: 380000,
-          baseDemand: 1200,
-          matRatios: [1, 2, 1, 1],
-          laborReq: 1.5,
-          marginNote: "러너들의 열광적인 지지와 압도적 마진"
-        }
+      defaultProductName: "올웨더 고어텍스 프로 쉘",
+      categories: ["초경량 어반 러닝기어", "전천후 기능성 방수 아우터", "엘리트 카본 레이싱 슈즈"],
+      finishes: [
+        { id: "f1", name: "표준 발수 코팅 & 오버로크 마감", cost: 0, quality: 87, laborMult: 1.0 },
+        { id: "f2", name: "심리스 초음파 방수 접합 & 실리콘 밴딩", cost: 14000, quality: 95, laborMult: 1.2 },
+        { id: "f3", name: "3L 고어 프로 멤브레인 & 티타늄 지퍼", cost: 38000, quality: 99, laborMult: 1.4 }
       ],
       materials: [
         { id: "m1", name: "테크니컬 3L 기능성 원단", unitCost: 65000 },
@@ -1586,6 +1620,8 @@ const DB = {
         { id: "m3", name: "심리스 특수 방수 지퍼", unitCost: 12000 },
         { id: "m4", name: "친환경 브랜드 박스", unitCost: 6500 }
       ],
+      baseLaborCost: 18000,
+      baseMarketDemand: 2500,
       vendors: [
         { name: "고어텍스 코리아 얼라이언스", discount: 0.0, quality: 99, supplyCapa: 6000, desc: "최고 수준의 투습 방수 기능성 원단 독점 공급" },
         { name: "영원 텍스타일 파트너스", discount: 0.08, quality: 95, supplyCapa: 5000, desc: "신뢰할 수 있는 대량 봉제 및 부자재 전문사" },
@@ -1622,44 +1658,46 @@ let state = {
   companyName: "NOVA 테크놀로지",
   industryId: "electronics",
   
-  // 플레이어 주력 상품 기획
-  selectedProductId: "p_flagship",
+  // 플레이어가 직접 세세하게 기획/설계한 커스텀 상품 사양
+  customProduct: {
+    name: "NOVA 프라임 X1",
+    category: "스마트폰 & 모바일",
+    tier: "flagship", // entry, mid, flagship, hyper
+    finishId: "f2",
+    matRatios: [1, 1, 1, 1],
+    targetMargin: 45, // %
+    calculatedUnitCost: 0,
+    finalPrice: 0,
+    laborReq: 1.2
+  },
   
   // 자금 및 유동성 포트폴리오
-  cash: 2600000000,          // 가용 보통예금 26억원
-  deposit: 1000000000,       // 정기예금 / MMF 10억원 (월 0.3% 이자)
-  accountsReceivable: 750000000, // 미회수 외상 매출채권
+  cash: 2600000000,
+  deposit: 1000000000,
+  accountsReceivable: 750000000,
   
-  debt: 1200000000,          // 장기 차입금 12억원
-  revolver: 0,               // 마이너스 통장 잔액
-  revolverLimit: 2500000000, // 리볼버 한도 25억원
+  debt: 1200000000,
+  revolver: 0,
+  revolverLimit: 2500000000,
   equity: 5000000000,
   
-  // 상업 정책
-  priceMarkup: 0,
+  // 상업 & 공정 설비 레벨
   marketingBudget: 150000000,
+  factoryStageLevels: [1, 1, 1, 1], // 피딩, 1차가공, 조립, QC
   
-  // 4대 공정 설비 레벨 (Factorio 스타일 CAPEX 증설)
-  // [0: 원자재 피딩, 1: 모듈 1차 가공, 2: 메인 조립, 3: QC 포장출하]
-  factoryStageLevels: [1, 1, 1, 1],
-  
-  // 생산 및 인력
   targetSafetyStockDays: 35,
   lineWorkers: 65,
   overtimeRate: 0,
   inhouseFabLevel: 0,
   inhouseFabBuilding: false,
   
-  // 물류 & 수급
   freightMode: "ocean_standard",
   selectedVendorIndex: 0,
   
-  // 재고 관리
   materials: [],
   inTransit: [],
   finishedGoods: 1200,
   
-  // 실적 및 지표
   brandValue: 70,
   factoryRunRate: 100,
   lastRevenue: 0,
@@ -1678,7 +1716,7 @@ let state = {
 };
 
 // ---------------------------------------------------------
-// 3. 인터랙티브 스포트라이트 튜토리얼
+// 3. 튜토리얼 시스템
 // ---------------------------------------------------------
 const tutorialSteps = [
   {
@@ -1689,9 +1727,9 @@ const tutorialSteps = [
   },
   {
     targetId: "nav_factory",
-    title: "2단계: 원하는 상품 제작 스튜디오",
-    desc: "공장에서 어떤 제품을 만들어 전 세계에 판매할지 선택하세요. 프리미엄 플래그십부터 대량생산 모델, 하이엔드 스페셜까지 자유롭게 전환할 수 있습니다.",
-    tip: "선택한 상품에 따라 BOM 원자재 투입비율과 대당 출하 가격이 자동으로 맞춰집니다."
+    title: "2단계: 정밀 맞춤 상품 기획 스튜디오",
+    desc: "공장에서 만들고 싶은 제품을 이름부터 라인업(엔트리/중급/플래그십), 마감 공법, 원자재 비율, 마진까지 세세하게 직접 설계하여 양산할 수 있습니다.",
+    tip: "기획한 스펙에 따라 제조원가와 대당 출하 판매가가 실시간으로 계산됩니다."
   },
   {
     targetId: "nav_procurement",
@@ -1702,7 +1740,7 @@ const tutorialSteps = [
   {
     targetId: "nav_finance",
     title: "4단계: 직관적 재무 & 자금 운용",
-    desc: "예상 출하 매출에서 원자재비와 운영비를 뺀 실시간 현금흐름을 확인하세요. 유휴자금 정기예금 예치, 마이너스 통장 인출, 채권 팩토링으로 유동성을 방어합니다.",
+    desc: "예상 출하 매출에서 원자재비와 운영비를 뺀 실시간 현금흐름을 확인하세요. 정기예금 예치, 마이너스 통장 인출, 채권 팩토링으로 유동성을 사수합니다.",
     tip: "장부상 흑자라도 결제 현금이 바닥나면 흑자도산할 수 있습니다."
   },
   {
@@ -1723,7 +1761,7 @@ function startTutorial() {
 
 function closeTutorial() {
   $("tutOverlay").classList.remove("active");
-  toast("튜토리얼을 종료했습니다. 이제 나만의 공장 라인을 구축해보세요.");
+  toast("가이드를 종료했습니다. 이제 나만의 공장 라인을 구축해보세요.");
 }
 
 function renderTutorialStep() {
@@ -1734,7 +1772,7 @@ function renderTutorialStep() {
   $("tutTip").textContent = `운영 팁: ${step.tip}`;
   
   $("tutPrevBtn").style.display = tutIdx === 0 ? "none" : "inline-flex";
-  $("tutNextBtn").textContent = tutIdx === tutorialSteps.length - 1 ? "튜토리얼 완료" : "다음 >";
+  $("tutNextBtn").textContent = tutIdx === tutorialSteps.length - 1 ? "가이드 완료" : "다음 >";
   
   const target = $(step.targetId);
   const highlightBox = $("tutHighlightBox");
@@ -1787,18 +1825,29 @@ $("tutNextBtn").onclick = () => {
 };
 
 // ---------------------------------------------------------
-// 4. 게임 초기화
+// 4. 게임 초기화 및 재설정
 // ---------------------------------------------------------
 function initGame(industryId, companyName) {
   const ind = DB.industries[industryId] || DB.industries.electronics;
   state.industryId = ind.id;
   state.companyName = companyName || "NOVA 테크놀로지";
-  state.selectedProductId = ind.products[0].id;
   state.month = 1;
   state.year = 1;
   
-  const prod = ind.products[0];
-  const baseMonthlyProd = prod.baseDemand;
+  // 기본 기획 상품 초기 세팅
+  state.customProduct = {
+    name: ind.defaultProductName,
+    category: ind.categories[0],
+    tier: "flagship",
+    finishId: ind.finishes[1].id,
+    matRatios: [1, 1, 1, 1],
+    targetMargin: 45,
+    calculatedUnitCost: 0,
+    finalPrice: 0,
+    laborReq: 1.2
+  };
+  
+  const baseMonthlyProd = ind.baseMarketDemand;
   const dailyUse = baseMonthlyProd / 30;
   
   state.materials = ind.materials.map(m => ({
@@ -1833,10 +1882,12 @@ function initGame(industryId, companyName) {
     active: false
   }));
   
+  calculateCustomProductEconomics();
+  
   state.history = [];
   state.auditLogs = [];
   
-  const baseRev = baseMonthlyProd * prod.basePrice;
+  const baseRev = baseMonthlyProd * state.customProduct.finalPrice;
   for (let i = 12; i >= 1; i--) {
     const rev = baseRev * (0.88 + Math.sin(i) * 0.08);
     state.history.push({
@@ -1849,11 +1900,21 @@ function initGame(industryId, companyName) {
   
   save();
   buildFields();
+  buildStudioUI();
   render();
 }
 
+// 데이터 전체 초기화 버튼
+$("resetGameBtn").onclick = () => {
+  if (confirm("정말 모든 경영 데이터를 초기화하고 처음부터 다시 시작하시겠습니까?")) {
+    localStorage.removeItem("VIOLET_LEDGER_SAVE_V4");
+    openSetupModal();
+    toast("경영 데이터가 성공적으로 초기화되었습니다.");
+  }
+};
+
 // ---------------------------------------------------------
-// 5. 온보딩 모달 (기업 설립 및 업종 선택)
+// 5. 온보딩 모달
 // ---------------------------------------------------------
 let tempSelectedIndustry = "electronics";
 
@@ -1870,12 +1931,12 @@ function openSetupModal() {
       <div>
         <div style="display:flex;justify-content:space-between;align-items:center">
           <strong style="font-size:14.5px;color:var(--ink)">${ind.name}</strong>
-          <span class="tag purple">${ind.products.length}종 제품군</span>
+          <span class="tag purple">자유 기획 지원</span>
         </div>
         <p style="font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.4">${ind.desc}</p>
       </div>
       <div style="font-size:12px;font-weight:800;color:var(--purple-dark);margin-top:8px;padding-top:6px;border-top:1px dashed var(--line)">
-        대표 상품: ${ind.products[0].name}
+        대표 라인업: ${ind.defaultProductName}
       </div>
     </div>
   `).join("");
@@ -1895,9 +1956,9 @@ function updateIndustryPreview() {
   const ind = DB.industries[tempSelectedIndustry];
   $("selectedIndustryPreview").innerHTML = `
     <b>선택된 제조 분야: ${ind.name}</b><br>
-    - 제작 가능 라인업: ${ind.products.map(p => p.name).join(", ")}<br>
+    - 카테고리 분류: ${ind.categories.join(", ")}<br>
     - 4대 핵심 원자재: ${ind.materials.map(m => m.name).join(", ")}<br>
-    - 전략 목표: 최적의 원자재 수급과 공정 병목 해소로 원하는 상품을 대량 출하하여 시장을 장악하세요.
+    - 기획실에서 상품명과 부품 비율, 마진율을 직접 설계하여 글로벌 시장을 공략하세요.
   `;
 }
 
@@ -1931,26 +1992,13 @@ function buildFields() {
   $("commercialFields").innerHTML = `
     <div class="field">
       <label>
-        <span>완제품 출하단가 마진율</span>
-        <span class="valuePill" id="val_priceMarkup">${state.priceMarkup > 0 ? '+' : ''}${state.priceMarkup}%</span>
-      </label>
-      <input type="range" min="-25" max="30" step="1" value="${state.priceMarkup}" id="input_priceMarkup">
-      <div class="hint">단가 인상 시 대당 마진 증가, 시장 수요는 감소합니다.</div>
-    </div>
-    <div class="field">
-      <label>
-        <span>월간 마케팅 & 글로벌 영업비</span>
+        <span>월간 마케팅 & 글로벌 프로모션</span>
         <span class="valuePill" id="val_marketing">${fmtWon(state.marketingBudget)}</span>
       </label>
       <input type="range" min="30000000" max="400000000" step="10000000" value="${state.marketingBudget}" id="input_marketing">
       <div class="hint">글로벌 바이어 주문량 견인 및 브랜드 인지도 확대.</div>
     </div>
   `;
-  $("input_priceMarkup").oninput = (e) => {
-    state.priceMarkup = parseInt(e.target.value);
-    $("val_priceMarkup").textContent = `${state.priceMarkup > 0 ? '+' : ''}${state.priceMarkup}%`;
-    renderFinancialStream();
-  };
   $("input_marketing").oninput = (e) => {
     state.marketingBudget = parseInt(e.target.value);
     $("val_marketing").textContent = fmtWon(state.marketingBudget);
@@ -1988,133 +2036,226 @@ function buildFields() {
 }
 
 // ---------------------------------------------------------
-// 7. 상품 스튜디오 (플레이어가 원하는 제품 제작 및 변경)
+// 7. 정밀 상품 기획 스튜디오 (CUSTOM PRODUCT STUDIO)
 // ---------------------------------------------------------
-function renderProductStudio() {
+let studioTemp = {
+  name: "",
+  category: "",
+  tier: "flagship",
+  finishId: "",
+  matRatios: [1, 1, 1, 1],
+  targetMargin: 45
+};
+
+function buildStudioUI() {
   const ind = DB.industries[state.industryId];
-  const grid = $("productStudioGrid");
-  
-  grid.innerHTML = ind.products.map(p => {
-    const isCur = p.id === state.selectedProductId;
-    return `
-      <div class="product-blueprint-card ${isCur ? 'activeProduct' : ''}" onclick="selectProduct('${p.id}')">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <strong style="font-size:15px;color:var(--ink)">${p.name}</strong>
-            <span class="tag ${isCur ? 'purple' : 'pink'}">${p.tag}</span>
-          </div>
-          <p style="font-size:12px;color:var(--muted);margin:8px 0 10px;line-height:1.4">${p.desc}</p>
-          
-          <div style="background:#faf8fd;border:1px solid var(--line);border-radius:10px;padding:9px;font-size:11.5px;margin-bottom:10px">
-            <div style="display:flex;justify-content:space-between;margin-bottom:3px">
-              <span>기본 출하 가격:</span>
-              <b style="color:var(--purple-dark)">${fmtWon(p.basePrice)} / 대</b>
-            </div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:3px">
-              <span>월간 글로벌 기준 수요:</span>
-              <b>${fmtNum(p.baseDemand)} 대</b>
-            </div>
-            <div style="display:flex;justify-content:space-between">
-              <span>조립 공수 계수:</span>
-              <b style="color:var(--pink)">${p.laborReq}x</b>
-            </div>
-          </div>
-        </div>
-        
-        <div style="border-top:1px dashed var(--line);padding-top:10px;display:flex;justify-content:space-between;align-items:center">
-          <span class="small" style="color:var(--muted)">${p.marginNote}</span>
-          <button class="btn sm ${isCur ? 'disabled' : 'primary'}">
-            ${isCur ? '주력 생산 중' : '이 제품 제작하기'}
-          </button>
-        </div>
-      </div>
-    `;
-  }).join("");
-  
-  // 개요 대시보드 내 주력 상품 카드 요약
-  const curProd = getCurrentProduct();
-  $("overviewActiveProductBadge").textContent = curProd.name;
-  $("overviewActiveProductSummary").innerHTML = `
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
-      <div class="metric"><span>현재 완제품 출고단가</span><strong style="color:var(--purple-dark)">${fmtWon(curProd.basePrice * (1 + state.priceMarkup/100))}</strong></div>
-      <div class="metric"><span>대당 제조원가</span><strong>${fmtWon(calcProductUnitCost())}</strong></div>
-      <div class="metric"><span>대당 영업마진</span><strong style="color:var(--green)">${fmtWon((curProd.basePrice * (1 + state.priceMarkup/100)) - calcProductUnitCost())}</strong></div>
+  studioTemp = {
+    name: state.customProduct.name,
+    category: state.customProduct.category || ind.categories[0],
+    tier: state.customProduct.tier,
+    finishId: state.customProduct.finishId || ind.finishes[0].id,
+    matRatios: [...state.customProduct.matRatios],
+    targetMargin: state.customProduct.targetMargin
+  };
+
+  $("studio_prodName").value = studioTemp.name;
+  $("studio_prodName").oninput = (e) => {
+    studioTemp.name = e.target.value.trim() || "맞춤 기획 상품";
+    updateStudioBlueprint();
+  };
+
+  $("studio_categorySelect").innerHTML = ind.categories.map(c => 
+    `<option value="${c}" ${c === studioTemp.category ? 'selected' : ''}>${c}</option>`
+  ).join("");
+  $("studio_categorySelect").onchange = (e) => {
+    studioTemp.category = e.target.value;
+    updateStudioBlueprint();
+  };
+
+  $("studio_finishSelect").innerHTML = ind.finishes.map(f => 
+    `<option value="${f.id}" ${f.id === studioTemp.finishId ? 'selected' : ''}>
+      ${f.name} (+${fmtWon(f.cost)} / 품질 ${f.quality}점)
+    </option>`
+  ).join("");
+  $("studio_finishSelect").onchange = (e) => {
+    studioTemp.finishId = e.target.value;
+    updateStudioBlueprint();
+  };
+
+  $("studio_matInputsGrid").innerHTML = ind.materials.map((m, idx) => `
+    <div style="background:#ffffff;border:1.5px solid var(--line);border-radius:10px;padding:8px;text-align:center">
+      <span class="small" style="font-size:10px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name.split(' ')[0]}</span>
+      <select id="mat_ratio_${idx}" style="margin-top:4px;padding:3px;font-size:12px;font-weight:900;border-radius:6px;border-color:var(--line)" onchange="updateStudioMatRatio(${idx}, this.value)">
+        <option value="1" ${studioTemp.matRatios[idx]===1?'selected':''}>1개 (기본)</option>
+        <option value="2" ${studioTemp.matRatios[idx]===2?'selected':''}>2개 (강화)</option>
+        <option value="3" ${studioTemp.matRatios[idx]===3?'selected':''}>3개 (특화)</option>
+      </select>
     </div>
-    <div class="notice purple" style="margin-bottom:0">
-      <b>[${curProd.name}]</b> 제품을 주력 생산 중입니다. 
-      공정 라인 밸런서에서 병목을 지속적으로 해결하여 글로벌 출하량을 극대화하세요.
-    </div>
-  `;
+  `).join("");
+
+  $("input_studioMargin").value = studioTemp.targetMargin;
+  $("val_studioMargin").textContent = `${studioTemp.targetMargin}%`;
+  $("input_studioMargin").oninput = (e) => {
+    studioTemp.targetMargin = parseInt(e.target.value);
+    $("val_studioMargin").textContent = `${studioTemp.targetMargin}%`;
+    updateStudioBlueprint();
+  };
+
+  $("launchProductBtn").onclick = commitStudioProduct;
+  updateStudioBlueprint();
 }
 
-function selectProduct(pId) {
-  if (state.selectedProductId === pId) return;
-  state.selectedProductId = pId;
-  const prod = getCurrentProduct();
-  
-  // 제품 전환 시 일일 소진량 재계산
-  state.materials.forEach((m, idx) => {
-    const ratio = prod.matRatios[idx] || 1;
-    m.dailyConsumption = (prod.baseDemand * ratio) / 30;
+function setStudioTier(tier) {
+  studioTemp.tier = tier;
+  document.querySelectorAll(".tier-card-btn").forEach(b => {
+    if (b.dataset.tier === tier) b.classList.add("active");
+    else b.classList.remove("active");
   });
+  updateStudioBlueprint();
+}
+
+function updateStudioMatRatio(idx, val) {
+  studioTemp.matRatios[idx] = parseInt(val);
+  $("studio_matSummaryPill").textContent = studioTemp.matRatios.join(":");
+  updateStudioBlueprint();
+}
+
+// 스튜디오 블루프린트 경제성 계산
+function calcStudioEco() {
+  const ind = DB.industries[state.industryId];
+  const finish = ind.finishes.find(f => f.id === studioTemp.finishId) || ind.finishes[0];
   
+  // 1. 자재비 합계
+  const rawCost = state.materials.reduce((sum, m, idx) => sum + (m.unitCost * studioTemp.matRatios[idx]), 0);
+  
+  // 2. 마감 및 노무 공수
+  const tierMultiplier = {
+    entry: { labor: 0.7, demandMult: 2.0, tag: "엔트리 보급형" },
+    mid: { labor: 1.0, demandMult: 1.3, tag: "중급형 볼륨" },
+    flagship: { labor: 1.35, demandMult: 1.0, tag: "플래그십 프리미엄" },
+    hyper: { labor: 2.1, demandMult: 0.45, tag: "하이퍼 한정판" }
+  }[studioTemp.tier];
+
+  const finishCost = finish.cost;
+  const laborReq = tierMultiplier.labor * finish.laborMult;
+  const laborCost = Math.round(ind.baseLaborCost * laborReq);
+  
+  const unitCost = rawCost + finishCost + laborCost;
+  const finalPrice = Math.round(unitCost * (1 + studioTemp.targetMargin / 100));
+  const unitMargin = finalPrice - unitCost;
+  
+  const estDemand = Math.round(ind.baseMarketDemand * tierMultiplier.demandMult * (state.brandValue / 70));
+  const estRev = estDemand * finalPrice;
+
+  return {
+    rawCost,
+    finishCost,
+    laborCost,
+    unitCost,
+    finalPrice,
+    unitMargin,
+    estDemand,
+    estRev,
+    laborReq: laborReq.toFixed(2),
+    tierTag: tierMultiplier.tag
+  };
+}
+
+function updateStudioBlueprint() {
+  const eco = calcStudioEco();
+  
+  $("bp_displayTitle").textContent = studioTemp.name;
+  $("bp_displayCategory").textContent = studioTemp.category;
+  $("bp_displayTierTag").textContent = eco.tierTag;
+  
+  $("bp_rawCost").textContent = fmtWon(eco.rawCost);
+  $("bp_finishCost").textContent = fmtWon(eco.finishCost);
+  $("bp_laborCost").textContent = fmtWon(eco.laborCost);
+  $("bp_totalUnitCost").textContent = fmtWon(eco.unitCost);
+  
+  $("bp_finalPrice").textContent = fmtWon(eco.finalPrice);
+  $("bp_unitMargin").textContent = `+${fmtWon(eco.unitMargin)} (${studioTemp.targetMargin}%)`;
+  
+  $("bp_estDemand").textContent = `${fmtNum(eco.estDemand)} 대`;
+  $("bp_estMonthlyRev").textContent = fmtWon(eco.estRev);
+  $("bp_laborReq").textContent = `${eco.laborReq}x`;
+}
+
+// 신제품 설계 확정 및 양산 투입
+function commitStudioProduct() {
+  const eco = calcStudioEco();
+  state.customProduct = {
+    name: studioTemp.name,
+    category: studioTemp.category,
+    tier: studioTemp.tier,
+    finishId: studioTemp.finishId,
+    matRatios: [...studioTemp.matRatios],
+    targetMargin: studioTemp.targetMargin,
+    calculatedUnitCost: eco.unitCost,
+    finalPrice: eco.finalPrice,
+    laborReq: parseFloat(eco.laborReq),
+    estDemand: eco.estDemand
+  };
+
+  // 4대 원자재 일일 소진량 재동기화
+  state.materials.forEach((m, idx) => {
+    m.dailyConsumption = (eco.estDemand * state.customProduct.matRatios[idx]) / 30;
+  });
+
   render();
   openActionModal(
-    "주력 상품 생산 라인업 전환 완료",
-    `공장의 주력 생산 모델이 <b>[${prod.name}]</b>(으)로 변경되었습니다.<br>
-     - 기본 출하 단가: <b>${fmtWon(prod.basePrice)}</b><br>
-     - 월간 기준 수요량: <b>${fmtNum(prod.baseDemand)} 대</b><br>
-     - 4대 원자재 소진 비율이 변경된 상품의 BOM 규격에 맞춰 자동 동기화되었습니다.`
+    "맞춤형 신제품 양산 투입 확정",
+    `축하합니다! 직접 기획하신 <b>[${state.customProduct.name}]</b>이(가) 공식 양산 라인에 배정되었습니다.<br>
+     - 라인업: <b>${eco.tierTag} (${state.customProduct.category})</b><br>
+     - 확정 출고 판매가: <b>${fmtWon(state.customProduct.finalPrice)}</b> (마진율: ${state.customProduct.targetMargin}%)<br>
+     - 대당 예상 영업이익: <b>+${fmtWon(eco.unitMargin)}</b><br>
+     - 4대 BOM 소진량이 새로 설계된 부품 비율(${state.customProduct.matRatios.join(":")})로 동기화되었습니다.`
   );
 }
 
-function getCurrentProduct() {
-  const ind = DB.industries[state.industryId];
-  return ind.products.find(p => p.id === state.selectedProductId) || ind.products[0];
-}
-
-function calcProductUnitCost() {
-  const prod = getCurrentProduct();
-  return state.materials.reduce((sum, m, idx) => sum + (m.unitCost * (prod.matRatios[idx] || 1)), 0) * 1.12;
+function calculateCustomProductEconomics() {
+  const eco = calcStudioEco();
+  state.customProduct.calculatedUnitCost = eco.unitCost;
+  state.customProduct.finalPrice = eco.finalPrice;
+  state.customProduct.laborReq = parseFloat(eco.laborReq);
+  state.customProduct.estDemand = eco.estDemand;
 }
 
 // ---------------------------------------------------------
-// 8. 파이프라인 밸런서 및 병목 분석기 (Factorio Throughput Engine)
+// 8. 파이프라인 밸런서 (TOC Throughput Balancer)
 // ---------------------------------------------------------
 function getPipelineCapacities() {
   const ind = DB.industries[state.industryId];
-  const prod = getCurrentProduct();
   const vendor = ind.vendors[state.selectedVendorIndex];
+  const prod = state.customProduct;
+  const demand = prod.estDemand || ind.baseMarketDemand;
   
-  // 1. 수급 능력 (Vendor Supply Capa)
+  // 1. 수급 능력
   const sourcingCapa = vendor.supplyCapa;
   
-  // 2. 인바운드 조달 능력 (Inbound Warehouse Buffer)
+  // 2. 조달 능력
   let minRawDays = 999;
   state.materials.forEach(m => {
     const days = m.stock / Math.max(m.dailyConsumption, 1);
     if (days < minRawDays) minRawDays = days;
   });
-  const procurementCapa = Math.round(prod.baseDemand * Math.min(1.5, minRawDays / 30));
+  const procurementCapa = Math.round(demand * Math.min(1.5, minRawDays / 30));
   
-  // 3. 공장 제작 공정 능력 (Smart Factory Stages)
-  // 설비 레벨 [0,1,2,3] 및 작업자 수 반영
-  const feedingCapa = Math.round(prod.baseDemand * (0.8 + state.factoryStageLevels[0] * 0.25));
-  const machiningCapa = Math.round(prod.baseDemand * (0.75 + state.factoryStageLevels[1] * 0.28));
+  // 3. 공장 제작 능력
+  const feedingCapa = Math.round(demand * (0.8 + state.factoryStageLevels[0] * 0.25));
+  const machiningCapa = Math.round(demand * (0.75 + state.factoryStageLevels[1] * 0.28));
   
   const workerBase = (state.lineWorkers / 60) * (1 + state.overtimeRate / 100);
-  const assemblyCapa = Math.round((prod.baseDemand / prod.laborReq) * workerBase * (0.8 + state.factoryStageLevels[2] * 0.2));
-  
-  const qcCapa = Math.round(prod.baseDemand * (0.85 + state.factoryStageLevels[3] * 0.25));
+  const assemblyCapa = Math.round((demand / Math.max(prod.laborReq, 0.5)) * workerBase * (0.8 + state.factoryStageLevels[2] * 0.2));
+  const qcCapa = Math.round(demand * (0.85 + state.factoryStageLevels[3] * 0.25));
   
   const manufacturingCapa = Math.min(feedingCapa, machiningCapa, assemblyCapa, qcCapa);
   
-  // 4. 운송/수출 물류 능력 (Outbound Freight Capa)
-  const outboundCapa = Math.round(prod.baseDemand * 1.35);
+  // 4. 운송/수출 물류 능력
+  const outboundCapa = Math.round(demand * 1.35);
   
-  // 전체 쓰루풋은 4대 단계 중 최소값 (TOC)
   const stages = [
-    { id: "sourcing", name: "1. 원자재 수급", capa: sourcingCapa, desc: `협력사: ${vendor.name.split(' ')[0]}` },
+    { id: "sourcing", name: "1. 원자재 수급", capa: sourcingCapa, desc: `공급처: ${vendor.name.split(' ')[0]}` },
     { id: "procurement", name: "2. 조달 & 자재창고", capa: procurementCapa, desc: `잔여일수: ${Math.floor(minRawDays)}일분` },
     { id: "manufacturing", name: "3. 스마트 공장 제작", capa: manufacturingCapa, desc: `공정 최저속도 구간` },
     { id: "logistics", name: "4. 운송/수출 물류", capa: outboundCapa, desc: "해상/항공/국내 배송" }
@@ -2172,7 +2313,6 @@ function renderPipelineViews() {
   $("balancerOverallScore").textContent = `라인 밸런스 효율 ${p.balanceEfficiency}% (${p.balanceEfficiency >= 85 ? '원활' : '불균형'})`;
   $("balancerOverallScore").className = `tag ${p.balanceEfficiency >= 85 ? 'green' : p.balanceEfficiency >= 70 ? 'amber' : 'red'}`;
   
-  // 공장 서브공정 CAPEX 업그레이드 패널
   $("factoryStageUpgradeList").innerHTML = p.factorySubStages.map(sub => `
     <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#ffffff;border:1px solid var(--line);border-radius:11px;margin-bottom:8px">
       <div>
@@ -2188,7 +2328,6 @@ function renderPipelineViews() {
     </div>
   `).join("");
   
-  // MES 컨베이어 시각화
   const isRunning = state.factoryRunRate >= 70;
   $("mesLineStatusBadge").className = isRunning ? "tag green" : "tag red";
   $("mesLineStatusBadge").textContent = isRunning ? `전 공정 정상 가동 (${state.factoryRunRate}%)` : `조립 라인 부분 정지 (${state.factoryRunRate}%)`;
@@ -2217,8 +2356,7 @@ function upgradeFactoryStage(stageIdx, cost) {
     "공정 설비 증설(CAPEX) 완료",
     `선택하신 공정의 고속 자동화 설비가 증설되었습니다.<br>
      - 투자액: <b>${fmtWon(cost)}</b> (보통예금 차감)<br>
-     - 해당 공정의 처리 용량(CAPA)이 영구적으로 확장되었습니다.<br>
-     - 결과: 공장 내부 병목이 해소되어 전체 라인 쓰루풋이 증가합니다.`
+     - 해당 공정의 처리 용량(CAPA)이 영구 확장되어 병목이 해소됩니다.`
   );
 }
 
@@ -2226,10 +2364,10 @@ function upgradeFactoryStage(stageIdx, cost) {
 // 9. 직관적 재무 & 자금 운용 스트림
 // ---------------------------------------------------------
 function renderFinancialStream() {
-  const prod = getCurrentProduct();
-  const unitPrice = prod.basePrice * (1 + state.priceMarkup / 100);
-  const estRev = Math.round(prod.baseDemand * unitPrice);
-  const estCogs = Math.round(prod.baseDemand * calcProductUnitCost());
+  const prod = state.customProduct;
+  const demand = prod.estDemand || 1200;
+  const estRev = Math.round(demand * prod.finalPrice);
+  const estCogs = Math.round(demand * prod.calculatedUnitCost);
   const estOpex = state.marketingBudget + (state.lineWorkers * 3500000) + Math.round(estRev * 0.045);
   const netCash = estRev - estCogs - estOpex;
   
@@ -2318,7 +2456,7 @@ function sellFactoring() {
 // 10. 조달 창고 및 비상 발주
 // ---------------------------------------------------------
 function renderMaterialsGrid() {
-  const prod = getCurrentProduct();
+  const prod = state.customProduct;
   let minDays = 999;
   let bottleneckMat = null;
   
@@ -2350,7 +2488,7 @@ function renderMaterialsGrid() {
               <strong style="display:block;font-size:14px;margin-top:2px">${Math.round(dailyUse)}개/일</strong>
             </div>
             <div style="background:#f8f6fc;padding:7px;border-radius:8px">
-              <span class="small">소요 배수</span>
+              <span class="small">기획 투입배수</span>
               <strong style="display:block;font-size:14px;margin-top:2px;color:var(--purple-dark)">x${ratio}</strong>
             </div>
           </div>
@@ -2391,8 +2529,8 @@ function selectFreightMode(id) {
 function emergencyAirOrder(matId) {
   const mat = state.materials.find(m => m.id === matId);
   if (!mat) return;
-  const prod = getCurrentProduct();
-  const qty = Math.round(prod.baseDemand * 1.0);
+  const prod = state.customProduct;
+  const qty = Math.round((prod.estDemand || 1200) * 1.0);
   const cost = Math.round(mat.unitCost * qty * 1.35);
   
   if (state.cash < cost) {
@@ -2502,9 +2640,9 @@ function selectVendor(idx) {
 }
 
 function renderOutboundLogistics() {
-  const prod = getCurrentProduct();
+  const prod = state.customProduct;
   $("logisticsFinishedQty").textContent = `${fmtNum(state.finishedGoods)} 대`;
-  $("logisticsFinishedVal").textContent = fmtWon(state.finishedGoods * calcProductUnitCost());
+  $("logisticsFinishedVal").textContent = fmtWon(state.finishedGoods * prod.calculatedUnitCost);
   $("logisticsOnTimeRate").textContent = `${(100 - state.lastStockoutRate).toFixed(1)}%`;
   $("logisticsFreightCost").textContent = fmtWon(state.lastRevenue * 0.045);
   
@@ -2553,7 +2691,7 @@ function renderOutboundLogistics() {
 // ---------------------------------------------------------
 function render() {
   const ind = DB.industries[state.industryId] || DB.industries.electronics;
-  const prod = getCurrentProduct();
+  const prod = state.customProduct;
   
   $("period").textContent = `제 ${state.year}기 ${state.month}월차`;
   $("companyName").textContent = state.companyName;
@@ -2566,10 +2704,9 @@ function render() {
   
   const rawTotalVal = state.materials.reduce((sum, m) => sum + (m.stock * m.unitCost), 0);
   const transitTotalVal = state.inTransit.reduce((sum, t) => sum + t.val, 0);
-  const finishedTotalVal = state.finishedGoods * calcProductUnitCost();
+  const finishedTotalVal = state.finishedGoods * prod.calculatedUnitCost;
   $("totalInventoryVal").textContent = fmtWon(rawTotalVal + transitTotalVal + finishedTotalVal);
   
-  // 자산 운용 요약 지표
   $("treasuryCash").textContent = fmtWon(state.cash);
   $("treasuryDeposit").textContent = fmtWon(state.deposit);
   $("treasuryAR").textContent = fmtWon(state.accountsReceivable);
@@ -2581,7 +2718,20 @@ function render() {
   $("boxRevolverLimit").textContent = fmtWon(state.revolverLimit);
   $("boxARVal").textContent = fmtWon(state.accountsReceivable);
   
-  renderProductStudio();
+  // 개요 주력 상품 카드 요약
+  $("overviewActiveProductBadge").textContent = `${prod.name} (${prod.category})`;
+  $("overviewActiveProductSummary").innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+      <div class="metric"><span>설계 출고 판매가</span><strong style="color:var(--purple-dark)">${fmtWon(prod.finalPrice)}</strong></div>
+      <div class="metric"><span>단위당 제조원가</span><strong>${fmtWon(prod.calculatedUnitCost)}</strong></div>
+      <div class="metric"><span>대당 영업이익</span><strong style="color:var(--green)">+${fmtWon(prod.finalPrice - prod.calculatedUnitCost)}</strong></div>
+    </div>
+    <div class="notice purple" style="margin-bottom:0">
+      <b>[${prod.name}]</b> 제품이 성공적으로 공장에 투입되었습니다. 
+      공정 밸런서에서 병목을 지속적으로 해결하여 출하량을 극대화하세요.
+    </div>
+  `;
+  
   renderPipelineViews();
   renderFinancialStream();
   renderMaterialsGrid();
@@ -2661,7 +2811,7 @@ function renderPrescriptions() {
   if (recs.length === 0) {
     prescBody.innerHTML = `
       <div class="notice green">
-        <b>시스템 진단:</b> 전체 공급망 체인이 높은 밸런스(${p.balanceEfficiency}%)로 완벽하게 가동 중입니다. 정책 수립 후 월말 결산을 진행하세요.
+        <b>시스템 진단:</b> 전체 공급망 체인이 높은 밸런스(${p.balanceEfficiency}%)로 가동 중입니다. 정책 수립 후 월말 결산을 진행하세요.
       </div>
     `;
   } else {
@@ -2846,11 +2996,10 @@ function drawChart() {
 // 13. 월말 결산 엔진 (Monthly Settlement)
 // ---------------------------------------------------------
 function closeMonth() {
-  const prod = getCurrentProduct();
+  const prod = state.customProduct;
   const ind = DB.industries[state.industryId];
   const pipe = getPipelineCapacities();
   
-  // 1. 공장 가동률 및 실제 생산량 산출
   let minDays = 999;
   state.materials.forEach(m => {
     const days = m.stock / Math.max(m.dailyConsumption, 1);
@@ -2863,27 +3012,23 @@ function closeMonth() {
   }
   state.factoryRunRate = runRate;
   
-  // 파이프라인 쓰루풋 기반 실제 완제품 생산량
   const actualProduction = Math.round(pipe.minCapa * (runRate / 100));
   state.lastProductionQty = actualProduction;
   
-  // 2. BOM 원자재 소진
   state.materials.forEach((m, idx) => {
     const ratio = prod.matRatios[idx] || 1;
     m.stock = Math.max(0, m.stock - (actualProduction * ratio));
   });
   
-  // 국내 자가 팹 효과
   if (state.inhouseFabBuilding) {
     state.inhouseFabBuilding = false;
     state.inhouseFabLevel = 1;
     toast("국내 자가 부품공장이 완공되었습니다!");
   }
   if (state.inhouseFabLevel >= 1) {
-    state.materials[0].stock += Math.round(prod.baseDemand * 0.5);
+    state.materials[0].stock += Math.round((prod.estDemand || 1200) * 0.5);
   }
   
-  // 3. 인바운드 수송 화물 입고
   const arriving = [];
   state.inTransit.forEach(t => {
     t.etaMonths--;
@@ -2895,7 +3040,6 @@ function closeMonth() {
   });
   state.inTransit = state.inTransit.filter(t => t.etaMonths > 0);
   
-  // 4. R&D 프로젝트 진행
   state.projects.forEach(p => {
     if (p.active && !p.applied) {
       p.progress++;
@@ -2909,35 +3053,30 @@ function closeMonth() {
     }
   });
   
-  // 5. 완제품 창고 입고 및 글로벌 시장 판매
   state.finishedGoods += actualProduction;
-  const priceFactor = 1 - (state.priceMarkup * 0.015);
   const mktFactor = 1 + (state.marketingBudget / 300000000) * 0.2;
   const brandFactor = state.brandValue / 70;
-  const demand = Math.round(prod.baseDemand * priceFactor * mktFactor * brandFactor);
+  const demand = Math.round((prod.estDemand || 1200) * mktFactor * brandFactor);
   
   const actualSold = Math.min(demand, state.finishedGoods);
   const stockoutQty = Math.max(0, demand - actualSold);
   state.finishedGoods -= actualSold;
   
-  const unitPrice = prod.basePrice * (1 + state.priceMarkup / 100);
-  const revenue = actualSold * unitPrice;
+  const revenue = actualSold * prod.finalPrice;
   state.lastRevenue = revenue;
   state.lastSoldQty = actualSold;
   state.lastStockoutQty = stockoutQty;
   state.lastStockoutRate = demand > 0 ? (stockoutQty / demand) * 100 : 0;
   
-  // 결품 지체상금 및 시장점유율 변동
   let stockoutPenalty = 0;
   if (stockoutQty > 0) {
-    stockoutPenalty = Math.round(stockoutQty * unitPrice * 0.08);
+    stockoutPenalty = Math.round(stockoutQty * prod.finalPrice * 0.08);
     state.marketShare = Math.max(12, state.marketShare - 1.8);
   } else {
     state.marketShare = Math.min(52, state.marketShare + 0.8);
   }
   
-  // 6. 재무 및 손익 정산
-  const cogs = actualProduction * calcProductUnitCost();
+  const cogs = actualProduction * prod.calculatedUnitCost;
   const freightCost = revenue * 0.045;
   const opex = state.marketingBudget + (state.lineWorkers * 3500000);
   const idleLoss = runRate < 100 ? (100 - runRate) * 1600000 : 0;
@@ -2949,11 +3088,9 @@ function closeMonth() {
   
   const netIncome = ebitda - interest + depositInterestGain;
   
-  // 현금 및 매출채권 분할 입금 (75% 즉시 현금, 25% 외상 매출채권)
   state.cash += (netIncome * 0.75);
   state.accountsReceivable += (netIncome * 0.25);
   
-  // 7. 자동 안전재고 인바운드 발주
   const mode = DB.freightModes.find(m => m.id === state.freightMode) || DB.freightModes[0];
   state.materials.forEach((m, idx) => {
     const targetStock = m.dailyConsumption * state.targetSafetyStockDays;
@@ -2971,7 +3108,6 @@ function closeMonth() {
     }
   });
   
-  // 8. 히스토리 및 감사 로그 기록
   state.history.push({
     month: `${state.month}월`,
     revenue: revenue,
@@ -3003,14 +3139,14 @@ function closeMonth() {
 }
 
 function openSettlementModal(prod, sold, stockout, rev, ebitda, penalty, intGain) {
-  const currentProd = getCurrentProduct();
+  const currentProd = state.customProduct;
   $("settleModalPeriod").textContent = `제 ${state.year}기 ${state.month}월차 종합 결산 리포트`;
   $("settleModalStatusTag").textContent = ebitda >= 0 ? "흑자 달성" : "영업 적자";
   $("settleModalStatusTag").className = ebitda >= 0 ? "tag green" : "tag red";
   
   $("settleModalBody").innerHTML = `
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
-      <div class="metric"><span>주력 상품 생산량</span><strong>${fmtNum(prod)} 대</strong></div>
+      <div class="metric"><span>기획 상품 생산량</span><strong>${fmtNum(prod)} 대</strong></div>
       <div class="metric"><span>글로벌 판매량</span><strong>${fmtNum(sold)} 대</strong></div>
       <div class="metric"><span>월간 출하 매출</span><strong style="color:var(--purple-dark)">${fmtWon(rev)}</strong></div>
       <div class="metric"><span>영업이익 (EBITDA)</span><strong style="color:${ebitda>=0?'var(--green)':'var(--red)'}">${fmtWon(ebitda)}</strong></div>
@@ -3019,7 +3155,7 @@ function openSettlementModal(prod, sold, stockout, rev, ebitda, penalty, intGain
     <div class="card display-card" style="padding:14px;margin-bottom:14px">
       <strong style="font-size:13.5px;color:var(--ink);display:block;margin-bottom:8px">파이프라인 및 자금 운용 종합 평가</strong>
       <div style="font-size:12.5px;line-height:1.6;color:var(--muted)">
-        - 제작 모델: <b>${currentProd.name} (${currentProd.tag})</b><br>
+        - 출하 모델: <b>${currentProd.name} (${currentProd.category})</b><br>
         - 공장 가동률: <b>${state.factoryRunRate}%</b> (납기 이행률: <b>${(100-state.lastStockoutRate).toFixed(1)}%</b>)<br>
         - 결품 현황: <b>${stockout > 0 ? `${fmtNum(stockout)}대 미납 (지체상금 ${fmtWon(penalty)})` : '결품 0건! 100% 정상 완판'}</b><br>
         - 정기예금 이자수익: <b>+${fmtWon(intGain)} 입금</b><br>
@@ -3028,7 +3164,7 @@ function openSettlementModal(prod, sold, stockout, rev, ebitda, penalty, intGain
     </div>
 
     <div class="notice purple">
-      공장장 브리핑: 원하는 상품을 적기에 대량 출하하려면 원자재 안전재고와 공정 밸런서의 병목을 매달 지속적으로 점검하십시오.
+      경영진 브리핑: 직접 기획한 상품의 대량 출하를 위해 원자재 안전재고와 공정 밸런서의 병목을 매달 지속 점검하십시오.
     </div>
   `;
   
@@ -3096,6 +3232,7 @@ window.addEventListener("resize", drawChart);
 const hasSave = load();
 if (hasSave) {
   buildFields();
+  buildStudioUI();
   render();
   toast(`[${state.companyName}] 데이터를 성공적으로 불러왔습니다.`);
 } else {
