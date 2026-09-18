@@ -36,7 +36,7 @@
 :root {
   --white: #ffffff;
   --bg: #f5f3f9;
-  --card-bg: #ffffff;
+  --card-bg: rgba(255, 255, 255, 0.84);
   
   --purple-light: #f3e8ff;
   --purple-soft: #ede9fe;
@@ -56,8 +56,8 @@
   --ink: #100a1c;
   --ink-soft: #281d38;
   --muted: #564c66;
-  --line: #dbd2e8;
-  --line-focus: #c4b5fd;
+  --line: rgba(219, 210, 232, 0.75);
+  --line-focus: rgba(196, 181, 253, 0.85);
   --green: #059669;
   --green-soft: #d1fae5;
   --red: #dc2626;
@@ -65,8 +65,8 @@
   --amber: #d97706;
   --amber-soft: #fef3c7;
   
-  --shadow-sm: 0 2px 6px rgba(109, 40, 217, 0.06);
-  --shadow-md: 0 8px 20px rgba(109, 40, 217, 0.08), 0 2px 8px rgba(0,0,0,0.03);
+  --shadow-sm: 0 2px 8px rgba(109, 40, 217, 0.05);
+  --shadow-md: 0 8px 24px rgba(109, 40, 217, 0.08), 0 2px 8px rgba(0,0,0,0.02);
   --shadow-lg: 0 16px 36px rgba(109, 40, 217, 0.14), 0 4px 12px rgba(236, 72, 153, 0.08);
   --shadow-purple-glow: 0 4px 18px rgba(124, 58, 237, 0.35);
   --shadow-pink-glow: 0 4px 18px rgba(236, 72, 153, 0.35);
@@ -79,7 +79,7 @@
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  background: var(--bg);
+  background: radial-gradient(circle at 10% 20%, rgba(243, 232, 255, 0.65) 0%, rgba(245, 243, 249, 1) 90%);
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 14px;
@@ -93,7 +93,9 @@ button { cursor: pointer; }
 .app { min-height: 100vh; display: flex; }
 .sidebar {
   width: 275px;
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-right: 1px solid var(--line);
   padding: 20px 16px;
   position: sticky;
@@ -118,7 +120,7 @@ button { cursor: pointer; }
   width: 44px;
   height: 44px;
   border-radius: 13px;
-  background: linear-gradient(135deg, var(--purple-vivid) 0%, var(--pink) 100%);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.95) 0%, rgba(236, 72, 153, 0.95) 100%);
   display: grid;
   place-items: center;
   color: #fff;
@@ -154,12 +156,12 @@ button { cursor: pointer; }
   transition: var(--transition);
 }
 .nav button:hover {
-  background: var(--purple-light);
+  background: rgba(243, 232, 255, 0.85);
   color: var(--purple-vivid);
   transform: translateX(3px);
 }
 .nav button.active {
-  background: linear-gradient(135deg, var(--purple-vivid) 0%, var(--purple-dark) 100%);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.95) 0%, rgba(109, 40, 217, 0.95) 100%);
   color: #fff;
   box-shadow: var(--shadow-purple-glow);
   transform: translateX(3px);
@@ -172,7 +174,7 @@ button { cursor: pointer; }
   color: #fff;
 }
 .nav button:not(.active) .nav-badge {
-  background: var(--pink-soft);
+  background: rgba(255, 228, 241, 0.85);
   color: var(--pink-dark);
 }
 .nav-badge.flow {
@@ -186,7 +188,9 @@ button { cursor: pointer; }
   border: 1.5px solid var(--line);
   border-radius: 13px;
   padding: 11px 13px;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfaff 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(251, 250, 255, 0.65) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   box-shadow: var(--shadow-sm);
 }
 .sidebox .small { font-size: 11px; color: var(--muted); font-weight: 700; }
@@ -194,11 +198,12 @@ button { cursor: pointer; }
 
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
-/* 탑바 & 상시 가용현금 표시 영역 */
+/* 탑바 */
 .topbar {
   height: 70px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
@@ -207,18 +212,19 @@ button { cursor: pointer; }
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 12px rgba(109, 40, 217, 0.04);
+  box-shadow: 0 2px 14px rgba(109, 40, 217, 0.04);
 }
 .topbar-left { display: flex; align-items: center; gap: 16px; }
 .period { display: flex; align-items: center; gap: 10px; }
 .badge {
-  background: linear-gradient(135deg, var(--purple-light), var(--purple-soft));
+  background: linear-gradient(135deg, rgba(243, 232, 255, 0.9), rgba(237, 233, 254, 0.85));
   color: var(--purple-vivid);
   font-size: 13px;
   font-weight: 900;
   padding: 6px 13px;
   border-radius: 10px;
   border: 1px solid var(--line-focus);
+  backdrop-filter: blur(6px);
 }
 
 /* 상시 가용현금 뱃지 */
@@ -226,11 +232,13 @@ button { cursor: pointer; }
   display: flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #ffffff 0%, #f7f3ff 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(247, 243, 255, 0.78) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1.8px solid var(--purple-mid);
   padding: 5px 14px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.12);
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.12);
   cursor: pointer;
   transition: var(--transition);
   user-select: none;
@@ -238,7 +246,8 @@ button { cursor: pointer; }
 .topbar-cash-badge:hover {
   border-color: var(--purple-vivid);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.22);
+  box-shadow: 0 4px 18px rgba(124, 58, 237, 0.22);
+  background: rgba(255, 255, 255, 0.98);
 }
 .topbar-cash-label {
   font-size: 11px;
@@ -246,7 +255,7 @@ button { cursor: pointer; }
   color: var(--purple-vivid);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  background: var(--purple-light);
+  background: rgba(243, 232, 255, 0.85);
   padding: 2px 6px;
   border-radius: 6px;
 }
@@ -260,7 +269,9 @@ button { cursor: pointer; }
 .actions { display: flex; gap: 8px; align-items: center; }
 .btn {
   border: 1.5px solid var(--line);
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--ink-soft);
   border-radius: 10px;
   padding: 9px 14px;
@@ -277,6 +288,7 @@ button { cursor: pointer; }
 .btn:hover {
   border-color: var(--purple);
   color: var(--purple-vivid);
+  background: rgba(255, 255, 255, 0.95);
   transform: translateY(-2px);
   box-shadow: 0 4px 14px rgba(109, 40, 217, 0.15);
 }
@@ -284,25 +296,26 @@ button { cursor: pointer; }
   transform: translateY(1px) scale(0.98);
 }
 .btn.primary {
-  background: linear-gradient(135deg, var(--purple) 0%, var(--purple-vivid) 50%, var(--purple-dark) 100%);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.94) 0%, rgba(124, 58, 237, 0.96) 50%, rgba(109, 40, 217, 0.98) 100%);
   border-color: transparent;
   color: #fff;
   box-shadow: var(--shadow-purple-glow);
 }
 .btn.pink {
-  background: linear-gradient(135deg, var(--pink-mid) 0%, var(--pink) 50%, var(--pink-dark) 100%);
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.92) 0%, rgba(236, 72, 153, 0.95) 50%, rgba(190, 24, 93, 0.96) 100%);
   border-color: transparent;
   color: #fff;
   box-shadow: var(--shadow-pink-glow);
 }
 .btn.danger-outline {
-  border-color: #fca5a5;
+  border-color: rgba(252, 165, 165, 0.85);
   color: var(--red);
-  background: #fff8f8;
+  background: rgba(255, 248, 248, 0.82);
+  backdrop-filter: blur(6px);
 }
 .btn.danger-outline:hover {
   border-color: var(--red);
-  background: #fee2e2;
+  background: rgba(254, 226, 226, 0.92);
   color: #991b1b;
   transform: translateY(-2px);
 }
@@ -322,6 +335,8 @@ button { cursor: pointer; }
 
 .card {
   background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1.5px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
@@ -334,13 +349,13 @@ button { cursor: pointer; }
 
 .card.display-card {
   cursor: default;
-  border-color: #ded7e8;
-  background: #ffffff;
+  border-color: rgba(222, 215, 232, 0.8);
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .card.interactive-card {
   border: 1.8px solid var(--line-focus);
-  background: linear-gradient(180deg, #ffffff 0%, #faf8fe 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(250, 248, 254, 0.78) 100%);
 }
 .card.interactive-card:hover {
   border-color: var(--purple-vivid);
@@ -353,7 +368,7 @@ button { cursor: pointer; }
   justify-content: space-between;
   padding: 13px 18px;
   border-bottom: 1px solid var(--line);
-  background: linear-gradient(180deg, #ffffff 0%, #faf8fd 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(250, 248, 253, 0.65) 100%);
 }
 .cardHead h3 { font-size: 14.5px; margin: 0; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 7px; }
 .body { padding: 18px; flex: 1; display: flex; flex-direction: column; }
@@ -367,24 +382,24 @@ button { cursor: pointer; }
 .kpiValue { font-size: 22px; font-weight: 900; margin-top: 4px; letter-spacing: -0.5px; color: var(--ink); }
 .kpiSub { font-size: 11px; color: var(--muted); margin-top: 3px; font-weight: 600; }
 
-.tag { display: inline-flex; align-items: center; padding: 4px 9px; border-radius: 7px; font-size: 11px; font-weight: 800; letter-spacing: -0.2px; }
-.purple { background: var(--purple-light); color: var(--purple-vivid); border: 1px solid var(--purple-soft); }
-.pink { background: var(--pink-soft); color: var(--pink-dark); border: 1px solid #fbcfe8; }
-.green { background: var(--green-soft); color: #065f46; border: 1px solid #a7f3d0; }
-.red { background: var(--red-soft); color: #991b1b; border: 1px solid #fecaca; }
-.amber { background: var(--amber-soft); border-color: #fde68a; color: #92400e; }
+.tag { display: inline-flex; align-items: center; padding: 4px 9px; border-radius: 7px; font-size: 11px; font-weight: 800; letter-spacing: -0.2px; backdrop-filter: blur(4px); }
+.purple { background: rgba(243, 232, 255, 0.85); color: var(--purple-vivid); border: 1px solid var(--purple-soft); }
+.pink { background: rgba(255, 228, 241, 0.85); color: var(--pink-dark); border: 1px solid #fbcfe8; }
+.green { background: rgba(209, 250, 229, 0.85); color: #065f46; border: 1px solid #a7f3d0; }
+.red { background: rgba(254, 226, 226, 0.85); color: #991b1b; border: 1px solid #fecaca; }
+.amber { background: rgba(254, 243, 199, 0.85); border-color: #fde68a; color: #92400e; }
 
 .affordance-badge {
   font-size: 11px; font-weight: 900; padding: 3px 9px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;
 }
-.affordance-interactive { background: var(--purple-light); color: var(--purple-vivid); border: 1px solid var(--line-focus); }
-.affordance-display { background: #f0ecf6; color: var(--muted); border: 1px solid #ded6e9; }
+.affordance-interactive { background: rgba(243, 232, 255, 0.88); color: var(--purple-vivid); border: 1px solid var(--line-focus); }
+.affordance-display { background: rgba(240, 236, 246, 0.85); color: var(--muted); border: 1px solid #ded6e9; }
 
 .table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.table th, .table td { padding: 9px 10px; border-bottom: 1px solid #f1ecf5; text-align: right; white-space: nowrap; }
+.table th, .table td { padding: 9px 10px; border-bottom: 1px solid rgba(241, 236, 245, 0.85); text-align: right; white-space: nowrap; }
 .table th:first-child, .table td:first-child { text-align: left; }
-.table th { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 800; background: #faf9fc; }
-.table tr:hover { background: #fbf9fe; }
+.table th { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 800; background: rgba(250, 249, 252, 0.7); }
+.table tr:hover { background: rgba(251, 249, 254, 0.75); }
 .table tr:last-child td { border-bottom: 0; }
 .pos { color: var(--green); font-weight: 900; }
 .neg { color: var(--red); font-weight: 900; }
@@ -392,28 +407,28 @@ button { cursor: pointer; }
 .chart { width: 100%; height: 210px; display: block; }
 
 .fieldGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.field { border: 1.5px solid var(--line); border-radius: 13px; padding: 12px; background: #ffffff; transition: var(--transition); }
-.field:hover { border-color: var(--purple-vivid); box-shadow: 0 4px 14px rgba(109, 40, 217, 0.08); }
+.field { border: 1.5px solid var(--line); border-radius: 13px; padding: 12px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: var(--transition); }
+.field:hover { border-color: var(--purple-vivid); box-shadow: 0 4px 14px rgba(109, 40, 217, 0.08); background: rgba(255, 255, 255, 0.95); }
 .field label { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 800; margin-bottom: 8px; color: var(--ink-soft); }
-.valuePill { padding: 3px 8px; border-radius: 8px; background: var(--purple-light); color: var(--purple-vivid); font-weight: 900; font-size: 11.5px; }
+.valuePill { padding: 3px 8px; border-radius: 8px; background: rgba(243, 232, 255, 0.9); color: var(--purple-vivid); font-weight: 900; font-size: 11.5px; }
 .hint { font-size: 11px; color: var(--muted); line-height: 1.45; margin-top: 6px; font-weight: 600; }
 .field input[type=range] { width: 100%; accent-color: var(--purple-vivid); cursor: pointer; height: 6px; border-radius: 4px; }
 .field select, .field input[type=text] {
-  width: 100%; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 8px; font-weight: 700;
+  width: 100%; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 8px; font-weight: 700; background: rgba(255, 255, 255, 0.9);
 }
 
 .metricGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.metric { padding: 12px; border: 1px solid #efeaf5; border-radius: 11px; background: linear-gradient(180deg, #ffffff 0%, #faf9fc 100%); }
+.metric { padding: 12px; border: 1px solid rgba(239, 234, 245, 0.85); border-radius: 11px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(250, 249, 252, 0.65) 100%); backdrop-filter: blur(8px); }
 .metric span { display: block; color: var(--muted); font-size: 11px; font-weight: 700; }
 .metric strong { display: block; font-size: 15px; margin-top: 3px; font-weight: 900; color: var(--ink); }
 
-.notice { padding: 12px 14px; border-radius: 11px; font-size: 12px; line-height: 1.5; border: 1px solid; margin-bottom: 9px; }
+.notice { padding: 12px 14px; border-radius: 11px; font-size: 12px; line-height: 1.5; border: 1px solid; margin-bottom: 9px; backdrop-filter: blur(6px); }
 .notice:last-child { margin-bottom: 0; }
-.notice.purple { background: var(--purple-light); border-color: var(--line-focus); color: var(--purple-deep); }
-.notice.pink { background: var(--pink-light); border-color: #fbcfe8; color: var(--pink-dark); }
-.notice.amber { background: var(--amber-soft); border-color: #fde68a; color: #92400e; }
-.notice.red { background: var(--red-soft); border-color: #fecaca; color: #991b1b; }
-.notice.green { background: var(--green-soft); border-color: #a7f3d0; color: #065f46; }
+.notice.purple { background: rgba(243, 232, 255, 0.75); border-color: var(--line-focus); color: var(--purple-deep); }
+.notice.pink { background: rgba(255, 240, 247, 0.75); border-color: #fbcfe8; color: var(--pink-dark); }
+.notice.amber { background: rgba(254, 243, 199, 0.75); border-color: #fde68a; color: #92400e; }
+.notice.red { background: rgba(254, 226, 226, 0.75); border-color: #fecaca; color: #991b1b; }
+.notice.green { background: rgba(209, 250, 229, 0.75); border-color: #a7f3d0; color: #065f46; }
 
 .section { display: none; }
 .section.active { display: block; animation: fadeIn 0.25s ease-out; }
@@ -421,9 +436,11 @@ button { cursor: pointer; }
 
 /* 파이프라인 밸런서 */
 .pipeline-belt-board {
-  border: 2px solid var(--purple-mid);
+  border: 2px solid rgba(167, 139, 250, 0.85);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, #ffffff 0%, #fbf9fe 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(251, 249, 254, 0.72) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   padding: 18px 20px;
   box-shadow: var(--shadow-md);
   margin-bottom: 18px;
@@ -446,7 +463,9 @@ button { cursor: pointer; }
   user-select: none;
 }
 .stream-node {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 2px solid var(--line);
   border-radius: 14px;
   padding: 13px;
@@ -460,10 +479,11 @@ button { cursor: pointer; }
 .stream-node:hover {
   border-color: var(--purple);
   box-shadow: var(--shadow-sm);
+  background: rgba(255, 255, 255, 0.95);
 }
 .stream-node.bottleneck {
   border-color: var(--red);
-  background: #fff6f8;
+  background: rgba(255, 246, 248, 0.9);
   animation: pulseGlow 1.8s infinite;
 }
 @keyframes pulseGlow {
@@ -498,7 +518,7 @@ button { cursor: pointer; }
 }
 .stream-node-bar {
   height: 6px;
-  background: #ece7f3;
+  background: rgba(236, 231, 243, 0.85);
   border-radius: 4px;
   overflow: hidden;
   margin-top: 6px;
@@ -526,24 +546,27 @@ button { cursor: pointer; }
 }
 .tier-card-btn {
   border: 1.5px solid var(--line);
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
   padding: 10px 8px;
   border-radius: 11px;
   text-align: center;
   cursor: pointer;
   transition: var(--transition);
 }
-.tier-card-btn:hover { border-color: var(--purple); }
+.tier-card-btn:hover { border-color: var(--purple); background: rgba(255, 255, 255, 0.98); }
 .tier-card-btn.active {
   border-color: var(--purple-vivid);
-  background: linear-gradient(180deg, #ffffff 0%, #f6f0ff 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(246, 240, 255, 0.88) 100%);
   box-shadow: var(--shadow-sm);
 }
 .tier-card-btn strong { display: block; font-size: 12.5px; color: var(--ink); }
 .tier-card-btn span { display: block; font-size: 10.5px; color: var(--muted); margin-top: 2px; }
 
 .blueprint-card {
-  background: linear-gradient(135deg, #201738 0%, #150e24 100%);
+  background: linear-gradient(135deg, rgba(32, 23, 56, 0.94) 0%, rgba(21, 14, 36, 0.96) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   color: #ffffff;
   border-radius: var(--radius);
   padding: 20px;
@@ -553,7 +576,7 @@ button { cursor: pointer; }
   justify-content: space-between;
   position: relative;
   overflow: hidden;
-  border: 1px solid #4a3869;
+  border: 1px solid rgba(74, 56, 105, 0.8);
 }
 .blueprint-card::before {
   content: "";
@@ -567,7 +590,9 @@ button { cursor: pointer; }
 
 /* 자금 운용 스트림 */
 .cashflow-flow-card {
-  background: linear-gradient(135deg, #ffffff 0%, #fbf9ff 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(251, 249, 255, 0.75) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1.5px solid var(--line-focus);
   border-radius: var(--radius);
   padding: 16px 20px;
@@ -579,7 +604,8 @@ button { cursor: pointer; }
   justify-content: space-between;
   gap: 12px;
   margin-top: 10px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(8px);
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid var(--line);
@@ -587,7 +613,7 @@ button { cursor: pointer; }
 
 .shareBarContainer {
   height: 28px; border-radius: 10px; overflow: hidden; display: flex;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); background: #eeeaf4; margin: 12px 0 6px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); background: rgba(238, 234, 244, 0.85); margin: 12px 0 6px;
 }
 .shareSegment {
   height: 100%; display: flex; align-items: center; justify-content: center;
@@ -596,25 +622,23 @@ button { cursor: pointer; }
 }
 
 /* =========================================================
-   튜토리얼 시스템 스타일 (집중 블러 & 네온 하이라이트)
+   튜토리얼 시스템 스타일 (집중 블러 & 줄글 가독성 팝오버)
 ========================================================= */
 .tut-overlay {
   position: fixed; inset: 0; z-index: 1500; pointer-events: none; display: none;
 }
 .tut-overlay.active { display: block; pointer-events: auto; }
 
-/* 하이라이트 바깥 영역 딤 & 블러 백드롭 (클립패스로 타겟 홀 오픈) */
 .tut-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(14, 8, 26, 0.65);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
   pointer-events: auto;
   transition: clip-path 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 타겟 대상 강조 네온 테두리 */
 .tut-highlight-box {
   position: fixed;
   border: 3px solid var(--purple-vivid);
@@ -631,8 +655,10 @@ button { cursor: pointer; }
   position: fixed;
   width: 440px;
   max-width: 92vw;
-  background: #ffffff;
-  border: 2px solid var(--purple-mid);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.8px solid var(--purple-mid);
   border-radius: 20px;
   padding: 22px 24px;
   box-shadow: 0 25px 65px rgba(16, 10, 28, 0.45);
@@ -640,30 +666,21 @@ button { cursor: pointer; }
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .tut-popover-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.tut-badge { font-size: 11.5px; font-weight: 900; color: var(--purple-vivid); background: var(--purple-light); padding: 4px 10px; border-radius: 7px; }
+.tut-badge { font-size: 11.5px; font-weight: 900; color: var(--purple-vivid); background: rgba(243, 232, 255, 0.9); padding: 4px 10px; border-radius: 7px; }
 .tut-title { font-size: 16.5px; font-weight: 900; color: var(--ink); margin: 0 0 10px; letter-spacing: -0.3px; }
 
-/* 세분화된 가이드 섹션 스타일 */
-.tut-section-box {
-  background: #fbf9fe;
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  padding: 10px 12px;
-  margin-bottom: 9px;
-  font-size: 12.5px;
-  line-height: 1.5;
+/* 가독성 높은 줄글형 튜토리얼 바디 */
+.tut-body {
+  font-size: 13.5px;
+  line-height: 1.68;
+  color: #382d4a;
+  margin-bottom: 14px;
+  word-break: keep-all;
 }
-.tut-section-box strong { color: var(--purple-dark); display: block; margin-bottom: 2px; font-size: 12px; }
-.tut-section-box.action-box {
-  background: #fff8fc;
-  border-color: #fbcfe8;
+.tut-body b {
+  color: var(--purple-dark);
+  font-weight: 800;
 }
-.tut-section-box.action-box strong { color: var(--pink-dark); }
-.tut-section-box.next-box {
-  background: #f4fdf8;
-  border-color: #a7f3d0;
-}
-.tut-section-box.next-box strong { color: var(--green); }
 
 .tut-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 8px; }
 
@@ -673,14 +690,14 @@ button { cursor: pointer; }
 }
 .modal.open { display: flex; }
 .modalBox {
-  width: min(800px, 100%); background: #ffffff; border-radius: 22px;
+  width: min(800px, 100%); background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 22px;
   box-shadow: 0 25px 80px rgba(109, 40, 217, 0.28); overflow: hidden; border: 1px solid var(--line);
   animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .modalHead {
   padding: 18px 24px; border-bottom: 1px solid var(--line); display: flex;
-  justify-content: space-between; align-items: center; background: linear-gradient(180deg, #ffffff 0%, #faf8fe 100%);
+  justify-content: space-between; align-items: center; background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 254, 0.8) 100%);
 }
 .modalBody { padding: 22px 24px; max-height: 82vh; overflow-y: auto; }
 
@@ -689,18 +706,19 @@ button { cursor: pointer; }
 }
 .setupCard {
   border: 2px solid var(--line); border-radius: 16px; padding: 16px;
-  background: #fff; cursor: pointer; transition: var(--transition);
+  background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(8px); cursor: pointer; transition: var(--transition);
   min-height: 146px; display: flex; flex-direction: column; justify-content: space-between;
   box-sizing: border-box;
 }
-.setupCard:hover { border-color: var(--purple-mid); transform: translateY(-2px); }
+.setupCard:hover { border-color: var(--purple-mid); transform: translateY(-2px); background: rgba(255, 255, 255, 0.98); }
 .setupCard.selected {
-  border-color: var(--purple-vivid); background: linear-gradient(180deg, #ffffff 0%, #f6f0ff 100%);
+  border-color: var(--purple-vivid); background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(246, 240, 255, 0.85) 100%);
   box-shadow: 0 6px 18px rgba(124, 58, 237, 0.15);
 }
 
 .toast {
-  position: fixed; right: 26px; bottom: 26px; background: linear-gradient(135deg, var(--ink) 0%, #2f2142 100%);
+  position: fixed; right: 26px; bottom: 26px; background: linear-gradient(135deg, rgba(16, 10, 28, 0.92) 0%, rgba(47, 33, 66, 0.94) 100%);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   color: #fff; padding: 14px 22px; border-radius: 13px; font-size: 13px; font-weight: 800;
   display: none; z-index: 2000; box-shadow: 0 12px 36px rgba(0,0,0,0.3);
 }
@@ -773,7 +791,7 @@ button { cursor: pointer; }
 </aside>
 
 <main class="main">
-<!-- 탑바: 상시 가용현금 뱃지 추가 -->
+<!-- 탑바: 상시 가용현금 뱃지 -->
 <header class="topbar">
   <div class="topbar-left">
     <div class="period">
@@ -781,7 +799,6 @@ button { cursor: pointer; }
       <strong id="phase" style="font-size:13.5px;color:var(--ink)">월간 전략 수립 및 라인 밸런싱</strong>
     </div>
     
-    <!-- 1. 맨위창에 상시로 가용현금 뜨게 변경(다른창에서도 계속 뜨게) -->
     <div class="topbar-cash-badge" id="topbarCashBadge" onclick="switchTab('finance')" title="클릭 시 자금 운용 센터로 즉시 이동합니다">
       <span class="topbar-cash-label">가용 현금</span>
       <strong class="topbar-cash-val" id="topbarCashVal">—</strong>
@@ -1428,32 +1445,20 @@ button { cursor: pointer; }
 </div>
 
 <!-- =========================================================
-     3. 튜토리얼 집중 블러 오버레이 & 분화 팝오버
+     튜토리얼 집중 블러 오버레이 & 단락 줄글 팝오버
 ========================================================= -->
 <div class="tut-overlay" id="tutOverlay">
-  <!-- 타겟 외곽을 딤 및 블러 처리하는 마스킹 백드롭 -->
   <div class="tut-backdrop" id="tutBackdrop"></div>
   <div class="tut-highlight-box" id="tutHighlightBox"></div>
   <div class="tut-popover" id="tutPopover">
     <div class="tut-popover-head">
       <span class="tut-badge" id="tutStepBadge">단계 1 / 11</span>
-      <span style="font-size:11px;color:var(--muted);font-weight:700">제조업 공급망 마스터 가이드</span>
+      <span style="font-size:11px;color:var(--muted);font-weight:700">공급망 운영 가이드</span>
     </div>
     <h3 class="tut-title" id="tutTitle">—</h3>
     
-    <!-- 세분화된 단계별 안내 박스 -->
-    <div class="tut-section-box" id="tutWhatBox">
-      <strong>📌 이건 뭘 하는 곳인가?</strong>
-      <span id="tutWhatText">—</span>
-    </div>
-    <div class="tut-section-box action-box" id="tutActionBox">
-      <strong>⚡ 지금 당장 뭐부터 해야 하나? (1단계)</strong>
-      <span id="tutActionText">—</span>
-    </div>
-    <div class="tut-section-box next-box" id="tutNextBox">
-      <strong>⏩ 이걸 하고 나서 그 다음 무엇을 해야 하나? (2단계)</strong>
-      <span id="tutNextText">—</span>
-    </div>
+    <!-- 가독성을 높인 단일 줄글 설명 영역 -->
+    <div class="tut-body" id="tutBody">—</div>
 
     <div class="tut-footer">
       <button class="btn sm" id="tutSkipBtn">가이드 닫기</button>
@@ -1818,96 +1823,74 @@ let state = {
 };
 
 // ---------------------------------------------------------
-// 3. 튜토리얼 시스템 (세분화 및 자동 탭 전환, 바깥 블러)
+// 3. 튜토리얼 시스템 (간결한 줄글형 가이드 & 자동 탭 전환)
 // ---------------------------------------------------------
 const tutorialSteps = [
   {
     tabId: "overview",
     targetId: "topbarCashBadge",
-    title: "1단계: 상시 가용현금 관제 (유동성 방어선)",
-    what: "모든 탭 상단에 항상 노출되는 우리 회사의 수시입출식 보통예금 잔고입니다.",
-    action: "원자재 대금 결제나 공정 설비 투자 전, 즉시 인출 가능한 현금이 최소 10억원 이상 유지되는지 수시로 확인하세요.",
-    next: "잔고가 부족해 보인다면 이 배지를 클릭해 즉시 [자금 운용 센터]로 넘어가 마이너스 대출이나 채권 팩토링을 가동할 수 있습니다."
+    title: "상시 가용현금 관제 (유동성 방어선)",
+    desc: "상단 탑바에 항상 노출되는 보통예금 잔고는 모든 공정 운영의 생명선입니다. 원자재 발주나 설비 증설 전 현금이 최소 10억원 이상 유지되는지 수시로 확인하세요. 잔고가 위험해지면 이 배지를 클릭해 즉시 자금 운용 센터로 이동한 후 대출 인출이나 채권 팩토링을 가동할 수 있습니다."
   },
   {
     tabId: "overview",
     targetId: "overviewPipelineStreamCard",
-    title: "2단계: 공급망 실시간 파이프라인 관제",
-    what: "원자재 수급부터 조달, 제작, 운송/수출로 이어지는 4대 엔드투엔드 공정의 처리 용량(CAPA)을 실시간 모니터링합니다.",
-    action: "붉은색 경고가 뜨는 '현재 최대 병목' 노드를 먼저 찾으세요. 제약이론(TOC)에 따라 가장 느린 구간이 공장 전체의 최종 출하량을 결정합니다.",
-    next: "병목 노드를 확인했다면 [정밀 밸런서 열기] 또는 탭 메뉴를 통해 해당 병목 공정으로 넘어가 설비와 자재를 보강해야 합니다."
+    title: "실시간 공급망 파이프라인 관제",
+    desc: "원자재 수급부터 조달, 제작, 수출 물류로 이어지는 4대 공정의 처리 용량(CAPA)을 실시간으로 비교합니다. 붉은색으로 깜빡이는 노드는 공장의 최대 병목 구간을 의미하며, 제약이론에 따라 이 구간의 처리량이 공장 전체의 최종 출하량을 결정하므로 최우선으로 해소해야 합니다."
   },
   {
     tabId: "pipeline",
     targetId: "factoryStageUpgradeList",
-    title: "3단계: 라인 밸런서 & 공정 속도 증설 (CAPEX)",
-    what: "공장 내부 4대 공정(자재 피딩, 1차 가공, 메인 조립, 검사/포장)의 기계 설비 능력을 개별 증설하는 컨트롤 타워입니다.",
-    action: "4개 공정 중 처리 용량이 가장 낮아 전체 조립 속도를 갉아먹는 공정의 [CAPA 증설] 버튼을 먼저 눌러 설비를 업그레이드하세요.",
-    next: "제작 속도를 높였다면 공장 가동에 필요한 원자재 공급선을 안정시키기 위해 '1. 원자재 수급 계약' 탭으로 이동해야 합니다."
+    title: "라인 밸런서 & 공정 설비 증설 (CAPEX)",
+    desc: "피딩, 가공, 조립, 검사로 이어지는 4대 공정의 기계 설비 능력을 업그레이드하는 곳입니다. 처리 속도가 가장 낮아 라인 전체의 발목을 잡는 병목 공정을 찾아 설비 증설 버튼을 누르면 전체 쓰루풋이 상승합니다. 공정 능력을 확충했다면 원자재 수급 계약 단계로 이동해 부품 공급을 점검하세요."
   },
   {
     tabId: "sourcing",
     targetId: "sourcingVendorListGrid",
-    title: "4단계: 협력업체 공급선 계약 (Sourcing)",
-    what: "글로벌 부품 파트너 중 우리 공장에 원자재를 안정적으로 납품할 주력 협력사를 선정하는 계약실입니다.",
-    action: "현재 생산 목표량보다 월간 공급 용량이 충분하고, 품질 신뢰도가 높으며 납품 단가 할인율이 매력적인 파트너의 [파트너십 체결]을 누르세요.",
-    next: "공급 계약을 체결했다면 실제로 창고에 원자재가 안전하게 도착하고 있는지 '2. 인바운드 조달 창고'로 넘어가 재고를 점검해야 합니다."
+    title: "주력 협력업체 공급선 계약 (Sourcing)",
+    desc: "공장에 핵심 부품을 안정적으로 조달할 공급 파트너사를 선정하여 계약을 체결합니다. 목표 생산량을 충족하는 공급 용량을 갖추고 납품 단가 할인율과 품질 지수가 우수한 파트너를 선택하세요. 계약 체결 후에는 원자재가 창고에 제때 들어오고 있는지 인바운드 조달 창고에서 확인해야 합니다."
   },
   {
     tabId: "procurement",
     targetId: "procurementFields",
-    title: "5단계: 인바운드 조달 안전재고 일수 설정",
-    what: "해외 배송 시차(리드타임) 동안 공장이 멈추지 않도록 창고에 쌓아둘 안전재고 목표 일수를 지정하는 곳입니다.",
-    action: "컨테이너 해상 운송은 도착까지 약 2달이 걸리므로, 안전재고 슬라이더를 최소 35일~45일 이상으로 먼저 상향 설정하세요.",
-    next: "안전재고 설정 후, 4대 핵심 원자재 중 당장 바닥나기 직전인 위험 자재가 있는지 아래 비축 현황을 확인해야 합니다."
+    title: "인바운드 조달 안전재고 일수 설정",
+    desc: "해외 배송 시차 동안 공장이 멈추지 않도록 창고에 비축할 안전재고 목표 일수를 지정합니다. 정기 해상 운송은 공장 입고까지 약 2개월이 소요되므로, 안전재고 슬라이더를 35일~45일 이상으로 여유 있게 설정해야 입고 공백으로 인한 조립 라인 셧다운을 방어할 수 있습니다."
   },
   {
     tabId: "procurement",
     targetId: "materialsGrid",
-    title: "6단계: 원자재 비상 항공 특송 (셧다운 방어)",
-    what: "4대 핵심 BOM 자재 중 단 하나라도 0개가 되면 라인 전체가 멈추므로 긴급히 자재를 공수하는 비상창구입니다.",
-    action: "잔여일수가 15일 미만으로 떨어진 자재가 있다면 지체 없이 [비상 항공 특송 (+30일치)]을 눌러 공장으로 즉시 입고시키세요.",
-    next: "원자재 공급이 안정되었다면 이제 본격적으로 팔릴 제품을 맞춤 설계하기 위해 '3. 상품 기획 & 공장 MES' 탭으로 이동합니다."
+    title: "원자재 비상 항공 특송 (셧다운 방어)",
+    desc: "4대 핵심 자재 중 단 하나만 소진되어도 조립 라인 전체가 멈추게 됩니다. 보유 일수가 15일 미만으로 떨어진 위험 자재가 있다면 지체 없이 비상 항공 특송을 발주하세요. 추가 운임이 발생하지만 공장 가동률을 사수하고 지체상금 손실을 막는 가장 확실한 대응책입니다."
   },
   {
     tabId: "factory",
     targetId: "studioPlanningCard",
-    title: "7단계: 전략 맞춤 상품 기획 스튜디오",
-    what: "플레이어가 직접 모델명, 카테고리, 라인업 등급(Tier), 마감 공법, 4대 원자재 투입비율, 목표 마진을 세세히 결정하는 기획실입니다.",
-    action: "등급과 마감 공법, 마진율을 조절한 뒤 우측 실시간 블루프린트를 확인하고 [신규 상품 설계 확정 & 양산 착수] 버튼을 누르세요.",
-    next: "기획이 확정되면 제조원가와 권장 출고가가 즉시 라인에 동기화되므로, 아래쪽 공장 MES로 내려가 조립 인력을 점검해야 합니다."
+    title: "전략 맞춤 상품 기획 스튜디오",
+    desc: "시장과 고객의 니즈에 맞춰 모델명, 등급(Tier), 외관 마감 공법, 4대 부품 투입비율, 목표 마진을 직접 설계합니다. 사양을 변경할 때마다 우측 블루프린트에서 제조원가와 권장 출고가가 실시간 산출되며, 설계 확정 후 양산 착수 버튼을 누르면 공장 현장 라인에 즉시 동기화됩니다."
   },
   {
     tabId: "factory",
     targetId: "supplyFields",
-    title: "8단계: 조립 라인 작업자 & 잔업(OT) 편성",
-    what: "설계한 상품의 조립 난이도(공정 소요 계수)에 맞춰 공장 현장에 투입할 정규 작업 인력과 특근율을 배정하는 곳입니다.",
-    action: "기획 상품의 목표 생산량에 맞추어 [조립 라인 정규 작업자] 인원을 조절하여 조립 컨베이어 병목을 해소하세요.",
-    next: "공장 생산 세팅이 완료되었다면 조립된 완제품이 전 세계 바이어에게 잘 전달되는지 '4. 운송/수출 물류' 탭을 확인해야 합니다."
+    title: "공장 조립 작업자 & 잔업(OT) 편성",
+    desc: "기획한 상품의 조립 난이도와 목표 생산량에 맞춰 정규 조립 작업자 수와 특근율을 배정하는 곳입니다. 작업 인원이 부족하면 메인 조립 컨베이어에 심각한 병목이 발생하므로 적정 인력을 충원하세요. 공장 편성이 완료되면 완제품이 전 세계로 출하되는 수출 물류망을 점검합니다."
   },
   {
     tabId: "logistics",
     targetId: "logisticsExportRouteGrid",
-    title: "9단계: 글로벌 4대 권역 수출 선적 관제",
-    what: "완성된 제품을 내수 물류센터 및 북미, 유럽, 아시아로 분배 선적하여 글로벌 납기를 이행하는 아웃바운드 허브입니다.",
-    action: "창고 완제품 보유량과 권역별 선적 현황을 확인하여 바이어 주문 대비 결품(품절)이 발생하지 않도록 점검하세요.",
-    next: "출하와 물류 과정에서 거액의 매출과 비용이 발생하므로, 흑자도산을 막기 위해 '직관적 재무·자금 운용' 탭으로 이동합니다."
+    title: "글로벌 4대 권역 수출 선적 관제",
+    desc: "조립 완료된 완제품을 국내 복합물류 허브 및 북미, 유럽, 아시아로 분배하여 수출 선적하는 아웃바운드 관제 센터입니다. 완제품 재고와 권역별 선적 현황을 모니터링하여 고객사 납기 지연이나 결품 손실을 방지하고 납기 이행률 100%를 달성하세요."
   },
   {
     tabId: "finance",
     targetId: "financeCashFlowCard",
-    title: "10단계: 실시간 현금 유출입 스트림 (Cash Flow)",
-    what: "[예상 출하 매출] - [원자재비] - [공장 운영비]를 한눈에 계산해 이번 달 현금이 순유입인지 유출인지 추적하는 곳입니다.",
-    action: "월말 순 현금 증감이 마이너스(붉은색)라면 마케팅비 과다 지출이나 과도한 재고 매입이 없는지 점검하세요.",
-    next: "현금이 남으면 정기예금에 예치하고, 모자라면 아래의 리볼버 마이너스 대출이나 외상채권 팩토링을 통해 유동성을 방어해야 합니다."
+    title: "실시간 현금 유출입 스트림 (Cash Flow)",
+    desc: "예상 출하 매출에서 원자재비와 공장 운영비를 차감한 당월 순현금 증감을 실시간 추적합니다. 순현금이 마이너스라면 흑자도산 위험이 있으므로 정기예금 해지, 마이너스 리볼버 인출, 매출채권 팩토링을 선제적으로 실행하여 안전 유동성을 확보해 두어야 합니다."
   },
   {
     tabId: "overview",
     targetId: "closeMonth",
-    title: "11단계: 최종 점검 및 월말 결산 단행",
-    what: "한 달간 수립한 수급, 생산, 출하, 금융 포트폴리오를 최종 결산하고 실제 판매 실적과 영업이익을 집계하는 메인 실행 버튼입니다.",
-    action: "상단 헤더의 [가용현금]과 공장 라인 상태를 최종 점검한 뒤 [월말 결산 (다음 달로) >] 버튼을 클릭하세요.",
-    next: "결산 리포트에서 영업이익(EBITDA)과 납기 이행률을 복기하고, 발생한 이슈를 교훈 삼아 다음 달 전략을 다시 고도화해 나갑니다."
+    title: "최종 점검 및 월말 결산 단행",
+    desc: "한 달간 수립한 원자재 조달, 공장 생산, 수출 선적, 유동성 포트폴리오를 확정하고 실제 판매 실적과 영업이익을 집계하는 메인 실행 버튼입니다. 상단 가용현금과 공장 가동률을 최종 점검한 뒤 결산을 진행하여 월간 경영 성과 리포트를 확인하세요."
   }
 ];
 
@@ -1927,21 +1910,17 @@ function closeTutorial() {
 function renderTutorialStep() {
   const step = tutorialSteps[tutIdx];
   
-  // 1. 해당 설명의 탭으로 화면 자동 전환
   if (step.tabId) {
     switchTab(step.tabId);
   }
   
   $("tutStepBadge").textContent = `단계 ${tutIdx + 1} / ${tutorialSteps.length}`;
   $("tutTitle").textContent = step.title;
-  $("tutWhatText").textContent = step.what;
-  $("tutActionText").textContent = step.action;
-  $("tutNextText").textContent = step.next;
+  $("tutBody").innerHTML = step.desc;
   
   $("tutPrevBtn").style.display = tutIdx === 0 ? "none" : "inline-flex";
   $("tutNextBtn").textContent = tutIdx === tutorialSteps.length - 1 ? "가이드 완료" : "다음 단계 >";
   
-  // 탭 전환 후 DOM 렌더링을 기다려 타겟 좌표 측정
   setTimeout(() => {
     positionTutorialElements(step.targetId);
   }, 60);
@@ -1962,7 +1941,6 @@ function positionTutorialElements(targetId) {
     return;
   }
   
-  // 타겟 요소를 화면 뷰포트 내로 부드럽게 스크롤 정렬
   target.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
   
   setTimeout(() => {
@@ -1976,14 +1954,12 @@ function positionTutorialElements(targetId) {
     const right = left + width;
     const bottom = top + height;
     
-    // 네온 하이라이트 박스 배치
     highlightBox.style.display = "block";
     highlightBox.style.top = `${top}px`;
     highlightBox.style.left = `${left}px`;
     highlightBox.style.width = `${width}px`;
     highlightBox.style.height = `${height}px`;
     
-    // 네온 테두리 바깥 영역 블러 처리 (타겟 영역을 제외한 배경에만 blur & dim 적용)
     backdrop.style.clipPath = `polygon(
       0% 0%, 0% 100%, 100% 100%, 100% 0%, 0% 0%,
       ${left}px ${top}px,
@@ -1993,13 +1969,12 @@ function positionTutorialElements(targetId) {
       ${left}px ${top}px
     )`;
     
-    // 설명 팝오버 위치 계산
     const popW = Math.min(440, window.innerWidth - 32);
     let popTop = bottom + 16;
     let popLeft = left;
     
-    if (popTop + 330 > window.innerHeight) {
-      popTop = Math.max(16, top - 340);
+    if (popTop + 240 > window.innerHeight) {
+      popTop = Math.max(16, top - 250);
     }
     if (popLeft + popW > window.innerWidth) {
       popLeft = Math.max(16, window.innerWidth - popW - 20);
@@ -2333,7 +2308,7 @@ function buildStudioUI() {
   };
 
   $("studio_matInputsGrid").innerHTML = ind.materials.map((m, idx) => `
-    <div style="background:#ffffff;border:1.5px solid var(--line);border-radius:10px;padding:8px;text-align:center">
+    <div style="background:rgba(255,255,255,0.85);border:1.5px solid var(--line);border-radius:10px;padding:8px;text-align:center">
       <span class="small" style="font-size:10px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name.split(' ')[0]}</span>
       <select id="mat_ratio_${idx}" style="margin-top:4px;padding:3px;font-size:12px;font-weight:900;border-radius:6px;border-color:var(--line)" onchange="updateStudioMatRatio(${idx}, this.value)">
         <option value="1" ${studioTemp.matRatios[idx]===1?'selected':''}>1개 (기본)</option>
@@ -2554,7 +2529,7 @@ function renderPipelineViews() {
   $("balancerOverallScore").className = `tag ${p.balanceEfficiency >= 85 ? 'green' : p.balanceEfficiency >= 70 ? 'amber' : 'red'}`;
   
   $("factoryStageUpgradeList").innerHTML = p.factorySubStages.map(sub => `
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#ffffff;border:1px solid var(--line);border-radius:11px;margin-bottom:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(255,255,255,0.88);border:1px solid var(--line);border-radius:11px;margin-bottom:8px">
       <div>
         <div style="display:flex;align-items:center;gap:6px">
           <strong style="font-size:13px;color:var(--ink)">${sub.name}</strong>
@@ -2573,7 +2548,7 @@ function renderPipelineViews() {
   $("mesLineStatusBadge").textContent = isRunning ? `전 공정 정상 가동 (${state.factoryRunRate}%)` : `조립 라인 부분 정지 (${state.factoryRunRate}%)`;
   
   $("mesConveyorBeltContent").innerHTML = p.factorySubStages.map(sub => `
-    <div style="background:#ffffff;border:2px solid ${isRunning ? 'var(--line)' : 'var(--red)'};border-radius:12px;padding:12px">
+    <div style="background:rgba(255,255,255,0.88);border:2px solid ${isRunning ? 'var(--line)' : 'var(--red)'};border-radius:12px;padding:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
         <strong style="font-size:13px;color:var(--ink)">${sub.name}</strong>
         <span class="tag ${isRunning ? 'green' : 'red'}">${isRunning ? '가동 중' : '자재 대기'}</span>
@@ -2712,22 +2687,22 @@ function renderMaterialsGrid() {
     }
     
     return `
-      <div class="card interactive-card" style="padding:14px;border-color:${isBottleneck ? 'var(--red)' : 'var(--line)'};background:${isBottleneck ? '#fff7f8' : '#ffffff'}">
+      <div class="card interactive-card" style="padding:14px;border-color:${isBottleneck ? 'var(--red)' : 'var(--line)'};background:${isBottleneck ? 'rgba(255, 247, 248, 0.95)' : 'rgba(255, 255, 255, 0.88)'}">
         <div>
           <div style="display:flex;justify-content:space-between;align-items:center">
             <strong style="font-size:14.5px;color:var(--ink)">${m.name}</strong>
             <span class="tag ${days < 15 ? 'red' : days < 30 ? 'amber' : 'green'}">${days}일분 보유</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;text-align:center">
-            <div style="background:#f8f6fc;padding:7px;border-radius:8px">
+            <div style="background:rgba(248, 246, 252, 0.85);padding:7px;border-radius:8px">
               <span class="small">창고 보유량</span>
               <strong style="display:block;font-size:14px;margin-top:2px">${fmtNum(m.stock)}개</strong>
             </div>
-            <div style="background:#f8f6fc;padding:7px;border-radius:8px">
+            <div style="background:rgba(248, 246, 252, 0.85);padding:7px;border-radius:8px">
               <span class="small">1일 소진량</span>
               <strong style="display:block;font-size:14px;margin-top:2px">${Math.round(dailyUse)}개/일</strong>
             </div>
-            <div style="background:#f8f6fc;padding:7px;border-radius:8px">
+            <div style="background:rgba(248, 246, 252, 0.85);padding:7px;border-radius:8px">
               <span class="small">투입 배수</span>
               <strong style="display:block;font-size:14px;margin-top:2px;color:var(--purple-dark)">x${ratio}</strong>
             </div>
@@ -2749,7 +2724,7 @@ function renderMaterialsGrid() {
   $("inboundFreightModesGrid").innerHTML = DB.freightModes.map(m => {
     const isCur = state.freightMode === m.id;
     return `
-      <div style="border:1.5px solid ${isCur ? 'var(--purple-vivid)' : 'var(--line)'};background:${isCur ? '#f6f0ff' : '#ffffff'};padding:11px;border-radius:11px;cursor:pointer" onclick="selectFreightMode('${m.id}')">
+      <div style="border:1.5px solid ${isCur ? 'var(--purple-vivid)' : 'var(--line)'};background:${isCur ? 'rgba(246, 240, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)'};backdrop-filter:blur(6px);padding:11px;border-radius:11px;cursor:pointer" onclick="selectFreightMode('${m.id}')">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <strong style="font-size:13px;color:var(--ink)">${m.name}</strong>
           <span class="tag ${isCur ? 'purple' : 'pink'}">${isCur ? '선택됨' : '선택'}</span>
@@ -2859,7 +2834,7 @@ function renderSourcing() {
   `;
   
   $("sourcingVendorListGrid").innerHTML = ind.vendors.map((v, idx) => `
-    <div class="card interactive-card" style="padding:14px;border-color:${idx === state.selectedVendorIndex ? 'var(--purple-vivid)' : 'var(--line)'};background:${idx === state.selectedVendorIndex ? '#f6f0ff' : '#ffffff'}" onclick="selectVendor(${idx})">
+    <div class="card interactive-card" style="padding:14px;border-color:${idx === state.selectedVendorIndex ? 'var(--purple-vivid)' : 'var(--line)'};background:${idx === state.selectedVendorIndex ? 'rgba(246, 240, 255, 0.95)' : 'rgba(255, 255, 255, 0.88)'}" onclick="selectVendor(${idx})">
       <div style="display:flex;justify-content:space-between;align-items:center">
         <strong style="font-size:14.5px;color:var(--ink)">${v.name}</strong>
         <span class="tag ${idx === state.selectedVendorIndex ? 'purple' : 'pink'}">${idx === state.selectedVendorIndex ? '계약 체결됨' : '계약 가능'}</span>
@@ -2887,7 +2862,7 @@ function renderOutboundLogistics() {
   $("logisticsFreightCost").textContent = fmtWon(state.lastRevenue * DB.config.freightCostRatio);
   
   $("logisticsExportRouteGrid").innerHTML = DB.logisticsRoutes.map(r => `
-    <div style="background:#ffffff;border:1.5px solid var(--line);border-radius:13px;padding:12px">
+    <div style="background:rgba(255,255,255,0.85);backdrop-filter:blur(6px);border:1.5px solid var(--line);border-radius:13px;padding:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
         <strong style="font-size:13.5px;color:var(--ink)">${r.region}</strong>
         <span class="tag purple">${r.share}</span>
@@ -2920,13 +2895,12 @@ function renderOutboundLogistics() {
 }
 
 // ---------------------------------------------------------
-// 12. 전체 화면 통합 렌더링 & 경영 진단 버그 수정
+// 12. 전체 화면 통합 렌더링 & 경영 진단 전환
 // ---------------------------------------------------------
 function render() {
   const ind = DB.industries[state.industryId] || DB.industries.electronics;
   const prod = state.customProduct;
   
-  // 1. 맨위창에 상시로 가용현금 갱신
   $("topbarCashVal").textContent = fmtWon(state.cash);
   
   $("period").textContent = `제 ${state.year}기 ${state.month}월차`;
@@ -2995,7 +2969,7 @@ function renderShareBars() {
   
   const barHtml = segments.map(s => `
     <div class="shareSegment" style="width:${s.share}%;background:${s.color}">
-      ${s.share > 8 ? `${s.name.split(' ')[0]} ${s.share.toFixed(1)}%` : ''}
+      ${s.share > 8 ? `${s.name.split(' ')[0]}${s.share.toFixed(1)}%` : ''}
     </div>
   `).join("");
   
@@ -3013,9 +2987,6 @@ function renderShareBars() {
   $("compShareLabelsLarge").innerHTML = labelsHtml;
 }
 
-// ---------------------------------------------------------
-// 2. 실시간 경영 진단 항목 버튼 클릭 시 화면 전환 버그 수정
-// ---------------------------------------------------------
 function renderPrescriptions() {
   const p = getPipelineCapacities();
   const prescBody = $("overviewPrescriptionBody");
@@ -3053,9 +3024,8 @@ function renderPrescriptions() {
       </div>
     `;
   } else {
-    // 문자열 인라인 함수 대신 switchTab(tabId)를 안전하게 직접 호출하도록 교체
     prescBody.innerHTML = recs.map(r => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:11px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:8px;background:#ffffff">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:11px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:8px;background:rgba(255,255,255,0.85);backdrop-filter:blur(6px)">
         <div>
           <strong style="font-size:13px;color:var(--ink)">${r.title}</strong>
           <div class="small" style="color:var(--muted);margin-top:2px">${r.desc}</div>
@@ -3192,7 +3162,7 @@ function drawChart() {
   
   const maxVal = Math.max(...data.map(d => d.revenue)) * 1.15 || 1000;
   
-  ctx.strokeStyle = "#efeaf5";
+  ctx.strokeStyle = "rgba(239, 234, 245, 0.85)";
   ctx.lineWidth = 1;
   for (let i = 0; i <= 4; i++) {
     const y = padTop + (chartH / 4) * i;
