@@ -521,7 +521,8 @@ button { cursor: pointer; }
 .transport-mode-card{border:1.5px solid var(--line);border-radius:13px;padding:13px;background:rgba(255,255,255,.88);cursor:pointer;transition:var(--transition);min-height:245px;display:flex;flex-direction:column;justify-content:space-between;}
 .transport-mode-card:hover{border-color:var(--purple-mid);transform:translateY(-1px);}
 .transport-mode-card.active{border-color:var(--purple-vivid);box-shadow:0 7px 20px rgba(124,58,237,.14);background:linear-gradient(180deg,rgba(246,240,255,.96),rgba(255,255,255,.92));}
-.transport-choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px;align-items:stretch;}
+.transport-choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:10px;align-items:stretch;}
+.inbound-transport-choice-grid{grid-template-columns:repeat(7,minmax(0,1fr));}
 .transport-metric-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:9px 0;}
 .transport-procon{display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:10.5px;}
 .loan-control-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;}
@@ -530,7 +531,8 @@ button { cursor: pointer; }
 .ar-aging-bar span{height:100%;display:block;}
 .ar-risk-row{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:800;color:var(--muted);}
 .finance-choice-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
-@media(max-width:1120px){.product-portfolio-grid{grid-template-columns:1fr}.transport-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.loan-control-grid{grid-template-columns:1fr}.transport-metric-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1280px){.inbound-transport-choice-grid{grid-template-columns:repeat(4,minmax(0,1fr));}}
+@media(max-width:1120px){.product-portfolio-grid{grid-template-columns:1fr}.transport-choice-grid,.inbound-transport-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.loan-control-grid{grid-template-columns:1fr}.transport-metric-strip{grid-template-columns:repeat(2,1fr)}}
 
 .ds-visual-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:14px; }
 .ds-visual-card { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:rgba(255,255,255,.78); }
@@ -939,7 +941,7 @@ button { cursor: pointer; }
   .contract-term-selector { grid-template-columns: 1fr; }
 }
 </style>
-<script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=13590"></script>
+<script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=14343"></script>
 </head>
 <body>
 <div class="app">
@@ -1228,24 +1230,25 @@ button { cursor: pointer; }
     </div>
   </div>
 
-  <div class="grid two">
-    <div class="card interactive-card">
-      <div class="cardHead">
-        <h3>원자재 자동 정기 발주 및 안전재고 일수 설정</h3>
-        <span class="affordance-badge affordance-interactive">슬라이더 조절</span>
-      </div>
-      <div class="body" id="procurementFields"></div>
-    </div>
-
-    <div class="card display-card">
-      <div class="cardHead">
+  <div class="card display-card" style="margin-bottom:16px" id="inboundFreightModeCard">
+    <div class="cardHead">
+      <div>
         <h3>조달 리드타임 운송 모드 설정</h3>
-        <span class="tag purple">인바운드 운송</span>
+        <div class="small" style="margin-top:2px;color:var(--muted)">한 줄의 운송 선택에서 리드타임·운임·정시성·대량처리 능력과 재고 부담의 균형을 비교해 선택합니다.</div>
       </div>
-      <div class="body">
-        <div class="grid two" id="inboundFreightModesGrid"></div>
-      </div>
+      <span class="tag purple">인바운드 운송</span>
     </div>
+    <div class="body">
+      <div class="transport-choice-grid inbound-transport-choice-grid" id="inboundFreightModesGrid"></div>
+    </div>
+  </div>
+
+  <div class="card interactive-card">
+    <div class="cardHead">
+      <h3>원자재 자동 정기 발주 및 안전재고 일수 설정</h3>
+      <span class="affordance-badge affordance-interactive">슬라이더 조절</span>
+    </div>
+    <div class="body" id="procurementFields"></div>
   </div>
 </section>
 
