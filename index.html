@@ -6,7 +6,7 @@
 <title>VIOLET LEDGER</title>
 <!--
 ================================================================================
-[VIOLET LEDGER V4.4 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
+[VIOLET LEDGER V5.0 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
 ================================================================================
 ■ 핵심 개발 지침 (절대 원칙):
   1. [하드코딩 절대 금지 및 DB화 위주 개발]:
@@ -22,7 +22,7 @@
      - [1. 원자재 수급(Sourcing)] > [2. 인바운드 조달(Procurement)] >
        [3. 공장 제작 & 출하(Production/MES)] > [4. 운송/수출 & 물류(Logistics)]
      - 4대 공정의 처리 용량(CAPA) 불균형을 실시간 측정하고 최약 구간(병목)을 해결하는 흐름을 유지한다.
-  4. [직관적 재무 관리 및 트레저리 운용]:
+  4. [재무 관리 및 트레저리 운용]:
      - 실시간 영업현금흐름(매출 유입 - 원자재비 - 공장 운영비 = 순현금 증감)을 명확히 시각화한다.
      - 단기 유휴현금 정기예금(MMF), 마이너스 리볼버 대출, 매출채권 조기 팩토링을 통해 유동성을 방어한다.
   5. [정밀 맞춤형 상품 기획 스튜디오]:
@@ -31,6 +31,12 @@
   6. [기존 지침 및 스타일 유지]:
      - 단일 파일 완결성(HTML/CSS/JS), 무이모지 세련된 태그 시스템, 보라/핑크 테마, 반응형 UI를 유지한다.
      - 또한 해당 지침 주석은 삭제하거나 간략화, 수정, 생략하지 말고 그대로 둔다. 아래의 코드만 수정한다.
+  7. [버전 관리 규칙]:
+     - 소규모 기능/버그/가시성 패치는 버전을 +0.1, 대규모 구조/시스템 업데이트는 +1.0으로 버전업한다.
+     - 이번 업데이트 버전은 V5.0으로 적용한다.
+  8. [편의성·가시성 개선의 범위]:
+     - 모든 편의성, 가시성, 가독성, 직관성 개선의 목적은 사용자가 정보를 시각적으로 더 직관적이고 효율적으로 파악하도록 만드는 데 있다.
+     - 이는 로직, 알고리즘, 시스템 자체를 단순화하거나 의사결정 요소를 제거하라는 의미가 아니며, 기존 또는 추가된 복합 상호작용과 현실성을 유지한 상태에서 표현과 탐색만 개선한다.
 ================================================================================
 -->
 <style>
@@ -487,11 +493,20 @@ button { cursor: pointer; }
 .product-spark{height:46px;display:flex;align-items:flex-end;gap:3px;padding:4px 0;}
 .product-spark span{flex:1;min-width:3px;border-radius:4px 4px 1px 1px;background:linear-gradient(180deg,var(--pink),var(--purple-vivid));opacity:.82;}
 .product-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+.material-source-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);}
+.material-source-route{border:1px solid var(--line);border-radius:9px;padding:7px;background:rgba(250,249,252,.85);display:flex;flex-direction:column;justify-content:space-between;min-height:92px;}
+.material-source-route .route-title{font-size:10.5px;font-weight:900;color:var(--ink-soft);}
+.material-source-route .route-meta{font-size:10px;color:var(--muted);line-height:1.35;margin-top:3px;}
+.stockout-action-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px;}
+.stockout-action-card{border:1.5px solid var(--line);border-radius:11px;padding:10px;background:rgba(255,255,255,.88);}
+.stockout-action-card.recommended{border-color:var(--purple-vivid);box-shadow:0 5px 16px rgba(124,58,237,.12);background:linear-gradient(180deg,rgba(246,240,255,.96),rgba(255,255,255,.92));}
+@media(max-width:760px){.material-source-actions,.stockout-action-grid{grid-template-columns:1fr;}}
+
 .product-detail-box{padding:9px;border:1px solid var(--line);border-radius:9px;background:rgba(250,249,252,.8);}
-.transport-mode-card{border:1.5px solid var(--line);border-radius:13px;padding:13px;background:rgba(255,255,255,.88);cursor:pointer;transition:var(--transition);}
+.transport-mode-card{border:1.5px solid var(--line);border-radius:13px;padding:13px;background:rgba(255,255,255,.88);cursor:pointer;transition:var(--transition);min-height:245px;display:flex;flex-direction:column;justify-content:space-between;}
 .transport-mode-card:hover{border-color:var(--purple-mid);transform:translateY(-1px);}
 .transport-mode-card.active{border-color:var(--purple-vivid);box-shadow:0 7px 20px rgba(124,58,237,.14);background:linear-gradient(180deg,rgba(246,240,255,.96),rgba(255,255,255,.92));}
-.transport-choice-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:10px;}
+.transport-choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px;align-items:stretch;}
 .transport-metric-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:9px 0;}
 .transport-procon{display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:10.5px;}
 .loan-control-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;}
@@ -500,7 +515,7 @@ button { cursor: pointer; }
 .ar-aging-bar span{height:100%;display:block;}
 .ar-risk-row{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:800;color:var(--muted);}
 .finance-choice-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
-@media(max-width:1120px){.product-portfolio-grid{grid-template-columns:1fr}.transport-choice-grid{grid-template-columns:repeat(2,1fr)}.loan-control-grid{grid-template-columns:1fr}.transport-metric-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1120px){.product-portfolio-grid{grid-template-columns:1fr}.transport-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.loan-control-grid{grid-template-columns:1fr}.transport-metric-strip{grid-template-columns:repeat(2,1fr)}}
 
 .ds-visual-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:14px; }
 .ds-visual-card { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:rgba(255,255,255,.78); }
@@ -1280,7 +1295,7 @@ button { cursor: pointer; }
             <span class="valuePill" id="val_studioPrice">자동 권장가</span>
           </label>
           <div style="display:flex;gap:8px;align-items:center">
-            <input type="number" id="studio_sellingPrice" min="100" step="1000" style="flex:1;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-weight:900">
+            <input type="text" id="studio_sellingPrice" inputmode="numeric" autocomplete="off" placeholder="예: 129,000" style="flex:1;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-weight:900">
             <button class="btn sm" type="button" onclick="applyStudioPriceReference('recommended')">권장가</button>
             <button class="btn sm" type="button" onclick="applyStudioPriceReference('competitor')">동급가</button>
             <button class="btn sm" type="button" onclick="applyStudioPriceReference('upper')">상위급가</button>
@@ -1465,7 +1480,7 @@ button { cursor: pointer; }
   </div>
 </section>
 
-<!-- 7. 직관적 재무·자금 운용 -->
+<!-- 7. 재무·자금 운용 -->
 <section class="section" id="finance">
   <div class="head">
     <div>
@@ -1500,17 +1515,6 @@ button { cursor: pointer; }
         <span class="small">월말 순 현금 증감</span>
         <strong style="display:block;font-size:18px;color:var(--purple-vivid)" id="fc_netCashChange">+0원</strong>
       </div>
-    </div>
-  </div>
-
-  <div class="card display-card" style="margin-bottom:16px">
-    <div class="cardHead">
-      <h3>월간 현금흐름 충격 지도</h3>
-      <span class="stochastic-badge">회수율·운임·원가 변동 반영</span>
-    </div>
-    <div class="body">
-      <div class="finance-waterfall" id="financeWaterfallVisual"></div>
-      <div class="notice purple" id="financeShockNotice" style="margin-top:8px">변동 요인 분석 중...</div>
     </div>
   </div>
 
@@ -1913,7 +1917,7 @@ button { cursor: pointer; }
 
 <script>
 // =========================================================
-// [VIOLET LEDGER V4.4 ENGINE]
+// [VIOLET LEDGER V5.0 ENGINE]
 // =========================================================
 
 const $ = (id) => document.getElementById(id);
@@ -1929,6 +1933,16 @@ function fmtWon(val) {
 
 function fmtNum(val) {
   return Math.round(val || 0).toLocaleString();
+}
+
+function parsePriceInput(value) {
+  const n = Number(String(value ?? '').replace(/[^0-9]/g, ''));
+  return Number.isFinite(n) ? Math.max(0, Math.round(n)) : 0;
+}
+
+function fmtPriceInput(value) {
+  const n = parsePriceInput(value);
+  return n > 0 ? n.toLocaleString('ko-KR') : '';
 }
 
 function toast(msg) {
@@ -2453,11 +2467,22 @@ const DB = {
     }
   },
   
+  materialSourcingRoutes: [
+    {id:"contracted",name:"기존 계약 공급사",leadMonths:1,costMult:1.00,reliability:0.94,desc:"계약 할인과 안정적 공급을 우선"},
+    {id:"alternate_spot",name:"대체 공급사 스팟",leadMonths:1,costMult:1.16,reliability:0.86,desc:"계약 변경 없이 부족분을 별도 조달"},
+    {id:"local_distributor",name:"국내 유통상 긴급조달",leadMonths:0,costMult:1.30,reliability:0.92,desc:"국내 재고를 활용해 당월 부족분 방어"},
+    {id:"air_regular",name:"항공 긴급발주",leadMonths:0,costMult:1.55,reliability:0.98,desc:"운임을 지불하고 즉시 입고"},
+    {id:"air_charter",name:"전세기 비상조달",leadMonths:0,costMult:2.20,reliability:0.995,desc:"대규모 결품 직전의 비상 수급"}
+  ],
+
   freightModes: [
-    { id: "ocean_standard", name: "해상 정기선 컨테이너", leadMonths: 2, costMult: 1.0, capacityMult: 1.25, reliability: 0.93, inventoryPressure: 1.35, riskMult: 1.10, pros:["단위 운임이 가장 낮음","대량 화물에 유리"], cons:["긴 리드타임","안전재고 부담이 큼"], desc: "가장 저렴한 대량 운송. 2달 걸리므로 35일 이상 안전재고 유지 필수" },
-    { id: "ocean_express", name: "해상 고속 급행선", leadMonths: 1, costMult: 1.8, capacityMult: 1.10, reliability: 0.95, inventoryPressure: 0.92, riskMult: 1.04, pros:["표준 해상보다 빠름","운임과 재고의 균형"], cons:["정기선보다 비쌈","특정 항차 가용성 영향"], desc: "1달 만에 입고되는 쾌속선. 운임 1.8배" },
-    { id: "rail_multimodal", name: "복합 철도 화물", leadMonths: 1, costMult: 2.3, capacityMult: 0.95, reliability: 0.975, inventoryPressure: 0.82, riskMult: 0.99, pros:["정시성이 높음","해상 대비 운송일수 단축"], cons:["비용 상승","노선 제약"], desc: "정시성이 우수한 대륙 철도 복합 운송" },
-    { id: "air_regular", name: "항공 정기 화물기", leadMonths: 0, costMult: 5.2, capacityMult: 0.82, reliability: 0.985, inventoryPressure: 0.30, riskMult: 0.96, pros:["리드타임 최단","결품 방어에 강함"], cons:["운임 부담이 매우 큼","대량 원가 경쟁력 낮음"], desc: "당월 즉시 공장 입고. 운임은 높으나 결품 방지 탁월" }
+    { id: "ocean_standard", name: "해상 정기선 컨테이너", leadMonths: 2, costMult: 1.0, capacityMult: 1.25, reliability: 0.93, inventoryPressure: 1.35, riskMult: 1.10, pros:["단위 운임이 가장 낮음","대량 화물에 유리"], cons:["긴 리드타임","안전재고 부담이 큼"], desc: "가장 저렴한 대량 운송. 장기 리드타임을 감수하는 대신 운송 원가를 낮춥니다." },
+    { id: "ocean_lcl", name: "해상 LCL 혼재화물", leadMonths: 2, costMult: 1.32, capacityMult: 0.72, reliability: 0.90, inventoryPressure: 1.28, riskMult: 1.16, pros:["소량 발주 가능","초기 재고 부담 완화"], cons:["단위 운임 상승","혼재 화물 지연 가능성"], desc: "컨테이너를 채우기 어려운 소량 자재에 적합한 혼재 운송." },
+    { id: "ocean_express", name: "해상 고속 급행선", leadMonths: 1, costMult: 1.8, capacityMult: 1.10, reliability: 0.95, inventoryPressure: 0.92, riskMult: 1.04, pros:["표준 해상보다 빠름","운임과 재고의 균형"], cons:["정기선보다 비쌈","특정 항차 가용성 영향"], desc: "리드타임을 줄이면서 항공 대비 비용을 억제하는 중간 선택지." },
+    { id: "rail_multimodal", name: "철도 복합 운송", leadMonths: 1, costMult: 2.3, capacityMult: 0.95, reliability: 0.975, inventoryPressure: 0.82, riskMult: 0.99, pros:["정시성이 높음","해상 대비 운송일수 단축"], cons:["비용 상승","노선 제약"], desc: "항구 이후 철도 구간을 결합해 납기 편차를 줄이는 복합 운송." },
+    { id: "road_crossborder", name: "국경 육상/트럭 직송", leadMonths: 0, costMult: 3.0, capacityMult: 0.70, reliability: 0.96, inventoryPressure: 0.48, riskMult: 1.08, pros:["유연한 배차","중간 물류센터 생략"], cons:["거리·국경 상황 영향","대량 장거리에는 비효율"], desc: "인접 국가 공급사 또는 육상 연결 구간에 유리한 직송 방식." },
+    { id: "air_regular", name: "항공 정기 화물기", leadMonths: 0, costMult: 5.2, capacityMult: 0.82, reliability: 0.985, inventoryPressure: 0.30, riskMult: 0.96, pros:["리드타임 최단","결품 방어에 강함"], cons:["운임 부담이 매우 큼","대량 원가 경쟁력 낮음"], desc: "당월 입고를 목표로 하는 고가의 신속 운송." },
+    { id: "air_charter", name: "항공 전세 화물", leadMonths: 0, costMult: 8.4, capacityMult: 1.05, reliability: 0.995, inventoryPressure: 0.18, riskMult: 0.92, pros:["긴급 물량 대규모 투입","납기 복구에 유리"], cons:["가장 높은 비용","비상 상황 중심"], desc: "결품 직전의 대규모 긴급 자재를 빠르게 투입하는 비상 운송." }
   ]
 };
 
@@ -3180,14 +3205,14 @@ function buildStudioUI() {
   $('studio_finishSelect').innerHTML=ind.finishes.map(f=>`<option value="${f.id}" ${f.id===studioTemp.finishId?'selected':''}>${f.name} (+${fmtWon(f.cost)} / 품질 ${f.quality}점)</option>`).join('');
   $('studio_finishSelect').onchange=e=>{studioTemp.finishId=e.target.value;studioTemp.priceMode='auto';updateStudioBlueprint();};
   $('studio_matInputsGrid').innerHTML=ind.materials.map((m,i)=>`<div style="background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:10px;padding:8px;text-align:center"><span class="small" style="font-size:10px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name.split(' ')[0]}</span><select id="mat_ratio_${i}" style="margin-top:4px;padding:3px;font-size:12px;font-weight:900;border-radius:6px;border-color:var(--line)" onchange="updateStudioMatRatio(${i},this.value)"><option value="1" ${studioTemp.matRatios[i]===1?'selected':''}>1개 (기본)</option><option value="2" ${studioTemp.matRatios[i]===2?'selected':''}>2개 (증량)</option><option value="3" ${studioTemp.matRatios[i]===3?'selected':''}>3개 (특화)</option></select></div>`).join('');
-  $('studio_sellingPrice').value=studioTemp.sellingPrice||'';
-  $('studio_sellingPrice').oninput=e=>{studioTemp.sellingPrice=Math.max(0,Number(e.target.value)||0);studioTemp.priceMode='manual';updateStudioBlueprint();};
+  $('studio_sellingPrice').value=fmtPriceInput(studioTemp.sellingPrice);
+  $('studio_sellingPrice').oninput=e=>{studioTemp.sellingPrice=parsePriceInput(e.target.value);studioTemp.priceMode='manual';const caret=e.target.selectionStart; e.target.value=fmtPriceInput(studioTemp.sellingPrice); e.target.selectionStart=e.target.selectionEnd=e.target.value.length; updateStudioBlueprint(true);};
   $('input_studioMargin').value=studioTemp.targetMargin;$('val_studioMargin').textContent=`${studioTemp.targetMargin}%`;
   $('input_studioMargin').oninput=e=>{studioTemp.targetMargin=parseInt(e.target.value);studioTemp.sellingPrice=0;studioTemp.priceMode='margin';$('val_studioMargin').textContent=`${studioTemp.targetMargin}%`;updateStudioBlueprint();};
   $('launchProductBtn').onclick=commitStudioProduct;
   renderStudioCategoryInteraction();updateStudioBlueprint();
 }
-function applyStudioPriceReference(kind){const eco=calcStudioEco(true);const p=eco.priceIntel;const map={recommended:p.recommended,competitor:p.sameTierAvg,upper:p.upperTierAvg};studioTemp.sellingPrice=map[kind]||p.recommended;studioTemp.priceMode='manual';$('studio_sellingPrice').value=studioTemp.sellingPrice;updateStudioBlueprint();toast(`시장 정보 기반 가격 ${fmtWon(studioTemp.sellingPrice)}이 적용되었습니다.`);}
+function applyStudioPriceReference(kind){const eco=calcStudioEco(true);const p=eco.priceIntel;const map={recommended:p.recommended,competitor:p.sameTierAvg,upper:p.upperTierAvg};studioTemp.sellingPrice=map[kind]||p.recommended;studioTemp.priceMode='manual';$('studio_sellingPrice').value=fmtPriceInput(studioTemp.sellingPrice);updateStudioBlueprint();toast(`시장 정보 기반 가격 ${fmtWon(studioTemp.sellingPrice)}이 적용되었습니다.`);}
 function applyCategoryDefaultBOM(){const catMeta=DB.categoryMeta[state.industryId]?.[studioTemp.category];if(catMeta?.defaultMatRatios){studioTemp.matRatios=[...catMeta.defaultMatRatios];$('studio_matSummaryPill').textContent=studioTemp.matRatios.join(':');catMeta.defaultMatRatios.forEach((r,i)=>{const el=$(`mat_ratio_${i}`);if(el)el.value=r;});updateStudioBlueprint();}}
 function setStudioTier(tierId){studioTemp.tier=tierId;studioTemp.priceMode='auto';document.querySelectorAll('.tier-card-btn').forEach(b=>b.classList.toggle('active',b.dataset.tier===tierId));updateStudioBlueprint();}
 function updateStudioMatRatio(idx,val){studioTemp.matRatios[idx]=parseInt(val);$('studio_matSummaryPill').textContent=studioTemp.matRatios.join(':');updateStudioBlueprint();}
@@ -3210,20 +3235,20 @@ function calcStudioEco() {
   const unitMargin=finalPrice-unitCost;
   return {rawCost,finishCost,laborCost,unitCost,finalPrice,unitMargin,estDemand:ds.potentialDemand,estRev:ds.potentialDemand*finalPrice,laborReq:laborReq.toFixed(2),tierTag:tierDef.tag,catMeta,rule,demandSnapshot:ds,priceIntel:ds.priceIntel};
 }
-function updateStudioBlueprint(){
+function updateStudioBlueprint(skipInputRewrite=false){
   const eco=calcStudioEco();
   $('bp_displayTitle').textContent=studioTemp.name;$('bp_displayCategory').textContent=`${studioTemp.category} (${eco.catMeta.desc||'표준 사양'})`;$('bp_displayTierTag').textContent=eco.tierTag;
   $('bp_rawCost').textContent=fmtWon(eco.rawCost);$('bp_finishCost').textContent=fmtWon(eco.finishCost);$('bp_laborCost').textContent=fmtWon(eco.laborCost);$('bp_totalUnitCost').textContent=fmtWon(eco.unitCost);
   $('bp_finalPrice').textContent=fmtWon(eco.finalPrice);const effMargin=eco.unitCost>0?(eco.unitMargin/eco.unitCost*100):0;$('bp_unitMargin').textContent=`${eco.unitMargin>=0?'+':''}${fmtWon(eco.unitMargin)} (${effMargin.toFixed(1)}%)`;$('bp_unitMargin').style.color=eco.unitMargin>=0?'#34d399':'#fca5a5';
   $('bp_estDemand').textContent=`${fmtNum(eco.estDemand)} 단위/월`;$('bp_estMonthlyRev').textContent=fmtWon(eco.estRev);$('bp_laborReq').textContent=`${eco.laborReq}x`;
-  $('studio_sellingPrice').value=eco.finalPrice; $('val_studioPrice').textContent=studioTemp.priceMode==='manual'?'직접 가격':studioTemp.priceMode==='margin'?'마진 연동':'시장 권장가';
+  if(!skipInputRewrite) $('studio_sellingPrice').value=fmtPriceInput(eco.finalPrice); $('val_studioPrice').textContent=studioTemp.priceMode==='manual'?'직접 가격':studioTemp.priceMode==='margin'?'마진 연동':'시장 권장가';
   $('input_studioMargin').value=clampNum(Math.round(effMargin/5)*5,15,150);$('val_studioMargin').textContent=`${Math.round(effMargin)}%`;
   renderStudioPriceIntelligence(eco);
   const hint=$('bp_estDemand').parentElement;if(hint)hint.title=`가격 ×${eco.demandSnapshot.priceFactor.toFixed(2)} · 마케팅 ×${eco.demandSnapshot.marketingFactor.toFixed(2)} · 品質 ×${eco.demandSnapshot.qualityFactor.toFixed(2)} · 계절성 ×${eco.demandSnapshot.seasonFactor.toFixed(2)} · 수급 ×${eco.demandSnapshot.tightnessFactor.toFixed(2)}`;
 }
 function renderStudioPriceIntelligence(eco){const p=eco.priceIntel;const scenarios=[['원가 방어선',p.floor],['시장 권장가',p.recommended],['동급 경쟁가',p.sameTierAvg],['상위급 평균',p.upperTierAvg]];const current=eco.finalPrice;const cards=scenarios.slice(0,4).map(([label,val])=>`<div class="price-intel-card"><span class="label">${label}</span><strong>${fmtWon(val)}</strong></div>`).join('');$('studio_priceIntel').innerHTML=`<div style="margin-top:8px;font-size:11px;font-weight:900;color:var(--purple-dark)">가격책정 참고 정보</div><div class="price-intel-grid">${cards}<div class="price-intel-card"><span class="label">수급 균형가</span><strong>${fmtWon(p.equilibrium)}</strong></div><div class="price-intel-card"><span class="label">시장 압력</span><strong>${p.pressureLabel} (${p.pressurePct.toFixed(0)}%)</strong></div></div>`;
   const testPrices=[p.floor,p.sameTierAvg,p.recommended,p.upperTierAvg].filter((v,i,a)=>a.indexOf(v)===i).slice(0,3); const cols=testPrices.map(v=>{const s=getSalesDemandSnapshot({category:studioTemp.category,tier:studioTemp.tier,finishId:studioTemp.finishId,calculatedUnitCost:eco.unitCost,finalPrice:v});return `<div class="price-scenario"><div style="font-size:10px;color:var(--muted);font-weight:800">${v===p.floor?'원가방어':v===p.sameTierAvg?'동급경쟁':v===p.recommended?'권장가':'상위급'} </div><strong style="font-size:13px">${fmtWon(v)}</strong><div class="small" style="margin-top:4px">예상 판매 ${fmtNum(s.potentialDemand)} · 매출 ${fmtWon(s.potentialDemand*v)}</div><button class="btn sm" type="button" onclick="applyStudioPriceValue(${Math.round(v)})">이 가격 적용</button></div>`;}).join('');$('studio_priceScenarios').innerHTML=`<div style="margin-top:8px;font-size:10.5px;font-weight:900;color:var(--muted)">가격별 수요 시나리오</div><div class="price-scenario-grid">${cols}</div>`;}
-function applyStudioPriceValue(v){studioTemp.sellingPrice=Math.round(v);studioTemp.priceMode='manual';$('studio_sellingPrice').value=studioTemp.sellingPrice;updateStudioBlueprint();}
+function applyStudioPriceValue(v){studioTemp.sellingPrice=Math.round(v);studioTemp.priceMode='manual';$('studio_sellingPrice').value=fmtPriceInput(studioTemp.sellingPrice);updateStudioBlueprint();}
 function commitStudioProduct(){
   const eco=calcStudioEco();
   state.customProduct={...state.customProduct,name:studioTemp.name,category:studioTemp.category,tier:studioTemp.tier,finishId:studioTemp.finishId,matRatios:[...studioTemp.matRatios],targetMargin:eco.unitCost>0?Math.round((eco.unitMargin/eco.unitCost)*100):studioTemp.targetMargin,sellingPrice:eco.finalPrice,priceMode:studioTemp.priceMode,calculatedUnitCost:eco.unitCost,finalPrice:eco.finalPrice,laborReq:parseFloat(eco.laborReq),estDemand:eco.estDemand};
@@ -3356,7 +3381,7 @@ function upgradeFactoryStage(stageIdx, cost) {
 }
 
 // ---------------------------------------------------------
-// 9. 직관적 재무 & 자금 운용 스트림
+// 9. 재무 & 자금 운용 스트림
 // ---------------------------------------------------------
 function renderFinancialStream(){
   const f=getFinanceSnapshot(); state.lastFinanceSnapshot=f; const el=(id,v)=>{if($(id))$(id).textContent=v;};
@@ -3372,8 +3397,7 @@ function renderFinancialStream(){
     $('arQualityTag').textContent=overdue>ar*.12?'연체 주의':overdue>ar*.06?'회수 관리':'양호'; $('arQualityTag').className=`tag ${overdue>ar*.12?'red':overdue>ar*.06?'amber':'green'}`; $('financeDebtHealthTag').textContent=(state.debt+state.revolver)>2500000000?'부채 부담 높음':(state.debt+state.revolver)>1600000000?'관리 필요':'관리 가능'; $('financeDebtHealthTag').className=`tag ${(state.debt+state.revolver)>2500000000?'red':(state.debt+state.revolver)>1600000000?'amber':'green'}`;
     $('arManagementHint').textContent=`정상 ${fmtWon(normal)} · 주의 ${fmtWon(watch)} · 연체 ${fmtWon(overdue)} · 표준 팩토링 할인율 ${(DB.config.factoringDiscountRate*100).toFixed(1)}%`;
   }
-  $('financeWaterfallVisual').innerHTML=[['매출 현금',f.currentCash],['원가',-f.cogs],['물류',-f.freight.total],['고정비',-f.fixedOpex],['변동비',-f.variableOpex],['순증감',f.netCashChange]].map(([l,v])=>{const max=Math.max(...[f.currentCash,f.cogs,f.freight.total,f.fixedOpex,f.variableOpex,Math.abs(f.netCashChange),1]);return `<div class="wf-col"><div class="wf-val">${v>=0?'+':''}${fmtWon(v)}</div><div class="wf-bar" style="height:${Math.max(8,Math.round(Math.abs(v)/max*92))}px;background:${v>=0?'linear-gradient(180deg,var(--green),#34d399)':'linear-gradient(180deg,var(--red),#f87171)'}"></div><div class="wf-label">${l}</div></div>`;}).join('');
-  $('financeShockNotice').innerHTML=`회수율 <b>${(f.collectionRate*100).toFixed(1)}%</b> · 대손률 <b>${(f.badDebtRate*100).toFixed(2)}%</b> · 변동 운임 <b>${(f.freight.ratio/DB.config.freightCostRatio*100).toFixed(1)}%</b> · 변동비율 <b>${(f.varOpexRatio*100).toFixed(2)}%</b> · 재고 보유비용 <b>${fmtWon(f.holdingCost)}</b>`;
+  if($('financeWaterfallVisual')) $('financeWaterfallVisual').innerHTML=[['매출 현금',f.currentCash],['원가',-f.cogs],['물류',-f.freight.total],['고정비',-f.fixedOpex],['변동비',-f.variableOpex],['순증감',f.netCashChange]].map(([l,v])=>{const max=Math.max(...[f.currentCash,f.cogs,f.freight.total,f.fixedOpex,f.variableOpex,Math.abs(f.netCashChange),1]);return `<div class="wf-col"><div class="wf-val">${v>=0?'+':''}${fmtWon(v)}</div><div class="wf-bar" style="height:${Math.max(8,Math.round(Math.abs(v)/max*92))}px;background:${v>=0?'linear-gradient(180deg,var(--green),#34d399)':'linear-gradient(180deg,var(--red),#f87171)'}"></div><div class="wf-label">${l}</div></div>`;}).join('');
 }
 
 function adjustDeposit(amount) {
@@ -3448,12 +3472,40 @@ function sellFactoring(){ sellFactoringPct(50); }
 // ---------------------------------------------------------
 function renderMaterialsGrid(){
   const prod=state.customProduct; let minDays=999,bottleneckMat=null;
-  $('materialsGrid').innerHTML=state.materials.map((m,i)=>{const ratio=prod.matRatios[i]||1,dailyUse=Math.max(m.dailyConsumption,1),days=m.stock/dailyUse,target=dailyUse*state.targetSafetyStockDays,coverage=clampNum(m.stock/Math.max(target,1),0,1.6);if(days<minDays){minDays=days;bottleneckMat=m;}return `<div class="card interactive-card" style="padding:14px;border-color:${days<15?'var(--red)':days<30?'var(--amber)':'var(--line)'}"><div><div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:14.5px;color:var(--ink)">${m.name}</strong><span class="tag ${days<15?'red':days<30?'amber':'green'}">${Math.floor(days)}일분</span></div><div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:10.5px;font-weight:800;color:var(--muted)"><span>현재</span><span>안전재고 ${state.targetSafetyStockDays}일</span></div><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${Math.min(100,coverage/1.25*100)}%;background:${days<15?'linear-gradient(90deg,#dc2626,#f43f5e)':days<30?'linear-gradient(90deg,#d97706,#f59e0b)':'linear-gradient(90deg,var(--purple-vivid),var(--pink))'}"></div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;text-align:center"><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">창고</span><strong style="display:block;font-size:13px;margin-top:2px">${fmtNum(m.stock)}개</strong></div><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">일소진</span><strong style="display:block;font-size:13px;margin-top:2px">${fmtNum(dailyUse)}개</strong></div><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">투입배수</span><strong style="display:block;font-size:13px;color:var(--purple-dark);margin-top:2px">×${ratio}</strong></div></div></div></div>`;}).join('');
+  $('materialsGrid').innerHTML=state.materials.map((m,i)=>{
+    const ratio=prod.matRatios[i]||1,dailyUse=Math.max(m.dailyConsumption,1),days=m.stock/dailyUse,target=dailyUse*state.targetSafetyStockDays,coverage=clampNum(m.stock/Math.max(target,1),0,1.6);
+    if(days<minDays){minDays=days;bottleneckMat=m;}
+    const transitForMat=state.inTransit.filter(t=>t.matId===m.id).reduce((a,t)=>a+t.qty,0);
+    const routes=DB.materialSourcingRoutes.map(r=>{
+      const qty=Math.max(1,Math.round(Math.max(dailyUse*14,target-(m.stock+transitForMat))));
+      const label=r.id==='contracted'?'발주':r.id==='alternate_spot'?'스팟':r.id==='local_distributor'?'국내 긴급':r.id==='air_regular'?'항공 긴급':'전세기';
+      return `<div class="material-source-route"><div><div class="route-title">${r.name}</div><div class="route-meta">${r.desc}<br>리드타임 ${r.leadMonths===0?'당월':r.leadMonths+'개월'} · 원가 ×${r.costMult.toFixed(2)} · 신뢰도 ${Math.round(r.reliability*100)}%</div></div><button class="btn sm ${r.id==='air_regular'||r.id==='air_charter'?'pink':'primary'}" type="button" onclick="placeMaterialSourcingOrder('${m.id}','${r.id}')">${label} ${fmtNum(qty)}개</button></div>`;
+    }).join('');
+    return `<div class="card interactive-card" style="padding:14px;border-color:${days<15?'var(--red)':days<30?'var(--amber)':'var(--line)'}"><div><div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:14.5px;color:var(--ink)">${m.name}</strong><span class="tag ${days<15?'red':days<30?'amber':'green'}">${Math.floor(days)}일분</span></div><div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:10.5px;font-weight:800;color:var(--muted)"><span>현재</span><span>안전재고 ${state.targetSafetyStockDays}일</span></div><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${Math.min(100,coverage/1.25*100)}%;background:${days<15?'linear-gradient(90deg,#dc2626,#f43f5e)':days<30?'linear-gradient(90deg,#d97706,#f59e0b)':'linear-gradient(90deg,var(--purple-vivid),var(--pink))'}"></div></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;text-align:center"><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">창고</span><strong style="display:block;font-size:13px;margin-top:2px">${fmtNum(m.stock)}개</strong></div><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">일소진</span><strong style="display:block;font-size:13px;margin-top:2px">${fmtNum(dailyUse)}개</strong></div><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">운송중</span><strong style="display:block;font-size:13px;margin-top:2px">${fmtNum(transitForMat)}개</strong></div><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">투입배수</span><strong style="display:block;font-size:13px;color:var(--purple-dark);margin-top:2px">×${ratio}</strong></div></div><div class="material-source-actions">${routes}</div></div></div>`;
+  }).join('');
   $('scmBottleneckDays').textContent=`${Math.floor(minDays)}일`; $('scmBottleneckName').textContent=`부족 자재: ${bottleneckMat?bottleneckMat.name:'—'}`; const totalVal=state.materials.reduce((a,m)=>a+m.stock*m.unitCost,0);$('scmRawTotalVal').textContent=fmtWon(totalVal);const invVal=totalVal+state.finishedGoods*prod.calculatedUnitCost;$('scmHoldingCost').textContent=fmtWon(Math.round(invVal/12*DB.config.inventoryHoldingRate));$('scmRiskStatus').textContent=minDays<15?'높음':minDays<30?'주의':'안전 가동';$('scmRiskStatus').style.color=minDays<15?'var(--red)':minDays<30?'var(--amber)':'var(--green)';
   const rawQty=state.materials.reduce((a,m)=>a+m.stock,0),transitQty=state.inTransit.reduce((a,t)=>a+t.qty,0),monthlyNeed=state.materials.reduce((a,m)=>a+m.dailyConsumption*30,0); const max=Math.max(rawQty,transitQty,monthlyNeed,1);
   $('inventoryFlowVisual').innerHTML=[['창고 보유',rawQty,'현재 재고'],['운송 중',transitQty,'입고 예정'],['생산 소요',monthlyNeed,'30일 필요량']].map(x=>`<div class="flow-node"><div class="small">${x[2]}</div><strong style="display:block;font-size:16px;margin-top:3px">${fmtNum(x[1])}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${Math.min(100,x[1]/max*100)}%"></div></div></div>`).join('');
   const bars=Math.min(20,Math.max(4,Math.round(rawQty/Math.max(monthlyNeed,1)*20))); $('inventoryStackVisual').innerHTML=Array.from({length:20},(_,i)=>`<div class="unit" style="height:${i<bars?Math.round(24+Math.min(68,rawQty/Math.max(monthlyNeed,1)*58))+Math.round(Math.abs(hashNoise('stack:'+i))*12):8}px;opacity:${i<bars?.92:.18}"></div>`).join('');
 }
+
+function placeMaterialSourcingOrder(matId,routeId){
+  const mat=state.materials.find(m=>m.id===matId),route=DB.materialSourcingRoutes.find(r=>r.id===routeId); if(!mat||!route)return;
+  const inTransit=state.inTransit.filter(t=>t.matId===mat.id).reduce((a,t)=>a+t.qty,0);
+  const target=mat.dailyConsumption*state.targetSafetyStockDays;
+  const qty=Math.max(1,Math.round(Math.max(mat.dailyConsumption*14,target-(mat.stock+inTransit))));
+  const routeCost=Math.round(mat.unitCost*qty*route.costMult);
+  const vendor=DB.industries[state.industryId].vendors[state.selectedVendorIndex]||DB.industries[state.industryId].vendors[0];
+  const contract=DB.contractTerms[state.sourcingContractType]||DB.contractTerms.standard;
+  const discount=route.id==='contracted'?(1-Math.max(0,vendor.discount+contract.discountMod)*0.6):1;
+  const finalCost=Math.round(routeCost*discount*(1+Math.max(0,-hashNoise(`source:${mat.id}:${getPeriodSerial()}`))*.025));
+  if(state.cash<finalCost){toast(`${route.name} 발주에 필요한 현금 ${fmtWon(finalCost)}가 부족합니다.`);return;}
+  state.cash-=finalCost;
+  if(route.leadMonths===0){mat.stock+=qty;toast(`${mat.name} ${fmtNum(qty)}개가 ${route.name}로 즉시 확보되었습니다.`);}else{state.inTransit.push({id:`TR-${Math.floor(100+Math.random()*900)}`,matId:mat.id,matName:mat.name,qty,val:qty*mat.unitCost,mode:route.id,sourceRoute:route.name,etaMonths:route.leadMonths});toast(`${mat.name} ${fmtNum(qty)}개를 ${route.name}로 발주했습니다.`);}
+  render();
+  openActionModal('원자재 수급 경로 실행',`<b>${mat.name}</b> ${fmtNum(qty)}개를 <b>${route.name}</b>로 확보했습니다.<br>- 소요 비용: <b>${fmtWon(finalCost)}</b><br>- 리드타임: <b>${route.leadMonths===0?'당월 입고':route.leadMonths+'개월'}</b><br>- 신뢰도: <b>${Math.round(route.reliability*100)}%</b><br>- 목적: <b>${(mat.stock/dailyUseSafe(mat)).toFixed(1)}일분</b>`);
+}
+function dailyUseSafe(mat){return Math.max(1,mat.dailyConsumption||1);}
 
 function renderInboundFreightModes(){
   const el=$('inboundFreightModesGrid'); if(!el) return;
@@ -3647,7 +3699,7 @@ function renderOutboundLogistics(){
   $('logisticsExportRouteGrid').innerHTML=DB.logisticsRoutes.map((r,i)=>{const share=freight.weights[i]||r.volRatio;const q=Math.round((state.lastProductionQty||0)*share);return `<div style="background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:13px;padding:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong style="font-size:13.5px;color:var(--ink)">${r.region}</strong><span class="tag purple">${(share*100).toFixed(1)}%</span></div><div class="small" style="color:var(--muted)">경로: ${r.route}</div><div class="small" style="color:var(--purple-dark);font-weight:700;margin-top:2px">소요: ${r.lead}</div><div style="border-top:1px dashed var(--line);padding-top:6px;margin-top:8px;font-size:12px;font-weight:800;color:var(--ink)">월 선적: ${fmtNum(q)} 대</div></div>`;}).join('');
   const soldRate=clampNum(sold/demand,0,1),stockRate=clampNum(state.finishedGoods/Math.max(demand,1),0,1); $('finishedGoodsFlowVisual').innerHTML=`<div class="inventory-flow"><div class="flow-node"><div class="small">월 생산</div><strong style="font-size:17px;display:block;margin-top:3px">${fmtNum(state.lastProductionQty)}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${Math.min(100,state.lastProductionQty/Math.max(demand,1)*100)}%"></div></div></div><div class="flow-node"><div class="small">실판매</div><strong style="font-size:17px;display:block;margin-top:3px">${fmtNum(sold)}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${soldRate*100}%"></div></div></div><div class="flow-node"><div class="small">기말 완제품</div><strong style="font-size:17px;display:block;margin-top:3px">${fmtNum(state.finishedGoods)}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${stockRate*100}%"></div></div></div></div><div class="small" style="margin-top:8px;color:var(--muted)">수요 ${fmtNum(demand)} 대비 판매전환 ${((soldRate)*100).toFixed(1)}%, 기말재고 커버 ${((state.finishedGoods/demand)*100).toFixed(1)}%</div>`;
   $('logisticsRouteFlowVisual').innerHTML=`<div style="font-size:12px;font-weight:900;color:var(--ink-soft);margin-bottom:6px">변동 운임 기반 권역별 물류 흐름</div><div class="route-flow">${DB.logisticsRoutes.map((r,i)=>{const share=freight.weights[i]||r.volRatio;const q=Math.round((state.lastProductionQty||0)*share);return `<div class="route-flow-row"><span class="small" style="font-weight:800">${r.region.replace(' 수출','')}</span><div class="route-flow-track"><div class="route-flow-fill" style="width:${share*100}%"></div></div><strong style="font-size:11px;text-align:right">${fmtNum(q)}대</strong></div>`;}).join('')}</div><div class="notice purple" style="margin-top:8px">운임 변동: 기준 대비 ${(freight.ratio/DB.config.freightCostRatio-1>=0?'+':'')}${((freight.ratio/DB.config.freightCostRatio-1)*100).toFixed(1)}% · 연료 ×${freight.fuelShock.toFixed(2)} · 혼잡 ×${freight.congestionShock.toFixed(2)}</div>`;
-  $('pipelineCountBadge').textContent=`${state.inTransit.length}건 배송 중`; $('pipelineTable').innerHTML=state.inTransit.length===0?`<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">현재 이동 중인 인바운드 화물이 없습니다.</td></tr>`:state.inTransit.map(t=>`<tr><td><b>${t.id}</b></td><td>${t.matName||t.matId}</td><td>${(DB.freightModes.find(m=>m.id===t.mode)||{name:t.mode||'기타'}).name}</td><td>${fmtWon(t.val)}</td><td>${fmtNum(t.qty)}개</td><td>협력사 &gt; 국내 항만/공항</td><td><b style="color:var(--purple-vivid)">${t.etaMonths===0?'당월 결산 시 입고':`${t.etaMonths}개월 뒤 입고`}</b></td><td><span class="tag ${t.etaMonths===0?'pink':'purple'}">${t.etaMonths===0?'통관 대기':'운송 중'}</span></td></tr>`).join('');
+  $('pipelineCountBadge').textContent=`${state.inTransit.length}건 배송 중`; $('pipelineTable').innerHTML=state.inTransit.length===0?`<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">현재 이동 중인 인바운드 화물이 없습니다.</td></tr>`:state.inTransit.map(t=>`<tr><td><b>${t.id}</b></td><td>${t.matName||t.matId}</td><td>${(DB.freightModes.find(m=>m.id===t.mode)||DB.materialSourcingRoutes.find(m=>m.id===t.mode)||{name:t.sourceRoute||t.mode||'기타'}).name}</td><td>${fmtWon(t.val)}</td><td>${fmtNum(t.qty)}개</td><td>협력사 &gt; 국내 항만/공항</td><td><b style="color:var(--purple-vivid)">${t.etaMonths===0?'당월 결산 시 입고':`${t.etaMonths}개월 뒤 입고`}</b></td><td><span class="tag ${t.etaMonths===0?'pink':'purple'}">${t.etaMonths===0?'통관 대기':'운송 중'}</span></td></tr>`).join('');
 }
 
 // 11.5 제품 포트폴리오 현황
@@ -4444,6 +4496,18 @@ function closeMonth(){
   openSettlementModal(actualProduction,actualSold,stockoutQty,revenue,ebitda,stockoutPenalty,depositInterestGain);state.month++;if(state.month>12){state.month=1;state.year++;}save();render();
 }
 
+function getStockoutResponse(stockout,demand){
+  const raw=state.materials.map(m=>({m,days:m.stock/Math.max(1,m.dailyConsumption||1)})).sort((a,b)=>a.days-b.days)[0];
+  const pipe=getPipelineCapacities(true), lineRatio=(pipe?.minCapa||0)/Math.max(1,demand);
+  const actions=[];
+  if(raw?.days<state.targetSafetyStockDays*.75) actions.push({title:'부족 자재 즉시 보강',desc:`${raw.m.name}의 커버가 ${Math.floor(raw.days)}일분입니다. 국내 긴급조달 또는 항공 긴급발주로 버퍼를 먼저 회복하세요.`,cls:'recommended',html:`<button class="btn sm pink" type="button" onclick="placeMaterialSourcingOrder('${raw.m.id}','local_distributor')">국내 긴급조달</button> <button class="btn sm pink" type="button" onclick="placeMaterialSourcingOrder('${raw.m.id}','air_regular')">항공 긴급</button>`});
+  if(lineRatio<.8) actions.push({title:'생산 CAPA 확대',desc:`최저 공정 CAPA가 수요의 ${Math.round(lineRatio*100)}% 수준입니다. 병목 공정 설비를 증설해 공급량을 먼저 끌어올리세요.`,cls:'recommended',html:`<button class="btn sm primary" type="button" onclick="jumpToBottleneckUpgrade()">병목 공정 증설로 이동</button>`});
+  actions.push({title:'운송 리드타임 단축',desc:'다음 달에도 결품 위험이 예상되면 항공/전세화물로 조달 리드타임을 줄이고 안전재고 목표를 높이세요.',cls:actions.length?'':'recommended',html:`<button class="btn sm primary" type="button" onclick="selectFreightMode('air_regular')">항공 정기 선택</button> <button class="btn sm" type="button" onclick="setSafetyStockQuick(50)">안전재고 50일</button>`});
+  return {raw,pipe,lineRatio,actions};
+}
+function setSafetyStockQuick(days){state.targetSafetyStockDays=days;render();toast(`안전재고 목표를 ${days}일로 설정했습니다.`);}
+function jumpToBottleneckUpgrade(){switchTab('pipeline');setTimeout(()=>{const pipe=getPipelineCapacities(true);const idx=pipe?.bottleneckStage?.idx??0;const cost=DB.factoryStages[idx]?.upgradeCost; if(cost) upgradeFactoryStage(idx,cost);},50);}
+
 function openSettlementModal(prod, sold, stockout, rev, ebitda, penalty, intGain) {
   const currentProd = state.customProduct;
   $("settleModalPeriod").textContent = `제 ${state.year}기 ${state.month}월차 종합 결산 리포트`;
@@ -4469,8 +4533,10 @@ function openSettlementModal(prod, sold, stockout, rev, ebitda, penalty, intGain
       </div>
     </div>
 
+    ${stockout>0 ? (()=>{const r=getStockoutResponse(stockout,Math.max(1,state.lastPotentialDemand||sold+stockout)); return `<div class="card display-card" style="padding:14px;margin-bottom:14px;border-color:var(--red)"><div style="font-size:13px;font-weight:900;color:var(--red)">결품 대응 센터</div><div class="small" style="margin-top:3px;color:var(--muted)">결품은 원인에 따라 해결책이 다릅니다. 아래에서 현재 상태에 맞는 조치를 바로 실행할 수 있습니다.</div><div class="stockout-action-grid">${r.actions.map(a=>`<div class="stockout-action-card ${a.cls}"><strong style="font-size:12px">${a.title}</strong><div class="small" style="margin:6px 0 8px;line-height:1.45">${a.desc}</div>${a.html}</div>`).join('')}</div></div>`;})() : ''}
+
     <div class="notice purple">
-      경영진 브리핑: 직접 기획한 상품의 대량 출하를 위해 원자재 안전재고와 공정 밸런서의 병목을 매달 지속 점검하십시오.
+      경영진 브리핑: 원자재 커버, 병목 CAPA, 운송 리드타임을 함께 보고 다음 달 결품 원인을 사전에 제거하십시오.
     </div>
   `;
   
@@ -4514,11 +4580,11 @@ if ($("settleModalCloseBtn")) $("settleModalCloseBtn").onclick = () => $("settle
 if ($("feedbackModalCloseBtn")) $("feedbackModalCloseBtn").onclick = () => $("actionFeedbackModal").classList.remove("open");
 
 function save() {
-  localStorage.setItem("VIOLET_LEDGER_SAVE_V4", JSON.stringify(state));
+  localStorage.setItem("VIOLET_LEDGER_SAVE_V5", JSON.stringify(state));
 }
 
 function load() {
-  const data = localStorage.getItem("VIOLET_LEDGER_SAVE_V4");
+  const data = localStorage.getItem("VIOLET_LEDGER_SAVE_V5") || localStorage.getItem("VIOLET_LEDGER_SAVE_V4");
   if (!data) return false;
   try {
     state = JSON.parse(data);
