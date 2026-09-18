@@ -6,7 +6,7 @@
 <title>VIOLET LEDGER</title>
 <!--
 ================================================================================
-[VIOLET LEDGER V4.9 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
+[VIOLET LEDGER V4.4 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
 ================================================================================
 ■ 핵심 개발 지침 (절대 원칙):
   1. [하드코딩 절대 금지 및 DB화 위주 개발]:
@@ -477,6 +477,31 @@ button { cursor: pointer; }
 .finance-waterfall .wf-val { font-size:10px; font-weight:900; color:var(--ink); white-space:nowrap; }
 .stochastic-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 7px; border-radius:6px; background:rgba(255,240,247,.85); color:var(--pink-dark); border:1px solid #fbcfe8; font-size:10px; font-weight:900; }
 @media(max-width:760px){ .price-intel-grid,.price-scenario-grid,.inventory-visual{grid-template-columns:1fr;} .inventory-flow{grid-template-columns:1fr;} .inventory-flow .flow-node:not(:last-child)::after{content:'↓'; right:50%; top:auto; bottom:-15px; transform:translateX(50%);} .route-flow-row{grid-template-columns:100px 1fr 65px;} .finance-waterfall{grid-template-columns:repeat(3,1fr);} }
+/* 제품 포트폴리오 / 운송 선택 / 금융 관리 강화 */
+.product-portfolio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.product-portfolio-card{border:1.5px solid var(--line);border-radius:14px;padding:14px;background:rgba(255,255,255,.9);cursor:pointer;transition:var(--transition);position:relative;overflow:hidden;}
+.product-portfolio-card:hover{border-color:var(--purple-vivid);transform:translateY(-2px);box-shadow:0 8px 22px rgba(124,58,237,.12);}
+.product-portfolio-card.current{border-color:var(--purple-vivid);background:linear-gradient(180deg,rgba(246,240,255,.95),rgba(255,255,255,.92));}
+.product-status-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;}
+.product-status-badges{display:flex;gap:5px;flex-wrap:wrap;}
+.product-spark{height:46px;display:flex;align-items:flex-end;gap:3px;padding:4px 0;}
+.product-spark span{flex:1;min-width:3px;border-radius:4px 4px 1px 1px;background:linear-gradient(180deg,var(--pink),var(--purple-vivid));opacity:.82;}
+.product-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+.product-detail-box{padding:9px;border:1px solid var(--line);border-radius:9px;background:rgba(250,249,252,.8);}
+.transport-mode-card{border:1.5px solid var(--line);border-radius:13px;padding:13px;background:rgba(255,255,255,.88);cursor:pointer;transition:var(--transition);}
+.transport-mode-card:hover{border-color:var(--purple-mid);transform:translateY(-1px);}
+.transport-mode-card.active{border-color:var(--purple-vivid);box-shadow:0 7px 20px rgba(124,58,237,.14);background:linear-gradient(180deg,rgba(246,240,255,.96),rgba(255,255,255,.92));}
+.transport-choice-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:10px;}
+.transport-metric-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:9px 0;}
+.transport-procon{display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:10.5px;}
+.loan-control-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;}
+.loan-control-card{border:1.5px solid var(--line);border-radius:13px;padding:13px;background:rgba(255,255,255,.9);}
+.ar-aging-bar{display:flex;height:18px;border-radius:8px;overflow:hidden;background:rgba(236,231,243,.85);margin:10px 0 7px;}
+.ar-aging-bar span{height:100%;display:block;}
+.ar-risk-row{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:800;color:var(--muted);}
+.finance-choice-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
+@media(max-width:1120px){.product-portfolio-grid{grid-template-columns:1fr}.transport-choice-grid{grid-template-columns:repeat(2,1fr)}.loan-control-grid{grid-template-columns:1fr}.transport-metric-strip{grid-template-columns:repeat(2,1fr)}}
+
 .ds-visual-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:14px; }
 .ds-visual-card { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:rgba(255,255,255,.78); }
 .ds-visual-card strong { display:block; font-size:12px; color:var(--ink-soft); margin-bottom:6px; }
@@ -914,7 +939,7 @@ button { cursor: pointer; }
 
   <div class="nav-group-title">전략 및 자금 운용</div>
   <div class="nav">
-    <button data-tab="finance" id="nav_finance"><span>직관적 재무·자금 운용</span></button>
+    <button data-tab="finance" id="nav_finance"><span>재무·자금 운용</span></button>
     <button data-tab="market" id="nav_market"><span>전략 R&D & 시장 점유율</span></button>
     <button data-tab="audit" id="nav_audit"><span>월별 결산 & 감사 기록</span></button>
   </div>
@@ -1123,7 +1148,7 @@ button { cursor: pointer; }
   <div class="head">
     <div>
       <h2>2단계: BOM 인바운드 조달 및 원자재 창고 관리</h2>
-      <p>단 하나의 핵심 자재라도 고갈되면 전체 공정 라인이 멈춥니다. 4대 자재의 안전재고를 사수하세요.</p>
+      <p>핵심 자재의 재고·리드타임·운송 모드를 함께 관리합니다. 운송 선택은 현금비용과 결품 위험을 동시에 바꿉니다.</p>
     </div>
     <span class="tag pink">BOM 창고</span>
   </div>
@@ -1344,6 +1369,7 @@ button { cursor: pointer; }
     </div>
   </div>
 
+
   <div class="grid two">
     <div class="card interactive-card">
       <div class="cardHead">
@@ -1358,6 +1384,20 @@ button { cursor: pointer; }
         <span class="affordance-badge affordance-interactive">슬라이더 조절</span>
       </div>
       <div class="body"><div id="supplyFields" class="fieldGrid"></div></div>
+    </div>
+  </div>
+
+  <div class="card display-card" style="margin-top:16px" id="productPortfolioCard">
+    <div class="cardHead">
+      <div>
+        <h3>자사 제품 포트폴리오 현황</h3>
+        <div class="small" style="margin-top:2px;color:var(--muted)">양산착수한 제품의 개발 상태, 지연 요인, 가격, 판매량 추이를 한곳에서 확인합니다. 제품 카드를 누르면 상세 현황이 열립니다.</div>
+      </div>
+      <span class="tag purple" id="productPortfolioCount">0개 제품</span>
+    </div>
+    <div class="body">
+      <div class="grid four" style="margin-bottom:12px" id="productPortfolioKpis"></div>
+      <div class="product-portfolio-grid" id="productPortfolioGrid"></div>
     </div>
   </div>
 </section>
@@ -1429,8 +1469,8 @@ button { cursor: pointer; }
 <section class="section" id="finance">
   <div class="head">
     <div>
-      <h2>직관적 재무 관리 & 유동성 트레저리 (Working Capital Management)</h2>
-      <p>영업현금흐름을 실시간으로 확인하고, 유휴자금 예금 예치, 마이너스 통장 인출, 매출채권 팩토링을 통해 흑자도산을 방어하세요.</p>
+      <h2>재무·자금 운용</h2>
+      <p>현금흐름, 장기대출, 리볼버 한도, 매출채권 회수와 팩토링을 함께 관리합니다.</p>
     </div>
     <span class="tag pink">자금 운용 센터</span>
   </div>
@@ -1514,7 +1554,7 @@ button { cursor: pointer; }
 
     <div class="card interactive-card">
       <div class="cardHead">
-        <h3>마이너스 리볼버 한도대출 제어</h3>
+        <h3>리볼버 한도대출</h3>
         <span class="tag amber" id="tag_revolverRate">이자비용</span>
       </div>
       <div class="body">
@@ -1528,7 +1568,7 @@ button { cursor: pointer; }
 
     <div class="card interactive-card">
       <div class="cardHead">
-        <h3>매출채권 긴급 팩토링 (조기 현금화)</h3>
+        <h3>매출채권 회수·팩토링</h3>
         <span class="tag pink" id="tag_factoringRate">할인율</span>
       </div>
       <div class="body">
@@ -1538,6 +1578,61 @@ button { cursor: pointer; }
         </div>
         <div class="notice purple" style="margin-top:auto">
           현재 회수 대기 채권: <b id="boxARVal">0원</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card display-card" style="margin-bottom:16px" id="financeDebtReceivablesCard">
+    <div class="cardHead">
+      <div>
+        <h3>대출·채권 관리</h3>
+        <div class="small" style="margin-top:2px;color:var(--muted)">대출은 이자·상환 부담을, 채권은 회수 시점과 팩토링 비용을 기준으로 관리합니다.</div>
+      </div>
+      <span class="tag amber" id="financeDebtHealthTag">상태 확인</span>
+    </div>
+    <div class="body">
+      <div class="loan-control-grid">
+        <div class="loan-control-card">
+          <div style="display:flex;justify-content:space-between;align-items:center"><strong>장기 운영대출</strong><span class="tag purple" id="termLoanRateTag">연 5.5%</span></div>
+          <div class="product-detail-grid">
+            <div class="product-detail-box"><span class="small">잔액</span><strong id="termLoanBalance" style="display:block;margin-top:2px">—</strong></div>
+            <div class="product-detail-box"><span class="small">월 이자</span><strong id="termLoanMonthlyInterest" style="display:block;margin-top:2px">—</strong></div>
+            <div class="product-detail-box"><span class="small">상환부담</span><strong id="termLoanBurden" style="display:block;margin-top:2px">—</strong></div>
+          </div>
+          <div class="finance-choice-row">
+            <button class="btn sm" type="button" onclick="adjustTermDebt(-100000000)">1억 상환</button>
+            <button class="btn sm" type="button" onclick="adjustTermDebt(-300000000)">3억 상환</button>
+            <button class="btn sm primary" type="button" onclick="adjustTermDebt(300000000)">3억 추가 차입</button>
+          </div>
+          <div class="hint">추가 차입은 총 대출 한도를 넘을 수 없고, 상환은 보통예금에서 즉시 빠집니다.</div>
+        </div>
+        <div class="loan-control-card">
+          <div style="display:flex;justify-content:space-between;align-items:center"><strong>리볼버 한도대출</strong><span class="tag pink" id="revolverUseRateTag">사용률 —%</span></div>
+          <div class="product-detail-grid">
+            <div class="product-detail-box"><span class="small">사용액</span><strong id="revolverBalance" style="display:block;margin-top:2px">—</strong></div>
+            <div class="product-detail-box"><span class="small">남은 한도</span><strong id="revolverAvailable" style="display:block;margin-top:2px">—</strong></div>
+            <div class="product-detail-box"><span class="small">월 이자</span><strong id="revolverMonthlyInterest" style="display:block;margin-top:2px">—</strong></div>
+          </div>
+          <div class="finance-choice-row">
+            <button class="btn sm" type="button" onclick="adjustRevolver(100000000)">1억 인출</button>
+            <button class="btn sm" type="button" onclick="adjustRevolver(300000000)">3억 인출</button>
+            <button class="btn sm" type="button" onclick="adjustRevolver(-300000000)">3억 상환</button>
+          </div>
+          <div class="hint">짧은 현금 공백을 메우는 용도입니다. 사용기간이 길어질수록 이자 부담이 누적됩니다.</div>
+        </div>
+        <div class="loan-control-card">
+          <div style="display:flex;justify-content:space-between;align-items:center"><strong>매출채권 회수·팩토링</strong><span class="tag pink" id="arQualityTag">회수 상태</span></div>
+          <div class="small" style="margin-top:5px">현재 미회수 채권</div>
+          <strong id="arManagementTotal" style="font-size:18px;display:block;margin-top:2px">—</strong>
+          <div class="ar-aging-bar" id="arAgingBar"></div>
+          <div class="ar-risk-row"><span>정상</span><span>주의</span><span>연체</span></div>
+          <div class="finance-choice-row">
+            <button class="btn sm" type="button" onclick="sellFactoringPct(25)">25% 팩토링</button>
+            <button class="btn sm pink" type="button" onclick="sellFactoringPct(50)">50% 팩토링</button>
+            <button class="btn sm" type="button" onclick="sellFactoringPct(75)">75% 팩토링</button>
+          </div>
+          <div class="hint" id="arManagementHint">회수 시기와 할인 수수료를 함께 확인하세요.</div>
         </div>
       </div>
     </div>
@@ -2359,10 +2454,10 @@ const DB = {
   },
   
   freightModes: [
-    { id: "ocean_standard", name: "해상 정기선 컨테이너", leadMonths: 2, costMult: 1.0, desc: "가장 저렴한 대량 운송. 2달 걸리므로 35일 이상 안전재고 유지 필수" },
-    { id: "ocean_express", name: "해상 고속 급행선", leadMonths: 1, costMult: 1.8, desc: "1달 만에 입고되는 쾌속선. 운임 1.8배" },
-    { id: "rail_multimodal", name: "복합 철도 화물", leadMonths: 1, costMult: 2.3, desc: "정시성이 우수한 대륙 철도 복합 운송" },
-    { id: "air_regular", name: "항공 정기 화물기", leadMonths: 0, costMult: 5.2, desc: "당월 즉시 공장 입고. 운임은 높으나 결품 방지 탁월" }
+    { id: "ocean_standard", name: "해상 정기선 컨테이너", leadMonths: 2, costMult: 1.0, capacityMult: 1.25, reliability: 0.93, inventoryPressure: 1.35, riskMult: 1.10, pros:["단위 운임이 가장 낮음","대량 화물에 유리"], cons:["긴 리드타임","안전재고 부담이 큼"], desc: "가장 저렴한 대량 운송. 2달 걸리므로 35일 이상 안전재고 유지 필수" },
+    { id: "ocean_express", name: "해상 고속 급행선", leadMonths: 1, costMult: 1.8, capacityMult: 1.10, reliability: 0.95, inventoryPressure: 0.92, riskMult: 1.04, pros:["표준 해상보다 빠름","운임과 재고의 균형"], cons:["정기선보다 비쌈","특정 항차 가용성 영향"], desc: "1달 만에 입고되는 쾌속선. 운임 1.8배" },
+    { id: "rail_multimodal", name: "복합 철도 화물", leadMonths: 1, costMult: 2.3, capacityMult: 0.95, reliability: 0.975, inventoryPressure: 0.82, riskMult: 0.99, pros:["정시성이 높음","해상 대비 운송일수 단축"], cons:["비용 상승","노선 제약"], desc: "정시성이 우수한 대륙 철도 복합 운송" },
+    { id: "air_regular", name: "항공 정기 화물기", leadMonths: 0, costMult: 5.2, capacityMult: 0.82, reliability: 0.985, inventoryPressure: 0.30, riskMult: 0.96, pros:["리드타임 최단","결품 방어에 강함"], cons:["운임 부담이 매우 큼","대량 원가 경쟁력 낮음"], desc: "당월 즉시 공장 입고. 운임은 높으나 결품 방지 탁월" }
   ]
 };
 
@@ -2484,7 +2579,7 @@ function getFreightSnapshot(quantity, revenue=0) {
   const weights=routeVol.map((v,i)=>Math.max(.02,v*(1+hashNoise(`route:${serial}:${i}`)*routeRisks[i])));
   const ws=weights.reduce((a,b)=>a+b,0); const norm=weights.map(v=>v/ws);
   const risk=1+norm.reduce((a,v,i)=>a+v*routeRisks[i],0)*.65;
-  const ratio=DB.config.freightCostRatio*mode.costMult*fuel*congestion*risk;
+  const ratio=DB.config.freightCostRatio*mode.costMult*(mode.riskMult||1)*fuel*congestion*risk;
   const total=Math.round(Math.max(0,revenue)*ratio + Math.max(0,quantity)*Math.max(0,state.customProduct.calculatedUnitCost||0)*0.0012*mode.costMult);
   return {mode,fuelShock:fuel,congestionShock:congestion,riskShock:risk,ratio,total,weights:norm};
 }
@@ -2592,6 +2687,8 @@ let state = {
   marketShare: 28,
   competitors: [],
   projects: [],
+  productPortfolio: [],
+  activeProductRecordId: null,
   
   history: [],
   auditLogs: []
@@ -2658,7 +2755,7 @@ const tutorialSteps = [
   {
     tabId: "finance",
     targetId: "financeCashFlowCard",
-    title: "실시간 현금 유출입 스트림 (Cash Flow)",
+    title: "현금 유출입 스트림 (Cash Flow)",
     desc: "예상 출하 매출에서 원자재비와 공장 운영비를 차감한 당월 순현금 증감을 실시간 추적합니다. 순현금이 마이너스라면 흑자도산 위험이 있으므로 정기예금 해지, 마이너스 리볼버 인출, 매출채권 팩토링을 선제적으로 실행하여 안전 유동성을 확보해 두어야 합니다."
   },
   {
@@ -2832,6 +2929,8 @@ function initGame(industryId, companyName) {
   state.sourcingContractType = "standard";
   state.selectedVendorIndex = 0;
   state.freightMode = "ocean_standard";
+  state.productPortfolio = [];
+  state.activeProductRecordId = null;
   
   const baseMonthlyProd = catMeta.baseDemand;
   const dailyUse = baseMonthlyProd / 30;
@@ -2880,6 +2979,8 @@ function initGame(industryId, companyName) {
   }));
   
   calculateCustomProductEconomics();
+  state.productPortfolio=[{id:`P-${Date.now()}`,name:state.customProduct.name,category:state.customProduct.category,tier:state.customProduct.tier,price:state.customProduct.finalPrice,cost:state.customProduct.calculatedUnitCost,launchPeriod:'Y1 M1',developmentStatus:'개발 완료',developmentNote:'개발 완료 · 양산/판매 중',blockers:[],minDays:DB.config.defaultSafetyStockDays,capaRatio:1,salesHistory:[],totalSold:0,lastSold:0,lastRevenue:0}];
+  state.activeProductRecordId=state.productPortfolio[0].id;
   state.lastPotentialDemand = state.customProduct.estDemand;
   state.salesFactors = getSalesDemandSnapshot(state.customProduct).factors;
   
@@ -3123,7 +3224,18 @@ function updateStudioBlueprint(){
 function renderStudioPriceIntelligence(eco){const p=eco.priceIntel;const scenarios=[['원가 방어선',p.floor],['시장 권장가',p.recommended],['동급 경쟁가',p.sameTierAvg],['상위급 평균',p.upperTierAvg]];const current=eco.finalPrice;const cards=scenarios.slice(0,4).map(([label,val])=>`<div class="price-intel-card"><span class="label">${label}</span><strong>${fmtWon(val)}</strong></div>`).join('');$('studio_priceIntel').innerHTML=`<div style="margin-top:8px;font-size:11px;font-weight:900;color:var(--purple-dark)">가격책정 참고 정보</div><div class="price-intel-grid">${cards}<div class="price-intel-card"><span class="label">수급 균형가</span><strong>${fmtWon(p.equilibrium)}</strong></div><div class="price-intel-card"><span class="label">시장 압력</span><strong>${p.pressureLabel} (${p.pressurePct.toFixed(0)}%)</strong></div></div>`;
   const testPrices=[p.floor,p.sameTierAvg,p.recommended,p.upperTierAvg].filter((v,i,a)=>a.indexOf(v)===i).slice(0,3); const cols=testPrices.map(v=>{const s=getSalesDemandSnapshot({category:studioTemp.category,tier:studioTemp.tier,finishId:studioTemp.finishId,calculatedUnitCost:eco.unitCost,finalPrice:v});return `<div class="price-scenario"><div style="font-size:10px;color:var(--muted);font-weight:800">${v===p.floor?'원가방어':v===p.sameTierAvg?'동급경쟁':v===p.recommended?'권장가':'상위급'} </div><strong style="font-size:13px">${fmtWon(v)}</strong><div class="small" style="margin-top:4px">예상 판매 ${fmtNum(s.potentialDemand)} · 매출 ${fmtWon(s.potentialDemand*v)}</div><button class="btn sm" type="button" onclick="applyStudioPriceValue(${Math.round(v)})">이 가격 적용</button></div>`;}).join('');$('studio_priceScenarios').innerHTML=`<div style="margin-top:8px;font-size:10.5px;font-weight:900;color:var(--muted)">가격별 수요 시나리오</div><div class="price-scenario-grid">${cols}</div>`;}
 function applyStudioPriceValue(v){studioTemp.sellingPrice=Math.round(v);studioTemp.priceMode='manual';$('studio_sellingPrice').value=studioTemp.sellingPrice;updateStudioBlueprint();}
-function commitStudioProduct(){const eco=calcStudioEco();state.customProduct={...state.customProduct,name:studioTemp.name,category:studioTemp.category,tier:studioTemp.tier,finishId:studioTemp.finishId,matRatios:[...studioTemp.matRatios],targetMargin:eco.unitCost>0?Math.round((eco.unitMargin/eco.unitCost)*100):studioTemp.targetMargin,sellingPrice:eco.finalPrice,priceMode:studioTemp.priceMode,calculatedUnitCost:eco.unitCost,finalPrice:eco.finalPrice,laborReq:parseFloat(eco.laborReq),estDemand:eco.estDemand};state.materials.forEach((m,i)=>{m.dailyConsumption=(eco.estDemand*state.customProduct.matRatios[i])/30;});render();openActionModal('맞춤 상품 양산 투입 완료',`기획하신 <b>[${state.customProduct.name}]</b>이(가) 공식 공장 양산 라인에 투입되었습니다.<br>- 세부 분류: <b>${eco.tierTag} · ${state.customProduct.category}</b><br>- 확정 출고가: <b>${fmtWon(eco.finalPrice)}</b><br>- 시장 권장가: <b>${fmtWon(eco.priceIntel.recommended)}</b> / 동급 경쟁가: <b>${fmtWon(eco.priceIntel.sameTierAvg)}</b><br>- 예상 월 수요: <b>${fmtNum(eco.estDemand)} 단위</b>가 라인과 수출망에 반영되었습니다.`);}
+function commitStudioProduct(){
+  const eco=calcStudioEco();
+  state.customProduct={...state.customProduct,name:studioTemp.name,category:studioTemp.category,tier:studioTemp.tier,finishId:studioTemp.finishId,matRatios:[...studioTemp.matRatios],targetMargin:eco.unitCost>0?Math.round((eco.unitMargin/eco.unitCost)*100):studioTemp.targetMargin,sellingPrice:eco.finalPrice,priceMode:studioTemp.priceMode,calculatedUnitCost:eco.unitCost,finalPrice:eco.finalPrice,laborReq:parseFloat(eco.laborReq),estDemand:eco.estDemand};
+  state.materials.forEach((m,i)=>{m.dailyConsumption=(eco.estDemand*state.customProduct.matRatios[i])/30;});
+  ensureProductPortfolio();
+  const old=currentPortfolioRecord(); if(old) old.status='판매 종료';
+  const readiness=getProductReadiness(state.customProduct);
+  const rec={id:`P-${Date.now()}-${Math.floor(Math.random()*900)}`,name:state.customProduct.name,category:state.customProduct.category,tier:state.customProduct.tier,price:eco.finalPrice,cost:eco.unitCost,launchPeriod:`Y${state.year} M${state.month}`,developmentStatus:readiness.blockers.length?'개발 지연':'개발 완료',developmentNote:readiness.blockers.length?readiness.blockers.join(' · '):'개발 완료 · 양산/판매 중',blockers:readiness.blockers,minDays:readiness.minDays,capaRatio:readiness.capaRatio,salesHistory:[],totalSold:0,lastSold:0,lastRevenue:0};
+  state.productPortfolio.push(rec); state.activeProductRecordId=rec.id;
+  render();
+  openActionModal('맞춤 상품 양산 투입 완료',`<b>[${state.customProduct.name}]</b> 제품이 포트폴리오에 등록되었습니다.<br>- 상태: <b>${rec.developmentStatus}</b><br>- 현재 판매가: <b>${fmtWon(eco.finalPrice)}</b><br>- 개발 판단: <b>${rec.developmentNote}</b><br>- 예상 월 수요: <b>${fmtNum(eco.estDemand)} 단위</b>`);
+}
 function calculateCustomProductEconomics(){const eco=calcStudioEco();state.customProduct.calculatedUnitCost=eco.unitCost;state.customProduct.finalPrice=eco.finalPrice;state.customProduct.sellingPrice=eco.finalPrice;state.customProduct.laborReq=parseFloat(eco.laborReq);state.customProduct.estDemand=eco.estDemand;state.customProduct.targetMargin=eco.unitCost>0?Math.round((eco.unitMargin/eco.unitCost)*100):state.customProduct.targetMargin;}
 
 // ---------------------------------------------------------
@@ -3131,7 +3243,7 @@ function calculateCustomProductEconomics(){const eco=calcStudioEco();state.custo
 // ---------------------------------------------------------
 function getPipelineCapacities(silent=false) {
   const ind=DB.industries[state.industryId],vendor=ind.vendors[state.selectedVendorIndex]||ind.vendors[0],prod=state.customProduct,demand=Math.max(1,prod.estDemand||ind.baseMarketDemand);
-  const term=DB.contractTerms[state.sourcingContractType]||DB.contractTerms.standard,rule=getCategoryRule(state.industryId,prod.category),serial=getPeriodSerial(),stageMult=rule.stageMult||[1,1,1,1];
+  const term=DB.contractTerms[state.sourcingContractType]||DB.contractTerms.standard,rule=getCategoryRule(state.industryId,prod.category),serial=getPeriodSerial(),stageMult=rule.stageMult||[1,1,1,1],freightMode=DB.freightModes.find(m=>m.id===state.freightMode)||DB.freightModes[0];
   const catScale=Math.pow(demand/Math.max(ind.baseMarketDemand,1),DB.config.salesModel.nonlinearCapacityExponent);
   const vendorReliability=1-clampNum((vendor.defectRate+term.defectMod)/140,0,.12);
   const vendorNoise=1+hashNoise(`vendor:${serial}`)*.045;
@@ -3139,7 +3251,8 @@ function getPipelineCapacities(silent=false) {
   const sourcingCapa=Math.round(baseVendor*(state.sourcingContractType==='flexible'?1.14:state.sourcingContractType==='exclusive'?.98:1));
   let minRawDays=999;state.materials.forEach(m=>{minRawDays=Math.min(minRawDays,m.stock/Math.max(m.dailyConsumption,1));});
   const rawCoverage=clampNum(minRawDays/Math.max(1,state.targetSafetyStockDays),.28,1.25);
-  const procurementCapa=Math.round(demand*(0.72+0.34*Math.tanh(rawCoverage*1.6))* (1+hashNoise(`proc:${serial}`)*.035));
+  const transportCapa=(freightMode.capacityMult||1)*(0.97+0.05*Math.tanh(rawCoverage-0.8));
+  const procurementCapa=Math.round(demand*(0.72+0.34*Math.tanh(rawCoverage*1.6))*transportCapa*(1+hashNoise(`proc:${serial}`)*.035));
   const workerRatio=state.lineWorkers/Math.max(DB.config.defaultLineWorkers,1),ot=Math.max(0,state.overtimeRate||0);
   const workerBoost=1+0.18*Math.tanh((workerRatio-1)*1.6)+0.18*Math.tanh(ot/28);
   const fatigue=1-Math.pow(Math.min(1,ot/100),DB.config.salesModel.overtimeFatigueExponent)*DB.config.salesModel.overtimeSaturation;
@@ -3248,7 +3361,17 @@ function upgradeFactoryStage(stageIdx, cost) {
 function renderFinancialStream(){
   const f=getFinanceSnapshot(); state.lastFinanceSnapshot=f; const el=(id,v)=>{if($(id))$(id).textContent=v;};
   el('fc_revenueIn',`+${fmtWon(f.currentCash + state.accountsReceivable*0.02)}`); el('fc_cogsOut',`-${fmtWon(f.cogs)}`); el('fc_opexOut',`-${fmtWon(f.freight.total+f.variableOpex+f.fixedOpex+f.holdingCost)}`); el('fc_netCashChange',`${f.netCashChange>=0?'+':''}${fmtWon(f.netCashChange)}`);
-  $('financeCashFlowStatus').textContent=f.netCashChange>=0?'영업현금흐름 순유입':'영업현금흐름 순유출';$('financeCashFlowStatus').className=`tag ${f.netCashChange>=0?'green':'red'}`;
+  $('financeCashFlowStatus').textContent=f.netCashChange>=0?'순유입':'순유출';$('financeCashFlowStatus').className=`tag ${f.netCashChange>=0?'green':'red'}`;
+  if($('termLoanBalance')){
+    const termInterest=state.debt*DB.config.debtAnnualRate/12,revInterest=state.revolver*DB.config.revolverAnnualRate/12,avail=Math.max(0,state.revolverLimit-state.revolver),useRate=state.revolverLimit?state.revolver/state.revolverLimit*100:0;
+    $('termLoanRateTag').textContent=`연 ${(DB.config.debtAnnualRate*100).toFixed(1)}%`; $('tag_revolverRate').textContent=`연 ${(DB.config.revolverAnnualRate*100).toFixed(1)}%`;
+    $('termLoanBalance').textContent=fmtWon(state.debt); $('termLoanMonthlyInterest').textContent=fmtWon(termInterest); $('termLoanBurden').textContent=state.debt?`${(termInterest/Math.max(1,Math.abs(state.lastEbitda))*100).toFixed(1)}%`:'0%';
+    $('revolverBalance').textContent=fmtWon(state.revolver); $('revolverAvailable').textContent=fmtWon(avail); $('revolverMonthlyInterest').textContent=fmtWon(revInterest); $('revolverUseRateTag').textContent=`사용률 ${useRate.toFixed(1)}%`;
+    $('arManagementTotal').textContent=fmtWon(state.accountsReceivable);
+    const ar=Math.max(0,state.accountsReceivable), normal=Math.round(ar*.64),watch=Math.round(ar*.25),overdue=Math.max(0,ar-normal-watch); $('arAgingBar').innerHTML=`<span style="width:${ar?normal/ar*100:0}%;background:var(--green)"></span><span style="width:${ar?watch/ar*100:0}%;background:var(--amber)"></span><span style="width:${ar?overdue/ar*100:0}%;background:var(--red)"></span>`;
+    $('arQualityTag').textContent=overdue>ar*.12?'연체 주의':overdue>ar*.06?'회수 관리':'양호'; $('arQualityTag').className=`tag ${overdue>ar*.12?'red':overdue>ar*.06?'amber':'green'}`; $('financeDebtHealthTag').textContent=(state.debt+state.revolver)>2500000000?'부채 부담 높음':(state.debt+state.revolver)>1600000000?'관리 필요':'관리 가능'; $('financeDebtHealthTag').className=`tag ${(state.debt+state.revolver)>2500000000?'red':(state.debt+state.revolver)>1600000000?'amber':'green'}`;
+    $('arManagementHint').textContent=`정상 ${fmtWon(normal)} · 주의 ${fmtWon(watch)} · 연체 ${fmtWon(overdue)} · 표준 팩토링 할인율 ${(DB.config.factoringDiscountRate*100).toFixed(1)}%`;
+  }
   $('financeWaterfallVisual').innerHTML=[['매출 현금',f.currentCash],['원가',-f.cogs],['물류',-f.freight.total],['고정비',-f.fixedOpex],['변동비',-f.variableOpex],['순증감',f.netCashChange]].map(([l,v])=>{const max=Math.max(...[f.currentCash,f.cogs,f.freight.total,f.fixedOpex,f.variableOpex,Math.abs(f.netCashChange),1]);return `<div class="wf-col"><div class="wf-val">${v>=0?'+':''}${fmtWon(v)}</div><div class="wf-bar" style="height:${Math.max(8,Math.round(Math.abs(v)/max*92))}px;background:${v>=0?'linear-gradient(180deg,var(--green),#34d399)':'linear-gradient(180deg,var(--red),#f87171)'}"></div><div class="wf-label">${l}</div></div>`;}).join('');
   $('financeShockNotice').innerHTML=`회수율 <b>${(f.collectionRate*100).toFixed(1)}%</b> · 대손률 <b>${(f.badDebtRate*100).toFixed(2)}%</b> · 변동 운임 <b>${(f.freight.ratio/DB.config.freightCostRatio*100).toFixed(1)}%</b> · 변동비율 <b>${(f.varOpexRatio*100).toFixed(2)}%</b> · 재고 보유비용 <b>${fmtWon(f.holdingCost)}</b>`;
 }
@@ -3302,27 +3425,23 @@ function adjustRevolver(amount) {
   render();
 }
 
-function sellFactoring() {
-  if (state.accountsReceivable <= 10000000) {
-    toast("매각할 매출채권 잔액이 없습니다.");
-    return;
-  }
-  const sellTarget = Math.round(state.accountsReceivable * 0.5);
-  const discountFee = Math.round(sellTarget * DB.config.factoringDiscountRate);
-  const cashInflow = sellTarget - discountFee;
-  
-  state.accountsReceivable -= sellTarget;
-  state.cash += cashInflow;
-  
+function adjustTermDebt(amount){
+  const maxDebt=3500000000;
+  if(amount>0){ if(state.debt+amount>maxDebt){toast('장기 운영대출 한도를 초과합니다.');return;} state.debt+=amount; state.cash+=amount; toast(`장기 운영대출 ${fmtWon(amount)}을 추가 차입했습니다.`);}
+  else { const repay=Math.min(Math.abs(amount),state.debt); if(state.cash<repay){toast('상환할 보통예금 현금이 부족합니다.');return;} state.cash-=repay;state.debt-=repay;toast(`장기 운영대출 ${fmtWon(repay)}을 상환했습니다.`);}
   render();
-  openActionModal(
-    "매출채권 긴급 팩토링 완료",
-    `미회수 외상 매출채권 <b>${fmtWon(sellTarget)}</b>을 금융사에 조기 매각했습니다.<br>
-     - 팩토링 할인 수수료(${(DB.config.factoringDiscountRate*100).toFixed(1)}%): -${fmtWon(discountFee)}<br>
-     - 보통예금 즉시 현금 유입: <b>+${fmtWon(cashInflow)}</b><br>
-     - 결과: 자재 매입 결산 전 긴급 결제 유동성을 신속히 확보했습니다.`
-  );
 }
+function sellFactoringPct(pct){
+  if(state.accountsReceivable<=10000000){toast('매각할 매출채권 잔액이 없습니다.');return;}
+  const agingRisk=0.55+0.45*(Math.min(1,(state.accountsReceivable>0?state.lastBadDebt/Math.max(1,state.accountsReceivable):0)*20));
+  const target=Math.round(state.accountsReceivable*clampNum(pct/100,.1,.9));
+  const feeRate=DB.config.factoringDiscountRate*(1+agingRisk*.35);
+  const fee=Math.round(target*feeRate),cashIn=target-fee;
+  state.accountsReceivable-=target;state.cash+=cashIn;
+  render();
+  openActionModal('매출채권 팩토링 처리 완료',`미회수 매출채권의 <b>${pct}%</b>를 조기 매각했습니다.<br>- 매각 채권: <b>${fmtWon(target)}</b><br>- 할인 수수료: <b>-${fmtWon(fee)}</b> (${(feeRate*100).toFixed(2)}%)<br>- 즉시 현금 유입: <b>+${fmtWon(cashIn)}</b>`);
+}
+function sellFactoring(){ sellFactoringPct(50); }
 
 // ---------------------------------------------------------
 // 10. 조달 창고 및 비상 발주
@@ -3336,6 +3455,16 @@ function renderMaterialsGrid(){
   const bars=Math.min(20,Math.max(4,Math.round(rawQty/Math.max(monthlyNeed,1)*20))); $('inventoryStackVisual').innerHTML=Array.from({length:20},(_,i)=>`<div class="unit" style="height:${i<bars?Math.round(24+Math.min(68,rawQty/Math.max(monthlyNeed,1)*58))+Math.round(Math.abs(hashNoise('stack:'+i))*12):8}px;opacity:${i<bars?.92:.18}"></div>`).join('');
 }
 
+function renderInboundFreightModes(){
+  const el=$('inboundFreightModesGrid'); if(!el) return;
+  const modeNames={ocean_standard:'정기 해상',ocean_express:'고속 해상',rail_multimodal:'복합 철도',air_regular:'항공'};
+  el.className='transport-choice-grid';
+  el.innerHTML=DB.freightModes.map(m=>{
+    const active=state.freightMode===m.id, lead=`${m.leadMonths===0?'당월':m.leadMonths+'개월'}`;
+    const cost=m.costMult||1, reli=Math.round((m.reliability||.94)*100), cap=Math.round((m.capacityMult||1)*100);
+    return `<div class="transport-mode-card ${active?'active':''}" onclick="selectFreightMode('${m.id}')"><div style="display:flex;justify-content:space-between;align-items:center"><div><span class="small" style="font-weight:900;color:var(--purple-vivid)">${modeNames[m.id]||m.name}</span><strong style="display:block;font-size:14px;margin-top:2px">${m.name}</strong></div><span class="tag ${active?'purple':'pink'}">${active?'선택됨':'선택'}</span></div><div class="transport-metric-strip"><div class="product-detail-box"><span class="small">리드타임</span><strong>${lead}</strong></div><div class="product-detail-box"><span class="small">운임</span><strong>×${cost.toFixed(1)}</strong></div><div class="product-detail-box"><span class="small">정시성</span><strong>${reli}%</strong></div><div class="product-detail-box"><span class="small">대량처리</span><strong>${cap}%</strong></div></div><div class="small" style="color:var(--muted);line-height:1.45">${m.desc}</div><div class="transport-procon" style="margin-top:8px"><div class="vendor-pro-item">+ ${(m.pros||[]).join(' · + ')}</div><div class="vendor-con-item">- ${(m.cons||[]).join(' · - ')}</div></div><div style="margin-top:8px;padding-top:7px;border-top:1px dashed var(--line);font-size:10.5px;color:var(--muted)">재고 압력 ×${(m.inventoryPressure||1).toFixed(2)} · 운송 리스크 ×${(m.riskMult||1).toFixed(2)}</div></div>`;
+  }).join('');
+}
 function selectFreightMode(id) {
   state.freightMode = id;
   render();
@@ -3518,9 +3647,72 @@ function renderOutboundLogistics(){
   $('logisticsExportRouteGrid').innerHTML=DB.logisticsRoutes.map((r,i)=>{const share=freight.weights[i]||r.volRatio;const q=Math.round((state.lastProductionQty||0)*share);return `<div style="background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:13px;padding:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong style="font-size:13.5px;color:var(--ink)">${r.region}</strong><span class="tag purple">${(share*100).toFixed(1)}%</span></div><div class="small" style="color:var(--muted)">경로: ${r.route}</div><div class="small" style="color:var(--purple-dark);font-weight:700;margin-top:2px">소요: ${r.lead}</div><div style="border-top:1px dashed var(--line);padding-top:6px;margin-top:8px;font-size:12px;font-weight:800;color:var(--ink)">월 선적: ${fmtNum(q)} 대</div></div>`;}).join('');
   const soldRate=clampNum(sold/demand,0,1),stockRate=clampNum(state.finishedGoods/Math.max(demand,1),0,1); $('finishedGoodsFlowVisual').innerHTML=`<div class="inventory-flow"><div class="flow-node"><div class="small">월 생산</div><strong style="font-size:17px;display:block;margin-top:3px">${fmtNum(state.lastProductionQty)}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${Math.min(100,state.lastProductionQty/Math.max(demand,1)*100)}%"></div></div></div><div class="flow-node"><div class="small">실판매</div><strong style="font-size:17px;display:block;margin-top:3px">${fmtNum(sold)}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${soldRate*100}%"></div></div></div><div class="flow-node"><div class="small">기말 완제품</div><strong style="font-size:17px;display:block;margin-top:3px">${fmtNum(state.finishedGoods)}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${stockRate*100}%"></div></div></div></div><div class="small" style="margin-top:8px;color:var(--muted)">수요 ${fmtNum(demand)} 대비 판매전환 ${((soldRate)*100).toFixed(1)}%, 기말재고 커버 ${((state.finishedGoods/demand)*100).toFixed(1)}%</div>`;
   $('logisticsRouteFlowVisual').innerHTML=`<div style="font-size:12px;font-weight:900;color:var(--ink-soft);margin-bottom:6px">변동 운임 기반 권역별 물류 흐름</div><div class="route-flow">${DB.logisticsRoutes.map((r,i)=>{const share=freight.weights[i]||r.volRatio;const q=Math.round((state.lastProductionQty||0)*share);return `<div class="route-flow-row"><span class="small" style="font-weight:800">${r.region.replace(' 수출','')}</span><div class="route-flow-track"><div class="route-flow-fill" style="width:${share*100}%"></div></div><strong style="font-size:11px;text-align:right">${fmtNum(q)}대</strong></div>`;}).join('')}</div><div class="notice purple" style="margin-top:8px">운임 변동: 기준 대비 ${(freight.ratio/DB.config.freightCostRatio-1>=0?'+':'')}${((freight.ratio/DB.config.freightCostRatio-1)*100).toFixed(1)}% · 연료 ×${freight.fuelShock.toFixed(2)} · 혼잡 ×${freight.congestionShock.toFixed(2)}</div>`;
-  $('pipelineCountBadge').textContent=`${state.inTransit.length}건 배송 중`; $('pipelineTable').innerHTML=state.inTransit.length===0?`<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">현재 이동 중인 인바운드 화물이 없습니다.</td></tr>`:state.inTransit.map(t=>`<tr><td><b>${t.id}</b></td><td>${t.matName||t.matId}</td><td>${t.mode==='ocean_standard'?'해상 컨테이너선':'항공 화물기'}</td><td>${fmtWon(t.val)}</td><td>${fmtNum(t.qty)}개</td><td>협력사 &gt; 국내 항만/공항</td><td><b style="color:var(--purple-vivid)">${t.etaMonths===0?'당월 결산 시 입고':`${t.etaMonths}개월 뒤 입고`}</b></td><td><span class="tag ${t.etaMonths===0?'pink':'purple'}">${t.etaMonths===0?'통관 대기':'운송 중'}</span></td></tr>`).join('');
+  $('pipelineCountBadge').textContent=`${state.inTransit.length}건 배송 중`; $('pipelineTable').innerHTML=state.inTransit.length===0?`<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">현재 이동 중인 인바운드 화물이 없습니다.</td></tr>`:state.inTransit.map(t=>`<tr><td><b>${t.id}</b></td><td>${t.matName||t.matId}</td><td>${(DB.freightModes.find(m=>m.id===t.mode)||{name:t.mode||'기타'}).name}</td><td>${fmtWon(t.val)}</td><td>${fmtNum(t.qty)}개</td><td>협력사 &gt; 국내 항만/공항</td><td><b style="color:var(--purple-vivid)">${t.etaMonths===0?'당월 결산 시 입고':`${t.etaMonths}개월 뒤 입고`}</b></td><td><span class="tag ${t.etaMonths===0?'pink':'purple'}">${t.etaMonths===0?'통관 대기':'운송 중'}</span></td></tr>`).join('');
 }
 
+// 11.5 제품 포트폴리오 현황
+function getProductReadiness(product=state.customProduct){
+  const ind=DB.industries[state.industryId], blockers=[];
+  const minDays=state.materials.reduce((m,mat)=>Math.min(m,mat.stock/Math.max(mat.dailyConsumption||1,1)),999);
+  const pipe=getPipelineCapacities(true);
+  const demand=Math.max(1,product.estDemand||1);
+  const capaRatio=(pipe?.minCapa||0)/demand;
+  if(minDays<10) blockers.push(`핵심 자재 재고 ${Math.floor(minDays)}일분`);
+  else if(minDays<state.targetSafetyStockDays*.65) blockers.push(`안전재고 목표 대비 자재 커버 부족 (${Math.floor(minDays)}일)`);
+  if(capaRatio<0.72) blockers.push(`라인 CAPA 부족 (${Math.round(capaRatio*100)}%)`);
+  const mode=DB.freightModes.find(m=>m.id===state.freightMode)||DB.freightModes[0];
+  const leadBuffer=(mode.leadMonths||0)*30+7;
+  if(state.targetSafetyStockDays<leadBuffer*.72) blockers.push(`운송 리드타임 대비 안전재고 부족`);
+  return {minDays,capaRatio,blockers};
+}
+function currentPortfolioRecord(){return state.productPortfolio?.find(p=>p.id===state.activeProductRecordId)||state.productPortfolio?.find(p=>p.name===state.customProduct.name&&p.category===state.customProduct.category)||null;}
+function ensureProductPortfolio(){
+  if(!Array.isArray(state.productPortfolio)) state.productPortfolio=[];
+  if(!state.productPortfolio.length){
+    state.productPortfolio.push({id:`P-${Date.now()}`,name:state.customProduct.name,category:state.customProduct.category,tier:state.customProduct.tier,price:state.customProduct.finalPrice,cost:state.customProduct.calculatedUnitCost,launchPeriod:`Y${state.year} M${state.month}`,developmentStatus:'개발 완료',developmentNote:'초기 주력 제품',salesHistory:[],totalSold:0,lastSold:state.lastSoldQty||0,lastRevenue:state.lastRevenue||0});
+    state.activeProductRecordId=state.productPortfolio[0].id;
+  }
+}
+function syncCurrentProductRecord(){
+  ensureProductPortfolio();
+  let rec=currentPortfolioRecord(); if(!rec) return null;
+  const ready=getProductReadiness(state.customProduct);
+  rec.price=state.customProduct.finalPrice; rec.cost=state.customProduct.calculatedUnitCost; rec.category=state.customProduct.category; rec.tier=state.customProduct.tier;
+  rec.blockers=ready.blockers; rec.minDays=ready.minDays; rec.capaRatio=ready.capaRatio;
+  rec.developmentStatus=ready.blockers.length?'개발 지연':'개발 완료';
+  rec.developmentNote=ready.blockers.length?ready.blockers.join(' · '):'개발 완료 · 양산/판매 중';
+  return rec;
+}
+function renderProductPortfolio(){
+  ensureProductPortfolio(); syncCurrentProductRecord();
+  const grid=$('productPortfolioGrid'),kpi=$('productPortfolioKpis'); if(!grid||!kpi) return;
+  const total=state.productPortfolio.length, selling=state.productPortfolio.filter(p=>p.id===state.activeProductRecordId).length;
+  const delayed=state.productPortfolio.filter(p=>p.developmentStatus==='개발 지연').length;
+  const allSold=state.productPortfolio.reduce((a,p)=>a+(p.totalSold||0),0);
+  $('productPortfolioCount').textContent=`${total}개 제품`;
+  kpi.innerHTML=`<div class="metric"><span>포트폴리오</span><strong>${total}개</strong></div><div class="metric"><span>현재 주력</span><strong>${selling}개</strong></div><div class="metric"><span>개발 지연</span><strong style="color:${delayed?'var(--red)':'var(--green)'}">${delayed}개</strong></div><div class="metric"><span>누적 판매량</span><strong>${fmtNum(allSold)}개</strong></div>`;
+  grid.innerHTML=state.productPortfolio.slice().reverse().map((p,revIdx)=>{
+    const idx=state.productPortfolio.length-1-revIdx, hist=p.salesHistory||[], vals=hist.slice(-12).map(h=>h.sold||0), max=Math.max(...vals,1);
+    const isCurrent=p.id===state.activeProductRecordId; const isDelay=p.developmentStatus==='개발 지연';
+    const status=isCurrent?(isDelay?'개발 지연 · 판매 영향':'판매 중'):'판매 종료';
+    const statusClass=isDelay?'red':isCurrent?'green':'purple';
+    const bars=vals.length?vals.map(v=>`<span style="height:${Math.max(7,Math.round(v/max*42))}px" title="${fmtNum(v)}개"></span>`).join(''):`<span style="height:7px"></span>`;
+    return `<div class="product-portfolio-card ${isCurrent?'current':''}" onclick="openProductStatusModal(${idx})">
+      <div class="product-status-row"><div><strong style="font-size:14px">${p.name}</strong><div class="small" style="margin-top:2px">${p.category} · ${p.tier==='entry'?'엔트리':p.tier==='mid'?'중급형':p.tier==='hyper'?'스페셜':'플래그십'}</div></div><div class="product-status-badges"><span class="tag ${statusClass}">${status}</span>${isCurrent?'<span class="tag purple">현재 주력</span>':''}</div></div>
+      <div class="small" style="color:${isDelay?'var(--red)':'var(--muted)'};min-height:18px">${p.developmentNote||'개발 상태 확인 중'}</div>
+      <div class="product-detail-grid"><div class="product-detail-box"><span class="small">판매가</span><strong>${fmtWon(p.price||0)}</strong></div><div class="product-detail-box"><span class="small">최근 판매</span><strong>${fmtNum(p.lastSold||0)}개/월</strong></div><div class="product-detail-box"><span class="small">누적 판매</span><strong>${fmtNum(p.totalSold||0)}개</strong></div></div>
+      <div class="small" style="font-weight:900;color:var(--muted)">최근 12개월 판매 추이</div><div class="product-spark">${bars}</div>
+      <div class="small" style="margin-top:4px;color:var(--muted)">양산착수: ${p.launchPeriod||'—'} · 클릭하여 상세 현황</div>
+    </div>`;
+  }).join('');
+}
+function openProductStatusModal(index){
+  const p=state.productPortfolio[index]; if(!p) return; const hist=p.salesHistory||[];
+  const ready=currentPortfolioRecord()?.id===p.id?getProductReadiness(state.customProduct):{blockers:p.blockers||[],minDays:p.minDays||0,capaRatio:p.capaRatio||0};
+  const totalRevenue=hist.reduce((a,h)=>a+(h.revenue||0),0); const avg=hist.length?Math.round(hist.reduce((a,h)=>a+(h.sold||0),0)/hist.length):0; const max=Math.max(...hist.map(h=>h.sold||0),1);
+  const trend=hist.slice(-8).map(h=>`<div style="display:flex;align-items:center;gap:8px;margin:5px 0"><span style="width:44px;font-size:10px;color:var(--muted)">${h.month||''}</span><div style="flex:1;height:10px;background:rgba(236,231,243,.8);border-radius:6px;overflow:hidden"><div style="height:100%;width:${Math.round((h.sold||0)/max*100)}%;background:linear-gradient(90deg,var(--purple-vivid),var(--pink));border-radius:6px"></div></div><b style="width:72px;text-align:right;font-size:11px">${fmtNum(h.sold||0)}개</b></div>`).join('')||'<div class="small">아직 판매 실적이 없습니다.</div>';
+  openActionModal('제품 현황 · '+p.name,`<div class="product-detail-grid"><div class="product-detail-box"><span class="small">개발 상태</span><strong>${p.developmentStatus||'—'}</strong></div><div class="product-detail-box"><span class="small">판매 상태</span><strong>${p.id===state.activeProductRecordId?'판매 중':'판매 종료'}</strong></div><div class="product-detail-box"><span class="small">확정 판매가</span><strong>${fmtWon(p.price||0)}</strong></div></div><div class="notice ${p.developmentStatus==='개발 지연'?'red':'green'}"><b>현재 상황</b><br>${p.developmentNote||'상태 정보 없음'}<br>자재 커버 ${Number(ready.minDays||0).toFixed(0)}일 · 라인 CAPA ${Math.round(Number(ready.capaRatio||0)*100)}%</div><div style="margin-top:12px"><strong style="font-size:12.5px">개별 판매량 추이</strong>${trend}</div><div style="border-top:1px dashed var(--line);margin-top:12px;padding-top:10px;font-size:12px;color:var(--muted)">평균 월판매 <b>${fmtNum(avg)}개</b> · 누적 판매 <b>${fmtNum(p.totalSold||0)}개</b> · 누적 매출 <b>${fmtWon(totalRevenue)}</b></div>`);
+}
 // 12. 전체 화면 통합 렌더링 & 시장 애널리틱스 & R&D 트리
 // ---------------------------------------------------------
 function render() {
@@ -3555,26 +3747,32 @@ function render() {
   $("boxARVal").textContent = fmtWon(state.accountsReceivable);
   
   $("overviewActiveProductBadge").textContent = `${prod.name} (${prod.category})`;
+  const activeRec=syncCurrentProductRecord();
+  const statusText=activeRec?.developmentStatus||'개발 완료';
+  const statusClass=activeRec?.developmentStatus==='개발 지연'?'red':'green';
   $("overviewActiveProductSummary").innerHTML = `
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
       <div class="metric"><span>설계 출고가</span><strong style="color:var(--purple-dark)">${fmtWon(prod.finalPrice)}</strong></div>
       <div class="metric"><span>단위당 제조원가</span><strong>${fmtWon(prod.calculatedUnitCost)}</strong></div>
-      <div class="metric"><span>대당 영업마진</span><strong style="color:var(--green)">+${fmtWon(prod.finalPrice - prod.calculatedUnitCost)}</strong></div>
+      <div class="metric"><span>대당 영업마진</span><strong style="color:${prod.finalPrice-prod.calculatedUnitCost>=0?'var(--green)':'var(--red)'}">${prod.finalPrice-prod.calculatedUnitCost>=0?'+':''}${fmtWon(prod.finalPrice - prod.calculatedUnitCost)}</strong></div>
     </div>
-    <div class="notice purple" style="margin-bottom:0">
-      <b>[${prod.name}]</b> 제품이 공장 양산 라인에 투입되어 정상 가동 중입니다.
-      공정 밸런서에서 병목을 지속적으로 해결하여 출하량을 극대화하세요.
+    <div class="notice ${statusClass}" style="margin-bottom:0">
+      <b>[${prod.name}]</b> · ${statusText}<br>
+      ${activeRec?.developmentNote||'현재 제품 현황을 확인하세요.'}
+      <button class="btn sm" style="margin-top:8px" type="button" onclick="switchTab('factory');setTimeout(()=>openProductStatusModal(${Math.max(0,state.productPortfolio.findIndex(x=>x.id===state.activeProductRecordId))}),0)">제품 상세 현황</button>
     </div>
   `;
   
   renderPipelineViews();
   renderFinancialStream();
   renderMaterialsGrid();
+  renderInboundFreightModes();
   renderInhouseFactory();
   renderSourcing();
   renderOutboundLogistics();
   renderFinanceTables();
   renderRdProjects();
+  renderProductPortfolio();
   renderShareBars();
   renderMarketAnalytics();
   renderSupplyDemandViews();
@@ -4219,6 +4417,17 @@ function closeMonth(){
   const sales=getSalesDemandSnapshot(prod);const demand=sales.potentialDemand;state.lastPotentialDemand=demand;state.salesFactors=sales.factors;
   const actualSold=Math.min(demand,state.finishedGoods),stockoutQty=Math.max(0,demand-actualSold);state.finishedGoods-=actualSold;
   const revenue=Math.round(actualSold*prod.finalPrice);state.lastRevenue=revenue;state.lastSoldQty=actualSold;state.lastStockoutQty=stockoutQty;state.lastStockoutRate=demand>0?stockoutQty/demand*100:0;
+  ensureProductPortfolio();
+  const activeRec=currentPortfolioRecord();
+  if(activeRec){
+    const readiness=getProductReadiness(prod);
+    activeRec.blockers=readiness.blockers; activeRec.minDays=readiness.minDays; activeRec.capaRatio=readiness.capaRatio;
+    activeRec.developmentStatus=readiness.blockers.length?'개발 지연':'개발 완료';
+    activeRec.developmentNote=readiness.blockers.length?readiness.blockers.join(' · '):'개발 완료 · 양산/판매 중';
+    activeRec.lastSold=actualSold; activeRec.lastRevenue=revenue; activeRec.totalSold=(activeRec.totalSold||0)+actualSold;
+    activeRec.salesHistory.push({month:`${state.month}월`,sold:actualSold,revenue,price:prod.finalPrice,demand,production:actualProduction,stockout:stockoutQty});
+    if(activeRec.salesHistory.length>12) activeRec.salesHistory=activeRec.salesHistory.slice(-12);
+  }
   if(stockoutQty>0)state.marketShare=Math.max(10,state.marketShare-(stockoutQty/Math.max(1,demand))*3.5);else state.marketShare=Math.min(58,state.marketShare+.55+Math.max(0,shock)*.25);
   const freight=getFreightSnapshot(actualSold,revenue);const effectiveDiscount=vendor.discount+curTerm.discountMod;
   const cogs=Math.round(actualProduction*prod.calculatedUnitCost*(1-effectiveDiscount*.6)*(1+Math.abs(hashNoise(`cogs:${getPeriodSerial()}`))*.025));
@@ -4351,6 +4560,9 @@ function load() {
         if (ind.materials[idx]) m.name = ind.materials[idx].name;
       });
     }
+    ensureProductPortfolio();
+    if (!state.activeProductRecordId) state.activeProductRecordId = state.productPortfolio[state.productPortfolio.length-1]?.id || null;
+    state.productPortfolio.forEach(p=>{if(!Array.isArray(p.salesHistory))p.salesHistory=[];if(p.totalSold==null)p.totalSold=p.salesHistory.reduce((a,h)=>a+(h.sold||0),0);if(p.lastSold==null)p.lastSold=p.salesHistory.at(-1)?.sold||0;if(!p.developmentStatus)p.developmentStatus='개발 완료';});
     calculateCustomProductEconomics();
     state.lastPotentialDemand = Number.isFinite(state.lastPotentialDemand) ? state.lastPotentialDemand : state.customProduct.estDemand;
     state.lastProductionQty = Number.isFinite(state.lastProductionQty) ? state.lastProductionQty : (state.customProduct.estDemand || ind.baseMarketDemand);
