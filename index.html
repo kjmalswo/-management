@@ -928,6 +928,29 @@ button { cursor: pointer; }
   font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 6px; display: inline-block;
 }
 
+/* V6.0 UX clarity layer: lead with the next decision, then expose depth on demand. */
+:focus-visible { outline: 3px solid rgba(124, 58, 237, .62); outline-offset: 3px; }
+button, [onclick], .topbar-cash-badge { -webkit-tap-highlight-color: transparent; }
+[role="button"] { cursor:pointer; }
+.decision-queue { margin: 0 0 18px; border: 1.5px solid var(--line-focus); border-radius: var(--radius); overflow: hidden; background: linear-gradient(120deg, rgba(248,245,255,.96), rgba(255,255,255,.9)); box-shadow: var(--shadow-sm); }
+.decision-queue-head { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:13px 18px; border-bottom:1px solid var(--line); }
+.decision-queue-head h3 { margin:0; font-size:14.5px; color:var(--ink); }
+.decision-queue-head p { margin:2px 0 0; font-size:12px; color:var(--muted); font-weight:600; }
+.decision-queue-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; padding:12px; }
+.decision-item { min-height:124px; display:flex; flex-direction:column; align-items:flex-start; padding:12px; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.8); }
+.decision-item.urgent { border-color:rgba(220,38,38,.34); background:linear-gradient(135deg,rgba(255,247,247,.96),rgba(255,255,255,.9)); }
+.decision-item.recommended { border-color:rgba(124,58,237,.34); }
+.decision-eyebrow { font-size:10.5px; font-weight:900; letter-spacing:.04em; color:var(--purple-vivid); }
+.decision-item.urgent .decision-eyebrow { color:var(--red); }
+.decision-item strong { margin-top:4px; font-size:13px; line-height:1.35; color:var(--ink); }
+.decision-item p { margin:5px 0 10px; font-size:11.5px; line-height:1.45; color:var(--muted); }
+.decision-item .btn { margin-top:auto; }
+.action-hint { font-size:11px; color:var(--muted); font-weight:700; }
+.table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:10px; }
+.table-wrap .table { min-width:650px; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition:none !important; animation:none !important; } }
+
 @media(max-width:1120px) {
   .sidebar { width: 230px; }
   .kpis { grid-template-columns: repeat(3, 1fr); }
@@ -938,16 +961,29 @@ button { cursor: pointer; }
 }
 @media(max-width:760px) {
   .app { display: block; }
-  .sidebar { height: auto; width: 100%; position: relative; border-right: 0; border-bottom: 1px solid var(--line); }
+  .sidebar { height: auto; width: 100%; position: relative; border-right: 0; border-bottom: 1px solid var(--line); padding:14px 12px; }
+  .brand { margin-bottom:10px; }
+  .nav-group-title { margin-top:12px; }
+  .nav { grid-auto-flow:column; grid-auto-columns:max-content; overflow-x:auto; padding:2px 2px 7px; scrollbar-width:thin; }
+  .nav button { min-height:40px; white-space:nowrap; }
+  .sidebox { display:none; }
   .topbar { padding: 0 16px; height: auto; flex-direction: column; gap: 10px; padding: 12px 16px; }
+  .actions { width:100%; display:grid; grid-template-columns:1fr 1fr; }
+  .actions .btn { min-height:42px; padding:8px; }
+  .actions .btn.primary { grid-column:span 2; }
   .topbar-left { flex-direction: column; width: 100%; align-items: flex-start; gap: 8px; }
   .content { padding: 16px 14px 36px; }
   .kpis { grid-template-columns: repeat(2, 1fr); }
+  .head { align-items:flex-start; }
+  .head h2 { font-size:20px; }
+  .decision-queue-head { align-items:flex-start; flex-direction:column; }
+  .decision-queue-list { grid-template-columns:1fr; }
+  .cardHead { padding:12px 14px; }
+  .body { padding:14px; }
   #industrySelectorGrid { grid-template-columns: 1fr; }
   .contract-term-selector { grid-template-columns: 1fr; }
 }
 </style>
-<script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=15571"></script>
 </head>
 <body>
 <div class="app">
@@ -1035,6 +1071,17 @@ button { cursor: pointer; }
     </div>
     <div class="pipeline-stream" id="overviewPipelineStreamContent"></div>
   </div>
+
+  <section class="decision-queue" aria-labelledby="decisionQueueTitle">
+    <div class="decision-queue-head">
+      <div>
+        <h3 id="decisionQueueTitle">이번 달 운영 우선순위</h3>
+        <p>수십 개의 지표 대신, 결산 전에 판단할 세 가지를 위험도 순으로 정리합니다.</p>
+      </div>
+      <span class="tag purple" id="decisionQueueStatus">진단 중</span>
+    </div>
+    <div class="decision-queue-list" id="decisionQueueList"></div>
+  </section>
 
   <div class="head">
     <div>
@@ -3899,17 +3946,82 @@ function openProductStatusModal(index){
   const trend=hist.slice(-8).map(h=>`<div style="display:flex;align-items:center;gap:8px;margin:5px 0"><span style="width:44px;font-size:10px;color:var(--muted)">${h.month||''}</span><div style="flex:1;height:10px;background:rgba(236,231,243,.8);border-radius:6px;overflow:hidden"><div style="height:100%;width:${Math.round((h.sold||0)/max*100)}%;background:linear-gradient(90deg,var(--purple-vivid),var(--pink));border-radius:6px"></div></div><b style="width:72px;text-align:right;font-size:11px">${fmtNum(h.sold||0)}개</b></div>`).join('')||'<div class="small">아직 판매 실적이 없습니다.</div>';
   openActionModal('제품 현황 · '+p.name,`<div class="product-detail-grid"><div class="product-detail-box"><span class="small">개발 상태</span><strong>${p.developmentStatus||'—'}</strong></div><div class="product-detail-box"><span class="small">판매 상태</span><strong>${p.id===state.activeProductRecordId?'판매 중':'판매 종료'}</strong></div><div class="product-detail-box"><span class="small">확정 판매가</span><strong>${fmtWon(p.price||0)}</strong></div></div><div class="notice ${p.developmentStatus==='개발 지연'?'red':'green'}"><b>현재 상황</b><br>${p.developmentNote||'상태 정보 없음'}<br>자재 커버 ${Number(ready.minDays||0).toFixed(0)}일 · 라인 CAPA ${Math.round(Number(ready.capaRatio||0)*100)}%</div><div style="margin-top:12px"><strong style="font-size:12.5px">개별 판매량 추이</strong>${trend}</div><div style="border-top:1px dashed var(--line);margin-top:12px;padding-top:10px;font-size:12px;color:var(--muted)">평균 월판매 <b>${fmtNum(avg)}개</b> · 누적 판매 <b>${fmtNum(p.totalSold||0)}개</b> · 누적 매출 <b>${fmtWon(totalRevenue)}</b></div>`);
 }
+
+function renderDecisionQueue(){
+  const list=$("decisionQueueList"), status=$("decisionQueueStatus");
+  if(!list || !status) return;
+  const pipe=getPipelineCapacities(true);
+  const minRaw=state.materials.reduce((lowest,m)=>{
+    const days=m.stock/Math.max(1,m.dailyConsumption||1);
+    return !lowest || days<lowest.days ? {name:m.name,days} : lowest;
+  },null);
+  const demand=Math.max(1,state.customProduct.estDemand||1);
+  const hasProduct=hasActiveProduct();
+  const decisions=[];
+
+  if(!hasProduct){
+    decisions.push({kind:'필수 시작',title:'첫 상품을 기획하고 양산을 시작하세요',desc:'제품이 없으면 수요·생산·판매 루프가 열리지 않습니다. 먼저 시장과 가격 포지션을 결정합니다.',tab:'factory',button:'상품 기획으로',cls:'urgent'});
+  } else if(minRaw && minRaw.days<state.targetSafetyStockDays*.7){
+    decisions.push({kind:'최우선 위험',title:`${minRaw.name} 재고를 보강하세요`,desc:`현재 ${Math.floor(minRaw.days)}일분으로, 목표 ${state.targetSafetyStockDays}일보다 낮습니다. 다음 결산의 가동률 저하를 막으세요.`,tab:'procurement',button:'재고 점검',cls:'urgent'});
+  } else {
+    decisions.push({kind:'이번 달 핵심',title:`${pipe.bottleneckStage.name} 병목을 점검하세요`,desc:`월 ${fmtNum(pipe.minCapa)}대가 전체 처리량 상한입니다. 해당 공정을 먼저 개선하면 다른 투자보다 효율이 높습니다.`,tab:'pipeline',button:'병목 개선',cls:'recommended'});
+  }
+
+  const margin=state.customProduct.finalPrice-state.customProduct.calculatedUnitCost;
+  if(hasProduct && margin<=0){
+    decisions.push({kind:'수익성 경고',title:'판매가와 원가 구조를 다시 설계하세요',desc:`대당 기여이익이 ${fmtWon(margin)}입니다. 판매량을 늘리기 전에 가격·BOM·마감 사양을 조정해야 합니다.`,tab:'factory',button:'상품 재설계',cls:'urgent'});
+  } else if(hasProduct && pipe.balanceEfficiency<82){
+    decisions.push({kind:'효율 개선',title:`라인 균형 ${pipe.balanceEfficiency}%를 끌어올리세요`,desc:'가장 느린 공정과 가장 빠른 공정의 격차가 큽니다. 병목 공정 CAPA에 투자하면 유휴 비용을 줄일 수 있습니다.',tab:'pipeline',button:'밸런서 열기',cls:'recommended'});
+  } else {
+    decisions.push({kind:'성장 선택',title:'시장·R&D 투자를 검토하세요',desc:'공급망 흐름이 안정적입니다. 수요 요인과 경쟁 포지션을 보고 다음 성장 레버를 선택할 시점입니다.',tab:'market',button:'시장 분석',cls:'recommended'});
+  }
+
+  if(state.cash<Math.max(1,state.lastOpex||0)*2){
+    decisions.push({kind:'현금 방어',title:'결산 전 유동성을 확보하세요',desc:`가용 현금 ${fmtWon(state.cash)}입니다. 예치금·리볼버·채권 회수의 비용을 비교한 뒤 필요한 만큼만 사용하세요.`,tab:'finance',button:'자금 운용',cls:'urgent'});
+  } else {
+    decisions.push({kind:'결산 준비',title:'결산 전 조치가 끝났다면 다음 달로 진행하세요',desc:`수요 ${fmtNum(demand)}대 기준으로 현재 계획을 검토했습니다. 월말 결산은 실제 수요·현금흐름·재고 변동을 반영합니다.`,tab:'audit',button:'결산 기록 보기',cls:''});
+  }
+  const urgent=decisions.filter(x=>x.cls==='urgent').length;
+  status.textContent=urgent?`즉시 조치 ${urgent}건`:'운영 안정';
+  status.className=`tag ${urgent?'red':'green'}`;
+  list.innerHTML=decisions.slice(0,3).map(d=>`<article class="decision-item ${d.cls}"><span class="decision-eyebrow">${d.kind}</span><strong>${d.title}</strong><p>${d.desc}</p><button class="btn sm ${d.cls==='urgent'?'pink':''}" type="button" onclick="switchTab('${d.tab}')">${d.button}</button></article>`).join('');
+}
+
+function wrapWideTables(){
+  document.querySelectorAll('.table').forEach(table=>{
+    if(table.parentElement?.classList.contains('table-wrap')) return;
+    const wrap=document.createElement('div'); wrap.className='table-wrap';
+    table.parentNode.insertBefore(wrap,table); wrap.appendChild(table);
+  });
+}
+
+function enhanceClickTargets(){
+  document.querySelectorAll('[onclick]').forEach(el=>{
+    if(el.matches('button, a, input, select')) return;
+    if(!el.hasAttribute('role')) el.setAttribute('role','button');
+    if(!el.hasAttribute('tabindex')) el.tabIndex=0;
+  });
+}
+
+document.addEventListener('keydown', event=>{
+  if(event.key!=='Enter' && event.key!==' ') return;
+  const target=event.target.closest('[role="button"][onclick]');
+  if(!target) return;
+  event.preventDefault(); target.click();
+});
 // 12. 전체 화면 통합 렌더링 & 시장 애널리틱스 & R&D 트리
 // ---------------------------------------------------------
 function render() {
   const ind = DB.industries[state.industryId] || DB.industries.electronics;
   const prod = state.customProduct;
+  wrapWideTables();
   
   $("topbarCashVal").textContent = fmtWon(state.cash);
   
   $("period").textContent = `제 ${state.year}기 ${state.month}월차`;
   $("companyName").textContent = state.companyName;
   $("companyMeta").textContent = `${ind.name} · ${hasActiveProduct()?prod.name:'양산 제품 미착수'}`;
+  renderDecisionQueue();
   
   $("cash").textContent = fmtWon(state.cash);
   $("revenue").textContent = fmtWon(state.lastRevenue);
@@ -3956,6 +4068,7 @@ function render() {
   renderSupplyDemandViews();
   renderPrescriptions();
   renderAuditLogs();
+  enhanceClickTargets();
   drawChart();
 }
 
