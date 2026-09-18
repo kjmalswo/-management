@@ -6,7 +6,7 @@
 <title>VIOLET LEDGER</title>
 <!--
 ================================================================================
-[VIOLET LEDGER V6.0 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
+[VIOLET LEDGER V6.2 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
 ================================================================================
 ■ 핵심 개발 지침 (절대 원칙):
   1. [하드코딩 절대 금지 및 DB화 위주 개발]:
@@ -1218,6 +1218,11 @@ button, [onclick], .topbar-cash-badge { -webkit-tap-highlight-color: transparent
     <div class="body" id="sourcingActivePartnerDetail"></div>
   </div>
 
+  <div class="card display-card" style="margin-bottom:16px">
+    <div class="cardHead"><div><h3>공급 전략 한 번에 선택</h3><div class="small" style="margin-top:2px;color:var(--muted)">협력사와 계약조건을 따로 외우지 말고, 이번 달 운영 목적을 고르면 조합을 제안합니다.</div></div><span class="tag purple" id="supplyStrategyStatus">분석 중</span></div>
+    <div class="body" id="supplyStrategyBody"></div>
+  </div>
+
   <div class="card display-card">
     <div class="cardHead">
       <h3>수급 협상 가능한 글로벌 협력업체 목록</h3>
@@ -1244,6 +1249,11 @@ button, [onclick], .topbar-cash-badge { -webkit-tap-highlight-color: transparent
     <div class="card metric display-card"><div class="small">원자재 창고 총 자산가</div><strong id="scmRawTotalVal" style="font-size:18px">—</strong><span class="small">창고 보관액</span></div>
     <div class="card metric display-card"><div class="small">월간 자재 보관/관리비</div><strong id="scmHoldingCost" style="font-size:18px;color:var(--amber)">—</strong><span class="small">보관비 및 감가 손실</span></div>
     <div class="card metric display-card"><div class="small">공장 셧다운 위험도</div><strong id="scmRiskStatus" style="font-size:18px;color:var(--green)">안전 가동</strong><span class="small">라인 방어 중</span></div>
+  </div>
+
+  <div class="card interactive-card" style="margin-bottom:16px" id="procurementActionCenter">
+    <div class="cardHead"><div><h3>이번 달 조달 의사결정</h3><div class="small" style="margin-top:2px;color:var(--muted)">모든 자재를 따로 계산하지 않아도 됩니다. 목표 재고와 현금 여력에 맞는 한 가지 조달 방침을 선택하세요.</div></div><span class="tag purple" id="procurementPlanStatus">계획 계산 중</span></div>
+    <div class="body" id="procurementPlanBody"></div>
   </div>
 
   <div class="card interactive-card" style="margin-bottom:16px" id="inhouseFactoryCard">
@@ -1523,6 +1533,7 @@ button, [onclick], .topbar-cash-badge { -webkit-tap-highlight-color: transparent
       <div style="display:flex;gap:7px;align-items:center"><span class="tag purple" id="outboundAllocationTotal">100%</span><button class="btn sm" type="button" onclick="autoBalanceOutbound()">균형 배분</button></div>
     </div>
     <div class="body">
+      <div id="logisticsStrategyBody" style="margin-bottom:12px"></div>
       <div id="outboundRouteChoiceGrid" class="outbound-route-choice-grid"></div>
       <div id="outboundBottleneckNotice" style="margin-top:12px"></div>
     </div>
@@ -1622,6 +1633,11 @@ button, [onclick], .topbar-cash-badge { -webkit-tap-highlight-color: transparent
       <strong id="treasuryRevolverAvail" style="font-size:18px;color:var(--pink)">—</strong>
       <span class="small">유동성 방어선</span>
     </div>
+  </div>
+
+  <div class="card interactive-card" style="margin-bottom:16px" id="treasuryDecisionCard">
+    <div class="cardHead"><div><h3>월말 자금 방어 플랜</h3><div class="small" style="margin-top:2px;color:var(--muted)">현금·예치금·채권·대출을 따로 보지 않고, 버틸 기간과 즉시 비용을 기준으로 한 번에 판단합니다.</div></div><span class="tag purple" id="treasuryRunwayTag">계산 중</span></div>
+    <div class="body" id="treasuryDecisionBody"></div>
   </div>
 
   <div class="grid three" style="margin-bottom:16px" id="treasuryToolsGrid">
@@ -3048,9 +3064,9 @@ function adjustOutboundAllocation(routeId, nextPct){
   const current=getOutboundAllocationsNormalized(); const oldOther=others.reduce((a,r)=>a+current[r.id],0); current[routeId]=target;
   const remain=1-target;
   if(oldOther<=0) others.forEach(r=>current[r.id]=remain/Math.max(1,others.length)); else others.forEach(r=>current[r.id]=current[r.id]/oldOther*remain);
-  state.outboundAllocations=current; render();
+  state.outboundAllocations=current; state.outboundStrategy='custom'; render();
 }
-function autoBalanceOutbound(){ const routes=DB.outboundRoutes||[]; const scores=routes.map(r=>({id:r.id,score:(r.reliability*r.capacityMult)/(Math.max(.7,r.costMult)*Math.pow(1+r.leadDays/30,.42))})); const total=scores.reduce((a,x)=>a+x.score,0); state.outboundAllocations={}; scores.forEach(x=>state.outboundAllocations[x.id]=x.score/total); render(); toast('출하·유통 배분을 비용/정시성/처리능력 균형 기준으로 재배치했습니다.'); }
+function autoBalanceOutbound(){ const routes=DB.outboundRoutes||[]; const scores=routes.map(r=>({id:r.id,score:(r.reliability*r.capacityMult)/(Math.max(.7,r.costMult)*Math.pow(1+r.leadDays/30,.42))})); const total=scores.reduce((a,x)=>a+x.score,0); state.outboundAllocations={}; scores.forEach(x=>state.outboundAllocations[x.id]=x.score/total); state.outboundStrategy='balanced'; render(); toast('출하·유통 배분을 비용/정시성/처리능력 균형 기준으로 재배치했습니다.'); }
 function getOutboundLogisticsSnapshot(quantity=0,revenue=0){
   const routes=DB.outboundRoutes||[],weights=getOutboundAllocationsNormalized(),serial=getPeriodSerial(),maturity=getMaturityRandomFactor();
   const congestion=1+Math.max(0,smoothWave(serial*.61,1.2))*DB.config.outboundCongestionShock*maturity;
@@ -3115,6 +3131,7 @@ function initGame(industryId, companyName) {
   state.selectedVendorIndex = 0;
   state.freightMode = "ocean_standard";
   state.outboundAllocations = {domestic_3pl:0.25,domestic_retail_dc:0.10,domestic_d2c:0.08,na_ocean:0.18,na_air:0.04,eu_ocean:0.12,asia_feeder:0.18,asia_air:0.05};
+  state.outboundStrategy = "balanced";
   state.growthInvestments = {};
   state.logisticsBottleneck = null;
   state.productPortfolio = [];
@@ -3560,7 +3577,28 @@ function renderFinancialStream(){
     $('arManagementHint').textContent=`정상 ${fmtWon(normal)} · 주의 ${fmtWon(watch)} · 연체 ${fmtWon(overdue)} · 기본 팩토링 할인율 ${(DB.config.factoringDiscountRate*100).toFixed(1)}% · 팩토링은 미래에 받을 외상대금을 할인해 즉시 현금화하는 대신 할인수수료를 지급합니다.`;
   }
   renderGrowthInvestments();
+  renderTreasuryDecision(f);
   if($('financeWaterfallVisual')) $('financeWaterfallVisual').innerHTML=[['매출 현금',f.currentCash],['원가',-f.cogs],['물류',-f.freight.total],['고정비',-f.fixedOpex],['변동비',-f.variableOpex],['순증감',f.netCashChange]].map(([l,v])=>{const max=Math.max(...[f.currentCash,f.cogs,f.freight.total,f.fixedOpex,f.variableOpex,Math.abs(f.netCashChange),1]);return `<div class="wf-col"><div class="wf-val">${v>=0?'+':''}${fmtWon(v)}</div><div class="wf-bar" style="height:${Math.max(8,Math.round(Math.abs(v)/max*92))}px;background:${v>=0?'linear-gradient(180deg,var(--green),#34d399)':'linear-gradient(180deg,var(--red),#f87171)'}"></div><div class="wf-label">${l}</div></div>`;}).join('');
+}
+
+function renderTreasuryDecision(f=getFinanceSnapshot()){
+  const body=$('treasuryDecisionBody'),tag=$('treasuryRunwayTag'); if(!body||!tag)return;
+  const monthlyOut=Math.max(1,f.cogs+f.freight.total+f.variableOpex+f.fixedOpex+f.holdingCost+f.interest);
+  const cashRunway=state.cash/monthlyOut,liquidRunway=(state.cash+state.deposit)/monthlyOut;
+  const factorRate=Math.max(.005,DB.config.factoringDiscountRate*(1+(.55+.45*Math.min(1,(state.lastBadDebt||0)/Math.max(1,state.accountsReceivable)*20))*.35)-(state.growthInvestments?.treasury_desk ? .005 : 0));
+  const factorTarget=Math.round(state.accountsReceivable*.25),factorFee=Math.round(factorTarget*factorRate);
+  const buffer=Math.round(monthlyOut*1.25),cashGap=Math.max(0,buffer-state.cash),depositMove=Math.min(state.deposit,cashGap),revolverRepay=Math.min(state.revolver,Math.max(0,state.cash-monthlyOut));
+  const risk=cashRunway<.75?'red':cashRunway<1.5?'amber':'green';
+  tag.textContent=`현금 ${cashRunway.toFixed(1)}개월 · 유동성 ${liquidRunway.toFixed(1)}개월`; tag.className=`tag ${risk}`;
+  body.innerHTML=`<div class="grid three"><div class="decision-item ${cashRunway<1.25?'urgent':''}"><span class="decision-eyebrow">1. 현금 버퍼</span><strong>${depositMove?fmtWon(depositMove)+' 예치금 해지':'현재 버퍼 확보'}</strong><p>다음 결산 예상 지출 ${fmtWon(monthlyOut)} 기준입니다. 예치금은 이자보다 결품 방어가 우선일 때만 풉니다.</p><button class="btn sm ${cashRunway<1.25?'pink':''}" type="button" ${depositMove?'':'disabled'} onclick="stabilizeLiquidity()">현금 버퍼 확보</button></div><div class="decision-item"><span class="decision-eyebrow">2. 고금리 부채</span><strong>${revolverRepay?fmtWon(revolverRepay)+' 리볼버 상환 가능':'상환 여력 없음'}</strong><p>리볼버는 장기대출보다 월 이자가 큽니다. 운영비 1개월을 남긴 현금만 상환에 사용합니다.</p><button class="btn sm primary" type="button" ${revolverRepay?'':'disabled'} onclick="repayRevolverWithSurplus()">잉여 현금으로 상환</button></div><div class="decision-item"><span class="decision-eyebrow">3. 채권 현금화</span><strong>${factorTarget?fmtWon(factorTarget-factorFee)+' 즉시 유입':'매각 가능 채권 없음'}</strong><p>채권 25%를 매각하면 수수료 ${fmtWon(factorFee)}가 발생합니다. 현금 공백을 메울 때만 사용하세요.</p><button class="btn sm" type="button" ${factorTarget?'':'disabled'} onclick="sellFactoringPct(25)">채권 25% 팩토링</button></div></div>`;
+}
+function stabilizeLiquidity(){
+  const f=getFinanceSnapshot(),out=Math.max(1,f.cogs+f.freight.total+f.variableOpex+f.fixedOpex+f.holdingCost+f.interest),move=Math.min(state.deposit,Math.max(0,Math.round(out*1.25-state.cash)));
+  if(!move){toast('현재 현금 버퍼는 다음 결산 예상 지출 기준으로 충분합니다.');return;} state.deposit-=move;state.cash+=move;render();toast(`예치금 ${fmtWon(move)}을 해지해 월말 현금 버퍼를 확보했습니다.`);
+}
+function repayRevolverWithSurplus(){
+  const f=getFinanceSnapshot(),out=Math.max(1,f.cogs+f.freight.total+f.variableOpex+f.fixedOpex+f.holdingCost+f.interest),repay=Math.min(state.revolver,Math.max(0,Math.round(state.cash-out)));
+  if(!repay){toast('운영비 1개월 버퍼를 남기면 현재 상환 가능한 리볼버가 없습니다.');return;} state.cash-=repay;state.revolver-=repay;render();toast(`운영 버퍼를 보존하며 리볼버 ${fmtWon(repay)}을 상환했습니다.`);
 }
 
 function adjustDeposit(amount) {
@@ -3669,6 +3707,26 @@ function placeMaterialSourcingOrder(matId,routeId){
   openActionModal('원자재 수급 경로 실행',`<b>${mat.name}</b> ${fmtNum(qty)}개를 <b>${route.name}</b>로 확보했습니다.<br>- 소요 비용: <b>${fmtWon(finalCost)}</b><br>- 리드타임: <b>${route.leadMonths===0?'당월 입고':route.leadMonths+'개월'}</b><br>- 신뢰도: <b>${Math.round(route.reliability*100)}%</b><br>- 목적: <b>${(mat.stock/dailyUseSafe(mat)).toFixed(1)}일분</b>`);
 }
 function dailyUseSafe(mat){return Math.max(1,mat.dailyConsumption||1);}
+
+function getProcurementPlan(id){
+  const profile={lean:{title:'필요량만 확보',days:state.targetSafetyStockDays,route:'contracted',desc:'보관비를 억제합니다. 공급 충격에는 취약할 수 있습니다.'},secure:{title:'안전재고 방어',days:Math.ceil(state.targetSafetyStockDays*1.35),route:'contracted',desc:'다음 달 변동까지 대비합니다. 현금과 보관비를 더 사용합니다.'},rescue:{title:'결품 긴급 방어',days:Math.max(14,Math.ceil(state.targetSafetyStockDays*.7)),route:'local_distributor',desc:'가장 부족한 자재만 당월 확보해 라인 셧다운을 막습니다.'}}[id];
+  const route=DB.materialSourcingRoutes.find(r=>r.id===profile.route),vendor=DB.industries[state.industryId].vendors[state.selectedVendorIndex]||DB.industries[state.industryId].vendors[0],term=DB.contractTerms[state.sourcingContractType]||DB.contractTerms.standard;
+  const candidates=id==='rescue'?[state.materials.reduce((lowest,m)=>!lowest||m.stock/dailyUseSafe(m)<lowest.stock/dailyUseSafe(lowest)?m:lowest,null)]:state.materials;
+  const lines=candidates.filter(Boolean).map(m=>{const transit=state.inTransit.filter(t=>t.matId===m.id).reduce((a,t)=>a+t.qty,0),target=m.dailyConsumption*profile.days,qty=Math.max(0,Math.ceil(target-m.stock-transit));const discount=route.id==='contracted'?(1-Math.max(0,vendor.discount+term.discountMod)*.6):1;return {m,qty,cost:Math.round(m.unitCost*qty*route.costMult*discount)};}).filter(x=>x.qty>0);
+  return {...profile,id,route,lines,total:lines.reduce((a,x)=>a+x.cost,0)};
+}
+function renderProcurementPlan(){
+  const body=$('procurementPlanBody'),status=$('procurementPlanStatus'); if(!body||!status)return;
+  const plans=['lean','secure','rescue'].map(getProcurementPlan),critical=plans[2];
+  status.textContent=critical.lines.length?`긴급 대상 ${critical.lines[0].m.name}`:'재고 안정'; status.className=`tag ${critical.lines.length?'amber':'green'}`;
+  body.innerHTML=`<div class="grid three">${plans.map(p=>{const can=state.cash>=p.total;return `<div class="decision-item ${p.id==='rescue'&&critical.lines.length?'urgent':p.id==='secure'?'recommended':''}"><span class="decision-eyebrow">${p.route.name}</span><strong>${p.title} · ${fmtWon(p.total)}</strong><p>${p.desc}<br>대상 ${p.lines.length}종 · ${p.route.leadMonths===0?'당월 입고':p.route.leadMonths+'개월 후 입고'}</p><button class="btn sm ${p.id==='rescue'?'pink':p.id==='secure'?'primary':''}" type="button" ${can?'':'disabled'} onclick="executeProcurementPlan('${p.id}')">${can?'이 계획 실행':'현금 부족'}</button></div>`;}).join('')}</div>`;
+}
+function executeProcurementPlan(id){
+  const p=getProcurementPlan(id); if(!p.lines.length){toast('현재 선택한 기준을 충족해 추가 발주가 필요하지 않습니다.');return;} if(state.cash<p.total){toast(`이 계획에는 ${fmtWon(p.total)}이 필요합니다.`);return;}
+  state.cash-=p.total;
+  p.lines.forEach(x=>{if(p.route.leadMonths===0)x.m.stock+=x.qty;else state.inTransit.push({id:`PL-${Math.floor(100+Math.random()*900)}`,matId:x.m.id,matName:x.m.name,qty:x.qty,val:x.qty*x.m.unitCost,mode:p.route.id,sourceRoute:p.route.name,etaMonths:p.route.leadMonths});});
+  render(); openActionModal('조달 계획 실행 완료',`<b>${p.title}</b> 계획을 실행했습니다.<br>- 대상 자재: <b>${p.lines.map(x=>x.m.name).join(', ')}</b><br>- 총 매입 비용: <b>${fmtWon(p.total)}</b><br>- 입고 방식: <b>${p.route.leadMonths===0?'당월 즉시 입고':p.route.leadMonths+'개월 후 입고'}</b><br>- 의도: <b>${p.desc}</b>`);
+}
 
 function renderInboundFreightModes(){
   const el=$('inboundFreightModesGrid'); if(!el) return;
@@ -3856,6 +3914,25 @@ function selectContractTerm(termId) {
   toast(`계약 조건이 [${DB.contractTerms[termId].name}]으로 갱신되었습니다.`);
 }
 
+function getSupplyStrategy(id){
+  const vendors=DB.industries[state.industryId].vendors;
+  if(id==='cost') return {id,title:'원가 우선',desc:'할인율을 최대화해 단위원가를 낮춥니다. 공급선 고정에 따른 유연성 저하를 감수합니다.',vendor:vendors.reduce((best,v)=>v.discount>best.discount?v:best,vendors[0]),term:'exclusive',tone:'green'};
+  if(id==='resilience') return {id,title:'공급 방어',desc:'공급 CAPA와 전환 유연성을 우선합니다. 단가 프리미엄으로 결품 위험을 줄입니다.',vendor:vendors.reduce((best,v)=>v.supplyCapa>best.supplyCapa?v:best,vendors[0]),term:'flexible',tone:'pink'};
+  return {id,title:'품질 우선',desc:'불량률이 가장 낮은 공급선을 장기 계약으로 고정합니다. 수율과 브랜드 신뢰를 우선합니다.',vendor:vendors.reduce((best,v)=>v.defectRate<best.defectRate?v:best,vendors[0]),term:'exclusive',tone:'purple'};
+}
+function renderSupplyStrategy(){
+  const body=$('supplyStrategyBody'),status=$('supplyStrategyStatus'); if(!body||!status)return;
+  const strategies=['cost','resilience','quality'].map(getSupplyStrategy);
+  const active=strategies.find(s=>s.vendor===DB.industries[state.industryId].vendors[state.selectedVendorIndex]&&s.term===state.sourcingContractType);
+  status.textContent=active?`${active.title} 조합 적용 중`:'직접 조합 적용 중'; status.className=`tag ${active?.tone||'amber'}`;
+  body.innerHTML=`<div class="grid three">${strategies.map(s=>`<div class="decision-item ${active?.id===s.id?'recommended':''}"><span class="decision-eyebrow">${s.title}</span><strong>${s.vendor.name} · ${DB.contractTerms[s.term].name}</strong><p>${s.desc}</p><button class="btn sm ${s.tone==='pink'?'pink':s.tone==='green'?'primary':''}" type="button" onclick="applySupplyStrategy('${s.id}')">이 전략 적용</button></div>`).join('')}</div>`;
+}
+function applySupplyStrategy(id){
+  const s=getSupplyStrategy(id),vendors=DB.industries[state.industryId].vendors;
+  state.selectedVendorIndex=vendors.indexOf(s.vendor); state.sourcingContractType=s.term; render();
+  toast(`${s.title} 공급 전략을 적용했습니다. ${s.vendor.name} / ${DB.contractTerms[s.term].name}`);
+}
+
 function renderOutboundLogistics(){
   const prod=state.customProduct, freight=getFreightSnapshot(state.lastProductionQty||0,state.lastRevenue||0), demand=Math.max(1,state.lastPotentialDemand||prod.estDemand||1), sold=state.lastSoldQty||0;
   const active=hasActiveProduct(), out=freight.outbound;
@@ -3883,6 +3960,23 @@ function renderOutboundLogistics(){
   $('pipelineCountBadge').textContent=`${state.inTransit.length}건 배송 중`;
   $('pipelineTable').innerHTML=state.inTransit.length===0?`<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">${active?'현재 이동 중인 인바운드 화물이 없습니다.':'양산착수 후 원자재/부품 화물이 생성됩니다.'}</td></tr>`:state.inTransit.map(t=>`<tr><td><b>${t.id}</b></td><td>${t.matName||t.matId}</td><td>${(DB.freightModes.find(m=>m.id===t.mode)||DB.materialSourcingRoutes.find(m=>m.id===t.mode)||{name:t.sourceRoute||t.mode||'기타'}).name}</td><td>${fmtWon(t.val)}</td><td>${fmtNum(t.qty)}개</td><td>협력사 &gt; 국내 항만/공항</td><td><b style="color:var(--purple-vivid)">${t.etaMonths===0?'당월 결산 시 입고':`${t.etaMonths}개월 뒤 입고`}</b></td><td><span class="tag ${t.etaMonths===0?'pink':'purple'}">${t.etaMonths===0?'통관 대기':'운송 중'}</span></td></tr>`).join('');
   if($('outboundBottleneckNotice')) $('outboundBottleneckNotice').innerHTML = state.logisticsBottleneck==='logistics' ? `<div class="notice red"><b>현재 물류 병목</b><br>출하·유통 CAPA가 전체 쓰루풋을 제한하고 있습니다. 단거리·항공 비중을 늘리거나 물류 허브 투자를 검토하세요.</div>` : `<div class="notice green"><b>현재 물류 상태</b><br>다른 공정이 더 낮은 CAPA를 기록하고 있습니다. 다만 장거리 수출 비중이 커지면 재고와 운임 부담이 커질 수 있습니다.</div>`;
+}
+
+function applyOutboundPreset(id){
+  const routes=DB.outboundRoutes||[];
+  const score=route=>id==='margin'
+    ? (route.capacityMult||1)/Math.max(.65,route.costMult||1)
+    : id==='service'
+      ? (route.reliability||.9)*1.7/Math.max(.5,(route.leadDays||30)/30)
+      : (route.reliability||.9)*(route.capacityMult||1)/Math.max(.7,route.costMult||1);
+  const scores=routes.map(r=>({id:r.id,v:score(r)})),sum=scores.reduce((a,x)=>a+x.v,0);
+  state.outboundAllocations={}; scores.forEach(x=>state.outboundAllocations[x.id]=x.v/sum); state.outboundStrategy=id; render();
+  toast(id==='margin'?'운임 효율 중심으로 출하 배분을 조정했습니다.':id==='service'?'납기·정시성 중심으로 출하 배분을 조정했습니다.':'비용·납기·처리량 균형으로 출하 배분을 조정했습니다.');
+}
+function renderLogisticsStrategy(){
+  const el=$('logisticsStrategyBody'); if(!el)return;
+  const items=[['margin','원가 중심','저운임·대량 경로 비중을 높여 마진을 방어합니다.'],['balanced','균형 운영','비용·정시성·처리량을 함께 고려합니다.'],['service','납기 중심','빠르고 신뢰도 높은 경로 비중을 높여 결품 손실을 줄입니다.']];
+  el.innerHTML=`<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:stretch">${items.map(([id,title,desc])=>`<button class="btn sm ${state.outboundStrategy===id?'primary':''}" type="button" onclick="applyOutboundPreset('${id}')" title="${desc}"><b>${title}</b><span style="font-weight:600;color:inherit"> · ${desc}</span></button>`).join('')}</div>`;
 }
 
 
@@ -4059,7 +4153,10 @@ function render() {
   renderInboundFreightModes();
   renderInhouseFactory();
   renderSourcing();
+  renderSupplyStrategy();
+  renderProcurementPlan();
   renderOutboundLogistics();
+  renderLogisticsStrategy();
   renderFinanceTables();
   renderRdProjects();
   renderProductPortfolio();
@@ -4844,6 +4941,7 @@ function load() {
   try {
     state = JSON.parse(data);
     if(!state.outboundAllocations) state.outboundAllocations={domestic_3pl:.25,domestic_retail_dc:.10,domestic_d2c:.08,na_ocean:.18,na_air:.04,eu_ocean:.12,asia_feeder:.18,asia_air:.05};
+    if(!state.outboundStrategy) state.outboundStrategy='balanced';
     if(!state.growthInvestments) state.growthInvestments={};
     if(!('logisticsBottleneck' in state)) state.logisticsBottleneck=null;
     const ind = DB.industries[state.industryId] || DB.industries.electronics;
