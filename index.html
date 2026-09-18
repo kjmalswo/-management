@@ -6,30 +6,14 @@
 <title>VIOLET LEDGER — 공급망 파이프라인 & 제조업 재무 관리 시뮬레이터</title>
 <!--
 ================================================================================
-[VIOLET LEDGER V4.3 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
+[VIOLET LEDGER V4.4 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
 ================================================================================
-■ 핵심 개발 지침 (절대 원칙):
-  1. [하드코딩 절대 금지 및 DB화 위주 개발]:
-     - 금리, 수수료, 임금, 손실률, 설비 비용, 티어 계수, 운송 노선, 공정 사양 등
-       모든 수치와 비즈니스 로직 파라미터는 `DB.config` 및 전용 마스터 테이블에 중앙 집권화하여 관리한다.
-     - 로직 및 렌더링 함수 내부에서 임의의 '매직 넘버(Magic Number)'나 인라인 하드코딩을 일체 금지하며,
-       데이터 추가 및 밸런스 패치가 DB 수정만으로 완결되도록 구조화한다.
-  2. [명칭 정제 및 기본형 중심 현실성 확보]:
-     - 과장되거나 작위적인 미사여구(초고성능, 하이엔드, 초임계, 기가스틸, 미슐랭 등)를 전면 배제한다.
-     - 업종, 제품, 카테고리, 원자재, 협력사, 경쟁사, 마감 공법 등 모든 명칭을
-       실제 제조업 현장에서 사용하는 담백하고 표준적인 기본 용어로 정제한다.
-  3. [엔드투엔드 파이프라인 및 제약이론(TOC) 밸런싱]:
-     - [1. 원자재 수급(Sourcing)] > [2. 인바운드 조달(Procurement)] >
-       [3. 공장 제작 & 출하(Production/MES)] > [4. 운송/수출 & 물류(Logistics)]
-     - 4대 공정의 처리 용량(CAPA) 불균형을 실시간 측정하고 최약 구간(병목)을 해결하는 흐름을 유지한다.
-  4. [직관적 재무 관리 및 트레저리 운용]:
-     - 실시간 영업현금흐름(매출 유입 - 원자재비 - 공장 운영비 = 순현금 증감)을 명확히 시각화한다.
-     - 단기 유휴현금 정기예금(MMF), 마이너스 리볼버 대출, 매출채권 조기 팩토링을 통해 유동성을 방어한다.
-  5. [정밀 맞춤형 상품 기획 스튜디오]:
-     - 고정 선택지가 아닌, 플레이어가 제품명, 분류, 라인업(엔트리/중급/플래그십/스페셜),
-       마감 공법, 4대 BOM 원자재 투입비율, 목표 마진을 세세하게 직접 결정하여 양산에 착수한다.
-  6. [기존 지침 및 스타일 유지]:
-     - 단일 파일 완결성(HTML/CSS/JS), 무이모지 세련된 태그 시스템, 보라/핑크 테마, 반응형 UI를 유지한다.
+■ 핵심 개발 지침:
+  1. [하드코딩 배제 및 DB화 중심 개발]: 모든 비즈니스 로직 수치는 DB.config 및 마스터 테이블에 중앙 집중화.
+  2. [명칭 정제 및 기본형 중심 현실성]: 담백한 제조업 실무 표준 용어 준수.
+  3. [엔드투엔드 파이프라인 & TOC 밸런싱]: 수급 > 조달 > 제작 > 물류 4대 구간 병목 해소.
+  4. [직관적 재무 관리]: 실시간 현금흐름 시각화 및 예금/리볼버/팩토링 유동성 방어.
+  5. [정밀 맞춤형 상품 기획]: 플레이어가 모델명, 등급, 마감, BOM 원자재 비율, 마진을 직접 결정.
 ================================================================================
 -->
 <style>
@@ -193,20 +177,23 @@ button { cursor: pointer; }
 .sidebox .big { font-weight: 900; font-size: 15px; margin-top: 3px; color: var(--purple-dark); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+/* 탑바 & 상시 가용현금 표시 영역 */
 .topbar {
   height: 70px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 28px;
+  padding: 0 26px;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
   box-shadow: 0 2px 12px rgba(109, 40, 217, 0.04);
 }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
 .period { display: flex; align-items: center; gap: 10px; }
 .badge {
   background: linear-gradient(135deg, var(--purple-light), var(--purple-soft));
@@ -216,6 +203,42 @@ button { cursor: pointer; }
   padding: 6px 13px;
   border-radius: 10px;
   border: 1px solid var(--line-focus);
+}
+
+/* 상시 가용현금 뱃지 */
+.topbar-cash-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ffffff 0%, #f7f3ff 100%);
+  border: 1.8px solid var(--purple-mid);
+  padding: 5px 14px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.12);
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+}
+.topbar-cash-badge:hover {
+  border-color: var(--purple-vivid);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.22);
+}
+.topbar-cash-label {
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--purple-vivid);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--purple-light);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.topbar-cash-val {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--purple-dark);
+  letter-spacing: -0.3px;
 }
 
 .actions { display: flex; gap: 8px; align-items: center; }
@@ -556,28 +579,77 @@ button { cursor: pointer; }
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 4px;
 }
 
-/* 튜토리얼 & 모달 */
+/* =========================================================
+   튜토리얼 시스템 스타일 (집중 블러 & 네온 하이라이트)
+========================================================= */
 .tut-overlay {
   position: fixed; inset: 0; z-index: 1500; pointer-events: none; display: none;
 }
 .tut-overlay.active { display: block; pointer-events: auto; }
-.tut-highlight-box {
-  position: absolute; border: 3px solid var(--purple-vivid); border-radius: 12px;
-  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.3), 0 0 25px rgba(124, 58, 237, 0.6);
-  pointer-events: none; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+/* 하이라이트 바깥 영역 딤 & 블러 백드롭 (클립패스로 타겟 홀 오픈) */
+.tut-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 8, 26, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: auto;
+  transition: clip-path 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* 타겟 대상 강조 네온 테두리 */
+.tut-highlight-box {
+  position: fixed;
+  border: 3px solid var(--purple-vivid);
+  border-radius: 14px;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.4),
+              0 0 30px rgba(124, 58, 237, 0.8),
+              0 0 55px rgba(236, 72, 153, 0.45);
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1510;
+}
+
 .tut-popover {
-  position: absolute; width: 380px; max-width: 90vw; background: #ffffff;
-  border: 2px solid var(--purple-mid); border-radius: 18px; padding: 20px 22px;
-  box-shadow: 0 20px 50px rgba(16, 10, 28, 0.35); z-index: 1510;
+  position: fixed;
+  width: 440px;
+  max-width: 92vw;
+  background: #ffffff;
+  border: 2px solid var(--purple-mid);
+  border-radius: 20px;
+  padding: 22px 24px;
+  box-shadow: 0 25px 65px rgba(16, 10, 28, 0.45);
+  z-index: 1520;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .tut-popover-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.tut-badge { font-size: 11px; font-weight: 900; color: var(--purple-vivid); background: var(--purple-light); padding: 3px 9px; border-radius: 6px; }
-.tut-title { font-size: 16px; font-weight: 900; color: var(--ink); margin: 0 0 6px; }
-.tut-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
-.tut-tip { background: #faf8fe; border: 1px dashed var(--purple-mid); border-radius: 9px; padding: 8px 10px; font-size: 11.5px; color: var(--purple-deep); font-weight: 700; margin-bottom: 14px; }
-.tut-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 12px; }
+.tut-badge { font-size: 11.5px; font-weight: 900; color: var(--purple-vivid); background: var(--purple-light); padding: 4px 10px; border-radius: 7px; }
+.tut-title { font-size: 16.5px; font-weight: 900; color: var(--ink); margin: 0 0 10px; letter-spacing: -0.3px; }
+
+/* 세분화된 가이드 섹션 스타일 */
+.tut-section-box {
+  background: #fbf9fe;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 10px 12px;
+  margin-bottom: 9px;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.tut-section-box strong { color: var(--purple-dark); display: block; margin-bottom: 2px; font-size: 12px; }
+.tut-section-box.action-box {
+  background: #fff8fc;
+  border-color: #fbcfe8;
+}
+.tut-section-box.action-box strong { color: var(--pink-dark); }
+.tut-section-box.next-box {
+  background: #f4fdf8;
+  border-color: #a7f3d0;
+}
+.tut-section-box.next-box strong { color: var(--green); }
+
+.tut-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 8px; }
 
 .modal {
   position: fixed; inset: 0; background: rgba(16, 10, 28, 0.6); backdrop-filter: blur(8px);
@@ -631,6 +703,7 @@ button { cursor: pointer; }
   .app { display: block; }
   .sidebar { height: auto; width: 100%; position: relative; border-right: 0; border-bottom: 1px solid var(--line); }
   .topbar { padding: 0 16px; height: auto; flex-direction: column; gap: 10px; padding: 12px 16px; }
+  .topbar-left { flex-direction: column; width: 100%; align-items: flex-start; gap: 8px; }
   .content { padding: 16px 14px 36px; }
   .kpis { grid-template-columns: repeat(2, 1fr); }
   #industrySelectorGrid { grid-template-columns: 1fr; }
@@ -684,11 +757,21 @@ button { cursor: pointer; }
 </aside>
 
 <main class="main">
+<!-- 탑바: 상시 가용현금 뱃지 추가 -->
 <header class="topbar">
-  <div class="period">
-    <span class="badge" id="period">—</span>
-    <strong id="phase" style="font-size:14px;color:var(--ink)">월간 전략 수립 및 라인 밸런싱</strong>
+  <div class="topbar-left">
+    <div class="period">
+      <span class="badge" id="period">—</span>
+      <strong id="phase" style="font-size:13.5px;color:var(--ink)">월간 전략 수립 및 라인 밸런싱</strong>
+    </div>
+    
+    <!-- 1. 맨위창에 상시로 가용현금 뜨게 변경(다른창에서도 계속 뜨게) -->
+    <div class="topbar-cash-badge" id="topbarCashBadge" onclick="switchTab('finance')" title="클릭 시 자금 운용 센터로 즉시 이동합니다">
+      <span class="topbar-cash-label">가용 현금</span>
+      <strong class="topbar-cash-val" id="topbarCashVal">—</strong>
+    </div>
   </div>
+  
   <div class="actions">
     <button class="btn" id="startTutorialBtn">가이드 튜토리얼</button>
     <button class="btn" id="save">저장</button>
@@ -924,7 +1007,7 @@ button { cursor: pointer; }
   </div>
 
   <div class="studio-layout" style="margin-bottom:16px">
-    <div class="card interactive-card">
+    <div class="card interactive-card" id="studioPlanningCard">
       <div class="cardHead">
         <h3>신규 상품 스펙 커스텀 기획실</h3>
         <span class="affordance-badge affordance-interactive">상세 사양 조절</span>
@@ -981,7 +1064,7 @@ button { cursor: pointer; }
     </div>
 
     <!-- 실시간 제품 블루프린트 -->
-    <div class="blueprint-card">
+    <div class="blueprint-card" id="studioBlueprintCard">
       <div>
         <div class="bp-head">
           <div>
@@ -1124,7 +1207,7 @@ button { cursor: pointer; }
     <span class="tag pink">자금 운용 센터</span>
   </div>
 
-  <div class="cashflow-flow-card">
+  <div class="cashflow-flow-card" id="financeCashFlowCard">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <strong style="font-size:15px;color:var(--purple-dark)">월간 실시간 현금 유출입 스트림 (Cash In / Out)</strong>
       <span class="tag green" id="financeCashFlowStatus">영업현금흐름 순유입</span>
@@ -1175,7 +1258,7 @@ button { cursor: pointer; }
     </div>
   </div>
 
-  <div class="grid three" style="margin-bottom:16px">
+  <div class="grid three" style="margin-bottom:16px" id="treasuryToolsGrid">
     <div class="card interactive-card">
       <div class="cardHead">
         <h3>단기 정기예금 / MMF 운용</h3>
@@ -1328,22 +1411,39 @@ button { cursor: pointer; }
 </main>
 </div>
 
-<!-- 오버레이 & 팝오버 -->
+<!-- =========================================================
+     3. 튜토리얼 집중 블러 오버레이 & 분화 팝오버
+========================================================= -->
 <div class="tut-overlay" id="tutOverlay">
+  <!-- 타겟 외곽을 딤 및 블러 처리하는 마스킹 백드롭 -->
+  <div class="tut-backdrop" id="tutBackdrop"></div>
   <div class="tut-highlight-box" id="tutHighlightBox"></div>
   <div class="tut-popover" id="tutPopover">
     <div class="tut-popover-head">
-      <span class="tut-badge" id="tutStepBadge">단계 1 / 5</span>
-      <span style="font-size:11px;color:var(--muted);font-weight:700">인터랙티브 가이드</span>
+      <span class="tut-badge" id="tutStepBadge">단계 1 / 11</span>
+      <span style="font-size:11px;color:var(--muted);font-weight:700">제조업 공급망 마스터 가이드</span>
     </div>
     <h3 class="tut-title" id="tutTitle">—</h3>
-    <div class="tut-desc" id="tutDesc">—</div>
-    <div class="tut-tip" id="tutTip">—</div>
+    
+    <!-- 세분화된 단계별 안내 박스 -->
+    <div class="tut-section-box" id="tutWhatBox">
+      <strong>📌 이건 뭘 하는 곳인가?</strong>
+      <span id="tutWhatText">—</span>
+    </div>
+    <div class="tut-section-box action-box" id="tutActionBox">
+      <strong>⚡ 지금 당장 뭐부터 해야 하나? (1단계)</strong>
+      <span id="tutActionText">—</span>
+    </div>
+    <div class="tut-section-box next-box" id="tutNextBox">
+      <strong>⏩ 이걸 하고 나서 그 다음 무엇을 해야 하나? (2단계)</strong>
+      <span id="tutNextText">—</span>
+    </div>
+
     <div class="tut-footer">
       <button class="btn sm" id="tutSkipBtn">가이드 닫기</button>
       <div style="display:flex;gap:6px">
-        <button class="btn sm" id="tutPrevBtn">&lt; 이전</button>
-        <button class="btn primary sm" id="tutNextBtn">다음 &gt;</button>
+        <button class="btn sm" id="tutPrevBtn">&lt; 이전 단계</button>
+        <button class="btn primary sm" id="tutNextBtn">다음 단계 &gt;</button>
       </div>
     </div>
   </div>
@@ -1404,7 +1504,7 @@ button { cursor: pointer; }
 
 <script>
 // =========================================================
-// [VIOLET LEDGER V4.3 ENGINE]
+// [VIOLET LEDGER V4.4 ENGINE]
 // =========================================================
 
 const $ = (id) => document.getElementById(id);
@@ -1431,41 +1531,38 @@ function toast(msg) {
 }
 
 // ---------------------------------------------------------
-// 1. 전역 마스터 데이터베이스 (하드코딩 배제 및 완전 DB화)
+// 1. 전역 마스터 데이터베이스 (중앙 집중화 DB)
 // ---------------------------------------------------------
 const DB = {
-  // [전역 시스템 설정 DB]
   config: {
-    depositMonthlyRate: 0.003,        // 정기예금 월 이자율 (0.3%)
-    revolverAnnualRate: 0.065,        // 마이너스 리볼버 연 이자율 (6.5%)
-    debtAnnualRate: 0.055,            // 장기차입금 연 이자율 (5.5%)
-    factoringDiscountRate: 0.025,     // 매출채권 조기 팩토링 할인율 (2.5%)
-    freightCostRatio: 0.045,          // 매출 대비 기본 물류비율 (4.5%)
-    inventoryHoldingRate: 0.015,      // 원자재 월간 창고 보관료율 (1.5%)
-    workerMonthlyWage: 3500000,       // 조립 작업자 1인당 월 기본급
-    idleLossPerRunRate: 1600000,      // 공장 가동률 1% 저하당 유휴손실액
-    stockoutPenaltyRate: 0.08,        // 결품 1대당 출고가 대비 지체상금율 (8%)
-    inhouseFabBuildCost: 1500000000,  // 국내 자가 부품공장 신설 CAPEX (15억원)
-    inhouseFabSupplyRatio: 0.5,       // 자가공장 완공 시 월간 수요 대비 무상 공급비율 (50%)
-    emergencyAirCostMultiplier: 1.35, // 비상 항공 특송 운임 배율 (기본가 대비 1.35배)
-    revolverLimitDefault: 2500000000, // 리볼버 마이너스 대출 기본 한도
-    initialCash: 2600000000,          // 시작 가용 보통예금
-    initialDeposit: 1000000000,       // 시작 정기예금
-    initialAR: 750000000,             // 시작 매출채권
-    initialDebt: 1200000000,          // 시작 장기차입금
-    initialEquity: 5000000000,        // 시작 자본총계
-    defaultSafetyStockDays: 35,       // 기본 권장 안전재고 일수
-    defaultLineWorkers: 65,           // 기본 정규 조립 작업자 수
-    defaultMarketingBudget: 150000000 // 기본 월간 마케팅 예산
+    depositMonthlyRate: 0.003,
+    revolverAnnualRate: 0.065,
+    debtAnnualRate: 0.055,
+    factoringDiscountRate: 0.025,
+    freightCostRatio: 0.045,
+    inventoryHoldingRate: 0.015,
+    workerMonthlyWage: 3500000,
+    idleLossPerRunRate: 1600000,
+    stockoutPenaltyRate: 0.08,
+    inhouseFabBuildCost: 1500000000,
+    inhouseFabSupplyRatio: 0.5,
+    emergencyAirCostMultiplier: 1.35,
+    revolverLimitDefault: 2500000000,
+    initialCash: 2600000000,
+    initialDeposit: 1000000000,
+    initialAR: 750000000,
+    initialDebt: 1200000000,
+    initialEquity: 5000000000,
+    defaultSafetyStockDays: 35,
+    defaultLineWorkers: 65,
+    defaultMarketingBudget: 150000000
   },
 
-  // [트레저리 인터랙션 단위 DB]
   treasuryAmounts: {
     depositSteps: [200000000, 500000000, -500000000],
     revolverSteps: [300000000, 1000000000, -500000000]
   },
 
-  // [공정 라인 스테이지 메타데이터 DB]
   factoryStages: [
     { idx: 0, id: "feeding", name: "자재 피딩", baseRatio: 0.8, lvlStep: 0.25, upgradeCost: 400000000 },
     { idx: 1, id: "machining", name: "모듈 1차 가공", baseRatio: 0.75, lvlStep: 0.28, upgradeCost: 600000000 },
@@ -1473,7 +1570,6 @@ const DB = {
     { idx: 3, id: "qc", name: "검사 & 포장", baseRatio: 0.85, lvlStep: 0.25, upgradeCost: 500000000 }
   ],
 
-  // [상품 라인업 등급(Tier) 메타데이터 DB]
   productTiers: {
     entry: { id: "entry", name: "엔트리", sub: "보급형 대량생산", laborMult: 0.7, demandMult: 2.0, tag: "엔트리 보급형" },
     mid: { id: "mid", name: "중급형", sub: "스탠다드 볼륨", laborMult: 1.0, demandMult: 1.3, tag: "중급형 볼륨" },
@@ -1481,7 +1577,6 @@ const DB = {
     hyper: { id: "hyper", name: "스페셜", sub: "고가 특화 라인", laborMult: 2.1, demandMult: 0.45, tag: "스페셜 특화형" }
   },
 
-  // [글로벌 4대 권역 수출 및 국내 물류 노선 DB]
   logisticsRoutes: [
     { region: "대한민국 내수 물류망", share: "35%", route: "수도권/영남 복합물류센터 직송", lead: "1~2일", volRatio: 0.35 },
     { region: "북미 수출", share: "30%", route: "부산항 컨테이너선 정기 운송", lead: "18~22일", volRatio: 0.30 },
@@ -1489,7 +1584,6 @@ const DB = {
     { region: "아시아 수출", share: "15%", route: "부산항 아시아 정기선 운송", lead: "5~7일", volRatio: 0.15 }
   ],
 
-  // [업종 및 제품 마스터 DB]
   industries: {
     electronics: {
       id: "electronics",
@@ -1637,7 +1731,6 @@ const DB = {
     }
   },
   
-  // [인바운드 운송 수단 DB]
   freightModes: [
     { id: "ocean_standard", name: "해상 정기선 컨테이너", leadMonths: 2, costMult: 1.0, desc: "가장 저렴한 대량 운송. 2달 걸리므로 35일 이상 안전재고 유지 필수" },
     { id: "ocean_express", name: "해상 고속 급행선", leadMonths: 1, costMult: 1.8, desc: "1달 만에 입고되는 쾌속선. 운임 1.8배" },
@@ -1655,7 +1748,6 @@ let state = {
   companyName: "한양테크놀로지",
   industryId: "electronics",
   
-  // 기획 상품 상태
   customProduct: {
     name: "스마트폰 S1",
     category: "스마트폰",
@@ -1672,7 +1764,6 @@ let state = {
   cash: DB.config.initialCash,
   deposit: DB.config.initialDeposit,
   accountsReceivable: DB.config.initialAR,
-  
   debt: DB.config.initialDebt,
   revolver: 0,
   revolverLimit: DB.config.revolverLimitDefault,
@@ -1680,7 +1771,6 @@ let state = {
   
   marketingBudget: DB.config.defaultMarketingBudget,
   factoryStageLevels: [1, 1, 1, 1],
-  
   targetSafetyStockDays: DB.config.defaultSafetyStockDays,
   lineWorkers: DB.config.defaultLineWorkers,
   overtimeRate: 0,
@@ -1712,38 +1802,96 @@ let state = {
 };
 
 // ---------------------------------------------------------
-// 3. 튜토리얼 시스템
+// 3. 튜토리얼 시스템 (세분화 및 자동 탭 전환, 바깥 블러)
 // ---------------------------------------------------------
 const tutorialSteps = [
   {
+    tabId: "overview",
+    targetId: "topbarCashBadge",
+    title: "1단계: 상시 가용현금 관제 (유동성 방어선)",
+    what: "모든 탭 상단에 항상 노출되는 우리 회사의 수시입출식 보통예금 잔고입니다.",
+    action: "원자재 대금 결제나 공정 설비 투자 전, 즉시 인출 가능한 현금이 최소 10억원 이상 유지되는지 수시로 확인하세요.",
+    next: "잔고가 부족해 보인다면 이 배지를 클릭해 즉시 [자금 운용 센터]로 넘어가 마이너스 대출이나 채권 팩토링을 가동할 수 있습니다."
+  },
+  {
+    tabId: "overview",
     targetId: "overviewPipelineStreamCard",
-    title: "1단계: 실시간 파이프라인 관제",
-    desc: "원자재 수급부터 조달, 제작, 운송/수출로 이어지는 전체 라인을 모니터링합니다. 붉은색 노드는 공장의 최대 병목 공정입니다.",
-    tip: "병목 지점을 찾아 설비를 증설하거나 자재를 보충하면 전체 라인 출하량이 증가합니다."
+    title: "2단계: 공급망 실시간 파이프라인 관제",
+    what: "원자재 수급부터 조달, 제작, 운송/수출로 이어지는 4대 엔드투엔드 공정의 처리 용량(CAPA)을 실시간 모니터링합니다.",
+    action: "붉은색 경고가 뜨는 '현재 최대 병목' 노드를 먼저 찾으세요. 제약이론(TOC)에 따라 가장 느린 구간이 공장 전체의 최종 출하량을 결정합니다.",
+    next: "병목 노드를 확인했다면 [정밀 밸런서 열기] 또는 탭 메뉴를 통해 해당 병목 공정으로 넘어가 설비와 자재를 보강해야 합니다."
   },
   {
-    targetId: "nav_factory",
-    title: "2단계: 정밀 상품 기획 스튜디오",
-    desc: "공장에서 만들고 싶은 제품명, 분류, 라인업(엔트리/중급/플래그십/스페셜), 마감 공법, 4대 원자재 투입비율, 마진을 직접 설계합니다.",
-    tip: "설계한 사양에 따라 제조원가와 권장 출고가가 실시간으로 자동 산출됩니다."
+    tabId: "pipeline",
+    targetId: "factoryStageUpgradeList",
+    title: "3단계: 라인 밸런서 & 공정 속도 증설 (CAPEX)",
+    what: "공장 내부 4대 공정(자재 피딩, 1차 가공, 메인 조립, 검사/포장)의 기계 설비 능력을 개별 증설하는 컨트롤 타워입니다.",
+    action: "4개 공정 중 처리 용량이 가장 낮아 전체 조립 속도를 갉아먹는 공정의 [CAPA 증설] 버튼을 먼저 눌러 설비를 업그레이드하세요.",
+    next: "제작 속도를 높였다면 공장 가동에 필요한 원자재 공급선을 안정시키기 위해 '1. 원자재 수급 계약' 탭으로 이동해야 합니다."
   },
   {
-    targetId: "nav_procurement",
-    title: "3단계: 인바운드 조달 창고 관리",
-    desc: "4대 핵심 원자재 중 단 하나만 소진되어도 조립 라인이 멈춥니다. 안전재고 일수를 점검하고 15일 미만 자재는 비상 항공 특송으로 보충하세요.",
-    tip: "안전재고 목표를 35일 이상으로 설정하면 저렴한 해상 컨테이너선으로도 결품을 방지합니다."
+    tabId: "sourcing",
+    targetId: "sourcingVendorListGrid",
+    title: "4단계: 협력업체 공급선 계약 (Sourcing)",
+    what: "글로벌 부품 파트너 중 우리 공장에 원자재를 안정적으로 납품할 주력 협력사를 선정하는 계약실입니다.",
+    action: "현재 생산 목표량보다 월간 공급 용량이 충분하고, 품질 신뢰도가 높으며 납품 단가 할인율이 매력적인 파트너의 [파트너십 체결]을 누르세요.",
+    next: "공급 계약을 체결했다면 실제로 창고에 원자재가 안전하게 도착하고 있는지 '2. 인바운드 조달 창고'로 넘어가 재고를 점검해야 합니다."
   },
   {
-    targetId: "nav_finance",
-    title: "4단계: 직관적 재무 & 자금 운용",
-    desc: "예상 출하 매출에서 원자재비와 운영비를 뺀 실시간 현금흐름을 확인하세요. 정기예금 예치, 마이너스 통장 인출, 채권 팩토링으로 유동성을 사수합니다.",
-    tip: "장부상 흑자라도 결제 현금이 바닥나면 흑자도산할 수 있습니다."
+    tabId: "procurement",
+    targetId: "procurementFields",
+    title: "5단계: 인바운드 조달 안전재고 일수 설정",
+    what: "해외 배송 시차(리드타임) 동안 공장이 멈추지 않도록 창고에 쌓아둘 안전재고 목표 일수를 지정하는 곳입니다.",
+    action: "컨테이너 해상 운송은 도착까지 약 2달이 걸리므로, 안전재고 슬라이더를 최소 35일~45일 이상으로 먼저 상향 설정하세요.",
+    next: "안전재고 설정 후, 4대 핵심 원자재 중 당장 바닥나기 직전인 위험 자재가 있는지 아래 비축 현황을 확인해야 합니다."
   },
   {
+    tabId: "procurement",
+    targetId: "materialsGrid",
+    title: "6단계: 원자재 비상 항공 특송 (셧다운 방어)",
+    what: "4대 핵심 BOM 자재 중 단 하나라도 0개가 되면 라인 전체가 멈추므로 긴급히 자재를 공수하는 비상창구입니다.",
+    action: "잔여일수가 15일 미만으로 떨어진 자재가 있다면 지체 없이 [비상 항공 특송 (+30일치)]을 눌러 공장으로 즉시 입고시키세요.",
+    next: "원자재 공급이 안정되었다면 이제 본격적으로 팔릴 제품을 맞춤 설계하기 위해 '3. 상품 기획 & 공장 MES' 탭으로 이동합니다."
+  },
+  {
+    tabId: "factory",
+    targetId: "studioPlanningCard",
+    title: "7단계: 전략 맞춤 상품 기획 스튜디오",
+    what: "플레이어가 직접 모델명, 카테고리, 라인업 등급(Tier), 마감 공법, 4대 원자재 투입비율, 목표 마진을 세세히 결정하는 기획실입니다.",
+    action: "등급과 마감 공법, 마진율을 조절한 뒤 우측 실시간 블루프린트를 확인하고 [신규 상품 설계 확정 & 양산 착수] 버튼을 누르세요.",
+    next: "기획이 확정되면 제조원가와 권장 출고가가 즉시 라인에 동기화되므로, 아래쪽 공장 MES로 내려가 조립 인력을 점검해야 합니다."
+  },
+  {
+    tabId: "factory",
+    targetId: "supplyFields",
+    title: "8단계: 조립 라인 작업자 & 잔업(OT) 편성",
+    what: "설계한 상품의 조립 난이도(공정 소요 계수)에 맞춰 공장 현장에 투입할 정규 작업 인력과 특근율을 배정하는 곳입니다.",
+    action: "기획 상품의 목표 생산량에 맞추어 [조립 라인 정규 작업자] 인원을 조절하여 조립 컨베이어 병목을 해소하세요.",
+    next: "공장 생산 세팅이 완료되었다면 조립된 완제품이 전 세계 바이어에게 잘 전달되는지 '4. 운송/수출 물류' 탭을 확인해야 합니다."
+  },
+  {
+    tabId: "logistics",
+    targetId: "logisticsExportRouteGrid",
+    title: "9단계: 글로벌 4대 권역 수출 선적 관제",
+    what: "완성된 제품을 내수 물류센터 및 북미, 유럽, 아시아로 분배 선적하여 글로벌 납기를 이행하는 아웃바운드 허브입니다.",
+    action: "창고 완제품 보유량과 권역별 선적 현황을 확인하여 바이어 주문 대비 결품(품절)이 발생하지 않도록 점검하세요.",
+    next: "출하와 물류 과정에서 거액의 매출과 비용이 발생하므로, 흑자도산을 막기 위해 '직관적 재무·자금 운용' 탭으로 이동합니다."
+  },
+  {
+    tabId: "finance",
+    targetId: "financeCashFlowCard",
+    title: "10단계: 실시간 현금 유출입 스트림 (Cash Flow)",
+    what: "[예상 출하 매출] - [원자재비] - [공장 운영비]를 한눈에 계산해 이번 달 현금이 순유입인지 유출인지 추적하는 곳입니다.",
+    action: "월말 순 현금 증감이 마이너스(붉은색)라면 마케팅비 과다 지출이나 과도한 재고 매입이 없는지 점검하세요.",
+    next: "현금이 남으면 정기예금에 예치하고, 모자라면 아래의 리볼버 마이너스 대출이나 외상채권 팩토링을 통해 유동성을 방어해야 합니다."
+  },
+  {
+    tabId: "overview",
     targetId: "closeMonth",
-    title: "5단계: 월말 결산 실행",
-    desc: "모든 라인 점검과 자금 세팅을 마쳤다면 월말 결산을 진행하세요. 한 달간의 생산, 판매, 결산이 종합 집계됩니다.",
-    tip: "결산 리포트에서 라인 밸런스 효율과 영업이익을 확인하세요."
+    title: "11단계: 최종 점검 및 월말 결산 단행",
+    what: "한 달간 수립한 수급, 생산, 출하, 금융 포트폴리오를 최종 결산하고 실제 판매 실적과 영업이익을 집계하는 메인 실행 버튼입니다.",
+    action: "상단 헤더의 [가용현금]과 공장 라인 상태를 최종 점검한 뒤 [월말 결산 (다음 달로) >] 버튼을 클릭하세요.",
+    next: "결산 리포트에서 영업이익(EBITDA)과 납기 이행률을 복기하고, 발생한 이슈를 교훈 삼아 다음 달 전략을 다시 고도화해 나갑니다."
   }
 ];
 
@@ -1757,50 +1905,94 @@ function startTutorial() {
 
 function closeTutorial() {
   $("tutOverlay").classList.remove("active");
-  toast("가이드를 종료했습니다. 자유롭게 공장을 운영하세요.");
+  toast("가이드를 종료했습니다. 자유롭게 공장을 경영하세요.");
 }
 
 function renderTutorialStep() {
   const step = tutorialSteps[tutIdx];
+  
+  // 1. 해당 설명의 탭으로 화면 자동 전환
+  if (step.tabId) {
+    switchTab(step.tabId);
+  }
+  
   $("tutStepBadge").textContent = `단계 ${tutIdx + 1} / ${tutorialSteps.length}`;
   $("tutTitle").textContent = step.title;
-  $("tutDesc").textContent = step.desc;
-  $("tutTip").textContent = `운영 팁: ${step.tip}`;
+  $("tutWhatText").textContent = step.what;
+  $("tutActionText").textContent = step.action;
+  $("tutNextText").textContent = step.next;
   
   $("tutPrevBtn").style.display = tutIdx === 0 ? "none" : "inline-flex";
-  $("tutNextBtn").textContent = tutIdx === tutorialSteps.length - 1 ? "가이드 완료" : "다음 >";
+  $("tutNextBtn").textContent = tutIdx === tutorialSteps.length - 1 ? "가이드 완료" : "다음 단계 >";
   
-  const target = $(step.targetId);
+  // 탭 전환 후 DOM 렌더링을 기다려 타겟 좌표 측정
+  setTimeout(() => {
+    positionTutorialElements(step.targetId);
+  }, 60);
+}
+
+function positionTutorialElements(targetId) {
+  const target = $(targetId);
   const highlightBox = $("tutHighlightBox");
   const popover = $("tutPopover");
+  const backdrop = $("tutBackdrop");
   
-  if (target) {
+  if (!target) {
+    highlightBox.style.display = "none";
+    backdrop.style.clipPath = "none";
+    popover.style.top = "25%";
+    popover.style.left = "50%";
+    popover.style.transform = "translate(-50%, -50%)";
+    return;
+  }
+  
+  // 타겟 요소를 화면 뷰포트 내로 부드럽게 스크롤 정렬
+  target.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+  
+  setTimeout(() => {
     const rect = target.getBoundingClientRect();
     const pad = 6;
-    highlightBox.style.top = `${rect.top - pad}px`;
-    highlightBox.style.left = `${rect.left - pad}px`;
-    highlightBox.style.width = `${rect.width + pad * 2}px`;
-    highlightBox.style.height = `${rect.height + pad * 2}px`;
+    
+    const top = Math.max(0, rect.top - pad);
+    const left = Math.max(0, rect.left - pad);
+    const width = rect.width + pad * 2;
+    const height = rect.height + pad * 2;
+    const right = left + width;
+    const bottom = top + height;
+    
+    // 네온 하이라이트 박스 배치
     highlightBox.style.display = "block";
+    highlightBox.style.top = `${top}px`;
+    highlightBox.style.left = `${left}px`;
+    highlightBox.style.width = `${width}px`;
+    highlightBox.style.height = `${height}px`;
     
-    const popW = 380;
-    let popTop = rect.bottom + 14;
-    let popLeft = rect.left;
+    // 네온 테두리 바깥 영역 블러 처리 (타겟 영역을 제외한 배경에만 blur & dim 적용)
+    backdrop.style.clipPath = `polygon(
+      0% 0%, 0% 100%, 100% 100%, 100% 0%, 0% 0%,
+      ${left}px ${top}px,
+      ${right}px ${top}px,
+      ${right}px ${bottom}px,
+      ${left}px ${bottom}px,
+      ${left}px ${top}px
+    )`;
     
-    if (popTop + 240 > window.innerHeight) {
-      popTop = Math.max(20, rect.top - 250);
+    // 설명 팝오버 위치 계산
+    const popW = Math.min(440, window.innerWidth - 32);
+    let popTop = bottom + 16;
+    let popLeft = left;
+    
+    if (popTop + 330 > window.innerHeight) {
+      popTop = Math.max(16, top - 340);
     }
     if (popLeft + popW > window.innerWidth) {
       popLeft = Math.max(16, window.innerWidth - popW - 20);
     }
     
+    popover.style.transform = "none";
     popover.style.top = `${popTop}px`;
     popover.style.left = `${popLeft}px`;
-  } else {
-    highlightBox.style.display = "none";
-    popover.style.top = "30%";
-    popover.style.left = "35%";
-  }
+  }, 120);
 }
 
 $("startTutorialBtn").onclick = startTutorial;
@@ -1820,6 +2012,13 @@ $("tutNextBtn").onclick = () => {
   }
 };
 
+window.addEventListener("resize", () => {
+  if ($("tutOverlay").classList.contains("active")) {
+    positionTutorialElements(tutorialSteps[tutIdx].targetId);
+  }
+  drawChart();
+});
+
 // ---------------------------------------------------------
 // 4. 게임 초기화 및 재설정
 // ---------------------------------------------------------
@@ -1830,7 +2029,6 @@ function initGame(industryId, companyName) {
   state.month = 1;
   state.year = 1;
   
-  // 기본 기획 상품 초기 세팅
   state.customProduct = {
     name: ind.defaultProductName,
     category: ind.categories[0],
@@ -1981,7 +2179,7 @@ $("confirmSetupBtn").onclick = () => {
 };
 
 // ---------------------------------------------------------
-// 6. UI 입력 필드 및 트레저리 동적 빌드
+// 6. UI 입력 필드 및 트레저리 빌드
 // ---------------------------------------------------------
 function buildFields() {
   $("procurementFields").innerHTML = `
@@ -2065,7 +2263,7 @@ function buildTreasuryUI() {
 }
 
 // ---------------------------------------------------------
-// 7. 정밀 상품 기획 스튜디오 (DB 기반 설계)
+// 7. 정밀 상품 기획 스튜디오
 // ---------------------------------------------------------
 let studioTemp = {
   name: "",
@@ -2101,7 +2299,6 @@ function buildStudioUI() {
     updateStudioBlueprint();
   };
 
-  // 티어 선택 버튼 DB 기반 렌더링
   $("tierSelectorGroup").innerHTML = Object.values(DB.productTiers).map(t => `
     <div class="tier-card-btn ${t.id === studioTemp.tier ? 'active' : ''}" data-tier="${t.id}" onclick="setStudioTier('${t.id}')">
       <strong>${t.name}</strong>
@@ -2255,10 +2452,8 @@ function getPipelineCapacities() {
   const prod = state.customProduct;
   const demand = prod.estDemand || ind.baseMarketDemand;
   
-  // 1. 수급 능력
   const sourcingCapa = vendor.supplyCapa;
   
-  // 2. 조달 능력
   let minRawDays = 999;
   state.materials.forEach(m => {
     const days = m.stock / Math.max(m.dailyConsumption, 1);
@@ -2266,7 +2461,6 @@ function getPipelineCapacities() {
   });
   const procurementCapa = Math.round(demand * Math.min(1.5, minRawDays / 30));
   
-  // 3. 제작 능력 (DB.factoryStages 참조)
   const feedingStage = DB.factoryStages[0];
   const machiningStage = DB.factoryStages[1];
   const assemblyStage = DB.factoryStages[2];
@@ -2280,8 +2474,6 @@ function getPipelineCapacities() {
   const qcCapa = Math.round(demand * (qcStage.baseRatio + state.factoryStageLevels[3] * qcStage.lvlStep));
   
   const manufacturingCapa = Math.min(feedingCapa, machiningCapa, assemblyCapa, qcCapa);
-  
-  // 4. 운송/수출 물류 능력
   const outboundCapa = Math.round(demand * 1.35);
   
   const stages = [
@@ -2712,11 +2904,14 @@ function renderOutboundLogistics() {
 }
 
 // ---------------------------------------------------------
-// 12. 전체 화면 통합 렌더링
+// 12. 전체 화면 통합 렌더링 & 경영 진단 버그 수정
 // ---------------------------------------------------------
 function render() {
   const ind = DB.industries[state.industryId] || DB.industries.electronics;
   const prod = state.customProduct;
+  
+  // 1. 맨위창에 상시로 가용현금 갱신
+  $("topbarCashVal").textContent = fmtWon(state.cash);
   
   $("period").textContent = `제 ${state.year}기 ${state.month}월차`;
   $("companyName").textContent = state.companyName;
@@ -2802,6 +2997,9 @@ function renderShareBars() {
   $("compShareLabelsLarge").innerHTML = labelsHtml;
 }
 
+// ---------------------------------------------------------
+// 2. 실시간 경영 진단 항목 버튼 클릭 시 화면 전환 버그 수정
+// ---------------------------------------------------------
 function renderPrescriptions() {
   const p = getPipelineCapacities();
   const prescBody = $("overviewPrescriptionBody");
@@ -2812,14 +3010,14 @@ function renderPrescriptions() {
       title: "원자재 고갈 임박 (조달 병목)",
       desc: "핵심 원자재 비상 항공 특송을 발주하여 라인 정지를 방어하세요.",
       btn: "자재 창고 가기",
-      fn: () => switchTab("procurement")
+      tab: "procurement"
     });
   } else if (p.bottleneckStage.id === "manufacturing") {
     recs.push({
       title: "공장 제작 속도 부족 (제조 병목)",
       desc: "공정 설비 CAPA를 증설하거나 작업자 인원을 확충하세요.",
       btn: "라인 밸런서 가기",
-      fn: () => switchTab("pipeline")
+      tab: "pipeline"
     });
   }
   
@@ -2828,7 +3026,7 @@ function renderPrescriptions() {
       title: "유동성 방어선 경보",
       desc: "리볼버 마이너스 대출 인출 또는 매출채권 팩토링으로 현금을 확보하세요.",
       btn: "자금 운용 가기",
-      fn: () => switchTab("finance")
+      tab: "finance"
     });
   }
   
@@ -2839,13 +3037,14 @@ function renderPrescriptions() {
       </div>
     `;
   } else {
+    // 문자열 인라인 함수 대신 switchTab(tabId)를 안전하게 직접 호출하도록 교체
     prescBody.innerHTML = recs.map(r => `
       <div style="display:flex;justify-content:space-between;align-items:center;padding:11px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:8px;background:#ffffff">
         <div>
           <strong style="font-size:13px;color:var(--ink)">${r.title}</strong>
           <div class="small" style="color:var(--muted);margin-top:2px">${r.desc}</div>
         </div>
-        <button class="btn sm primary" onclick="(${r.fn})()">${r.btn}</button>
+        <button class="btn sm primary" onclick="switchTab('${r.tab}')">${r.btn}</button>
       </div>
     `).join("");
   }
@@ -3017,7 +3216,7 @@ function drawChart() {
 }
 
 // ---------------------------------------------------------
-// 13. 월말 결산 엔진 (Monthly Settlement)
+// 13. 월말 결산 엔진
 // ---------------------------------------------------------
 function closeMonth() {
   const prod = state.customProduct;
@@ -3248,7 +3447,6 @@ window.addEventListener("beforeunload", function (e) {
   e.preventDefault();
   e.returnValue = "";
 });
-window.addEventListener("resize", drawChart);
 
 // ---------------------------------------------------------
 // 15. 초기 구동 진입점
