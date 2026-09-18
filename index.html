@@ -6,7 +6,7 @@
 <title>VIOLET LEDGER</title>
 <!--
 ================================================================================
-[VIOLET LEDGER V4.4 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
+[VIOLET LEDGER V4.8 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
 ================================================================================
 ■ 핵심 개발 지침 (절대 원칙):
   1. [하드코딩 절대 금지 및 DB화 위주 개발]:
@@ -30,6 +30,7 @@
        마감 공법, 4대 BOM 원자재 투입비율, 목표 마진을 세세하게 직접 결정하여 양산에 착수한다.
   6. [기존 지침 및 스타일 유지]:
      - 단일 파일 완결성(HTML/CSS/JS), 무이모지 세련된 태그 시스템, 보라/핑크 테마, 반응형 UI를 유지한다.
+     - 또한 해당 지침 주석은 삭제하거나 간략화, 수정, 생략하지 말고 그대로 둔다. 아래의 코드만 수정한다.
 ================================================================================
 -->
 <style>
@@ -403,8 +404,58 @@ button { cursor: pointer; }
 .neg { color: var(--red); font-weight: 900; }
 
 .chart { width: 100%; height: 210px; display: block; }
+.chart-lg { width: 100%; height: 260px; display: block; }
 
-.fieldGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+/* 시장 수요·공급(D&S) 시각화 컴포넌트 */
+.ds-container {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.tightness-gauge {
+  background: rgba(243, 232, 255, 0.6);
+  border: 1.5px solid var(--line-focus);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.gauge-bar-track {
+  height: 14px;
+  background: linear-gradient(90deg, #f59e0b 0%, #10b981 50%, #ec4899 100%);
+  border-radius: 7px;
+  position: relative;
+  margin: 10px 0 6px;
+}
+.gauge-pointer {
+  position: absolute;
+  top: -4px;
+  width: 4px;
+  height: 22px;
+  background: var(--ink);
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.5);
+  transform: translateX(-50%);
+  transition: left 0.4s ease;
+}
+.gauge-labels {
+  display: flex; justify-content: space-between; font-size: 10.5px; font-weight: 800; color: var(--muted);
+}
+.region-sd-list { display: grid; gap: 8px; }
+.region-sd-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12px;
+  background: rgba(255, 255, 255, 0.8); padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line);
+}
+.region-sd-track {
+  flex: 1; height: 8px; background: rgba(236, 231, 243, 0.85); border-radius: 4px; overflow: hidden;
+}
+.region-sd-fill {
+  height: 100%; background: linear-gradient(90deg, var(--purple-vivid), var(--pink)); border-radius: 4px; transition: width 0.4s ease;
+}
+.ds-visual-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:14px; }
+.ds-visual-card { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:rgba(255,255,255,.78); }
+.ds-visual-card strong { display:block; font-size:12px; color:var(--ink-soft); margin-bottom:6px; }
+.ds-visual-card canvas { width:100%; height:170px; display:block; }
+.category-interaction { margin-top:10px; padding:10px 12px; border:1px dashed var(--line-focus); border-radius:11px; background:linear-gradient(180deg,rgba(243,232,255,.60),rgba(255,255,255,.72)); }
+.category-interaction-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-top:8px; }
+@media(max-width:760px){ .ds-visual-grid{grid-template-columns:1fr;} .category-interaction-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+
 .field { border: 1.5px solid var(--line); border-radius: 13px; padding: 12px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: var(--transition); }
 .field:hover { border-color: var(--purple-vivid); box-shadow: 0 4px 14px rgba(109, 40, 217, 0.08); background: rgba(255, 255, 255, 0.95); }
 .field label { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 800; margin-bottom: 8px; color: var(--ink-soft); }
@@ -926,6 +977,10 @@ button { cursor: pointer; }
         <div class="shareBarContainer" id="overviewShareBar"></div>
         <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:8px;font-weight:700" id="overviewShareLabels"></div>
         <div style="margin-top:12px;font-size:12px;color:var(--muted)" id="overviewStockoutNotice"></div>
+        <div style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:center">
+          <span class="small" style="font-weight:800;color:var(--ink-soft)">시장 수급 압력: <b id="overviewDsTightnessText">—</b></span>
+          <button class="btn sm" onclick="switchTab('market')" style="padding:3px 8px;font-size:11px">수급 곡선 분석 &gt;</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1117,6 +1172,7 @@ button { cursor: pointer; }
             <label>세부 카테고리 분류</label>
             <select id="studio_categorySelect"></select>
             <div class="hint">타깃 시장 제품군을 정의합니다.</div>
+            <div id="studio_categoryInteraction" class="category-interaction"></div>
           </div>
         </div>
 
@@ -1135,9 +1191,12 @@ button { cursor: pointer; }
         </div>
 
         <div style="margin-bottom:12px">
-          <label style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:var(--ink-soft);margin-bottom:4px">
+          <label style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:800;color:var(--ink-soft);margin-bottom:4px">
             <span>BOM 4대 원자재 투입 개수 (단위당 배수)</span>
-            <span class="valuePill" id="studio_matSummaryPill">1:1:1:1</span>
+            <div style="display:flex;gap:6px;align-items:center">
+              <button class="btn sm" id="applyDefaultBOMBtn" style="padding:2px 7px;font-size:11px" type="button" onclick="applyCategoryDefaultBOM()">카테고리 권장비 적용</button>
+              <span class="valuePill" id="studio_matSummaryPill">1:1:1:1</span>
+            </div>
           </label>
           <div class="grid four" id="studio_matInputsGrid"></div>
         </div>
@@ -1428,6 +1487,76 @@ button { cursor: pointer; }
     <span class="tag purple">R&D & 마켓 인텔리전스</span>
   </div>
 
+  <!-- 1. 시장 수요와 공급(D&S) 균형 분석 센터 -->
+  <div class="card display-card" style="margin-bottom:16px">
+    <div class="cardHead">
+      <div>
+        <h3 style="display:inline-flex;align-items:center;gap:8px">
+          시장의 수요와 공급(Demand & Supply) 실시간 균형 관제
+          <span class="tag green" id="dsStatusBadge">수급 균형 안정</span>
+        </h3>
+        <div class="small" style="margin-top:2px;color:var(--muted)">출고 판매가에 따른 시장 수요 곡선과 총공급 곡선의 교차 균형점(Equilibrium) 및 초과수요/공급 갭을 분석합니다.</div>
+      </div>
+      <span class="affordance-badge affordance-display">실시간 수급 인텔리전스</span>
+    </div>
+    <div class="body">
+      <div class="grid two">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <strong style="font-size:13px;color:var(--ink)">수요-공급 가격 탄력성 곡선 (P-Q Equilibrium Curve)</strong>
+            <span class="small" id="dsEquilibriumPriceLabel" style="color:var(--purple-dark);font-weight:800">시장 균형가: —</span>
+          </div>
+          <canvas id="dsChart" class="chart chart-lg"></canvas>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px;font-weight:700">
+            <span>수량 (월간 출하 수량: Q)</span>
+            <span id="dsMyPriceMarkerDesc" style="color:var(--purple-vivid)">자사 출고가 포지션</span>
+          </div>
+        </div>
+
+        <div class="ds-container">
+          <!-- 수급 긴장도 게이지 -->
+          <div class="tightness-gauge">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="small" style="font-weight:800;color:var(--ink-soft)">시장 수급 압력 지수 (Tightness Index)</span>
+              <strong id="dsTightnessVal" style="font-size:16px;color:var(--purple-dark)">100%</strong>
+            </div>
+            <div class="gauge-bar-track">
+              <div class="gauge-pointer" id="dsGaugePointer" style="left:50%"></div>
+            </div>
+            <div class="gauge-labels">
+              <span>초과공급 (과잉 50%)</span>
+              <span>수급 균형 (100%)</span>
+              <span>초과수요 (품귀 150%)</span>
+            </div>
+            <div class="small" id="dsTightnessDesc" style="margin-top:8px;line-height:1.45;color:var(--ink-soft)">
+              분석 대기 중...
+            </div>
+          </div>
+
+          <!-- 권역별 수급 충족도 -->
+          <div>
+            <div style="font-size:12px;font-weight:800;color:var(--ink-soft);margin-bottom:6px">글로벌 4대 권역별 출하 배정 및 수요 충족률</div>
+            <div class="region-sd-list" id="dsRegionList"></div>
+          </div>
+
+          <!-- 카테고리 수급 지표 요약 -->
+          <div class="metricGrid" style="grid-template-columns:repeat(3, 1fr)">
+            <div class="metric"><span>시장 전체 총수요</span><strong id="dsMarketDemandVal" style="color:var(--purple-dark)">—</strong><span class="small">월간 잠재 수요</span></div>
+            <div class="metric"><span>시장 전체 총공급</span><strong id="dsMarketSupplyVal" style="color:var(--ink)">—</strong><span class="small">경쟁사+자사</span></div>
+            <div class="metric"><span>수급 차이 (Gap)</span><strong id="dsMarketGapVal" style="color:var(--green)">—</strong><span class="small" id="dsMarketGapLabel">초과수요/과잉</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ds-visual-grid">
+    <div class="ds-visual-card"><strong>시장 전체 수요 vs 공급</strong><canvas id="dsGapChart"></canvas></div>
+    <div class="ds-visual-card"><strong>12개월 계절 수요 흐름</strong><canvas id="dsSeasonChart"></canvas></div>
+    <div class="ds-visual-card"><strong>현재 월간 판매량을 만드는 요인</strong><canvas id="dsFactorChart"></canvas></div>
+    <div class="ds-visual-card"><strong>잠재수요 → 생산능력 → 실제 판매 흐름</strong><canvas id="dsVolumeChart"></canvas></div>
+  </div>
+
   <!-- 2. 시장 및 제품 에널리스틱 피드백 섹션 -->
   <div class="grid two" style="margin-bottom:16px">
     <div class="card display-card">
@@ -1654,7 +1783,18 @@ const DB = {
     initialEquity: 5000000000,
     defaultSafetyStockDays: 35,
     defaultLineWorkers: 65,
-    defaultMarketingBudget: 150000000
+    defaultMarketingBudget: 150000000,
+    salesModel: {
+      marketScale: 3.6, equilibriumMargin: 0.35, demandFloorFactor: 0.15, supplyFloorFactor: 0.20,
+      marketingBaseBudget: 40000000, marketingResponse: 0.16, brandBaseValue: 70, rdDemandLift: 0.05,
+      qualityBase: 90, defectPenalty: 1.5, deliveryBonus: 1.03, deliveryMinFactor: 0.60,
+      deliveryStockoutDecay: 0.45, macroBase: 0.98, macroAmplitude: 0.04, macroPeriod: 1.7,
+      tightnessResponse: 0.30, tightnessMinFactor: 0.72, tightnessMaxFactor: 1.35, randomShockAmplitude: 0.018,
+      minUnitCost: 100000, minSellingPrice: 100, priceElasticityFloor: 0.15, qualityFactorFloor: 0.55,
+      supplyPriceElasticity: 0.65, productionSupplyMin: 0.75, productionSupplyMax: 1.25,
+      marketSupplyBase: 0.94, marketSupplyCycle: 5, marketSupplyCycleStep: 0.025,
+      categoryShockMonthRate: 0.73, categoryShockCategoryRate: 0.91
+    }
   },
 
   treasuryAmounts: {
@@ -1690,26 +1830,271 @@ const DB = {
     flexible: { id: "flexible", name: "단기 유연 스팟 계약", desc: "긴급 CAPA 20% 유연 확대 가능하나 단가 프리미엄 2% 추가 부과", discountMod: -0.02, defectMod: 0.4, cashAdvancePct: 0.8 }
   },
 
+  // 세부 카테고리별 상호작용 마스터 메타데이터 DB
+  categoryMeta: {
+    electronics: {
+      "스마트폰": {
+        baseDemand: 1500, priceMultiplier: 1.0, laborMultiplier: 1.0, elasticity: 1.25,
+        defaultName: "스마트폰 S1", defaultMatRatios: [1, 1, 1, 1],
+        seasonality: [1.0, 0.95, 1.05, 0.98, 1.0, 1.02, 1.05, 1.1, 1.15, 1.05, 1.2, 1.25],
+        desc: "고성능 AP와 고화질 디스플레이가 집약된 플래그십 IT 디바이스"
+      },
+      "태블릿": {
+        baseDemand: 1000, priceMultiplier: 0.88, laborMultiplier: 0.95, elasticity: 1.15,
+        defaultName: "태블릿 패드 T1", defaultMatRatios: [1, 2, 1, 1],
+        seasonality: [0.95, 1.15, 1.2, 1.0, 0.95, 0.98, 1.0, 1.05, 1.0, 1.0, 1.1, 1.15],
+        desc: "대화면 패널과 배터리 용량이 강조된 멀티미디어 패드"
+      },
+      "노트북": {
+        baseDemand: 650, priceMultiplier: 1.85, laborMultiplier: 1.35, elasticity: 1.05,
+        defaultName: "슬림 노트북 N1", defaultMatRatios: [2, 2, 2, 1],
+        seasonality: [1.05, 1.25, 1.2, 0.95, 0.9, 0.92, 0.95, 1.05, 1.0, 0.98, 1.1, 1.15],
+        desc: "복합 가공 공정과 듀얼 프로세싱 부품이 투입되는 고사양 PC"
+      },
+      "헤드폰": {
+        baseDemand: 3800, priceMultiplier: 0.38, laborMultiplier: 0.65, elasticity: 1.4,
+        defaultName: "무선 노이즈캔슬링 헤드폰 H1", defaultMatRatios: [1, 1, 1, 2],
+        seasonality: [1.0, 0.95, 1.0, 0.95, 1.0, 1.05, 1.1, 1.05, 1.1, 1.15, 1.25, 1.3],
+        desc: "정밀 사운드 칩셋과 밀폐형 음향 하우징이 결합된 프리미엄 오디오"
+      },
+      "마이크": {
+        baseDemand: 2600, priceMultiplier: 0.32, laborMultiplier: 0.6, elasticity: 1.3,
+        defaultName: "스튜디오 콘덴서 마이크 M1", defaultMatRatios: [1, 1, 1, 2],
+        seasonality: [1.0, 1.0, 1.05, 1.0, 0.98, 1.0, 1.02, 1.0, 1.05, 1.1, 1.15, 1.1],
+        desc: "고감도 캡슐 센서와 금속 쉴드 바디가 적용된 방송·음향 기기"
+      },
+      "스피커": {
+        baseDemand: 2200, priceMultiplier: 0.48, laborMultiplier: 0.75, elasticity: 1.35,
+        defaultName: "블루투스 스테레오 스피커 SP1", defaultMatRatios: [1, 1, 2, 2],
+        seasonality: [0.95, 0.95, 1.0, 1.05, 1.1, 1.15, 1.2, 1.1, 1.0, 1.05, 1.15, 1.2],
+        desc: "대구경 우퍼 드라이버와 전원 배터리가 탑재된 거치/휴대 음향기기"
+      },
+      "마우스": {
+        baseDemand: 9000, priceMultiplier: 0.14, laborMultiplier: 0.4, elasticity: 1.6,
+        defaultName: "초경량 정밀 게이밍 마우스 MS1", defaultMatRatios: [1, 1, 1, 2],
+        seasonality: [1.05, 1.1, 1.05, 1.0, 0.95, 1.0, 1.05, 1.0, 1.0, 1.05, 1.15, 1.2],
+        desc: "초경량 외장 쉘과 고감도 광학 센서가 결합된 대량 볼륨 상품"
+      }
+    },
+    auto: {
+      "세단": {
+        baseDemand: 1000, priceMultiplier: 1.0, laborMultiplier: 1.0, elasticity: 1.2,
+        defaultName: "승용 세단 C1", defaultMatRatios: [1, 1, 1, 1],
+        seasonality: [0.9, 0.95, 1.1, 1.15, 1.05, 1.0, 0.95, 0.9, 1.1, 1.15, 1.05, 1.0],
+        desc: "주행 안정성과 안락함을 갖춘 표준 승용 패밀리 모델"
+      },
+      "SUV": {
+        baseDemand: 1250, priceMultiplier: 1.2, laborMultiplier: 1.1, elasticity: 1.15,
+        defaultName: "올로드 패밀리 SUV V1", defaultMatRatios: [1, 1, 2, 1],
+        seasonality: [0.95, 1.0, 1.1, 1.15, 1.1, 1.05, 1.05, 1.0, 1.1, 1.15, 1.05, 1.0],
+        desc: "견고한 차체 프레임과 높은 공간 활용성을 가진 스포츠 유틸리티"
+      },
+      "소형 트럭": {
+        baseDemand: 1400, priceMultiplier: 0.82, laborMultiplier: 0.9, elasticity: 1.35,
+        defaultName: "도심 물류 소형 트럭 K1", defaultMatRatios: [1, 1, 2, 1],
+        seasonality: [1.0, 1.05, 1.1, 1.05, 1.0, 0.98, 0.95, 0.95, 1.05, 1.1, 1.05, 1.0],
+        desc: "상용 적재 공간과 경제적 구동계를 갖춘 실용 물류 차량"
+      },
+      "EV": {
+        baseDemand: 1600, priceMultiplier: 1.38, laborMultiplier: 1.15, elasticity: 1.1,
+        defaultName: "차세대 전동화 EV E1", defaultMatRatios: [2, 2, 1, 1],
+        seasonality: [0.95, 1.0, 1.1, 1.15, 1.1, 1.05, 1.0, 1.05, 1.15, 1.2, 1.1, 1.15],
+        desc: "고효율 듀얼 구동 모터와 차세대 전자제어 장치가 집중된 친환경차"
+      },
+      "스포츠카": {
+        baseDemand: 300, priceMultiplier: 2.6, laborMultiplier: 1.8, elasticity: 0.75,
+        defaultName: "초고출력 스포츠 GT1", defaultMatRatios: [2, 2, 2, 2],
+        seasonality: [0.85, 0.9, 1.15, 1.25, 1.2, 1.15, 1.1, 0.95, 1.05, 1.0, 0.85, 0.85],
+        desc: "초정밀 튜닝 모터와 경량 복합 차체로 제작되는 고마진 특화형 모델"
+      },
+      "럭셔리": {
+        baseDemand: 250, priceMultiplier: 3.4, laborMultiplier: 2.1, elasticity: 0.65,
+        defaultName: "프레스티지 럭셔리 L1", defaultMatRatios: [2, 2, 2, 2],
+        seasonality: [1.0, 1.0, 1.05, 1.05, 1.0, 1.0, 0.98, 0.95, 1.05, 1.1, 1.15, 1.25],
+        desc: "최고급 천연 내외장과 첨단 제어 시스템이 적용된 최상위 의전 차량"
+      }
+    },
+    fashion: {
+      "자켓": {
+        baseDemand: 2500, priceMultiplier: 1.0, laborMultiplier: 1.0, elasticity: 1.3,
+        defaultName: "테크니컬 윈드브레이커 자켓 J1", defaultMatRatios: [1, 1, 1, 1],
+        seasonality: [1.1, 1.15, 1.2, 0.9, 0.8, 0.75, 0.7, 0.85, 1.2, 1.3, 1.25, 1.2],
+        desc: "기능성 원단과 방풍 안감이 조합된 프리미엄 아웃도어 의류"
+      },
+      "팬츠": {
+        baseDemand: 3800, priceMultiplier: 0.65, laborMultiplier: 0.85, elasticity: 1.35,
+        defaultName: "스트레치 유틸리티 팬츠 P1", defaultMatRatios: [1, 1, 1, 1],
+        seasonality: [0.95, 1.0, 1.1, 1.05, 1.0, 0.95, 0.95, 1.0, 1.1, 1.1, 1.05, 1.0],
+        desc: "신축성 원단과 정밀 입체 패턴 봉제가 적용된 사계절 팬츠"
+      },
+      "운동화": {
+        baseDemand: 4500, priceMultiplier: 0.78, laborMultiplier: 0.95, elasticity: 1.25,
+        defaultName: "라이트닝 쿠셔닝 런닝화 R1", defaultMatRatios: [1, 1, 1, 2],
+        seasonality: [0.95, 1.05, 1.2, 1.15, 1.1, 1.05, 1.0, 1.05, 1.15, 1.1, 1.0, 0.95],
+        desc: "통기성 메쉬와 충격 흡수 미드솔이 결합된 대중형 스포츠화"
+      },
+      "축구화": {
+        baseDemand: 3500, priceMultiplier: 1.18, laborMultiplier: 1.2, elasticity: 1.2,
+        defaultName: "프로 엘리트 FG 축구화 F1", defaultMatRatios: [2, 1, 1, 2],
+        seasonality: [0.85, 0.95, 1.25, 1.3, 1.2, 1.15, 1.05, 1.0, 1.15, 1.2, 0.95, 0.85],
+        desc: "고강도 기능성 갑피와 정밀 스터드 아웃솔이 장착된 필드 전용 축구화"
+      },
+      "풋살화": {
+        baseDemand: 4800, priceMultiplier: 0.92, laborMultiplier: 1.05, elasticity: 1.25,
+        defaultName: "인도어·터프 TF 풋살화 FS1", defaultMatRatios: [1, 2, 1, 2],
+        seasonality: [1.0, 1.05, 1.15, 1.15, 1.1, 1.05, 1.0, 1.0, 1.1, 1.15, 1.1, 1.05],
+        desc: "내마모성 생고무창과 두터운 쿠셔닝 충전재가 적용된 도심형 풋살화"
+      }
+    },
+    food: {
+      "간편식": {
+        baseDemand: 16000, priceMultiplier: 1.0, laborMultiplier: 1.0, elasticity: 1.4,
+        defaultName: "정통 비프스테이크 간편식 M1", defaultMatRatios: [1, 1, 1, 1],
+        seasonality: [1.0, 0.95, 0.98, 1.0, 1.02, 1.05, 1.1, 1.05, 0.98, 1.0, 1.05, 1.1],
+        desc: "원육과 전용 소스가 배합된 프리미엄 원팩 가정간편식"
+      },
+      "도시락": {
+        baseDemand: 22000, priceMultiplier: 0.75, laborMultiplier: 0.9, elasticity: 1.5,
+        defaultName: "영양 밸런스 멀티 도시락 B1", defaultMatRatios: [1, 1, 2, 1],
+        seasonality: [0.95, 1.05, 1.2, 1.15, 1.1, 1.0, 0.95, 0.95, 1.1, 1.1, 1.0, 0.95],
+        desc: "다채로운 반찬과 용기 실링으로 구성된 단체 및 편의점 유통 도시락"
+      },
+      "국/탕류": {
+        baseDemand: 18000, priceMultiplier: 0.85, laborMultiplier: 0.95, elasticity: 1.35,
+        defaultName: "진한 사골 우거지탕 S1", defaultMatRatios: [1, 2, 1, 1],
+        seasonality: [1.25, 1.2, 1.05, 0.95, 0.85, 0.8, 0.8, 0.85, 1.05, 1.15, 1.25, 1.3],
+        desc: "고온 추출 육수와 농산물이 어우러진 살균 레토르트 파우치 상품"
+      },
+      "냉동만두/딤섬": {
+        baseDemand: 32000, priceMultiplier: 0.68, laborMultiplier: 0.85, elasticity: 1.55,
+        defaultName: "육즙가득 프리미엄 왕교자 D1", defaultMatRatios: [2, 1, 1, 1],
+        seasonality: [1.15, 1.2, 1.05, 0.95, 0.9, 0.9, 0.9, 0.95, 1.05, 1.1, 1.2, 1.25],
+        desc: "신선한 원육 소와 쫄깃한 만두피를 급속 냉동 가공한 대량 볼륨 상품"
+      },
+      "밀키트(전골/볶음)": {
+        baseDemand: 12000, priceMultiplier: 1.45, laborMultiplier: 1.2, elasticity: 1.25,
+        defaultName: "셰프 특제 불고기 버섯전골 밀키트 MK1", defaultMatRatios: [2, 2, 1, 2],
+        seasonality: [1.15, 1.1, 1.0, 0.95, 0.95, 0.95, 1.0, 1.0, 1.05, 1.1, 1.15, 1.25],
+        desc: "손질된 원육과 농산물 원물, 비법 양념을 동봉한 프리미엄 밀키트 세트"
+      },
+      "샐러드/신선편의": {
+        baseDemand: 25000, priceMultiplier: 0.62, laborMultiplier: 0.8, elasticity: 1.45,
+        defaultName: "데일리 닭가슴살 믹스 샐러드 SL1", defaultMatRatios: [1, 1, 1, 1],
+        seasonality: [0.85, 0.9, 1.05, 1.15, 1.25, 1.35, 1.4, 1.3, 1.1, 1.0, 0.9, 0.85],
+        desc: "신선 채소 원물 세척과 저온 포장 기술로 공급하는 데일리 건강식"
+      },
+      "건강단백질식": {
+        baseDemand: 20000, priceMultiplier: 1.12, laborMultiplier: 0.9, elasticity: 1.15,
+        defaultName: "하이프로틴 단백질 쉐이크 & 바 HP1", defaultMatRatios: [2, 1, 1, 1],
+        seasonality: [1.1, 1.05, 1.15, 1.2, 1.25, 1.3, 1.3, 1.2, 1.05, 1.0, 0.95, 1.0],
+        desc: "고순도 분리유청단백과 비타민 미네랄이 농축 배합된 헬스케어 식품"
+      },
+      "베이커리/디저트": {
+        baseDemand: 28000, priceMultiplier: 0.55, laborMultiplier: 0.8, elasticity: 1.4,
+        defaultName: "버터 풍미 프리미엄 크루아상 BK1", defaultMatRatios: [1, 1, 1, 1],
+        seasonality: [1.0, 1.05, 1.05, 1.0, 1.0, 0.95, 0.95, 1.0, 1.05, 1.1, 1.15, 1.25],
+        desc: "생지 발효 및 오븐 베이킹 공정으로 완성되는 베이커리 라인업"
+      },
+      "육가공/소시지": {
+        baseDemand: 24000, priceMultiplier: 0.82, laborMultiplier: 0.88, elasticity: 1.35,
+        defaultName: "참나무 훈제 수제 소시지 SG1", defaultMatRatios: [2, 1, 1, 1],
+        seasonality: [0.95, 0.95, 1.05, 1.1, 1.15, 1.2, 1.25, 1.15, 1.05, 1.0, 0.95, 0.95],
+        desc: "국내산 원육 90% 이상 투입 및 훈연 건조 공정을 거친 육가공품"
+      },
+      "즉석밥/죽": { baseDemand:30000, priceMultiplier:0.72, laborMultiplier:0.88, elasticity:1.46, defaultName:"갓지은 곤약 즉석밥 RB1", defaultMatRatios:[1,2,1,1], seasonality:[1.08,1.06,1.02,0.98,0.98,1,1.02,1.03,1.04,1.06,1.08,1.10], desc:"곡물 전처리와 무균 포장 공정을 적용한 상온 즉석식품" },
+      "면류/파스타": { baseDemand:28000, priceMultiplier:0.68, laborMultiplier:0.82, elasticity:1.5, defaultName:"알덴테 토마토 파스타 P1", defaultMatRatios:[1,2,1,1], seasonality:[0.98,1,1.05,1.08,1.08,1.05,1.02,1,1.04,1.08,1.12,1.10], desc:"면과 소스를 별도 조리·배합하여 포장하는 상온/냉장 면류" },
+      "소스/드레싱": { baseDemand:26000, priceMultiplier:0.58, laborMultiplier:0.76, elasticity:1.55, defaultName:"저염 바질 토마토 소스 S2", defaultMatRatios:[1,2,1,1], seasonality:[0.96,0.98,1.02,1.05,1.08,1.10,1.12,1.10,1.08,1.05,1.02,1], desc:"원료 배합과 점도·충진 공정을 중심으로 생산하는 소스류" },
+      "냉동피자": { baseDemand:18000, priceMultiplier:1.18, laborMultiplier:1.02, elasticity:1.32, defaultName:"치즈 토마토 스톤피자 FP1", defaultMatRatios:[2,1,1,2], seasonality:[1.08,1.10,1.02,0.96,0.94,0.94,0.98,1,1.04,1.08,1.12,1.16], desc:"도우 성형·토핑·급속냉동을 결합한 냉동 피자 라인" },
+      "냉동볶음밥": { baseDemand:23000, priceMultiplier:0.72, laborMultiplier:0.88, elasticity:1.48, defaultName:"불향 소고기 볶음밥 FR1", defaultMatRatios:[2,1,1,1], seasonality:[1.08,1.10,1.05,1,0.96,0.94,0.96,1,1.04,1.08,1.12,1.16], desc:"원료 계량·볶음·급속냉동 및 소포장 공정을 적용한 간편식" },
+      "김밥/주먹밥": { baseDemand:21000, priceMultiplier:0.78, laborMultiplier:1, elasticity:1.56, defaultName:"참치마요 한입 김밥 KB1", defaultMatRatios:[1,1,2,1], seasonality:[1,1.02,1.06,1.08,1.10,1.12,1.10,1.06,1.04,1.02,1,0.98], desc:"밥 성형과 속재료 충전 후 개별 포장하는 즉석 편의식" },
+      "샌드위치/랩": { baseDemand:19500, priceMultiplier:0.92, laborMultiplier:1.04, elasticity:1.48, defaultName:"치킨 아보카도 랩 SW1", defaultMatRatios:[1,1,1,1], seasonality:[0.96,0.98,1.04,1.10,1.18,1.24,1.26,1.22,1.12,1.05,1,0.96], desc:"신선 식재료 조립과 저온 포장을 결합한 냉장 간편식" },
+      "유아식": { baseDemand:10000, priceMultiplier:1.62, laborMultiplier:1.10, elasticity:0.95, defaultName:"저알레르기 닭고기 이유식 BA1", defaultMatRatios:[2,1,1,1], seasonality:[1.02,1.02,1,1,1.02,1.04,1.05,1.04,1.02,1,0.98,0.98], desc:"원료 선별과 미세 분쇄, 위생 포장을 중시하는 영유아 전용 식품" },
+      "비건/식물성식품": { baseDemand:14500, priceMultiplier:1.38, laborMultiplier:1.05, elasticity:1.18, defaultName:"식물성 불고기 볼 VB1", defaultMatRatios:[2,2,1,1], seasonality:[0.98,1,1.04,1.08,1.14,1.18,1.16,1.12,1.08,1.04,1,0.98], desc:"식물성 단백질 배합과 성형을 중심으로 생산하는 대체식품" },
+      "디카페인/차음료": { baseDemand:20000, priceMultiplier:0.8, laborMultiplier:0.86, elasticity:1.38, defaultName:"무가당 디카페인 콜드브루 DC1", defaultMatRatios:[1,2,1,1], seasonality:[0.92,0.94,0.98,1.06,1.16,1.28,1.34,1.30,1.16,1.04,0.98,0.94], desc:"추출·혼합·살균·충진 공정으로 생산하는 상온·냉장 음료" },
+      "과일음료/주스": { baseDemand:26000, priceMultiplier:0.66, laborMultiplier:0.82, elasticity:1.5, defaultName:"100% 제주 감귤 주스 JU1", defaultMatRatios:[2,1,1,1], seasonality:[0.82,0.84,0.90,1,1.12,1.24,1.34,1.30,1.16,1.02,0.92,0.86], desc:"원료 추출과 살균 및 충진을 결합한 과채 음료 라인" },
+      "스낵/견과": { baseDemand:34000, priceMultiplier:0.54, laborMultiplier:0.74, elasticity:1.62, defaultName:"허니버터 아몬드 SN1", defaultMatRatios:[1,1,1,2], seasonality:[0.98,1,1.04,1.08,1.10,1.12,1.10,1.08,1.05,1.06,1.10,1.18], desc:"원료 로스팅·시즈닝 및 개별 소포장을 적용한 스낵 제품" },
+      "발효유/요거트": { baseDemand:17000, priceMultiplier:0.88, laborMultiplier:0.86, elasticity:1.3, defaultName:"그릭 요거트 클래식 GY1", defaultMatRatios:[2,1,1,1], seasonality:[0.96,0.98,1.02,1.08,1.16,1.22,1.26,1.22,1.12,1.04,0.98,0.96], desc:"유가공·발효·냉장 충진을 거쳐 생산하는 발효유 제품" },
+      "아이스크림/냉동디저트": { baseDemand:16500, priceMultiplier:1.06, laborMultiplier:0.9, elasticity:1.44, defaultName:"바닐라 밀크 컵 아이스크림 IC1", defaultMatRatios:[2,1,1,2], seasonality:[0.72,0.76,0.82,0.94,1.12,1.34,1.48,1.44,1.20,0.98,0.80,0.72], desc:"혼합·숙성·동결 및 냉동 보관을 거치는 디저트 라인" },
+      "반찬/밑반찬": { baseDemand:18500, priceMultiplier:0.84, laborMultiplier:0.98, elasticity:1.42, defaultName:"저염 7종 반찬 세트 BC1", defaultMatRatios:[1,2,1,1], seasonality:[1.02,1.02,1.05,1.06,1.08,1.06,1.02,1,1.02,1.04,1.06,1.08], desc:"재료 손질·조리·냉각과 소분 포장을 결합한 냉장 반찬류" },
+      "김치/절임류": { baseDemand:17500, priceMultiplier:0.8, laborMultiplier:0.88, elasticity:1.26, defaultName:"저염 배추김치 K1", defaultMatRatios:[2,1,1,1], seasonality:[0.98,0.98,1,1.04,1.08,1.06,1.02,0.98,1,1.05,1.12,1.18], desc:"원료 절임·양념 배합·발효 및 저온 유통을 전제로 한 저장식품" }
+    }
+  },
+
+  // 카테고리별 세부 상호작용 규칙: 마감·BOM·공정 CAPA·판매 변동폭을 한 곳에서 관리
+  categoryRules: {
+    electronics: {
+      "스마트폰": { preferredFinishId:"f3", materialCostMult:[1,1.08,1.05,1.02], stageMult:[1,1,0.96,1.02], demandLift:1, volatility:0.012 },
+      "태블릿": { preferredFinishId:"f2", materialCostMult:[0.98,1.05,1.04,1], stageMult:[1,0.98,0.98,1], demandLift:1.01, volatility:0.014 },
+      "노트북": { preferredFinishId:"f3", materialCostMult:[1.04,1.12,1,1.06], stageMult:[0.94,0.93,0.92,0.99], demandLift:0.99, volatility:0.016 },
+      "헤드폰": { preferredFinishId:"f2", materialCostMult:[0.82,0.96,0.82,1.16], stageMult:[1.10,1.04,1.06,1.08], demandLift:1.04, volatility:0.022 },
+      "마이크": { preferredFinishId:"f2", materialCostMult:[0.74,0.88,0.78,1.12], stageMult:[1.08,1.05,1.04,1.06], demandLift:1.02, volatility:0.020 },
+      "스피커": { preferredFinishId:"f1", materialCostMult:[0.86,0.92,1.20,1.10], stageMult:[1.05,1,1.02,1.06], demandLift:1.03, volatility:0.021 },
+      "마우스": { preferredFinishId:"f1", materialCostMult:[0.74,0.78,0.72,1.14], stageMult:[1.16,1.08,1.14,1.10], demandLift:1.05, volatility:0.024 }
+    },
+    auto: {
+      "세단": { preferredFinishId:"f2", materialCostMult:[1,1,1,1], stageMult:[1,1,1,1], demandLift:1, volatility:0.010 },
+      "SUV": { preferredFinishId:"f2", materialCostMult:[1.04,1,1.07,1.03], stageMult:[0.98,0.96,0.96,0.99], demandLift:1.02, volatility:0.011 },
+      "소형 트럭": { preferredFinishId:"f1", materialCostMult:[0.97,1,1.09,1.08], stageMult:[1.03,1.02,1.04,0.98], demandLift:1.01, volatility:0.009 },
+      "EV": { preferredFinishId:"f2", materialCostMult:[1.18,1.20,0.98,1], stageMult:[0.98,0.96,0.94,1], demandLift:1.05, volatility:0.018 },
+      "스포츠카": { preferredFinishId:"f3", materialCostMult:[1.22,1.20,1.12,1.14], stageMult:[0.88,0.84,0.78,0.92], demandLift:0.98, volatility:0.025 },
+      "럭셔리": { preferredFinishId:"f3", materialCostMult:[1.24,1.18,1.18,1.16], stageMult:[0.84,0.80,0.74,0.90], demandLift:0.96, volatility:0.020 }
+    },
+    fashion: {
+      "자켓": { preferredFinishId:"f2", materialCostMult:[1.02,1.04,1.05,0.95], stageMult:[0.98,1,0.96,0.98], demandLift:1.01, volatility:0.018 },
+      "팬츠": { preferredFinishId:"f1", materialCostMult:[0.98,1.02,1.03,0.96], stageMult:[1.03,1.02,1,1.02], demandLift:1, volatility:0.014 },
+      "운동화": { preferredFinishId:"f2", materialCostMult:[1,1.12,1.03,1.10], stageMult:[0.96,0.94,0.92,0.98], demandLift:1.03, volatility:0.020 },
+      "축구화": { preferredFinishId:"f2", materialCostMult:[1.08,1.10,0.96,1.18], stageMult:[0.94,0.92,0.90,0.96], demandLift:1.05, volatility:0.028 },
+      "풋살화": { preferredFinishId:"f1", materialCostMult:[1.02,1.14,0.96,1.16], stageMult:[0.98,0.96,0.94,0.99], demandLift:1.04, volatility:0.022 }
+    },
+    food: {
+      "간편식": { preferredFinishId:"f2", materialCostMult:[1.03,1.02,1,1.02], stageMult:[1,0.98,1.02,1.04], demandLift:1.02, volatility:0.015 },
+      "도시락": { preferredFinishId:"f2", materialCostMult:[1.05,1.04,1.02,1.01], stageMult:[1.06,1.02,1.08,1.06], demandLift:1.03, volatility:0.014 },
+      "국/탕류": { preferredFinishId:"f3", materialCostMult:[1.03,1.10,1.01,1], stageMult:[0.96,1.02,0.98,1.06], demandLift:1.01, volatility:0.018 },
+      "냉동만두/딤섬": { preferredFinishId:"f2", materialCostMult:[1.10,1,1.03,1.01], stageMult:[1.08,1.04,1.06,1.08], demandLift:1.04, volatility:0.016 },
+      "밀키트(전골/볶음)": { preferredFinishId:"f2", materialCostMult:[1.08,1.12,1,1.08], stageMult:[0.95,0.98,0.96,1.04], demandLift:1.02, volatility:0.020 },
+      "샐러드/신선편의": { preferredFinishId:"f2", materialCostMult:[1.06,1.02,1,1.02], stageMult:[0.98,0.96,1.02,0.94], demandLift:1.05, volatility:0.030 },
+      "건강단백질식": { preferredFinishId:"f2", materialCostMult:[1.12,1,1,1], stageMult:[1,1.02,1.03,1.02], demandLift:1.05, volatility:0.022 },
+      "베이커리/디저트": { preferredFinishId:"f1", materialCostMult:[0.96,1.05,1,1.04], stageMult:[1.04,1.08,1.02,1.10], demandLift:1.04, volatility:0.024 },
+      "육가공/소시지": { preferredFinishId:"f3", materialCostMult:[1.15,1,1.02,1], stageMult:[0.94,1.04,1.02,1.08], demandLift:1.01, volatility:0.018 },
+      "즉석밥/죽": { preferredFinishId:"f3", materialCostMult:[1,1.06,1.02,1.02], stageMult:[1.08,1.06,1.04,1.10], demandLift:1.03, volatility:0.012 },
+      "면류/파스타": { preferredFinishId:"f2", materialCostMult:[1.02,1.08,1,1], stageMult:[1.06,1.04,1.05,1.04], demandLift:1.02, volatility:0.014 },
+      "소스/드레싱": { preferredFinishId:"f3", materialCostMult:[0.92,1.18,1.02,1.04], stageMult:[1.05,1.02,1,1.08], demandLift:1.03, volatility:0.017 },
+      "냉동피자": { preferredFinishId:"f2", materialCostMult:[1,1.02,1.04,1.06], stageMult:[1.02,1.10,1.08,1.06], demandLift:1.04, volatility:0.018 },
+      "냉동볶음밥": { preferredFinishId:"f2", materialCostMult:[1.03,1.04,1,1.02], stageMult:[1.10,1.06,1.08,1.08], demandLift:1.04, volatility:0.016 },
+      "김밥/주먹밥": { preferredFinishId:"f2", materialCostMult:[1.04,1,1.03,1.03], stageMult:[1.10,1.02,1.12,1.08], demandLift:1.03, volatility:0.020 },
+      "샌드위치/랩": { preferredFinishId:"f2", materialCostMult:[1.06,1.02,1.02,1.04], stageMult:[1.04,1,1.10,1.02], demandLift:1.04, volatility:0.022 },
+      "유아식": { preferredFinishId:"f3", materialCostMult:[1.12,1.02,1.04,1.04], stageMult:[0.92,0.98,0.96,1.12], demandLift:1.02, volatility:0.010 },
+      "비건/식물성식품": { preferredFinishId:"f2", materialCostMult:[1.08,1.06,1.02,1.03], stageMult:[0.98,1,1,1.06], demandLift:1.06, volatility:0.025 },
+      "디카페인/차음료": { preferredFinishId:"f3", materialCostMult:[0.88,1.06,1.02,1.02], stageMult:[1.10,1.02,1.08,1.12], demandLift:1.04, volatility:0.018 },
+      "과일음료/주스": { preferredFinishId:"f3", materialCostMult:[1,1,1.02,1.04], stageMult:[1.08,1.02,1.10,1.12], demandLift:1.06, volatility:0.028 },
+      "스낵/견과": { preferredFinishId:"f2", materialCostMult:[1.06,0.98,1,1.08], stageMult:[1.12,1.08,1.06,1.10], demandLift:1.05, volatility:0.020 },
+      "발효유/요거트": { preferredFinishId:"f3", materialCostMult:[1.08,1.04,1.04,1.02], stageMult:[1.08,1.02,1.08,1.12], demandLift:1.04, volatility:0.016 },
+      "아이스크림/냉동디저트": { preferredFinishId:"f2", materialCostMult:[1.03,1.10,1,1.04], stageMult:[1.02,1.08,1.06,1.10], demandLift:1.05, volatility:0.032 },
+      "반찬/밑반찬": { preferredFinishId:"f2", materialCostMult:[1.06,1.02,1.02,1.02], stageMult:[1.02,1,1.06,1.04], demandLift:1.03, volatility:0.017 },
+      "김치/절임류": { preferredFinishId:"f3", materialCostMult:[1.06,1.06,1.03,1.03], stageMult:[1,1.02,1.02,1.10], demandLift:1.02, volatility:0.013 }
+    }
+  },
+
   industries: {
     electronics: {
       id: "electronics",
       name: "IT·전자제품 제조",
-      desc: "스마트폰, 태블릿, PC 등 IT 기기를 조립 생산하는 전자 제조업",
+      desc: "스마트폰, 오디오 기기, PC 주변기기 등 IT 기기를 조립 생산하는 전자 제조업",
       defaultProductName: "스마트폰 S1",
-      categories: ["스마트폰", "태블릿", "노트북"],
+      categories: ["스마트폰", "태블릿", "노트북", "헤드폰", "마이크", "스피커", "마우스"],
       finishes: [
         { id: "f1", name: "플라스틱 사출 마감", cost: 0, quality: 85, laborMult: 1.0 },
         { id: "f2", name: "알루미늄 아노다이징 마감", cost: 35000, quality: 94, laborMult: 1.15 },
         { id: "f3", name: "강화유리 및 금속 프레임 마감", cost: 85000, quality: 99, laborMult: 1.35 }
       ],
       materials: [
-        { id: "m1", name: "프로세서 (AP/CPU)", unitCost: 240000 },
-        { id: "m2", name: "디스플레이 패널", unitCost: 160000 },
-        { id: "m3", name: "배터리팩", unitCost: 65000 },
-        { id: "m4", name: "외장 케이스", unitCost: 55000 }
+        { id: "m1", name: "프로세서 및 사운드/제어 칩셋", unitCost: 240000 },
+        { id: "m2", name: "디스플레이 및 정밀 센서", unitCost: 160000 },
+        { id: "m3", name: "전원 배터리팩", unitCost: 65000 },
+        { id: "m4", name: "외장 하우징 케이스", unitCost: 55000 }
       ],
       baseLaborCost: 45000,
-      baseMarketDemand: 1200,
+      baseMarketDemand: 1500,
       vendors: [
         { 
           name: "한국반도체 파운드리", origin: "국내 대형 팹", discount: 0.0, quality: 99, defectRate: 0.4, leadDays: 3, moq: 1000, paymentTerms: "30일 외상", supplyCapa: 2500,
@@ -1753,7 +2138,7 @@ const DB = {
       name: "자동차 제조",
       desc: "모터, 제어기, 차체 프레임, 섀시를 조립 생산하는 완성차 제조업",
       defaultProductName: "승용 세단 C1",
-      categories: ["세단", "SUV", "소형 트럭"],
+      categories: ["세단", "SUV", "소형 트럭", "EV", "스포츠카", "럭셔리"],
       finishes: [
         { id: "f1", name: "기본 도장 및 직물 시트", cost: 0, quality: 88, laborMult: 1.0 },
         { id: "f2", name: "펄 도장 및 인조가죽 시트", cost: 1800000, quality: 95, laborMult: 1.2 },
@@ -1791,7 +2176,7 @@ const DB = {
       name: "식품·간편식 가공",
       desc: "원육, 농산물, 소스, 포장재를 배합 및 가공 포장하는 식품 제조업",
       defaultProductName: "가정 간편식 M1",
-      categories: ["간편식", "도시락", "국/탕류"],
+      categories: ["간편식", "도시락", "국/탕류", "냉동만두/딤섬", "밀키트(전골/볶음)", "샐러드/신선편의", "건강단백질식", "베이커리/디저트", "육가공/소시지", "즉석밥/죽", "면류/파스타", "소스/드레싱", "냉동피자", "냉동볶음밥", "김밥/주먹밥", "샌드위치/랩", "유아식", "비건/식물성식품", "디카페인/차음료", "과일음료/주스", "스낵/견과", "발효유/요거트", "아이스크림/냉동디저트", "반찬/밑반찬", "김치/절임류"],
       finishes: [
         { id: "f1", name: "일반 비닐 실링 포장", cost: 0, quality: 86, laborMult: 1.0 },
         { id: "f2", name: "진공 밀폐 트레이 포장", cost: 800, quality: 94, laborMult: 1.15 },
@@ -1829,17 +2214,17 @@ const DB = {
       name: "의류·패션 잡화 제조",
       desc: "원단, 안감, 지퍼, 포장재를 재단 및 봉제 완성하는 의류 제조업",
       defaultProductName: "데일리 자켓 J1",
-      categories: ["자켓", "팬츠", "운동화"],
+      categories: ["자켓", "팬츠", "운동화", "축구화", "풋살화"],
       finishes: [
         { id: "f1", name: "기본 오버로크 봉제 마감", cost: 0, quality: 87, laborMult: 1.0 },
         { id: "f2", name: "방수 테이핑 처리 마감", cost: 14000, quality: 95, laborMult: 1.2 },
         { id: "f3", name: "무봉제 초음파 접합 마감", cost: 38000, quality: 99, laborMult: 1.4 }
       ],
       materials: [
-        { id: "m1", name: "기능성 원단", unitCost: 65000 },
-        { id: "m2", name: "안감 및 충전재", unitCost: 38000 },
-        { id: "m3", name: "지퍼 및 단추", unitCost: 12000 },
-        { id: "m4", name: "포장재 및 라벨", unitCost: 6500 }
+        { id: "m1", name: "기능성 원단 및 갑피", unitCost: 65000 },
+        { id: "m2", name: "안감 및 쿠셔닝 소재", unitCost: 38000 },
+        { id: "m3", name: "지퍼 및 부자재", unitCost: 12000 },
+        { id: "m4", name: "포장재 및 아웃솔", unitCost: 6500 }
       ],
       baseLaborCost: 18000,
       baseMarketDemand: 2500,
@@ -1871,6 +2256,106 @@ const DB = {
     { id: "air_regular", name: "항공 정기 화물기", leadMonths: 0, costMult: 5.2, desc: "당월 즉시 공장 입고. 운임은 높으나 결품 방지 탁월" }
   ]
 };
+
+// ---------------------------------------------------------
+// 2. 판매량·카테고리 상호작용 엔진
+// ---------------------------------------------------------
+function clampNum(v, min, max) { return Math.min(max, Math.max(min, v)); }
+
+function getCategoryRule(industryId, category) {
+  return DB.categoryRules?.[industryId]?.[category] || {
+    preferredFinishId: null, materialCostMult: [1,1,1,1], stageMult: [1,1,1,1], demandLift: 1, volatility: DB.config.salesModel.randomShockAmplitude
+  };
+}
+
+function getSalesDemandSnapshot(productLike) {
+  const ind = DB.industries[state.industryId] || DB.industries.electronics;
+  const prod = productLike || state.customProduct;
+  const catMeta = DB.categoryMeta[state.industryId]?.[prod.category] || {
+    baseDemand: ind.baseMarketDemand, priceMultiplier: 1, laborMultiplier: 1, elasticity: 1.25, seasonality: Array(12).fill(1)
+  };
+  const rule = getCategoryRule(state.industryId, prod.category);
+  const tierDef = DB.productTiers[prod.tier] || DB.productTiers.flagship;
+  const finish = ind.finishes.find(f => f.id === prod.finishId) || ind.finishes[0];
+  const vendor = ind.vendors[state.selectedVendorIndex] || ind.vendors[0];
+  const term = DB.contractTerms[state.sourcingContractType] || DB.contractTerms.standard;
+  const model = DB.config.salesModel;
+
+  const baseCost = Math.max(1, prod.calculatedUnitCost || model.minUnitCost);
+  const equilibriumPrice = Math.max(1, Math.round(baseCost * (1 + model.equilibriumMargin)));
+  const curPrice = Math.max(model.minSellingPrice, prod.finalPrice || equilibriumPrice);
+  const priceRatio = equilibriumPrice / curPrice;
+  const priceFactor = Math.pow(Math.max(model.priceElasticityFloor, priceRatio), catMeta.elasticity || 1.25);
+
+  const marketingFactor = 1 + (Math.log10(1 + state.marketingBudget / model.marketingBaseBudget) * model.marketingResponse);
+  const completedRdCount = (state.projects || []).filter(p => p.applied).length;
+  const brandFactor = (state.brandValue / model.brandBaseValue) * (1 + completedRdCount * model.rdDemandLift);
+  const defectRate = Math.max(0.001, (vendor.defectRate + term.defectMod) / 100);
+  const qualityFactor = Math.max(model.qualityFactorFloor, ((finish.quality) / model.qualityBase) * (1 - (defectRate * model.defectPenalty)));
+  const seasonFactor = catMeta.seasonality ? (catMeta.seasonality[state.month - 1] || 1) : 1;
+  const monthSerial = ((state.year - 1) * 12) + state.month;
+  const macroFactor = model.macroBase + Math.sin(monthSerial * model.macroPeriod) * model.macroAmplitude;
+  const categoryShock = 1 + Math.sin((monthSerial * model.categoryShockMonthRate) + (prod.category.length * model.categoryShockCategoryRate)) * (rule.volatility || model.randomShockAmplitude);
+  const deliveryFactor = state.lastStockoutRate > 0
+    ? Math.max(model.deliveryMinFactor, 1 - (state.lastStockoutRate / 100) * model.deliveryStockoutDecay)
+    : model.deliveryBonus;
+
+  const marketDemand = catMeta.baseDemand * model.marketScale * seasonFactor * priceFactor * (rule.demandLift || 1);
+  const priceSupplyFactor = Math.pow(Math.max(model.supplyFloorFactor, curPrice / equilibriumPrice), model.supplyPriceElasticity);
+  const productionSupplyFactor = clampNum((rule.stageMult || [1,1,1,1]).reduce((a,b) => a + b, 0) / 4, model.productionSupplyMin, model.productionSupplyMax);
+  const marketSupplyCycle = model.marketSupplyBase + ((monthSerial % model.marketSupplyCycle) * model.marketSupplyCycleStep);
+  const marketSupply = catMeta.baseDemand * model.marketScale * priceSupplyFactor * productionSupplyFactor * marketSupplyCycle;
+  const tightness = marketDemand / Math.max(marketSupply, 1);
+  const tightnessFactor = clampNum(1 + (tightness - 1) * model.tightnessResponse, model.tightnessMinFactor, model.tightnessMaxFactor);
+
+  const potentialDemand = Math.max(0, Math.round(
+    catMeta.baseDemand * tierDef.demandMult * rule.demandLift *
+    priceFactor * marketingFactor * brandFactor * qualityFactor * seasonFactor *
+    deliveryFactor * macroFactor * categoryShock * tightnessFactor
+  ));
+
+  const baseSales = catMeta.baseDemand * tierDef.demandMult;
+  const factors = [
+    { label: "가격 경쟁력", value: priceFactor },
+    { label: "카테고리 포지션", value: rule.demandLift || 1 },
+    { label: "마케팅", value: marketingFactor },
+    { label: "브랜드·R&D", value: brandFactor },
+    { label: "품질·불량", value: qualityFactor },
+    { label: "계절성", value: seasonFactor },
+    { label: "납기 신뢰", value: deliveryFactor },
+    { label: "시장 수급", value: tightnessFactor },
+    { label: "시장 변동", value: macroFactor * categoryShock }
+  ];
+
+  return {
+    baseDemand: Math.round(baseSales), potentialDemand, equilibriumPrice, curPrice,
+    priceFactor, marketingFactor, brandFactor, qualityFactor, seasonFactor, deliveryFactor,
+    macroFactor, categoryShock, tightness, tightnessFactor, marketDemand: Math.round(marketDemand),
+    marketSupply: Math.round(marketSupply), factors, rule, catMeta, tierDef
+  };
+}
+
+function renderStudioCategoryInteraction() {
+  const el = $("studio_categoryInteraction");
+  if (!el) return;
+  const ind = DB.industries[state.industryId];
+  const cat = studioTemp.category;
+  const meta = DB.categoryMeta[state.industryId]?.[cat] || { baseDemand: ind.baseMarketDemand, priceMultiplier:1, laborMultiplier:1, elasticity:1.25, desc:"표준 사양" };
+  const rule = getCategoryRule(state.industryId, cat);
+  const finish = ind.finishes.find(f => f.id === (rule.preferredFinishId || studioTemp.finishId)) || ind.finishes[0];
+  el.innerHTML = `
+    <div style="font-size:11.5px;font-weight:900;color:var(--purple-dark)">${cat} 카테고리 자동 상호작용</div>
+    <div style="font-size:10.5px;color:var(--muted);margin-top:2px">${meta.desc || '카테고리별 기준 수요·원가·생산 특성이 적용됩니다.'}</div>
+    <div class="category-interaction-grid">
+      <div><span class="small">기준 월수요</span><strong style="display:block;margin-top:2px">${fmtNum(meta.baseDemand)} 단위</strong></div>
+      <div><span class="small">가격계수</span><strong style="display:block;margin-top:2px">×${meta.priceMultiplier.toFixed(2)}</strong></div>
+      <div><span class="small">노무계수</span><strong style="display:block;margin-top:2px">×${meta.laborMultiplier.toFixed(2)}</strong></div>
+      <div><span class="small">공정계수</span><strong style="display:block;margin-top:2px">×${((rule.stageMult || [1,1,1,1]).reduce((a,b)=>a+b,0)/4).toFixed(2)}</strong></div>
+      <div><span class="small">수요 포지션</span><strong style="display:block;margin-top:2px">×${(rule.demandLift || 1).toFixed(2)}</strong></div>
+      <div><span class="small">월 변동성</span><strong style="display:block;margin-top:2px">±${((rule.volatility || 0)*100).toFixed(1)}%</strong></div>
+      <div><span class="small">권장 마감</span><strong style="display:block;margin-top:2px">${finish.name}</strong></div>
+    </div>`;
+}
 
 // ---------------------------------------------------------
 // 2. 게임 상태(State) 관리
@@ -1923,9 +2408,11 @@ let state = {
   lastRevenue: 0,
   lastEbitda: 0,
   lastProductionQty: 1200,
+  lastPotentialDemand: 1200,
   lastSoldQty: 1200,
   lastStockoutQty: 0,
   lastStockoutRate: 0,
+  salesFactors: [],
   
   marketShare: 28,
   competitors: [],
@@ -2121,6 +2608,8 @@ window.addEventListener("resize", () => {
     positionTutorialElements(tutorialSteps[tutIdx].targetId);
   }
   drawChart();
+  drawDsChart();
+  drawMarketVisuals();
 });
 
 // ---------------------------------------------------------
@@ -2133,17 +2622,20 @@ function initGame(industryId, companyName) {
   state.month = 1;
   state.year = 1;
   
+  const cat = ind.categories[0];
+  const catMeta = DB.categoryMeta[ind.id]?.[cat] || { baseDemand: ind.baseMarketDemand, defaultMatRatios: [1, 1, 1, 1] };
+
   state.customProduct = {
     name: ind.defaultProductName,
-    category: ind.categories[0],
+    category: cat,
     tier: "flagship",
     finishId: ind.finishes[1].id,
-    matRatios: [1, 1, 1, 1],
+    matRatios: [...catMeta.defaultMatRatios],
     targetMargin: 40,
     calculatedUnitCost: 0,
     finalPrice: 0,
     laborReq: 1.0,
-    estDemand: ind.baseMarketDemand
+    estDemand: catMeta.baseDemand
   };
   
   state.cash = DB.config.initialCash;
@@ -2164,7 +2656,7 @@ function initGame(industryId, companyName) {
   state.selectedVendorIndex = 0;
   state.freightMode = "ocean_standard";
   
-  const baseMonthlyProd = ind.baseMarketDemand;
+  const baseMonthlyProd = catMeta.baseDemand;
   const dailyUse = baseMonthlyProd / 30;
   
   state.materials = ind.materials.map(m => ({
@@ -2176,6 +2668,12 @@ function initGame(industryId, companyName) {
   }));
   
   state.finishedGoods = baseMonthlyProd;
+  state.lastProductionQty = baseMonthlyProd;
+  state.lastPotentialDemand = state.customProduct.estDemand;
+  state.lastSoldQty = baseMonthlyProd;
+  state.lastStockoutQty = 0;
+  state.lastStockoutRate = 0;
+  state.salesFactors = getSalesDemandSnapshot(state.customProduct).factors;
   
   state.inTransit = [
     { id: "TR-101", matId: ind.materials[0].id, matName: ind.materials[0].name, qty: baseMonthlyProd, val: ind.materials[0].unitCost * baseMonthlyProd, mode: "ocean_standard", etaMonths: 1 },
@@ -2205,6 +2703,8 @@ function initGame(industryId, companyName) {
   }));
   
   calculateCustomProductEconomics();
+  state.lastPotentialDemand = state.customProduct.estDemand;
+  state.salesFactors = getSalesDemandSnapshot(state.customProduct).factors;
   
   state.history = [];
   state.auditLogs = [];
@@ -2216,7 +2716,11 @@ function initGame(industryId, companyName) {
       month: `${i}달 전`,
       revenue: rev,
       ebitda: rev * 0.18,
-      cash: state.cash * (0.8 + (12 - i) * 0.02)
+      cash: state.cash * (0.8 + (12 - i) * 0.02),
+      demand: Math.round(baseMonthlyProd * (0.9 + Math.sin(i * 0.8) * 0.06)),
+      sold: Math.round(baseMonthlyProd * (0.85 + Math.sin(i * 0.8) * 0.05)),
+      production: baseMonthlyProd,
+      price: state.customProduct.finalPrice
     });
   }
   
@@ -2409,6 +2913,25 @@ function buildStudioUI() {
   ).join("");
   $("studio_categorySelect").onchange = (e) => {
     studioTemp.category = e.target.value;
+    const catMeta = DB.categoryMeta[state.industryId]?.[studioTemp.category];
+    const rule = getCategoryRule(state.industryId, studioTemp.category);
+    if (catMeta && catMeta.defaultName) {
+      studioTemp.name = catMeta.defaultName;
+      $("studio_prodName").value = studioTemp.name;
+    }
+    if (catMeta && catMeta.defaultMatRatios) {
+      studioTemp.matRatios = [...catMeta.defaultMatRatios];
+      $("studio_matSummaryPill").textContent = studioTemp.matRatios.join(":");
+      catMeta.defaultMatRatios.forEach((r, idx) => {
+        const sel = $(`mat_ratio_${idx}`);
+        if (sel) sel.value = r;
+      });
+    }
+    if (rule.preferredFinishId && ind.finishes.some(f => f.id === rule.preferredFinishId)) {
+      studioTemp.finishId = rule.preferredFinishId;
+      $("studio_finishSelect").value = studioTemp.finishId;
+    }
+    renderStudioCategoryInteraction();
     updateStudioBlueprint();
   };
 
@@ -2426,6 +2949,7 @@ function buildStudioUI() {
   ).join("");
   $("studio_finishSelect").onchange = (e) => {
     studioTemp.finishId = e.target.value;
+    renderStudioCategoryInteraction();
     updateStudioBlueprint();
   };
 
@@ -2449,7 +2973,22 @@ function buildStudioUI() {
   };
 
   $("launchProductBtn").onclick = commitStudioProduct;
+  renderStudioCategoryInteraction();
   updateStudioBlueprint();
+}
+
+function applyCategoryDefaultBOM() {
+  const catMeta = DB.categoryMeta[state.industryId]?.[studioTemp.category];
+  if (catMeta && catMeta.defaultMatRatios) {
+    studioTemp.matRatios = [...catMeta.defaultMatRatios];
+    $("studio_matSummaryPill").textContent = studioTemp.matRatios.join(":");
+    catMeta.defaultMatRatios.forEach((r, idx) => {
+      const sel = $(`mat_ratio_${idx}`);
+      if (sel) sel.value = r;
+    });
+    updateStudioBlueprint();
+    toast(`[${studioTemp.category}] 권장 원자재 배율(${studioTemp.matRatios.join(':')})이 적용되었습니다.`);
+  }
 }
 
 function setStudioTier(tierId) {
@@ -2471,17 +3010,28 @@ function calcStudioEco() {
   const ind = DB.industries[state.industryId];
   const finish = ind.finishes.find(f => f.id === studioTemp.finishId) || ind.finishes[0];
   const tierDef = DB.productTiers[studioTemp.tier] || DB.productTiers.flagship;
+  const catMeta = DB.categoryMeta[state.industryId]?.[studioTemp.category] || {
+    baseDemand: ind.baseMarketDemand, priceMultiplier: 1.0, laborMultiplier: 1.0, elasticity: 1.25, defaultMatRatios: [1,1,1,1], desc: ""
+  };
   
-  const rawCost = state.materials.reduce((sum, m, idx) => sum + (m.unitCost * studioTemp.matRatios[idx]), 0);
-  const finishCost = finish.cost;
-  const laborReq = tierDef.laborMult * finish.laborMult;
-  const laborCost = Math.round(ind.baseLaborCost * laborReq);
+  const rule = getCategoryRule(state.industryId, studioTemp.category);
+  const rawCost = Math.round(state.materials.reduce((sum, m, idx) => {
+    const materialMult = rule.materialCostMult[idx] || 1;
+    return sum + (m.unitCost * studioTemp.matRatios[idx] * materialMult);
+  }, 0) * catMeta.priceMultiplier);
+  const finishCost = Math.round(finish.cost * catMeta.priceMultiplier * (finish.id === rule.preferredFinishId ? 0.96 : 1));
+  const laborReq = tierDef.laborMult * finish.laborMult * catMeta.laborMultiplier;
+  const laborCost = Math.round(ind.baseLaborCost * laborReq * catMeta.priceMultiplier);
   
   const unitCost = rawCost + finishCost + laborCost;
   const finalPrice = Math.round(unitCost * (1 + studioTemp.targetMargin / 100));
   const unitMargin = finalPrice - unitCost;
   
-  const estDemand = Math.round(ind.baseMarketDemand * tierDef.demandMult * (state.brandValue / 70));
+  const demandSnapshot = getSalesDemandSnapshot({
+    name: studioTemp.name, category: studioTemp.category, tier: studioTemp.tier,
+    finishId: studioTemp.finishId, calculatedUnitCost: unitCost, finalPrice
+  });
+  const estDemand = demandSnapshot.potentialDemand;
   const estRev = estDemand * finalPrice;
 
   return {
@@ -2494,7 +3044,10 @@ function calcStudioEco() {
     estDemand,
     estRev,
     laborReq: laborReq.toFixed(2),
-    tierTag: tierDef.tag
+    tierTag: tierDef.tag,
+    catMeta,
+    rule,
+    demandSnapshot
   };
 }
 
@@ -2502,7 +3055,7 @@ function updateStudioBlueprint() {
   const eco = calcStudioEco();
   
   $("bp_displayTitle").textContent = studioTemp.name;
-  $("bp_displayCategory").textContent = studioTemp.category;
+  $("bp_displayCategory").textContent = `${studioTemp.category} (${eco.catMeta.desc || '표준 사양'})`;
   $("bp_displayTierTag").textContent = eco.tierTag;
   
   $("bp_rawCost").textContent = fmtWon(eco.rawCost);
@@ -2513,9 +3066,14 @@ function updateStudioBlueprint() {
   $("bp_finalPrice").textContent = fmtWon(eco.finalPrice);
   $("bp_unitMargin").textContent = `+${fmtWon(eco.unitMargin)} (${studioTemp.targetMargin}%)`;
   
-  $("bp_estDemand").textContent = `${fmtNum(eco.estDemand)} 대`;
+  $("bp_estDemand").textContent = `${fmtNum(eco.estDemand)} 단위/월`;
   $("bp_estMonthlyRev").textContent = fmtWon(eco.estRev);
   $("bp_laborReq").textContent = `${eco.laborReq}x`;
+  const bpHint = $("bp_estDemand").parentElement;
+  if (bpHint) {
+    const ds = eco.demandSnapshot;
+    bpHint.title = `가격 ×${ds.priceFactor.toFixed(2)} · 마케팅 ×${ds.marketingFactor.toFixed(2)} · 브랜드/R&D ×${ds.brandFactor.toFixed(2)} · 계절성 ×${ds.seasonFactor.toFixed(2)} · 수급 ×${ds.tightnessFactor.toFixed(2)}`;
+  }
 }
 
 function commitStudioProduct() {
@@ -2541,10 +3099,10 @@ function commitStudioProduct() {
   openActionModal(
     "맞춤 상품 양산 투입 완료",
     `기획하신 <b>[${state.customProduct.name}]</b>이(가) 공식 공장 양산 라인에 투입되었습니다.<br>
-     - 분류: <b>${eco.tierTag} (${state.customProduct.category})</b><br>
-     - 확정 출고가: <b>${fmtWon(state.customProduct.finalPrice)}</b> (마진율 ${state.customProduct.targetMargin}%)<br>
-     - 대당 영업이익: <b>+${fmtWon(eco.unitMargin)}</b><br>
-     - 4대 BOM 원자재 소진 배율(${state.customProduct.matRatios.join(":")})이 라인에 즉시 동기화되었습니다.`
+     - 세부 분류: <b>${eco.tierTag} · ${state.customProduct.category}</b><br>
+     - 확정 출고가: <b>${fmtWon(state.customProduct.finalPrice)}</b> (단위당 마진율 ${state.customProduct.targetMargin}%)<br>
+     - 대당/단위당 영업이익: <b>+${fmtWon(eco.unitMargin)}</b><br>
+     - 월 기준 수요: <b>${fmtNum(eco.estDemand)} 단위</b> (BOM 투입비율 ${state.customProduct.matRatios.join(":")})가 라인과 수출망에 즉시 반영되었습니다.`
   );
 }
 
@@ -2566,7 +3124,9 @@ function getPipelineCapacities() {
   const demand = prod.estDemand || ind.baseMarketDemand;
   
   const term = DB.contractTerms[state.sourcingContractType] || DB.contractTerms.standard;
-  const sourcingCapa = state.sourcingContractType === "flexible" ? Math.round(vendor.supplyCapa * 1.2) : vendor.supplyCapa;
+  const catScale = demand / Math.max(ind.baseMarketDemand, 1);
+  const baseVendorCapa = Math.round(vendor.supplyCapa * catScale);
+  const sourcingCapa = state.sourcingContractType === "flexible" ? Math.round(baseVendorCapa * 1.2) : baseVendorCapa;
   
   let minRawDays = 999;
   state.materials.forEach(m => {
@@ -2579,13 +3139,15 @@ function getPipelineCapacities() {
   const machiningStage = DB.factoryStages[1];
   const assemblyStage = DB.factoryStages[2];
   const qcStage = DB.factoryStages[3];
+  const categoryRule = getCategoryRule(state.industryId, prod.category);
+  const stageMult = categoryRule.stageMult || [1, 1, 1, 1];
 
-  const feedingCapa = Math.round(demand * (feedingStage.baseRatio + state.factoryStageLevels[0] * feedingStage.lvlStep));
-  const machiningCapa = Math.round(demand * (machiningStage.baseRatio + state.factoryStageLevels[1] * machiningStage.lvlStep));
+  const feedingCapa = Math.round(demand * (feedingStage.baseRatio + state.factoryStageLevels[0] * feedingStage.lvlStep) * (stageMult[0] || 1));
+  const machiningCapa = Math.round(demand * (machiningStage.baseRatio + state.factoryStageLevels[1] * machiningStage.lvlStep) * (stageMult[1] || 1));
   
   const workerBase = (state.lineWorkers / DB.config.defaultLineWorkers) * (1 + state.overtimeRate / 100);
-  const assemblyCapa = Math.round((demand / Math.max(prod.laborReq, 0.5)) * workerBase * (assemblyStage.baseRatio + state.factoryStageLevels[2] * assemblyStage.lvlStep));
-  const qcCapa = Math.round(demand * (qcStage.baseRatio + state.factoryStageLevels[3] * qcStage.lvlStep));
+  const assemblyCapa = Math.round((demand / Math.max(prod.laborReq, 0.5)) * workerBase * (assemblyStage.baseRatio + state.factoryStageLevels[2] * assemblyStage.lvlStep) * (stageMult[2] || 1));
+  const qcCapa = Math.round(demand * (qcStage.baseRatio + state.factoryStageLevels[3] * qcStage.lvlStep) * (stageMult[3] || 1));
   
   const manufacturingCapa = Math.min(feedingCapa, machiningCapa, assemblyCapa, qcCapa);
   const outboundCapa = Math.round(demand * 1.35);
@@ -3131,6 +3693,7 @@ function render() {
   renderRdProjects();
   renderShareBars();
   renderMarketAnalytics();
+  renderSupplyDemandViews();
   renderPrescriptions();
   renderAuditLogs();
   drawChart();
@@ -3168,6 +3731,412 @@ function renderShareBars() {
   $("compShareLabelsLarge").innerHTML = labelsHtml;
 }
 
+// ---------------------------------------------------------
+// 12-B. 시장 수요·공급(D&S) 실시간 균형 분석 & 캔버스 차트
+// ---------------------------------------------------------
+function getMarketSupplyDemand() {
+  const ind = DB.industries[state.industryId];
+  const prod = state.customProduct;
+  const snap = getSalesDemandSnapshot(prod);
+  const marketTotalDemand = snap.marketDemand;
+  const marketTotalSupply = snap.marketSupply;
+  const tightnessRatio = Math.round(snap.tightness * 100);
+  const myDemand = snap.potentialDemand;
+  
+  let statusText = "수급 균형 안정 (100%)";
+  let statusClass = "green";
+  let statusDesc = "시장의 구매 수요와 전체 공급 능력이 최적의 균형을 이루어 안정적인 출하와 계획 생산이 가능합니다.";
+  
+  if (tightnessRatio >= 115) {
+    const shortagePct = tightnessRatio - 100;
+    statusText = `초과 수요 (공급 부족 ${shortagePct}%)`;
+    statusClass = "pink";
+    statusDesc = "시장의 구매 수요가 공급 능력을 앞서고 있어 품귀 압력이 커지고 있습니다. 가격·생산·조달 조합에 따라 판매 기회가 확대되지만 결품 리스크도 함께 커집니다.";
+  } else if (tightnessRatio <= 85) {
+    const surplusPct = 100 - tightnessRatio;
+    statusText = `초과 공급 (재고 과잉 ${surplusPct}%)`;
+    statusClass = "amber";
+    statusDesc = "업계 전체 공급이 시장 수요를 웃돌아 재고와 가격 경쟁 압력이 커지고 있습니다. 마케팅 확대나 생산 조정을 검토할 수 있습니다.";
+  }
+
+  const regions = DB.logisticsRoutes.map(r => {
+    const regionDemand = Math.round(myDemand * r.volRatio);
+    const regionSupply = Math.round(state.lastProductionQty * r.volRatio);
+    const fillRate = regionDemand > 0 ? Math.min(100, Math.round((regionSupply / regionDemand) * 100)) : 100;
+    return {
+      name: r.region,
+      share: r.share,
+      demand: regionDemand,
+      supply: regionSupply,
+      fillRate
+    };
+  });
+
+  return {
+    marketTotalDemand,
+    marketTotalSupply,
+    equilibriumPrice: snap.equilibriumPrice,
+    curPrice: snap.curPrice,
+    myDemand,
+    tightnessRatio,
+    statusText,
+    statusClass,
+    statusDesc,
+    seasonFactor: snap.seasonFactor,
+    regions,
+    factors: snap.factors,
+    potentialDemand: snap.potentialDemand,
+    category: prod.category,
+    industry: ind.name,
+    rule: snap.rule
+  };
+}
+
+function renderSupplyDemandViews() {
+  const sd = getMarketSupplyDemand();
+  
+  if ($("dsStatusBadge")) {
+    $("dsStatusBadge").textContent = sd.statusText;
+    $("dsStatusBadge").className = `tag ${sd.statusClass}`;
+  }
+  if ($("overviewDsTightnessText")) {
+    $("overviewDsTightnessText").textContent = `${sd.statusText}`;
+    $("overviewDsTightnessText").style.color = sd.statusClass === 'pink' ? 'var(--pink-dark)' : (sd.statusClass === 'amber' ? 'var(--amber)' : 'var(--green)');
+  }
+  if ($("dsEquilibriumPriceLabel")) {
+    $("dsEquilibriumPriceLabel").textContent = `시장 균형가(P*): ${fmtWon(sd.equilibriumPrice)}`;
+  }
+  if ($("dsTightnessVal")) {
+    $("dsTightnessVal").textContent = `${sd.tightnessRatio}%`;
+    $("dsTightnessVal").style.color = sd.statusClass === 'pink' ? 'var(--pink-vivid)' : (sd.statusClass === 'amber' ? 'var(--amber)' : 'var(--green)');
+  }
+  if ($("dsGaugePointer")) {
+    const clampPct = Math.min(150, Math.max(50, sd.tightnessRatio));
+    const pointerLeft = ((clampPct - 50) / 100) * 100;
+    $("dsGaugePointer").style.left = `${pointerLeft}%`;
+  }
+  if ($("dsTightnessDesc")) {
+    $("dsTightnessDesc").innerHTML = `<b>진단:</b> ${sd.statusDesc}`;
+  }
+  
+  if ($("dsMarketDemandVal")) $("dsMarketDemandVal").textContent = `${fmtNum(sd.marketTotalDemand)} 단위`;
+  if ($("dsMarketSupplyVal")) $("dsMarketSupplyVal").textContent = `${fmtNum(sd.marketTotalSupply)} 단위`;
+  
+  const gap = sd.marketTotalDemand - sd.marketTotalSupply;
+  if ($("dsMarketGapVal")) {
+    $("dsMarketGapVal").textContent = `${gap >= 0 ? '+' : ''}${fmtNum(gap)} 단위`;
+    $("dsMarketGapVal").style.color = gap >= 0 ? 'var(--pink-dark)' : 'var(--amber)';
+  }
+  if ($("dsMarketGapLabel")) {
+    $("dsMarketGapLabel").textContent = gap >= 0 ? '구매 대기 초과수요' : '시장 재고 과잉';
+  }
+
+  if ($("dsRegionList")) {
+    $("dsRegionList").innerHTML = sd.regions.map(r => `
+      <div class="region-sd-item">
+        <span style="font-weight:800;color:var(--ink);min-width:90px">${r.name.split(' ')[0]}</span>
+        <div class="region-sd-track">
+          <div class="region-sd-fill" style="width:${r.fillRate}%"></div>
+        </div>
+        <span style="font-weight:900;color:${r.fillRate<90?'var(--red)':'var(--green)'};min-width:65px;text-align:right">
+          ${r.fillRate}% 충족
+        </span>
+      </div>
+    `).join("");
+  }
+
+  drawDsChart();
+  drawMarketVisuals();
+}
+
+function setupMiniCanvas(id, height = 170) {
+  const canvas = $(id);
+  if (!canvas) return null;
+  const rect = canvas.getBoundingClientRect();
+  const w = Math.max(260, Math.floor(rect.width || 420));
+  const h = height;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+  return { canvas, ctx, w, h };
+}
+
+function drawMiniAxis(ctx, w, h, padL = 36, padR = 12, padT = 16, padB = 26) {
+  ctx.strokeStyle = "rgba(226, 218, 238, 0.8)";
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 3; i++) {
+    const y = padT + ((h - padT - padB) / 3) * i;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+  }
+  return { plotW: w - padL - padR, plotH: h - padT - padB, padL, padR, padT, padB };
+}
+
+function drawMarketGapChart() {
+  const c = setupMiniCanvas("dsGapChart");
+  if (!c) return;
+  const sd = getMarketSupplyDemand();
+  const {ctx,w,h} = c;
+  const g = drawMiniAxis(ctx,w,h);
+  const vals = [sd.marketTotalDemand, sd.marketTotalSupply];
+  const labels = ["총수요", "총공급"];
+  const barW = Math.min(72, g.plotW / 4);
+  const gap = g.plotW / 4;
+  const maxV = Math.max(...vals, 1) * 1.1;
+  vals.forEach((v,i) => {
+    const x = g.padL + gap * (i + 1) - barW / 2;
+    const bh = (v / maxV) * g.plotH;
+    ctx.fillStyle = i === 0 ? "#ec4899" : "#7c3aed";
+    ctx.fillRect(x, g.padT + g.plotH - bh, barW, bh);
+    ctx.fillStyle = "#281d38";
+    ctx.font = "bold 10px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(fmtNum(v), x + barW / 2, Math.max(12, g.padT + g.plotH - bh - 5));
+    ctx.fillStyle = "#564c66";
+    ctx.font = "10px sans-serif";
+    ctx.fillText(labels[i], x + barW / 2, h - 8);
+  });
+  const gapVal = sd.marketTotalDemand - sd.marketTotalSupply;
+  ctx.textAlign = "left";
+  ctx.fillStyle = gapVal >= 0 ? "#be185d" : "#92400e";
+  ctx.font = "bold 10px sans-serif";
+  ctx.fillText(`수급 차이 ${gapVal >= 0 ? "+" : ""}${fmtNum(gapVal)}`, g.padL, 12);
+}
+
+function drawSeasonalityChart() {
+  const c = setupMiniCanvas("dsSeasonChart");
+  if (!c) return;
+  const sd = getMarketSupplyDemand();
+  const meta = DB.categoryMeta[state.industryId]?.[state.customProduct.category];
+  const seasonality = meta?.seasonality || Array(12).fill(1);
+  const {ctx,w,h} = c;
+  const g = drawMiniAxis(ctx,w,h,40,12,16,28);
+  const minV = Math.min(...seasonality) * 0.96;
+  const maxV = Math.max(...seasonality) * 1.04;
+  const xAt = i => g.padL + (i / 11) * g.plotW;
+  const yAt = v => g.padT + (1 - (v - minV) / Math.max(maxV - minV, 0.001)) * g.plotH;
+  ctx.strokeStyle = "#ec4899";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  seasonality.forEach((v,i) => { const x=xAt(i), y=yAt(v); i ? ctx.lineTo(x,y) : ctx.moveTo(x,y); });
+  ctx.stroke();
+  seasonality.forEach((v,i) => {
+    const x=xAt(i), y=yAt(v);
+    ctx.fillStyle = i === state.month - 1 ? "#7c3aed" : "#ec4899";
+    ctx.beginPath(); ctx.arc(x,y,i===state.month-1?4:2.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#564c66"; ctx.font="9px sans-serif"; ctx.textAlign="center";
+    ctx.fillText(`${i+1}월`, x, h-8);
+  });
+  ctx.textAlign = "left"; ctx.fillStyle="#281d38"; ctx.font="bold 10px sans-serif";
+  ctx.fillText(`${sd.category} 계절지수 ${seasonality[state.month-1]?.toFixed(2) || "1.00"}×`, g.padL, 12);
+}
+
+function drawFactorChart() {
+  const c = setupMiniCanvas("dsFactorChart", 185);
+  if (!c) return;
+  const sd = getMarketSupplyDemand();
+  const factors = sd.factors || [];
+  const {ctx,w,h} = c;
+  const left = 120, right = 54, top = 18, rowH = Math.max(18, (h-top-10) / Math.max(factors.length,1));
+  const center = left + (w-left-right) / 2;
+  ctx.strokeStyle = "rgba(180, 167, 198, .45)"; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(center, top-4); ctx.lineTo(center, h-8); ctx.stroke();
+  factors.forEach((f,i) => {
+    const y = top + i * rowH;
+    const barMax = Math.max(0, (w-left-right)/2 - 8);
+    const deltaPx = Math.min(barMax, Math.abs(f.value - 1) * barMax / 0.45);
+    const isUp = f.value >= 1;
+    ctx.fillStyle = isUp ? "#7c3aed" : "#dc2626";
+    ctx.fillRect(isUp ? center : center-deltaPx, y+4, deltaPx, 8);
+    ctx.fillStyle="#382d4a"; ctx.font="9.5px sans-serif"; ctx.textAlign="right";
+    ctx.fillText(f.name, left-7, y+11);
+    ctx.textAlign="left"; ctx.font="bold 9.5px sans-serif";
+    ctx.fillText(`×${f.value.toFixed(2)}`, w-right+2, y+11);
+  });
+}
+
+function drawVolumeChart() {
+  const c = setupMiniCanvas("dsVolumeChart");
+  if (!c) return;
+  const sd = getMarketSupplyDemand();
+  const pipe = getPipelineCapacities();
+  const vals = [sd.potentialDemand, pipe.minCapa, state.finishedGoods, state.lastSoldQty];
+  const labels = ["잠재수요", "생산능력", "현재재고", "최근판매"];
+  const {ctx,w,h} = c;
+  const g = drawMiniAxis(ctx,w,h,48,10,16,30);
+  const maxV = Math.max(...vals,1) * 1.12;
+  const barW = Math.min(50, (g.plotW/vals.length)*0.62);
+  vals.forEach((v,i) => {
+    const cell = g.plotW/vals.length;
+    const x = g.padL + cell*i + (cell-barW)/2;
+    const bh = (Math.max(0,v)/maxV)*g.plotH;
+    ctx.fillStyle = ["#ec4899","#7c3aed","#a78bfa","#059669"][i];
+    ctx.fillRect(x,g.padT+g.plotH-bh,barW,bh);
+    ctx.fillStyle="#281d38"; ctx.font="bold 9px sans-serif"; ctx.textAlign="center";
+    ctx.fillText(fmtNum(v),x+barW/2,Math.max(12,g.padT+g.plotH-bh-4));
+    ctx.fillStyle="#564c66"; ctx.font="9px sans-serif";
+    ctx.fillText(labels[i],x+barW/2,h-9);
+  });
+  ctx.textAlign="left"; ctx.fillStyle="#281d38"; ctx.font="bold 10px sans-serif";
+  ctx.fillText(`판매 전환율 ${sd.potentialDemand > 0 ? ((state.lastSoldQty / sd.potentialDemand) * 100).toFixed(1) : "0.0"}%`, g.padL, 12);
+}
+
+function drawMarketVisuals() {
+  drawMarketGapChart();
+  drawSeasonalityChart();
+  drawFactorChart();
+  drawVolumeChart();
+}
+
+function drawDsChart() {
+  const canvas = $("dsChart");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const rect = canvas.getBoundingClientRect();
+  
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = (rect.width || 500) * dpr;
+  canvas.height = 260 * dpr;
+  ctx.scale(dpr, dpr);
+  
+  const w = rect.width || 500;
+  const h = 260;
+  ctx.clearRect(0, 0, w, h);
+  
+  const sd = getMarketSupplyDemand();
+  const P_eq = sd.equilibriumPrice;
+  const P_my = sd.curPrice;
+  
+  const padL = 60;
+  const padR = 30;
+  const padT = 30;
+  const padB = 40;
+  const plotW = w - padL - padR;
+  const plotH = h - padT - padB;
+  
+  // 축 배경 그리드
+  ctx.strokeStyle = "rgba(226, 218, 238, 0.7)";
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + (plotH / 4) * i;
+    ctx.beginPath();
+    ctx.moveTo(padL, y);
+    ctx.lineTo(w - padR, y);
+    ctx.stroke();
+  }
+  for (let i = 0; i <= 4; i++) {
+    const x = padL + (plotW / 4) * i;
+    ctx.beginPath();
+    ctx.moveTo(x, padT);
+    ctx.lineTo(x, h - padB);
+    ctx.stroke();
+  }
+  
+  // 수요 곡선 (D): 좌상단 -> 우하단 (핑크/레드)
+  ctx.strokeStyle = "#ec4899";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  const dStartX = padL + plotW * 0.08;
+  const dStartY = padT + plotH * 0.12;
+  const dEndX = padL + plotW * 0.92;
+  const dEndY = padT + plotH * 0.88;
+  ctx.moveTo(dStartX, dStartY);
+  ctx.bezierCurveTo(
+    padL + plotW * 0.4, padT + plotH * 0.35,
+    padL + plotW * 0.65, padT + plotH * 0.65,
+    dEndX, dEndY
+  );
+  ctx.stroke();
+  
+  // 공급 곡선 (S): 좌하단 -> 우상단 (보라)
+  ctx.strokeStyle = "#7c3aed";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  const sStartX = padL + plotW * 0.08;
+  const sStartY = padT + plotH * 0.88;
+  const sEndX = padL + plotW * 0.92;
+  const sEndY = padT + plotH * 0.12;
+  ctx.moveTo(sStartX, sStartY);
+  ctx.bezierCurveTo(
+    padL + plotW * 0.35, padT + plotH * 0.65,
+    padL + plotW * 0.6, padT + plotH * 0.35,
+    sEndX, sEndY
+  );
+  ctx.stroke();
+  
+  // 균형점 (Equilibrium Point E)
+  const eqX = padL + plotW * 0.5;
+  const eqY = padT + plotH * 0.5;
+  
+  ctx.setLineDash([4, 4]);
+  ctx.strokeStyle = "rgba(109, 40, 217, 0.45)";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(eqX, padT + plotH);
+  ctx.lineTo(eqX, eqY);
+  ctx.lineTo(padL, eqY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  
+  // 균형점 포인트
+  ctx.fillStyle = "#6d28d9";
+  ctx.beginPath();
+  ctx.arc(eqX, eqY, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#fff";
+  ctx.beginPath();
+  ctx.arc(eqX, eqY, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+  
+  ctx.fillStyle = "#4c1d95";
+  ctx.font = "bold 11px sans-serif";
+  ctx.textAlign = "left";
+  ctx.fillText(`균형점 E (${fmtWon(P_eq)})`, eqX + 8, eqY - 6);
+  
+  // 현재 자사 출고가 위치 (P_my)
+  const priceRatioForPlot = Math.min(1.8, Math.max(0.4, P_my / P_eq));
+  const myY = eqY - ((priceRatioForPlot - 1.0) / 0.8) * (plotH * 0.38);
+  
+  ctx.strokeStyle = "#be185d";
+  ctx.lineWidth = 2;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath();
+  ctx.moveTo(padL, myY);
+  ctx.lineTo(w - padR, myY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  
+  // 자사 출고가 마커 배지
+  ctx.fillStyle = "#f43f5e";
+  ctx.beginPath();
+  ctx.roundRect(padL + 6, myY - 18, 120, 16, 4);
+  ctx.fill();
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 10px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(`자사 출고가: ${fmtWon(P_my)}`, padL + 66, myY - 6);
+  
+  // 곡선 라벨 (D, S)
+  ctx.fillStyle = "#ec4899";
+  ctx.font = "bold 13px sans-serif";
+  ctx.fillText("수요(D)", dEndX - 8, dEndY + 18);
+  
+  ctx.fillStyle = "#7c3aed";
+  ctx.fillText("공급(S)", sEndX - 8, sEndY - 8);
+  
+  // Y축 가격 라벨 & X축 수량 라벨
+  ctx.fillStyle = "#564c66";
+  ctx.font = "10px sans-serif";
+  ctx.textAlign = "right";
+  ctx.fillText("고가격", padL - 8, padT + 12);
+  ctx.fillText("저가격", padL - 8, h - padB);
+  ctx.textAlign = "center";
+  ctx.fillText("소량 공급/수요", padL + plotW * 0.15, h - 12);
+  ctx.fillText("대량 공급/수요", padL + plotW * 0.85, h - 12);
+}
+
 // 2. 시장 및 제품 에널리스틱 피드백 & 경쟁사 프로필 렌더링
 function renderMarketAnalytics() {
   const prod = state.customProduct;
@@ -3195,9 +4164,9 @@ function renderMarketAnalytics() {
         <span class="small">대당 ${fmtWon(prod.finalPrice - prod.calculatedUnitCost)}</span>
       </div>
       <div class="metric">
-        <span>월간 시장 추정 수요</span>
-        <strong style="color:var(--ink)">${fmtNum(prod.estDemand)}대</strong>
-        <span class="small">라인업 계수 반영</span>
+        <span>월간 잠재수요</span>
+        <strong style="color:var(--ink)">${fmtNum(state.lastPotentialDemand || prod.estDemand)}대</strong>
+        <span class="small">카테고리·가격·시장 변수 반영</span>
       </div>
       <div class="metric">
         <span>최근 납기 충족률</span>
@@ -3214,6 +4183,7 @@ function renderMarketAnalytics() {
 
     <div style="background:rgba(255,255,255,0.75);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)">
       - 기획 사양: <b>${prod.category}</b> · <b>${ind.finishes.find(f=>f.id===prod.finishId)?.name || '표준 마감'}</b><br>
+      - 최근 판매 전환: <b>${fmtNum(state.lastSoldQty)}대</b> / 잠재수요 <b>${fmtNum(state.lastPotentialDemand || prod.estDemand)}대</b> · 품절률 <b>${state.lastStockoutRate.toFixed(1)}%</b><br>
       - 공정 소요 난이도: <b>${prod.laborReq}x</b> (정규 작업자 ${state.lineWorkers}명 가동 중)<br>
       - BOM 원자재 투입비: <b>${prod.matRatios.join(' : ')}</b>
     </div>
@@ -3561,26 +4531,32 @@ function closeMonth() {
   });
   
   state.finishedGoods += actualProduction;
-  const mktFactor = 1 + (state.marketingBudget / 300000000) * 0.2;
-  const brandFactor = state.brandValue / 70;
-  const demand = Math.round((prod.estDemand || ind.baseMarketDemand) * mktFactor * brandFactor);
-  
+
+  // [다차원 동적 판매량 변동 엔진]
+  // 업종/세부카테고리 기본 수요와 가격·마케팅·브랜드·품질·계절·경기·납기·시장수급 변수를
+  // 동일한 중앙 계산기로 묶어 UI의 시장 분석값과 실제 월말 판매량이 일치하도록 한다.
+  const sales = getSalesDemandSnapshot(prod);
+  const demand = sales.potentialDemand;
+  state.lastPotentialDemand = demand;
+  state.salesFactors = sales.factors;
+
+  // 4. 실 판매량 및 결품 확정
   const actualSold = Math.min(demand, state.finishedGoods);
   const stockoutQty = Math.max(0, demand - actualSold);
   state.finishedGoods -= actualSold;
-  
+
   const revenue = actualSold * prod.finalPrice;
   state.lastRevenue = revenue;
   state.lastSoldQty = actualSold;
   state.lastStockoutQty = stockoutQty;
   state.lastStockoutRate = demand > 0 ? (stockoutQty / demand) * 100 : 0;
-  
+
   let stockoutPenalty = 0;
   if (stockoutQty > 0) {
     stockoutPenalty = Math.round(stockoutQty * prod.finalPrice * DB.config.stockoutPenaltyRate);
-    state.marketShare = Math.max(12, state.marketShare - 1.8);
+    state.marketShare = Math.max(10, state.marketShare - (stockoutQty / demand) * 3.5);
   } else {
-    state.marketShare = Math.min(52, state.marketShare + 0.8);
+    state.marketShare = Math.min(58, state.marketShare + 0.85);
   }
   
   // 계약 조건에 따른 원가 조정
@@ -3621,7 +4597,11 @@ function closeMonth() {
     month: `${state.month}월`,
     revenue: revenue,
     ebitda: ebitda,
-    cash: state.cash
+    cash: state.cash,
+    demand: demand,
+    sold: actualSold,
+    production: actualProduction,
+    price: prod.finalPrice
   });
   
   state.auditLogs.unshift({
@@ -3699,6 +4679,8 @@ function switchTab(tabId) {
     else s.classList.remove("active");
   });
   drawChart();
+  drawDsChart();
+  drawMarketVisuals();
 }
 
 document.querySelectorAll(".nav button").forEach(b => {
@@ -3723,6 +4705,47 @@ function load() {
   if (!data) return false;
   try {
     state = JSON.parse(data);
+    const ind = DB.industries[state.industryId] || DB.industries.electronics;
+    if (!state.customProduct || !state.customProduct.category) {
+      const cat = ind.categories[0];
+      const catMeta = DB.categoryMeta[ind.id]?.[cat];
+      state.customProduct = {
+        name: ind.defaultProductName,
+        category: cat,
+        tier: "flagship",
+        finishId: ind.finishes[1].id,
+        matRatios: catMeta?.defaultMatRatios ? [...catMeta.defaultMatRatios] : [1, 1, 1, 1],
+        targetMargin: 40,
+        calculatedUnitCost: 0,
+        finalPrice: 0,
+        laborReq: 1.0,
+        estDemand: catMeta?.baseDemand || ind.baseMarketDemand
+      };
+    }
+    if (!state.materials || state.materials.length === 0) {
+      const baseMonthlyProd = state.customProduct.estDemand || ind.baseMarketDemand;
+      const dailyUse = baseMonthlyProd / 30;
+      state.materials = ind.materials.map(m => ({
+        id: m.id,
+        name: m.name,
+        unitCost: m.unitCost,
+        stock: Math.round(dailyUse * DB.config.defaultSafetyStockDays),
+        dailyConsumption: dailyUse
+      }));
+    } else {
+      state.materials.forEach((m, idx) => {
+        if (ind.materials[idx]) m.name = ind.materials[idx].name;
+      });
+    }
+    calculateCustomProductEconomics();
+    state.lastPotentialDemand = Number.isFinite(state.lastPotentialDemand) ? state.lastPotentialDemand : state.customProduct.estDemand;
+    state.lastProductionQty = Number.isFinite(state.lastProductionQty) ? state.lastProductionQty : (state.customProduct.estDemand || ind.baseMarketDemand);
+    state.lastSoldQty = Number.isFinite(state.lastSoldQty) ? state.lastSoldQty : 0;
+    state.lastStockoutQty = Number.isFinite(state.lastStockoutQty) ? state.lastStockoutQty : 0;
+    state.lastStockoutRate = Number.isFinite(state.lastStockoutRate) ? state.lastStockoutRate : 0;
+    state.salesFactors = Array.isArray(state.salesFactors) && state.salesFactors.length ? state.salesFactors : getSalesDemandSnapshot(state.customProduct).factors;
+    if (!Array.isArray(state.history)) state.history = [];
+    if (!Array.isArray(state.auditLogs)) state.auditLogs = [];
     return true;
   } catch (e) {
     return false;
