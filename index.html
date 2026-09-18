@@ -6,7 +6,7 @@
 <title>VIOLET LEDGER</title>
 <!--
 ================================================================================
-[VIOLET LEDGER V4.8 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
+[VIOLET LEDGER V4.9 — ARCHITECTURE & DEVELOPMENT GUIDELINES]
 ================================================================================
 ■ 핵심 개발 지침 (절대 원칙):
   1. [하드코딩 절대 금지 및 DB화 위주 개발]:
@@ -448,6 +448,35 @@ button { cursor: pointer; }
 .region-sd-fill {
   height: 100%; background: linear-gradient(90deg, var(--purple-vivid), var(--pink)); border-radius: 4px; transition: width 0.4s ease;
 }
+
+
+/* v5 현실성/시각화 확장 */
+.price-intel-grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px; margin-top:10px; }
+.price-intel-card { padding:9px 10px; border:1px solid var(--line); border-radius:10px; background:rgba(255,255,255,.76); }
+.price-intel-card .label { display:block; font-size:10px; color:var(--muted); font-weight:800; }
+.price-intel-card strong { display:block; margin-top:3px; font-size:13px; color:var(--ink); }
+.price-scenario-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:8px; }
+.price-scenario { padding:8px; border:1px solid var(--line); border-radius:9px; background:rgba(249,247,253,.9); }
+.price-scenario button { width:100%; margin-top:6px; }
+.inventory-visual { display:grid; grid-template-columns:1.2fr 1fr; gap:12px; }
+.inventory-flow { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; align-items:center; }
+.inventory-flow .flow-node { padding:11px; border:1px solid var(--line); border-radius:11px; background:rgba(255,255,255,.82); text-align:center; position:relative; }
+.inventory-flow .flow-node:not(:last-child)::after { content:'›'; position:absolute; right:-10px; top:50%; transform:translateY(-50%); font-size:20px; color:var(--purple-mid); font-weight:900; z-index:2; }
+.inventory-gauge { height:13px; border-radius:7px; background:rgba(234,229,242,.9); overflow:hidden; margin-top:6px; }
+.inventory-gauge-fill { height:100%; border-radius:7px; background:linear-gradient(90deg,var(--purple-vivid),var(--pink)); transition:width .45s ease; }
+.inventory-stack { height:100px; display:flex; align-items:flex-end; gap:6px; padding:8px 6px 4px; border-bottom:1px solid var(--line); }
+.inventory-stack .unit { width:12px; border-radius:4px 4px 2px 2px; background:linear-gradient(180deg,var(--purple-mid),var(--purple-vivid)); min-height:8px; opacity:.9; }
+.route-flow { display:grid; gap:8px; }
+.route-flow-row { display:grid; grid-template-columns:125px 1fr 75px; gap:8px; align-items:center; }
+.route-flow-track { height:12px; background:rgba(236,231,243,.9); border-radius:8px; overflow:hidden; }
+.route-flow-fill { height:100%; border-radius:8px; background:linear-gradient(90deg,var(--pink-mid),var(--purple-vivid)); }
+.finance-waterfall { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; align-items:end; min-height:145px; padding:8px 0; }
+.finance-waterfall .wf-col { display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:5px; height:135px; }
+.finance-waterfall .wf-bar { width:70%; max-width:48px; min-height:6px; border-radius:6px 6px 3px 3px; background:linear-gradient(180deg,var(--purple-vivid),var(--purple-mid)); transition:height .4s ease; }
+.finance-waterfall .wf-label { font-size:10px; text-align:center; color:var(--muted); font-weight:800; line-height:1.25; }
+.finance-waterfall .wf-val { font-size:10px; font-weight:900; color:var(--ink); white-space:nowrap; }
+.stochastic-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 7px; border-radius:6px; background:rgba(255,240,247,.85); color:var(--pink-dark); border:1px solid #fbcfe8; font-size:10px; font-weight:900; }
+@media(max-width:760px){ .price-intel-grid,.price-scenario-grid,.inventory-visual{grid-template-columns:1fr;} .inventory-flow{grid-template-columns:1fr;} .inventory-flow .flow-node:not(:last-child)::after{content:'↓'; right:50%; top:auto; bottom:-15px; transform:translateX(50%);} .route-flow-row{grid-template-columns:100px 1fr 65px;} .finance-waterfall{grid-template-columns:repeat(3,1fr);} }
 .ds-visual-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:14px; }
 .ds-visual-card { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:rgba(255,255,255,.78); }
 .ds-visual-card strong { display:block; font-size:12px; color:var(--ink-soft); margin-bottom:6px; }
@@ -1116,6 +1145,25 @@ button { cursor: pointer; }
 
   <div class="card display-card" style="margin-bottom:16px">
     <div class="cardHead">
+      <h3>원자재 재고 위치·소진 시각화</h3>
+      <span class="stochastic-badge">수요 충격·리드타임 반영</span>
+    </div>
+    <div class="body">
+      <div class="inventory-visual">
+        <div>
+          <div class="inventory-flow" id="inventoryFlowVisual"></div>
+          <div class="small" style="margin-top:8px;color:var(--muted)">현재 보유재고 → 운송 중 재고 → 월간 생산 소요량을 한 화면에서 비교합니다.</div>
+        </div>
+        <div>
+          <div class="inventory-stack" id="inventoryStackVisual"></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;font-size:10.5px;color:var(--muted);font-weight:800"><span>보유 원자재</span><span>안전재고 기준</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card display-card" style="margin-bottom:16px">
+    <div class="cardHead">
       <h3>기획 상품용 4대 핵심 원자재 실시간 비축 현황</h3>
       <span class="affordance-badge affordance-interactive">비상 특송 발주 지원</span>
     </div>
@@ -1199,6 +1247,22 @@ button { cursor: pointer; }
             </div>
           </label>
           <div class="grid four" id="studio_matInputsGrid"></div>
+        </div>
+
+        <div class="field" style="margin-bottom:14px">
+          <label>
+            <span>직접 설정 판매가격</span>
+            <span class="valuePill" id="val_studioPrice">자동 권장가</span>
+          </label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="number" id="studio_sellingPrice" min="100" step="1000" style="flex:1;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-weight:900">
+            <button class="btn sm" type="button" onclick="applyStudioPriceReference('recommended')">권장가</button>
+            <button class="btn sm" type="button" onclick="applyStudioPriceReference('competitor')">동급가</button>
+            <button class="btn sm" type="button" onclick="applyStudioPriceReference('upper')">상위급가</button>
+          </div>
+          <div class="hint">직접 가격을 입력하면 예상 판매량·매출·수급 위치가 즉시 다시 계산됩니다.</div>
+          <div id="studio_priceIntel"></div>
+          <div id="studio_priceScenarios"></div>
         </div>
 
         <div class="field" style="margin-bottom:14px">
@@ -1317,6 +1381,17 @@ button { cursor: pointer; }
 
   <div class="card display-card" style="margin-bottom:16px">
     <div class="cardHead">
+      <h3>완제품 재고 → 판매 → 수출 흐름 시각화</h3>
+      <span class="stochastic-badge">운임·혼잡·재고 소진 변동</span>
+    </div>
+    <div class="body">
+      <div id="finishedGoodsFlowVisual"></div>
+      <div style="margin-top:10px" id="logisticsRouteFlowVisual"></div>
+    </div>
+  </div>
+
+  <div class="card display-card" style="margin-bottom:16px">
+    <div class="cardHead">
       <h3>글로벌 4대 권역 수출 선적 및 국내 물류 유통망</h3>
       <span class="affordance-badge affordance-display">실시간 선적 관제</span>
     </div>
@@ -1385,6 +1460,17 @@ button { cursor: pointer; }
         <span class="small">월말 순 현금 증감</span>
         <strong style="display:block;font-size:18px;color:var(--purple-vivid)" id="fc_netCashChange">+0원</strong>
       </div>
+    </div>
+  </div>
+
+  <div class="card display-card" style="margin-bottom:16px">
+    <div class="cardHead">
+      <h3>월간 현금흐름 충격 지도</h3>
+      <span class="stochastic-badge">회수율·운임·원가 변동 반영</span>
+    </div>
+    <div class="body">
+      <div class="finance-waterfall" id="financeWaterfallVisual"></div>
+      <div class="notice purple" id="financeShockNotice" style="margin-top:8px">변동 요인 분석 중...</div>
     </div>
   </div>
 
@@ -1793,7 +1879,14 @@ const DB = {
       minUnitCost: 100000, minSellingPrice: 100, priceElasticityFloor: 0.15, qualityFactorFloor: 0.55,
       supplyPriceElasticity: 0.65, productionSupplyMin: 0.75, productionSupplyMax: 1.25,
       marketSupplyBase: 0.94, marketSupplyCycle: 5, marketSupplyCycleStep: 0.025,
-      categoryShockMonthRate: 0.73, categoryShockCategoryRate: 0.91
+      categoryShockMonthRate: 0.73, categoryShockCategoryRate: 0.91,
+      nonlinearCapacityExponent: 0.92, overtimeSaturation: 0.18, overtimeFatigueExponent: 1.75,
+      priceFloorOverheadRatio: 0.08, priceCeilingMultiplier: 1.18, priceRecommendationWeight: [0.42,0.34,0.14,0.10],
+      collectionRateBase: 0.78, collectionRateShock: 0.16, badDebtBase: 0.007, badDebtShock: 0.010,
+      variableOpexRatio: 0.034, variableOpexShock: 0.012, inventoryVolatility: 0.08, freightFuelShock: 0.10,
+      freightCongestionShock: 0.08, routeRiskShock: 0.06, marketDemandNoise: 0.035, marketSupplyNoise: 0.045,
+      demandNonlinearity: 0.86, supplyNonlinearity: 0.65, marketPriceNoise: 0.028,
+      tierPriceMult: {entry:1.08, mid:1.22, flagship:1.48, hyper:1.86}
     }
   },
 
@@ -2130,7 +2223,11 @@ const DB = {
         { id: "rd_e4", tier: 2, prereq: "rd_e2", name: "모듈 정밀 가공 로봇 자동화", cost: 1600000000, duration: 3, effectDesc: "1차 가공 CAPA +30% 증설 및 원자재비 6% 절감", effect: (s) => { s.factoryStageLevels[1] += 2; s.materials.forEach(m => m.unitCost *= 0.94); } },
         { id: "rd_e5", tier: 2, prereq: "rd_e2", name: "스마트 AI 광학 검사(AOI) 시스템", cost: 1200000000, duration: 2, effectDesc: "검사/포장 속도 +35% 향상 및 불량 손실 원천 방어", effect: (s) => { s.factoryStageLevels[3] += 2; } },
         { id: "rd_e6", tier: 3, prereq: "rd_e3", name: "차세대 플래그십 뉴럴 프로세싱", cost: 2600000000, duration: 4, effectDesc: "출고가 15% 프리미엄 수용력 확보, 점유율 상한 +8%p", effect: (s) => { s.brandValue += 18; s.marketShare += 5; } },
-        { id: "rd_e7", tier: 3, prereq: "rd_e4", name: "지능형 무인 풀오토메이션 컨베이어", cost: 2400000000, duration: 4, effectDesc: "메인 조립 공정 CAPA 40% 대폭 확장, 작업자 의존도 대폭 완화", effect: (s) => { s.factoryStageLevels[2] += 3; } }
+        { id: "rd_e7", tier: 3, prereq: "rd_e4", name: "지능형 무인 풀오토메이션 컨베이어", cost: 2400000000, duration: 4, effectDesc: "메인 조립 공정 CAPA 40% 대폭 확장, 작업자 의존도 대폭 완화", effect: (s) => { s.factoryStageLevels[2] += 3; } },
+        { id: "rd_e8", tier: 3, prereq: "rd_e5", name: "디지털 트윈 생산 스케줄러", cost: 2800000000, duration: 4, effectDesc: "라인 예측오차를 줄이고 공정 병목 변동성 완화", effect: (s) => { s.factoryStageLevels[0] += 1; s.factoryStageLevels[3] += 1; } },
+        { id: "rd_e9", tier: 3, prereq: "rd_e4", name: "제품 수명·품질 데이터 플랫폼", cost: 2400000000, duration: 4, effectDesc: "A/S 신뢰도와 브랜드 지수 +16", effect: (s) => { s.brandValue += 16; } },
+        { id: "rd_e10", tier: 4, prereq: "rd_e6", name: "온디바이스 AI 제품 생태계", cost: 3600000000, duration: 5, effectDesc: "브랜드 +22, 시장 점유율 +4%p", effect: (s) => { s.brandValue += 22; s.marketShare += 4; } },
+        { id: "rd_e11", tier: 4, prereq: "rd_e8", name: "수요예측 연동 자율생산 시스템", cost: 4200000000, duration: 5, effectDesc: "자재 피딩·조립 CAPA 동시 확장", effect: (s) => { s.factoryStageLevels[0] += 1; s.factoryStageLevels[2] += 2; } },
       ]
     },
     auto: {
@@ -2168,7 +2265,11 @@ const DB = {
         { id: "rd_a2", tier: 1, prereq: null, name: "차체 프레임 성형 공정 개선", cost: 1600000000, duration: 3, effectDesc: "차체 조립원가 12% 절감 및 가공 속도 향상", effect: (s) => { s.materials[2].unitCost *= 0.88; } },
         { id: "rd_a3", tier: 2, prereq: "rd_a1", name: "차량 통합 제어 OS 소프트웨어", cost: 2200000000, duration: 4, effectDesc: "시장 점유율 상한 6%p 확장 및 수요 20% 증가", effect: (s) => { s.marketShare += 6; s.customProduct.estDemand = Math.round(s.customProduct.estDemand * 1.2); } },
         { id: "rd_a4", tier: 2, prereq: "rd_a2", name: "초고장력 강판 레이저 용접 로봇", cost: 2000000000, duration: 3, effectDesc: "메인 조립 라인 CAPA 35% 증설", effect: (s) => { s.factoryStageLevels[2] += 2; } },
-        { id: "rd_a5", tier: 3, prereq: "rd_a3", name: "차세대 자율주행 센서 퓨전 플랫폼", cost: 3200000000, duration: 5, effectDesc: "플래그십 모델 가격 20% 인상 가능, 브랜드 +25", effect: (s) => { s.brandValue += 25; } }
+        { id: "rd_a5", tier: 3, prereq: "rd_a3", name: "차세대 자율주행 센서 퓨전 플랫폼", cost: 3200000000, duration: 5, effectDesc: "플래그십 모델 가격 20% 인상 가능, 브랜드 +25", effect: (s) => { s.brandValue += 25; } },
+        { id: "rd_a6", tier: 3, prereq: "rd_a4", name: "예지보전 기반 스마트 조립 라인", cost: 2700000000, duration: 4, effectDesc: "조립 CAPA +2레벨", effect: (s) => { s.factoryStageLevels[2] += 2; } },
+        { id: "rd_a7", tier: 3, prereq: "rd_a3", name: "배터리 열관리·고속충전 플랫폼", cost: 3000000000, duration: 4, effectDesc: "전동화 제품 브랜드 지수 +18", effect: (s) => { s.brandValue += 18; } },
+        { id: "rd_a8", tier: 4, prereq: "rd_a5", name: "차량 소프트웨어 OTA 플랫폼", cost: 3800000000, duration: 5, effectDesc: "브랜드 +24, 시장 점유율 +4%p", effect: (s) => { s.brandValue += 24; s.marketShare += 4; } },
+        { id: "rd_a9", tier: 4, prereq: "rd_a6", name: "공장 통합 디지털 트윈 & 라인 자율제어", cost: 4500000000, duration: 5, effectDesc: "4대 공정 CAPA 전반 강화", effect: (s) => { s.factoryStageLevels = s.factoryStageLevels.map(v => v + 1); } },
       ]
     },
     food: {
@@ -2206,7 +2307,11 @@ const DB = {
         { id: "rd_f2", tier: 1, prereq: null, name: "배합 및 계량 자동화 라인", cost: 850000000, duration: 2, effectDesc: "원재료 매입원가 10% 절감 및 가공 속도 향상", effect: (s) => { s.materials[0].unitCost *= 0.90; s.factoryStageLevels[1] += 1; } },
         { id: "rd_f3", tier: 2, prereq: "rd_f1", name: "친환경 생분해 밀폐 패키징", cost: 1100000000, duration: 3, effectDesc: "ESG 브랜드 신뢰도 상승, 수요 15% 증가", effect: (s) => { s.brandValue += 15; s.customProduct.estDemand = Math.round(s.customProduct.estDemand * 1.15); } },
         { id: "rd_f4", tier: 2, prereq: "rd_f2", name: "고온 초고압 살균 연속 레토르트", cost: 1300000000, duration: 3, effectDesc: "검사 및 포장 CAPA 35% 증설", effect: (s) => { s.factoryStageLevels[3] += 2; } },
-        { id: "rd_f5", tier: 3, prereq: "rd_f3", name: "기능성 바이오 영양 배합 특허", cost: 2100000000, duration: 4, effectDesc: "제품 마진율 허용폭 25% 확장, 시장 점유율 +7%p", effect: (s) => { s.marketShare += 7; } }
+        { id: "rd_f5", tier: 3, prereq: "rd_f3", name: "기능성 바이오 영양 배합 특허", cost: 2100000000, duration: 4, effectDesc: "제품 마진율 허용폭 25% 확장, 시장 점유율 +7%p", effect: (s) => { s.marketShare += 7; } },
+        { id: "rd_f6", tier: 3, prereq: "rd_f4", name: "AI 수율·폐기 예측 시스템", cost: 1700000000, duration: 3, effectDesc: "브랜드 +10, 검사 공정 +1레벨", effect: (s) => { s.brandValue += 10; s.factoryStageLevels[3] += 1; } },
+        { id: "rd_f7", tier: 3, prereq: "rd_f2", name: "원료 품질 추적·배합 최적화 플랫폼", cost: 1900000000, duration: 3, effectDesc: "4대 원자재 구매단가 약 3% 절감", effect: (s) => { s.materials.forEach(m => m.unitCost *= 0.97); } },
+        { id: "rd_f8", tier: 4, prereq: "rd_f5", name: "개인맞춤형 영양 설계 엔진", cost: 3300000000, duration: 5, effectDesc: "브랜드 +21, 시장 점유율 +3%p", effect: (s) => { s.brandValue += 21; s.marketShare += 3; } },
+        { id: "rd_f9", tier: 4, prereq: "rd_f6", name: "콜드체인 통합 품질 관제", cost: 2900000000, duration: 4, effectDesc: "검사·포장 CAPA +2레벨", effect: (s) => { s.factoryStageLevels[3] += 2; } },
       ]
     },
     fashion: {
@@ -2244,7 +2349,11 @@ const DB = {
         { id: "rd_c2", tier: 1, prereq: null, name: "3D 자동 레이저 재단 시스템", cost: 750000000, duration: 2, effectDesc: "원단 재단 손실 8% 절감 및 피딩 속도 향상", effect: (s) => { s.materials[0].unitCost *= 0.92; s.factoryStageLevels[0] += 1; } },
         { id: "rd_c3", tier: 2, prereq: "rd_c1", name: "스마트 발열 기능성 원사 직조", cost: 1400000000, duration: 3, effectDesc: "추동 시즌 수요 22% 대폭 증가", effect: (s) => { s.customProduct.estDemand = Math.round(s.customProduct.estDemand * 1.22); } },
         { id: "rd_c4", tier: 2, prereq: "rd_c2", name: "무봉제 초음파 본딩 자동화 설비", cost: 1500000000, duration: 3, effectDesc: "조립 컨베이어 CAPA 35% 증설 및 인건비 절감", effect: (s) => { s.factoryStageLevels[2] += 2; } },
-        { id: "rd_c5", tier: 3, prereq: "rd_c3", name: "친환경 리사이클 하이엔드 텍스타일", cost: 2300000000, duration: 4, effectDesc: "글로벌 패션 어워드 획득, 점유율 +8%p", effect: (s) => { s.marketShare += 8; } }
+        { id: "rd_c5", tier: 3, prereq: "rd_c3", name: "친환경 리사이클 하이엔드 텍스타일", cost: 2300000000, duration: 4, effectDesc: "글로벌 패션 어워드 획득, 점유율 +8%p", effect: (s) => { s.marketShare += 8; } },
+        { id: "rd_c6", tier: 3, prereq: "rd_c4", name: "3D 가상 피팅 & 수요예측 시스템", cost: 1800000000, duration: 3, effectDesc: "브랜드 +11, 수요변동 예측력 강화", effect: (s) => { s.brandValue += 11; } },
+        { id: "rd_c7", tier: 3, prereq: "rd_c3", name: "경량 고내구 스포츠화 미드솔 기술", cost: 2100000000, duration: 3, effectDesc: "스포츠화 카테고리 브랜드 지수 +15", effect: (s) => { s.brandValue += 15; } },
+        { id: "rd_c8", tier: 4, prereq: "rd_c5", name: "친환경 순환소재 공급망 플랫폼", cost: 3400000000, duration: 5, effectDesc: "핵심 원자재비 6% 절감 및 브랜드 +18", effect: (s) => { s.materials[0].unitCost *= .94; s.brandValue += 18; } },
+        { id: "rd_c9", tier: 4, prereq: "rd_c6", name: "자율 봉제 셀 & 주문형 소량생산", cost: 3200000000, duration: 4, effectDesc: "피딩·조립 CAPA 강화", effect: (s) => { s.factoryStageLevels[0] += 1; s.factoryStageLevels[2] += 2; } },
       ]
     }
   },
@@ -2259,105 +2368,161 @@ const DB = {
 
 // ---------------------------------------------------------
 // 2. 판매량·카테고리 상호작용 엔진
-// ---------------------------------------------------------
+// v5: 가격·수요·공급·시장충격을 중앙 계산기로 통합. 같은 월의 모든 화면이 동일한 스냅샷을 사용한다.
 function clampNum(v, min, max) { return Math.min(max, Math.max(min, v)); }
-
+function hashNoise(key) {
+  let h = 2166136261;
+  const str = String(key);
+  for (let i=0;i<str.length;i++) { h ^= str.charCodeAt(i); h = Math.imul(h,16777619); }
+  h += h << 13; h ^= h >>> 7; h += h << 3; h ^= h >>> 17; h += h << 5;
+  return ((h >>> 0) / 4294967295) * 2 - 1;
+}
+function smoothWave(t, phase=0) {
+  return Math.sin(t * 0.73 + phase) * 0.55 + Math.sin(t * 1.41 + phase * 1.7) * 0.28 + Math.sin(t * 2.17 - phase * 0.6) * 0.17;
+}
+function getPeriodSerial() { return ((state.year - 1) * 12) + state.month; }
 function getCategoryRule(industryId, category) {
   return DB.categoryRules?.[industryId]?.[category] || {
-    preferredFinishId: null, materialCostMult: [1,1,1,1], stageMult: [1,1,1,1], demandLift: 1, volatility: DB.config.salesModel.randomShockAmplitude
+    preferredFinishId:null, materialCostMult:[1,1,1,1], stageMult:[1,1,1,1], demandLift:1, volatility:DB.config.salesModel.randomShockAmplitude
   };
 }
-
-function getSalesDemandSnapshot(productLike) {
+function getTierPriceMargin(tier) {
+  return ({entry:.16, mid:.25, flagship:.39, hyper:.58})[tier] ?? .34;
+}
+function getCompetitorAverage(productLike) {
+  const prod = productLike || state.customProduct;
+  const competitors = state.competitors?.length ? state.competitors : (DB.industries[state.industryId]?.competitors || []);
+  const bandMargin = {"저가형":.18,"중저가형":.22,"대중형":.26,"중급형":.31,"프리미엄":.45,"고가형":.54,"초고가형":.70,"특화형":.58,"트렌드형":.37};
+  const base = competitors.length ? competitors.reduce((sum,c)=>sum + (1 + (bandMargin[c.priceBand] ?? .34)) * (1 + (c.share||0)/180),0) / competitors.length : 1.34;
+  const meta = DB.categoryMeta[state.industryId]?.[prod.category] || {priceMultiplier:1};
+  const noise = 1 + hashNoise(`comp:${state.industryId}:${prod.category}:${prod.tier}:${getPeriodSerial()}`) * DB.config.salesModel.marketPriceNoise;
+  return Math.max(DB.config.salesModel.minSellingPrice, Math.round((prod.calculatedUnitCost || DB.config.salesModel.minUnitCost) * meta.priceMultiplier * base * noise));
+}
+function getPricingIntelligence(productLike) {
+  const prod = productLike || state.customProduct;
+  const ind = DB.industries[state.industryId] || DB.industries.electronics;
+  const catMeta = DB.categoryMeta[state.industryId]?.[prod.category] || {baseDemand:ind.baseMarketDemand,priceMultiplier:1,elasticity:1.25,seasonality:Array(12).fill(1)};
+  const rule = getCategoryRule(state.industryId, prod.category);
+  const unitCost = Math.max(DB.config.salesModel.minUnitCost, prod.calculatedUnitCost || DB.config.salesModel.minUnitCost);
+  const tierMult = DB.config.salesModel.tierPriceMult[prod.tier] || 1.48;
+  const season = catMeta.seasonality?.[state.month-1] || 1;
+  const serial = getPeriodSerial();
+  const macroPulse = 1 + smoothWave(serial*0.54, prod.category.length) * 0.035;
+  const competitorAvg = getCompetitorAverage(prod);
+  const sameTierAvg = Math.round(competitorAvg * (prod.tier === 'entry' ? .86 : prod.tier === 'mid' ? .95 : prod.tier === 'hyper' ? 1.12 : 1.02));
+  const upperTierAvg = Math.round(unitCost * tierMult * (1 + (season-1)*.08) * (1 + hashNoise(`upper:${prod.category}:${serial}`)*.02));
+  const demand0 = catMeta.baseDemand * (catMeta.priceMultiplier || 1) * season * macroPulse;
+  const supply0 = catMeta.baseDemand * (0.82 + rule.stageMult.reduce((a,b)=>a+b,0)/4*0.18);
+  const demandSupplyPressure = demand0 / Math.max(supply0,1);
+  const equilibrium = Math.round(unitCost * (1 + DB.config.salesModel.equilibriumMargin) * Math.pow(Math.max(.65,demandSupplyPressure), .72));
+  const floor = Math.round(unitCost * (1 + DB.config.salesModel.priceFloorOverheadRatio) + unitCost * DB.config.salesModel.priceFloorOverheadRatio * 0.42);
+  const ceiling = Math.round(Math.max(upperTierAvg, equilibrium) * DB.config.salesModel.priceCeilingMultiplier);
+  const w = DB.config.salesModel.priceRecommendationWeight;
+  const rawRec = equilibrium*w[0] + sameTierAvg*w[1] + upperTierAvg*w[2] + floor*w[3];
+  const recommended = clampNum(Math.round(rawRec), Math.max(floor, Math.round(unitCost*1.05)), Math.max(floor+100,ceiling));
+  const pressurePct = demandSupplyPressure * 100;
+  const pressureLabel = pressurePct >= 118 ? '강한 초과수요' : pressurePct >= 106 ? '수요 우위' : pressurePct <= 84 ? '공급 우위' : '대체로 균형';
+  return {unitCost, competitorAvg, sameTierAvg, upperTierAvg, equilibrium, floor, ceiling, recommended, demandSupplyPressure, pressurePct, pressureLabel};
+}
+function getSalesDemandSnapshot(productLike, explicitPrice=null) {
   const ind = DB.industries[state.industryId] || DB.industries.electronics;
   const prod = productLike || state.customProduct;
-  const catMeta = DB.categoryMeta[state.industryId]?.[prod.category] || {
-    baseDemand: ind.baseMarketDemand, priceMultiplier: 1, laborMultiplier: 1, elasticity: 1.25, seasonality: Array(12).fill(1)
-  };
+  const model = DB.config.salesModel;
+  const catMeta = DB.categoryMeta[state.industryId]?.[prod.category] || {baseDemand:ind.baseMarketDemand,priceMultiplier:1,laborMultiplier:1,elasticity:1.25,seasonality:Array(12).fill(1)};
   const rule = getCategoryRule(state.industryId, prod.category);
   const tierDef = DB.productTiers[prod.tier] || DB.productTiers.flagship;
-  const finish = ind.finishes.find(f => f.id === prod.finishId) || ind.finishes[0];
+  const finish = ind.finishes.find(f=>f.id===prod.finishId) || ind.finishes[0];
   const vendor = ind.vendors[state.selectedVendorIndex] || ind.vendors[0];
   const term = DB.contractTerms[state.sourcingContractType] || DB.contractTerms.standard;
-  const model = DB.config.salesModel;
-
-  const baseCost = Math.max(1, prod.calculatedUnitCost || model.minUnitCost);
-  const equilibriumPrice = Math.max(1, Math.round(baseCost * (1 + model.equilibriumMargin)));
-  const curPrice = Math.max(model.minSellingPrice, prod.finalPrice || equilibriumPrice);
-  const priceRatio = equilibriumPrice / curPrice;
-  const priceFactor = Math.pow(Math.max(model.priceElasticityFloor, priceRatio), catMeta.elasticity || 1.25);
-
-  const marketingFactor = 1 + (Math.log10(1 + state.marketingBudget / model.marketingBaseBudget) * model.marketingResponse);
-  const completedRdCount = (state.projects || []).filter(p => p.applied).length;
-  const brandFactor = (state.brandValue / model.brandBaseValue) * (1 + completedRdCount * model.rdDemandLift);
-  const defectRate = Math.max(0.001, (vendor.defectRate + term.defectMod) / 100);
-  const qualityFactor = Math.max(model.qualityFactorFloor, ((finish.quality) / model.qualityBase) * (1 - (defectRate * model.defectPenalty)));
-  const seasonFactor = catMeta.seasonality ? (catMeta.seasonality[state.month - 1] || 1) : 1;
-  const monthSerial = ((state.year - 1) * 12) + state.month;
-  const macroFactor = model.macroBase + Math.sin(monthSerial * model.macroPeriod) * model.macroAmplitude;
-  const categoryShock = 1 + Math.sin((monthSerial * model.categoryShockMonthRate) + (prod.category.length * model.categoryShockCategoryRate)) * (rule.volatility || model.randomShockAmplitude);
-  const deliveryFactor = state.lastStockoutRate > 0
-    ? Math.max(model.deliveryMinFactor, 1 - (state.lastStockoutRate / 100) * model.deliveryStockoutDecay)
-    : model.deliveryBonus;
-
-  const marketDemand = catMeta.baseDemand * model.marketScale * seasonFactor * priceFactor * (rule.demandLift || 1);
-  const priceSupplyFactor = Math.pow(Math.max(model.supplyFloorFactor, curPrice / equilibriumPrice), model.supplyPriceElasticity);
-  const productionSupplyFactor = clampNum((rule.stageMult || [1,1,1,1]).reduce((a,b) => a + b, 0) / 4, model.productionSupplyMin, model.productionSupplyMax);
-  const marketSupplyCycle = model.marketSupplyBase + ((monthSerial % model.marketSupplyCycle) * model.marketSupplyCycleStep);
-  const marketSupply = catMeta.baseDemand * model.marketScale * priceSupplyFactor * productionSupplyFactor * marketSupplyCycle;
-  const tightness = marketDemand / Math.max(marketSupply, 1);
-  const tightnessFactor = clampNum(1 + (tightness - 1) * model.tightnessResponse, model.tightnessMinFactor, model.tightnessMaxFactor);
-
-  const potentialDemand = Math.max(0, Math.round(
-    catMeta.baseDemand * tierDef.demandMult * rule.demandLift *
-    priceFactor * marketingFactor * brandFactor * qualityFactor * seasonFactor *
-    deliveryFactor * macroFactor * categoryShock * tightnessFactor
-  ));
-
-  const baseSales = catMeta.baseDemand * tierDef.demandMult;
-  const factors = [
-    { label: "가격 경쟁력", value: priceFactor },
-    { label: "카테고리 포지션", value: rule.demandLift || 1 },
-    { label: "마케팅", value: marketingFactor },
-    { label: "브랜드·R&D", value: brandFactor },
-    { label: "품질·불량", value: qualityFactor },
-    { label: "계절성", value: seasonFactor },
-    { label: "납기 신뢰", value: deliveryFactor },
-    { label: "시장 수급", value: tightnessFactor },
-    { label: "시장 변동", value: macroFactor * categoryShock }
+  const monthSerial = getPeriodSerial();
+  const priceIntel = getPricingIntelligence(prod);
+  const equilibriumPrice = priceIntel.equilibrium;
+  const curPrice = Math.max(model.minSellingPrice, explicitPrice ?? prod.finalPrice ?? priceIntel.recommended);
+  const elasticity = Math.max(model.priceElasticityFloor, catMeta.elasticity || 1.25);
+  const priceRatio = Math.max(.35, equilibriumPrice / Math.max(curPrice,1));
+  const priceFactor = clampNum(Math.exp(Math.log(priceRatio) * elasticity * model.demandNonlinearity), .28, 2.35);
+  const marketingIntensity = Math.log1p(state.marketingBudget / model.marketingBaseBudget);
+  const marketingFactor = 1 + Math.tanh(marketingIntensity*0.72) * (model.marketingResponse*1.7);
+  const completedRdCount = (state.projects||[]).filter(p=>p.applied).length;
+  const brandNorm = clampNum(state.brandValue / model.brandBaseValue, .55, 2.2);
+  const brandFactor = 0.88 + 0.22*Math.tanh((brandNorm-0.75)*1.8) + completedRdCount*.018;
+  const defectRate = Math.max(.001,(vendor.defectRate + term.defectMod)/100);
+  const qualitySignal = clampNum((finish.quality/model.qualityBase)*(1-defectRate*model.defectPenalty), .45, 1.18);
+  const qualityFactor = Math.pow(qualitySignal,1.32);
+  const seasonFactor = catMeta.seasonality?.[state.month-1] || 1;
+  const macroFactor = clampNum(model.macroBase + smoothWave(monthSerial*0.42, prod.category.length*0.6)*model.macroAmplitude + hashNoise(`macro:${monthSerial}`)*.018, .88, 1.12);
+  let categoryShock = 1 + smoothWave(monthSerial*model.categoryShockMonthRate, prod.category.length*model.categoryShockCategoryRate) * (rule.volatility || model.randomShockAmplitude);
+  const breakShock = hashNoise(`break:${state.industryId}:${prod.category}:${monthSerial}`);
+  if (Math.abs(breakShock) > .78) categoryShock *= 1 + Math.sign(breakShock) * Math.min(.065, (rule.volatility||.02)*2.3);
+  const deliveryFactor = state.lastStockoutRate > 0 ? Math.max(model.deliveryMinFactor,1-Math.pow(state.lastStockoutRate/100,.9)*model.deliveryStockoutDecay) : model.deliveryBonus;
+  const demandSignal = catMeta.baseDemand * tierDef.demandMult * (rule.demandLift||1) * priceFactor * marketingFactor * brandFactor * qualityFactor * seasonFactor * deliveryFactor * macroFactor * categoryShock;
+  const marketDemand = catMeta.baseDemand * (1 + (tierDef.demandMult-.85)*.33) * (catMeta.priceMultiplier||1) * seasonFactor * macroFactor * Math.max(.65,priceFactor) * (rule.demandLift||1) * (1 + hashNoise(`md:${monthSerial}:${prod.category}`)*model.marketDemandNoise);
+  const pipe = typeof getPipelineCapacities === 'function' ? getPipelineCapacities(true) : null;
+  const productionSupplyFactor = clampNum((pipe?.minCapa || catMeta.baseDemand) / Math.max(catMeta.baseDemand,1), model.productionSupplyMin, model.productionSupplyMax);
+  const priceSupplyFactor = Math.pow(Math.max(model.supplyFloorFactor, curPrice/equilibriumPrice), model.supplyPriceElasticity);
+  const marketSupplyBase = catMeta.baseDemand * (1.0 + smoothWave(monthSerial*.37, 1.1)*.06);
+  const supplyInventoryFactor = state.finishedGoods !== undefined ? clampNum(0.88 + Math.tanh((state.finishedGoods/(catMeta.baseDemand||1)-.35))*0.25,.68,1.25) : 1;
+  const marketSupply = Math.max(1, marketSupplyBase * priceSupplyFactor * Math.pow(productionSupplyFactor,model.supplyNonlinearity) * supplyInventoryFactor * (1+hashNoise(`ms:${monthSerial}:${prod.category}`)*model.marketSupplyNoise));
+  const tightness = marketDemand / marketSupply;
+  const tightnessFactor = clampNum(1 + Math.tanh((tightness-1)*1.45)*model.tightnessResponse, model.tightnessMinFactor, model.tightnessMaxFactor);
+  const potentialDemand = Math.max(0,Math.round(Math.pow(Math.max(demandSignal,0),.98)*tightnessFactor));
+  const baseDemand = Math.round(catMeta.baseDemand*tierDef.demandMult);
+  const factors=[
+    {label:'가격 경쟁력',value:priceFactor},{label:'카테고리 포지션',value:rule.demandLift||1},{label:'마케팅',value:marketingFactor},
+    {label:'브랜드·R&D',value:brandFactor},{label:'품질·불량',value:qualityFactor},{label:'계절성',value:seasonFactor},
+    {label:'납기 신뢰',value:deliveryFactor},{label:'시장 수급',value:tightnessFactor},{label:'시장 변동',value:macroFactor*categoryShock}
   ];
-
-  return {
-    baseDemand: Math.round(baseSales), potentialDemand, equilibriumPrice, curPrice,
-    priceFactor, marketingFactor, brandFactor, qualityFactor, seasonFactor, deliveryFactor,
-    macroFactor, categoryShock, tightness, tightnessFactor, marketDemand: Math.round(marketDemand),
-    marketSupply: Math.round(marketSupply), factors, rule, catMeta, tierDef
-  };
+  return {baseDemand,potentialDemand,equilibriumPrice,curPrice,priceFactor,marketingFactor,brandFactor,qualityFactor,seasonFactor,deliveryFactor,macroFactor,categoryShock,tightness,tightnessFactor,marketDemand:Math.round(marketDemand),marketSupply:Math.round(marketSupply),factors,rule,catMeta,tierDef,priceIntel};
 }
+function getFreightSnapshot(quantity, revenue=0) {
+  const mode=DB.freightModes.find(m=>m.id===state.freightMode)||DB.freightModes[0];
+  const serial=getPeriodSerial();
+  const fuel=1 + smoothWave(serial*.31,2.1)*DB.config.salesModel.freightFuelShock;
+  const congestion=1 + Math.max(0, smoothWave(serial*.57,1.3))*DB.config.salesModel.freightCongestionShock;
+  const routeRisks=[.02,.07,.10,.05];
+  const routeVol=[.35,.30,.20,.15];
+  const weights=routeVol.map((v,i)=>Math.max(.02,v*(1+hashNoise(`route:${serial}:${i}`)*routeRisks[i])));
+  const ws=weights.reduce((a,b)=>a+b,0); const norm=weights.map(v=>v/ws);
+  const risk=1+norm.reduce((a,v,i)=>a+v*routeRisks[i],0)*.65;
+  const ratio=DB.config.freightCostRatio*mode.costMult*fuel*congestion*risk;
+  const total=Math.round(Math.max(0,revenue)*ratio + Math.max(0,quantity)*Math.max(0,state.customProduct.calculatedUnitCost||0)*0.0012*mode.costMult);
+  return {mode,fuelShock:fuel,congestionShock:congestion,riskShock:risk,ratio,total,weights:norm};
+}
+function getFinanceSnapshot() {
+  const prod=state.customProduct, ind=DB.industries[state.industryId];
+  const sales=getSalesDemandSnapshot(prod);
+  const pipe=getPipelineCapacities(true);
+  const stress=Math.max(.45,Math.min(1.08,Math.tanh((pipe.minCapa/(sales.potentialDemand||1))*.95)*.55+.55));
+  const production=Math.max(0,Math.round(pipe.minCapa*stress*(1+hashNoise(`prod:${getPeriodSerial()}`)*.035)));
+  const revenue=Math.round(Math.min(sales.potentialDemand,state.finishedGoods+production)*prod.finalPrice);
+  const freight=getFreightSnapshot(Math.min(sales.potentialDemand,state.finishedGoods+production),revenue);
+  const collectionRate=clampNum(modelizedCollectionRate(),.52,.94);
+  const badDebtRate=clampNum(modelizedBadDebtRate(),.002,.022);
+  const currentCash=Math.round(revenue*collectionRate);
+  const cogs=Math.round(production*prod.calculatedUnitCost*(1-((ind.vendors[state.selectedVendorIndex]?.discount||0)+(DB.contractTerms[state.sourcingContractType]?.discountMod||0))*.55));
+  const varOpexRatio=clampNum(DB.config.salesModel.variableOpexRatio + hashNoise(`opex:${getPeriodSerial()}`)*DB.config.salesModel.variableOpexShock,.018,.058);
+  const variableOpex=Math.round(revenue*varOpexRatio);
+  const fixedOpex=Math.round(state.marketingBudget + state.lineWorkers*DB.config.workerMonthlyWage);
+  const inventoryVal=state.finishedGoods*prod.calculatedUnitCost + state.materials.reduce((a,m)=>a+m.stock*m.unitCost,0);
+  const holdingCost=Math.round(inventoryVal/12*DB.config.inventoryHoldingRate*(1+hashNoise(`inv:${getPeriodSerial()}`)*DB.config.salesModel.inventoryVolatility));
+  const interest=Math.round((state.debt*DB.config.debtAnnualRate+state.revolver*DB.config.revolverAnnualRate)/12);
+  const depositGain=Math.round(state.deposit*DB.config.depositMonthlyRate*(1+hashNoise(`dep:${getPeriodSerial()}`)*.08));
+  const ebitda=Math.round(revenue-cogs-freight.total-variableOpex-fixedOpex-holdingCost-(Math.max(0,100-state.factoryRunRate)*DB.config.idleLossPerRunRate*.62));
+  const netIncome=ebitda-interest+depositGain-currentCash*badDebtRate*.18;
+  const netCashChange=Math.round(currentCash+depositGain-cogs-freight.total-variableOpex-fixedOpex-holdingCost-interest-badDebtRate*revenue);
+  return {sales,pipe,production,revenue,freight,collectionRate,badDebtRate,currentCash,cogs,variableOpex,fixedOpex,holdingCost,interest,depositGain,ebitda,netIncome,netCashChange,inventoryVal,varOpexRatio};
+}
+function modelizedCollectionRate(){ const x=smoothWave(getPeriodSerial()*.27,1.8)*DB.config.salesModel.collectionRateShock; return DB.config.salesModel.collectionRateBase+x+hashNoise(`collect:${getPeriodSerial()}`)*.035; }
+function modelizedBadDebtRate(){ return DB.config.salesModel.badDebtBase + Math.max(0,smoothWave(getPeriodSerial()*.37,2.4))*DB.config.salesModel.badDebtShock*.5 + Math.max(0,hashNoise(`bad:${getPeriodSerial()}`))*.004; }
 
 function renderStudioCategoryInteraction() {
-  const el = $("studio_categoryInteraction");
-  if (!el) return;
-  const ind = DB.industries[state.industryId];
-  const cat = studioTemp.category;
-  const meta = DB.categoryMeta[state.industryId]?.[cat] || { baseDemand: ind.baseMarketDemand, priceMultiplier:1, laborMultiplier:1, elasticity:1.25, desc:"표준 사양" };
-  const rule = getCategoryRule(state.industryId, cat);
-  const finish = ind.finishes.find(f => f.id === (rule.preferredFinishId || studioTemp.finishId)) || ind.finishes[0];
-  el.innerHTML = `
-    <div style="font-size:11.5px;font-weight:900;color:var(--purple-dark)">${cat} 카테고리 자동 상호작용</div>
-    <div style="font-size:10.5px;color:var(--muted);margin-top:2px">${meta.desc || '카테고리별 기준 수요·원가·생산 특성이 적용됩니다.'}</div>
-    <div class="category-interaction-grid">
-      <div><span class="small">기준 월수요</span><strong style="display:block;margin-top:2px">${fmtNum(meta.baseDemand)} 단위</strong></div>
-      <div><span class="small">가격계수</span><strong style="display:block;margin-top:2px">×${meta.priceMultiplier.toFixed(2)}</strong></div>
-      <div><span class="small">노무계수</span><strong style="display:block;margin-top:2px">×${meta.laborMultiplier.toFixed(2)}</strong></div>
-      <div><span class="small">공정계수</span><strong style="display:block;margin-top:2px">×${((rule.stageMult || [1,1,1,1]).reduce((a,b)=>a+b,0)/4).toFixed(2)}</strong></div>
-      <div><span class="small">수요 포지션</span><strong style="display:block;margin-top:2px">×${(rule.demandLift || 1).toFixed(2)}</strong></div>
-      <div><span class="small">월 변동성</span><strong style="display:block;margin-top:2px">±${((rule.volatility || 0)*100).toFixed(1)}%</strong></div>
-      <div><span class="small">권장 마감</span><strong style="display:block;margin-top:2px">${finish.name}</strong></div>
-    </div>`;
+  const el = $('studio_categoryInteraction'); if (!el) return;
+  const ind=DB.industries[state.industryId], cat=studioTemp.category;
+  const meta=DB.categoryMeta[state.industryId]?.[cat]||{baseDemand:ind.baseMarketDemand,priceMultiplier:1,laborMultiplier:1,elasticity:1.25,desc:'표준 사양'};
+  const rule=getCategoryRule(state.industryId,cat); const finish=ind.finishes.find(f=>f.id===(rule.preferredFinishId||studioTemp.finishId))||ind.finishes[0];
+  el.innerHTML=`<div style="font-size:11.5px;font-weight:900;color:var(--purple-dark)">${cat} 카테고리 자동 상호작용</div><div style="font-size:10.5px;color:var(--muted);margin-top:2px">${meta.desc||'카테고리별 기준 수요·원가·생산 특성이 적용됩니다.'}</div><div class="category-interaction-grid"><div><span class="small">기준 월수요</span><strong style="display:block;margin-top:2px">${fmtNum(meta.baseDemand)} 단위</strong></div><div><span class="small">가격 탄력성</span><strong style="display:block;margin-top:2px">${(meta.elasticity||1.25).toFixed(2)}</strong></div><div><span class="small">노무계수</span><strong style="display:block;margin-top:2px">×${meta.laborMultiplier.toFixed(2)}</strong></div><div><span class="small">공정계수</span><strong style="display:block;margin-top:2px">×${(rule.stageMult.reduce((a,b)=>a+b,0)/4).toFixed(2)}</strong></div><div><span class="small">수요 포지션</span><strong style="display:block;margin-top:2px">×${(rule.demandLift||1).toFixed(2)}</strong></div><div><span class="small">월 변동성</span><strong style="display:block;margin-top:2px">±${((rule.volatility||0)*100).toFixed(1)}%</strong></div><div><span class="small">권장 마감</span><strong style="display:block;margin-top:2px">${finish.name}</strong></div></div>`;
 }
 
-// ---------------------------------------------------------
 // 2. 게임 상태(State) 관리
 // ---------------------------------------------------------
 let state = {
@@ -2373,6 +2538,8 @@ let state = {
     finishId: "f2",
     matRatios: [1, 1, 1, 1],
     targetMargin: 40,
+    sellingPrice: 0,
+    priceMode: "auto",
     calculatedUnitCost: 0,
     finalPrice: 0,
     laborReq: 1.0,
@@ -2413,6 +2580,14 @@ let state = {
   lastStockoutQty: 0,
   lastStockoutRate: 0,
   salesFactors: [],
+  lastCogs: 0,
+  lastFreightCost: 0,
+  lastOpex: 0,
+  lastInventoryHoldingCost: 0,
+  lastCollectedCash: 0,
+  lastBadDebt: 0,
+  lastFreightRatio: DB.config.freightCostRatio,
+  lastFinanceSnapshot: null,
   
   marketShare: 28,
   competitors: [],
@@ -2632,6 +2807,8 @@ function initGame(industryId, companyName) {
     finishId: ind.finishes[1].id,
     matRatios: [...catMeta.defaultMatRatios],
     targetMargin: 40,
+    sellingPrice: 0,
+    priceMode: "auto",
     calculatedUnitCost: 0,
     finalPrice: 0,
     laborReq: 1.0,
@@ -2892,292 +3069,97 @@ let studioTemp = {
 };
 
 function buildStudioUI() {
-  const ind = DB.industries[state.industryId];
-  studioTemp = {
-    name: state.customProduct.name,
-    category: state.customProduct.category || ind.categories[0],
-    tier: state.customProduct.tier,
-    finishId: state.customProduct.finishId || ind.finishes[0].id,
-    matRatios: [...state.customProduct.matRatios],
-    targetMargin: state.customProduct.targetMargin
-  };
-
-  $("studio_prodName").value = studioTemp.name;
-  $("studio_prodName").oninput = (e) => {
-    studioTemp.name = e.target.value.trim() || "맞춤 상품";
-    updateStudioBlueprint();
-  };
-
-  $("studio_categorySelect").innerHTML = ind.categories.map(c => 
-    `<option value="${c}" ${c === studioTemp.category ? 'selected' : ''}>${c}</option>`
-  ).join("");
-  $("studio_categorySelect").onchange = (e) => {
-    studioTemp.category = e.target.value;
-    const catMeta = DB.categoryMeta[state.industryId]?.[studioTemp.category];
-    const rule = getCategoryRule(state.industryId, studioTemp.category);
-    if (catMeta && catMeta.defaultName) {
-      studioTemp.name = catMeta.defaultName;
-      $("studio_prodName").value = studioTemp.name;
-    }
-    if (catMeta && catMeta.defaultMatRatios) {
-      studioTemp.matRatios = [...catMeta.defaultMatRatios];
-      $("studio_matSummaryPill").textContent = studioTemp.matRatios.join(":");
-      catMeta.defaultMatRatios.forEach((r, idx) => {
-        const sel = $(`mat_ratio_${idx}`);
-        if (sel) sel.value = r;
-      });
-    }
-    if (rule.preferredFinishId && ind.finishes.some(f => f.id === rule.preferredFinishId)) {
-      studioTemp.finishId = rule.preferredFinishId;
-      $("studio_finishSelect").value = studioTemp.finishId;
-    }
-    renderStudioCategoryInteraction();
-    updateStudioBlueprint();
-  };
-
-  $("tierSelectorGroup").innerHTML = Object.values(DB.productTiers).map(t => `
-    <div class="tier-card-btn ${t.id === studioTemp.tier ? 'active' : ''}" data-tier="${t.id}" onclick="setStudioTier('${t.id}')">
-      <strong>${t.name}</strong>
-      <span>${t.sub}</span>
-    </div>
-  `).join("");
-
-  $("studio_finishSelect").innerHTML = ind.finishes.map(f => 
-    `<option value="${f.id}" ${f.id === studioTemp.finishId ? 'selected' : ''}>
-      ${f.name} (+${fmtWon(f.cost)} / 품질 ${f.quality}점)
-    </option>`
-  ).join("");
-  $("studio_finishSelect").onchange = (e) => {
-    studioTemp.finishId = e.target.value;
-    renderStudioCategoryInteraction();
-    updateStudioBlueprint();
-  };
-
-  $("studio_matInputsGrid").innerHTML = ind.materials.map((m, idx) => `
-    <div style="background:rgba(255,255,255,0.85);border:1.5px solid var(--line);border-radius:10px;padding:8px;text-align:center">
-      <span class="small" style="font-size:10px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name.split(' ')[0]}</span>
-      <select id="mat_ratio_${idx}" style="margin-top:4px;padding:3px;font-size:12px;font-weight:900;border-radius:6px;border-color:var(--line)" onchange="updateStudioMatRatio(${idx}, this.value)">
-        <option value="1" ${studioTemp.matRatios[idx]===1?'selected':''}>1개 (기본)</option>
-        <option value="2" ${studioTemp.matRatios[idx]===2?'selected':''}>2개 (증량)</option>
-        <option value="3" ${studioTemp.matRatios[idx]===3?'selected':''}>3개 (특화)</option>
-      </select>
-    </div>
-  `).join("");
-
-  $("input_studioMargin").value = studioTemp.targetMargin;
-  $("val_studioMargin").textContent = `${studioTemp.targetMargin}%`;
-  $("input_studioMargin").oninput = (e) => {
-    studioTemp.targetMargin = parseInt(e.target.value);
-    $("val_studioMargin").textContent = `${studioTemp.targetMargin}%`;
-    updateStudioBlueprint();
-  };
-
-  $("launchProductBtn").onclick = commitStudioProduct;
-  renderStudioCategoryInteraction();
-  updateStudioBlueprint();
+  const ind=DB.industries[state.industryId];
+  studioTemp={name:state.customProduct.name,category:state.customProduct.category||ind.categories[0],tier:state.customProduct.tier,finishId:state.customProduct.finishId||ind.finishes[0].id,matRatios:[...state.customProduct.matRatios],targetMargin:state.customProduct.targetMargin,sellingPrice:state.customProduct.sellingPrice||state.customProduct.finalPrice||0,priceMode:state.customProduct.priceMode||"auto"};
+  $('studio_prodName').value=studioTemp.name;
+  $('studio_prodName').oninput=e=>{studioTemp.name=e.target.value.trim()||'맞춤 상품';updateStudioBlueprint();};
+  $('studio_categorySelect').innerHTML=ind.categories.map(c=>`<option value="${c}" ${c===studioTemp.category?'selected':''}>${c}</option>`).join('');
+  $('studio_categorySelect').onchange=e=>{studioTemp.category=e.target.value;studioTemp.priceMode='auto';const catMeta=DB.categoryMeta[state.industryId]?.[studioTemp.category],rule=getCategoryRule(state.industryId,studioTemp.category);if(catMeta?.defaultName){studioTemp.name=catMeta.defaultName;$('studio_prodName').value=studioTemp.name;}if(catMeta?.defaultMatRatios){studioTemp.matRatios=[...catMeta.defaultMatRatios];catMeta.defaultMatRatios.forEach((r,i)=>{const el=$(`mat_ratio_${i}`);if(el)el.value=r;});$('studio_matSummaryPill').textContent=studioTemp.matRatios.join(':');}if(rule.preferredFinishId&&ind.finishes.some(f=>f.id===rule.preferredFinishId)){studioTemp.finishId=rule.preferredFinishId;$('studio_finishSelect').value=studioTemp.finishId;}renderStudioCategoryInteraction();updateStudioBlueprint();};
+  $('tierSelectorGroup').innerHTML=Object.values(DB.productTiers).map(t=>`<div class="tier-card-btn ${t.id===studioTemp.tier?'active':''}" data-tier="${t.id}" onclick="setStudioTier('${t.id}')"><strong>${t.name}</strong><span>${t.sub}</span></div>`).join('');
+  $('studio_finishSelect').innerHTML=ind.finishes.map(f=>`<option value="${f.id}" ${f.id===studioTemp.finishId?'selected':''}>${f.name} (+${fmtWon(f.cost)} / 품질 ${f.quality}점)</option>`).join('');
+  $('studio_finishSelect').onchange=e=>{studioTemp.finishId=e.target.value;studioTemp.priceMode='auto';updateStudioBlueprint();};
+  $('studio_matInputsGrid').innerHTML=ind.materials.map((m,i)=>`<div style="background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:10px;padding:8px;text-align:center"><span class="small" style="font-size:10px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name.split(' ')[0]}</span><select id="mat_ratio_${i}" style="margin-top:4px;padding:3px;font-size:12px;font-weight:900;border-radius:6px;border-color:var(--line)" onchange="updateStudioMatRatio(${i},this.value)"><option value="1" ${studioTemp.matRatios[i]===1?'selected':''}>1개 (기본)</option><option value="2" ${studioTemp.matRatios[i]===2?'selected':''}>2개 (증량)</option><option value="3" ${studioTemp.matRatios[i]===3?'selected':''}>3개 (특화)</option></select></div>`).join('');
+  $('studio_sellingPrice').value=studioTemp.sellingPrice||'';
+  $('studio_sellingPrice').oninput=e=>{studioTemp.sellingPrice=Math.max(0,Number(e.target.value)||0);studioTemp.priceMode='manual';updateStudioBlueprint();};
+  $('input_studioMargin').value=studioTemp.targetMargin;$('val_studioMargin').textContent=`${studioTemp.targetMargin}%`;
+  $('input_studioMargin').oninput=e=>{studioTemp.targetMargin=parseInt(e.target.value);studioTemp.sellingPrice=0;studioTemp.priceMode='margin';$('val_studioMargin').textContent=`${studioTemp.targetMargin}%`;updateStudioBlueprint();};
+  $('launchProductBtn').onclick=commitStudioProduct;
+  renderStudioCategoryInteraction();updateStudioBlueprint();
 }
-
-function applyCategoryDefaultBOM() {
-  const catMeta = DB.categoryMeta[state.industryId]?.[studioTemp.category];
-  if (catMeta && catMeta.defaultMatRatios) {
-    studioTemp.matRatios = [...catMeta.defaultMatRatios];
-    $("studio_matSummaryPill").textContent = studioTemp.matRatios.join(":");
-    catMeta.defaultMatRatios.forEach((r, idx) => {
-      const sel = $(`mat_ratio_${idx}`);
-      if (sel) sel.value = r;
-    });
-    updateStudioBlueprint();
-    toast(`[${studioTemp.category}] 권장 원자재 배율(${studioTemp.matRatios.join(':')})이 적용되었습니다.`);
-  }
-}
-
-function setStudioTier(tierId) {
-  studioTemp.tier = tierId;
-  document.querySelectorAll(".tier-card-btn").forEach(b => {
-    if (b.dataset.tier === tierId) b.classList.add("active");
-    else b.classList.remove("active");
-  });
-  updateStudioBlueprint();
-}
-
-function updateStudioMatRatio(idx, val) {
-  studioTemp.matRatios[idx] = parseInt(val);
-  $("studio_matSummaryPill").textContent = studioTemp.matRatios.join(":");
-  updateStudioBlueprint();
-}
-
+function applyStudioPriceReference(kind){const eco=calcStudioEco(true);const p=eco.priceIntel;const map={recommended:p.recommended,competitor:p.sameTierAvg,upper:p.upperTierAvg};studioTemp.sellingPrice=map[kind]||p.recommended;studioTemp.priceMode='manual';$('studio_sellingPrice').value=studioTemp.sellingPrice;updateStudioBlueprint();toast(`시장 정보 기반 가격 ${fmtWon(studioTemp.sellingPrice)}이 적용되었습니다.`);}
+function applyCategoryDefaultBOM(){const catMeta=DB.categoryMeta[state.industryId]?.[studioTemp.category];if(catMeta?.defaultMatRatios){studioTemp.matRatios=[...catMeta.defaultMatRatios];$('studio_matSummaryPill').textContent=studioTemp.matRatios.join(':');catMeta.defaultMatRatios.forEach((r,i)=>{const el=$(`mat_ratio_${i}`);if(el)el.value=r;});updateStudioBlueprint();}}
+function setStudioTier(tierId){studioTemp.tier=tierId;studioTemp.priceMode='auto';document.querySelectorAll('.tier-card-btn').forEach(b=>b.classList.toggle('active',b.dataset.tier===tierId));updateStudioBlueprint();}
+function updateStudioMatRatio(idx,val){studioTemp.matRatios[idx]=parseInt(val);$('studio_matSummaryPill').textContent=studioTemp.matRatios.join(':');updateStudioBlueprint();}
 function calcStudioEco() {
-  const ind = DB.industries[state.industryId];
-  const finish = ind.finishes.find(f => f.id === studioTemp.finishId) || ind.finishes[0];
-  const tierDef = DB.productTiers[studioTemp.tier] || DB.productTiers.flagship;
-  const catMeta = DB.categoryMeta[state.industryId]?.[studioTemp.category] || {
-    baseDemand: ind.baseMarketDemand, priceMultiplier: 1.0, laborMultiplier: 1.0, elasticity: 1.25, defaultMatRatios: [1,1,1,1], desc: ""
-  };
-  
-  const rule = getCategoryRule(state.industryId, studioTemp.category);
-  const rawCost = Math.round(state.materials.reduce((sum, m, idx) => {
-    const materialMult = rule.materialCostMult[idx] || 1;
-    return sum + (m.unitCost * studioTemp.matRatios[idx] * materialMult);
-  }, 0) * catMeta.priceMultiplier);
-  const finishCost = Math.round(finish.cost * catMeta.priceMultiplier * (finish.id === rule.preferredFinishId ? 0.96 : 1));
-  const laborReq = tierDef.laborMult * finish.laborMult * catMeta.laborMultiplier;
-  const laborCost = Math.round(ind.baseLaborCost * laborReq * catMeta.priceMultiplier);
-  
-  const unitCost = rawCost + finishCost + laborCost;
-  const finalPrice = Math.round(unitCost * (1 + studioTemp.targetMargin / 100));
-  const unitMargin = finalPrice - unitCost;
-  
-  const demandSnapshot = getSalesDemandSnapshot({
-    name: studioTemp.name, category: studioTemp.category, tier: studioTemp.tier,
-    finishId: studioTemp.finishId, calculatedUnitCost: unitCost, finalPrice
-  });
-  const estDemand = demandSnapshot.potentialDemand;
-  const estRev = estDemand * finalPrice;
-
-  return {
-    rawCost,
-    finishCost,
-    laborCost,
-    unitCost,
-    finalPrice,
-    unitMargin,
-    estDemand,
-    estRev,
-    laborReq: laborReq.toFixed(2),
-    tierTag: tierDef.tag,
-    catMeta,
-    rule,
-    demandSnapshot
-  };
+  const ind=DB.industries[state.industryId],finish=ind.finishes.find(f=>f.id===studioTemp.finishId)||ind.finishes[0],tierDef=DB.productTiers[studioTemp.tier]||DB.productTiers.flagship;
+  const catMeta=DB.categoryMeta[state.industryId]?.[studioTemp.category]||{baseDemand:ind.baseMarketDemand,priceMultiplier:1,laborMultiplier:1.0,elasticity:1.25,defaultMatRatios:[1,1,1,1],desc:''};
+  const rule=getCategoryRule(state.industryId,studioTemp.category);
+  const rawCost=Math.round(state.materials.reduce((sum,m,i)=>sum+(m.unitCost*studioTemp.matRatios[i]*(rule.materialCostMult[i]||1)),0)*(catMeta.priceMultiplier||1));
+  const finishCost=Math.round(finish.cost*(catMeta.priceMultiplier||1)*(finish.id===rule.preferredFinishId ? 0.96 : 1));
+  const laborReq=tierDef.laborMult*finish.laborMult*catMeta.laborMultiplier;
+  const laborCost=Math.round(ind.baseLaborCost*laborReq*(catMeta.priceMultiplier||1)*(1+Math.max(0,state.overtimeRate||0)*.001));
+  const unitCost=rawCost+finishCost+laborCost;
+  const pIntel=getPricingIntelligence({category:studioTemp.category,tier:studioTemp.tier,finishId:studioTemp.finishId,calculatedUnitCost:unitCost,finalPrice:0});
+  let finalPrice;
+  if(studioTemp.priceMode==='manual' && studioTemp.sellingPrice>0) finalPrice=Math.round(studioTemp.sellingPrice);
+  else if(studioTemp.priceMode==='margin') finalPrice=Math.round(unitCost*(1+studioTemp.targetMargin/100));
+  else finalPrice=pIntel.recommended;
+  finalPrice=Math.max(DB.config.salesModel.minSellingPrice,finalPrice);
+  const ds=getSalesDemandSnapshot({name:studioTemp.name,category:studioTemp.category,tier:studioTemp.tier,finishId:studioTemp.finishId,calculatedUnitCost:unitCost,finalPrice});
+  const unitMargin=finalPrice-unitCost;
+  return {rawCost,finishCost,laborCost,unitCost,finalPrice,unitMargin,estDemand:ds.potentialDemand,estRev:ds.potentialDemand*finalPrice,laborReq:laborReq.toFixed(2),tierTag:tierDef.tag,catMeta,rule,demandSnapshot:ds,priceIntel:ds.priceIntel};
 }
-
-function updateStudioBlueprint() {
-  const eco = calcStudioEco();
-  
-  $("bp_displayTitle").textContent = studioTemp.name;
-  $("bp_displayCategory").textContent = `${studioTemp.category} (${eco.catMeta.desc || '표준 사양'})`;
-  $("bp_displayTierTag").textContent = eco.tierTag;
-  
-  $("bp_rawCost").textContent = fmtWon(eco.rawCost);
-  $("bp_finishCost").textContent = fmtWon(eco.finishCost);
-  $("bp_laborCost").textContent = fmtWon(eco.laborCost);
-  $("bp_totalUnitCost").textContent = fmtWon(eco.unitCost);
-  
-  $("bp_finalPrice").textContent = fmtWon(eco.finalPrice);
-  $("bp_unitMargin").textContent = `+${fmtWon(eco.unitMargin)} (${studioTemp.targetMargin}%)`;
-  
-  $("bp_estDemand").textContent = `${fmtNum(eco.estDemand)} 단위/월`;
-  $("bp_estMonthlyRev").textContent = fmtWon(eco.estRev);
-  $("bp_laborReq").textContent = `${eco.laborReq}x`;
-  const bpHint = $("bp_estDemand").parentElement;
-  if (bpHint) {
-    const ds = eco.demandSnapshot;
-    bpHint.title = `가격 ×${ds.priceFactor.toFixed(2)} · 마케팅 ×${ds.marketingFactor.toFixed(2)} · 브랜드/R&D ×${ds.brandFactor.toFixed(2)} · 계절성 ×${ds.seasonFactor.toFixed(2)} · 수급 ×${ds.tightnessFactor.toFixed(2)}`;
-  }
+function updateStudioBlueprint(){
+  const eco=calcStudioEco();
+  $('bp_displayTitle').textContent=studioTemp.name;$('bp_displayCategory').textContent=`${studioTemp.category} (${eco.catMeta.desc||'표준 사양'})`;$('bp_displayTierTag').textContent=eco.tierTag;
+  $('bp_rawCost').textContent=fmtWon(eco.rawCost);$('bp_finishCost').textContent=fmtWon(eco.finishCost);$('bp_laborCost').textContent=fmtWon(eco.laborCost);$('bp_totalUnitCost').textContent=fmtWon(eco.unitCost);
+  $('bp_finalPrice').textContent=fmtWon(eco.finalPrice);const effMargin=eco.unitCost>0?(eco.unitMargin/eco.unitCost*100):0;$('bp_unitMargin').textContent=`${eco.unitMargin>=0?'+':''}${fmtWon(eco.unitMargin)} (${effMargin.toFixed(1)}%)`;$('bp_unitMargin').style.color=eco.unitMargin>=0?'#34d399':'#fca5a5';
+  $('bp_estDemand').textContent=`${fmtNum(eco.estDemand)} 단위/월`;$('bp_estMonthlyRev').textContent=fmtWon(eco.estRev);$('bp_laborReq').textContent=`${eco.laborReq}x`;
+  $('studio_sellingPrice').value=eco.finalPrice; $('val_studioPrice').textContent=studioTemp.priceMode==='manual'?'직접 가격':studioTemp.priceMode==='margin'?'마진 연동':'시장 권장가';
+  $('input_studioMargin').value=clampNum(Math.round(effMargin/5)*5,15,150);$('val_studioMargin').textContent=`${Math.round(effMargin)}%`;
+  renderStudioPriceIntelligence(eco);
+  const hint=$('bp_estDemand').parentElement;if(hint)hint.title=`가격 ×${eco.demandSnapshot.priceFactor.toFixed(2)} · 마케팅 ×${eco.demandSnapshot.marketingFactor.toFixed(2)} · 品質 ×${eco.demandSnapshot.qualityFactor.toFixed(2)} · 계절성 ×${eco.demandSnapshot.seasonFactor.toFixed(2)} · 수급 ×${eco.demandSnapshot.tightnessFactor.toFixed(2)}`;
 }
-
-function commitStudioProduct() {
-  const eco = calcStudioEco();
-  state.customProduct = {
-    name: studioTemp.name,
-    category: studioTemp.category,
-    tier: studioTemp.tier,
-    finishId: studioTemp.finishId,
-    matRatios: [...studioTemp.matRatios],
-    targetMargin: studioTemp.targetMargin,
-    calculatedUnitCost: eco.unitCost,
-    finalPrice: eco.finalPrice,
-    laborReq: parseFloat(eco.laborReq),
-    estDemand: eco.estDemand
-  };
-
-  state.materials.forEach((m, idx) => {
-    m.dailyConsumption = (eco.estDemand * state.customProduct.matRatios[idx]) / 30;
-  });
-
-  render();
-  openActionModal(
-    "맞춤 상품 양산 투입 완료",
-    `기획하신 <b>[${state.customProduct.name}]</b>이(가) 공식 공장 양산 라인에 투입되었습니다.<br>
-     - 세부 분류: <b>${eco.tierTag} · ${state.customProduct.category}</b><br>
-     - 확정 출고가: <b>${fmtWon(state.customProduct.finalPrice)}</b> (단위당 마진율 ${state.customProduct.targetMargin}%)<br>
-     - 대당/단위당 영업이익: <b>+${fmtWon(eco.unitMargin)}</b><br>
-     - 월 기준 수요: <b>${fmtNum(eco.estDemand)} 단위</b> (BOM 투입비율 ${state.customProduct.matRatios.join(":")})가 라인과 수출망에 즉시 반영되었습니다.`
-  );
-}
-
-function calculateCustomProductEconomics() {
-  const eco = calcStudioEco();
-  state.customProduct.calculatedUnitCost = eco.unitCost;
-  state.customProduct.finalPrice = eco.finalPrice;
-  state.customProduct.laborReq = parseFloat(eco.laborReq);
-  state.customProduct.estDemand = eco.estDemand;
-}
+function renderStudioPriceIntelligence(eco){const p=eco.priceIntel;const scenarios=[['원가 방어선',p.floor],['시장 권장가',p.recommended],['동급 경쟁가',p.sameTierAvg],['상위급 평균',p.upperTierAvg]];const current=eco.finalPrice;const cards=scenarios.slice(0,4).map(([label,val])=>`<div class="price-intel-card"><span class="label">${label}</span><strong>${fmtWon(val)}</strong></div>`).join('');$('studio_priceIntel').innerHTML=`<div style="margin-top:8px;font-size:11px;font-weight:900;color:var(--purple-dark)">가격책정 참고 정보</div><div class="price-intel-grid">${cards}<div class="price-intel-card"><span class="label">수급 균형가</span><strong>${fmtWon(p.equilibrium)}</strong></div><div class="price-intel-card"><span class="label">시장 압력</span><strong>${p.pressureLabel} (${p.pressurePct.toFixed(0)}%)</strong></div></div>`;
+  const testPrices=[p.floor,p.sameTierAvg,p.recommended,p.upperTierAvg].filter((v,i,a)=>a.indexOf(v)===i).slice(0,3); const cols=testPrices.map(v=>{const s=getSalesDemandSnapshot({category:studioTemp.category,tier:studioTemp.tier,finishId:studioTemp.finishId,calculatedUnitCost:eco.unitCost,finalPrice:v});return `<div class="price-scenario"><div style="font-size:10px;color:var(--muted);font-weight:800">${v===p.floor?'원가방어':v===p.sameTierAvg?'동급경쟁':v===p.recommended?'권장가':'상위급'} </div><strong style="font-size:13px">${fmtWon(v)}</strong><div class="small" style="margin-top:4px">예상 판매 ${fmtNum(s.potentialDemand)} · 매출 ${fmtWon(s.potentialDemand*v)}</div><button class="btn sm" type="button" onclick="applyStudioPriceValue(${Math.round(v)})">이 가격 적용</button></div>`;}).join('');$('studio_priceScenarios').innerHTML=`<div style="margin-top:8px;font-size:10.5px;font-weight:900;color:var(--muted)">가격별 수요 시나리오</div><div class="price-scenario-grid">${cols}</div>`;}
+function applyStudioPriceValue(v){studioTemp.sellingPrice=Math.round(v);studioTemp.priceMode='manual';$('studio_sellingPrice').value=studioTemp.sellingPrice;updateStudioBlueprint();}
+function commitStudioProduct(){const eco=calcStudioEco();state.customProduct={...state.customProduct,name:studioTemp.name,category:studioTemp.category,tier:studioTemp.tier,finishId:studioTemp.finishId,matRatios:[...studioTemp.matRatios],targetMargin:eco.unitCost>0?Math.round((eco.unitMargin/eco.unitCost)*100):studioTemp.targetMargin,sellingPrice:eco.finalPrice,priceMode:studioTemp.priceMode,calculatedUnitCost:eco.unitCost,finalPrice:eco.finalPrice,laborReq:parseFloat(eco.laborReq),estDemand:eco.estDemand};state.materials.forEach((m,i)=>{m.dailyConsumption=(eco.estDemand*state.customProduct.matRatios[i])/30;});render();openActionModal('맞춤 상품 양산 투입 완료',`기획하신 <b>[${state.customProduct.name}]</b>이(가) 공식 공장 양산 라인에 투입되었습니다.<br>- 세부 분류: <b>${eco.tierTag} · ${state.customProduct.category}</b><br>- 확정 출고가: <b>${fmtWon(eco.finalPrice)}</b><br>- 시장 권장가: <b>${fmtWon(eco.priceIntel.recommended)}</b> / 동급 경쟁가: <b>${fmtWon(eco.priceIntel.sameTierAvg)}</b><br>- 예상 월 수요: <b>${fmtNum(eco.estDemand)} 단위</b>가 라인과 수출망에 반영되었습니다.`);}
+function calculateCustomProductEconomics(){const eco=calcStudioEco();state.customProduct.calculatedUnitCost=eco.unitCost;state.customProduct.finalPrice=eco.finalPrice;state.customProduct.sellingPrice=eco.finalPrice;state.customProduct.laborReq=parseFloat(eco.laborReq);state.customProduct.estDemand=eco.estDemand;state.customProduct.targetMargin=eco.unitCost>0?Math.round((eco.unitMargin/eco.unitCost)*100):state.customProduct.targetMargin;}
 
 // ---------------------------------------------------------
 // 8. 파이프라인 밸런서 (TOC Throughput Balancer)
 // ---------------------------------------------------------
-function getPipelineCapacities() {
-  const ind = DB.industries[state.industryId];
-  const vendor = ind.vendors[state.selectedVendorIndex];
-  const prod = state.customProduct;
-  const demand = prod.estDemand || ind.baseMarketDemand;
-  
-  const term = DB.contractTerms[state.sourcingContractType] || DB.contractTerms.standard;
-  const catScale = demand / Math.max(ind.baseMarketDemand, 1);
-  const baseVendorCapa = Math.round(vendor.supplyCapa * catScale);
-  const sourcingCapa = state.sourcingContractType === "flexible" ? Math.round(baseVendorCapa * 1.2) : baseVendorCapa;
-  
-  let minRawDays = 999;
-  state.materials.forEach(m => {
-    const days = m.stock / Math.max(m.dailyConsumption, 1);
-    if (days < minRawDays) minRawDays = days;
-  });
-  const procurementCapa = Math.round(demand * Math.min(1.5, minRawDays / 30));
-  
-  const feedingStage = DB.factoryStages[0];
-  const machiningStage = DB.factoryStages[1];
-  const assemblyStage = DB.factoryStages[2];
-  const qcStage = DB.factoryStages[3];
-  const categoryRule = getCategoryRule(state.industryId, prod.category);
-  const stageMult = categoryRule.stageMult || [1, 1, 1, 1];
-
-  const feedingCapa = Math.round(demand * (feedingStage.baseRatio + state.factoryStageLevels[0] * feedingStage.lvlStep) * (stageMult[0] || 1));
-  const machiningCapa = Math.round(demand * (machiningStage.baseRatio + state.factoryStageLevels[1] * machiningStage.lvlStep) * (stageMult[1] || 1));
-  
-  const workerBase = (state.lineWorkers / DB.config.defaultLineWorkers) * (1 + state.overtimeRate / 100);
-  const assemblyCapa = Math.round((demand / Math.max(prod.laborReq, 0.5)) * workerBase * (assemblyStage.baseRatio + state.factoryStageLevels[2] * assemblyStage.lvlStep) * (stageMult[2] || 1));
-  const qcCapa = Math.round(demand * (qcStage.baseRatio + state.factoryStageLevels[3] * qcStage.lvlStep) * (stageMult[3] || 1));
-  
-  const manufacturingCapa = Math.min(feedingCapa, machiningCapa, assemblyCapa, qcCapa);
-  const outboundCapa = Math.round(demand * 1.35);
-  
-  const stages = [
-    { id: "sourcing", name: "1. 원자재 수급", capa: sourcingCapa, desc: `공급처: ${vendor.name.split(' ')[0]} (${term.name.split(' ')[0]})` },
-    { id: "procurement", name: "2. 조달 & 자재창고", capa: procurementCapa, desc: `잔여일수: ${Math.floor(minRawDays)}일분` },
-    { id: "manufacturing", name: "3. 공장 제작", capa: manufacturingCapa, desc: `공정 최저속도 구간` },
-    { id: "logistics", name: "4. 운송/수출 물류", capa: outboundCapa, desc: "해상/항공/국내 배송" }
+function getPipelineCapacities(silent=false) {
+  const ind=DB.industries[state.industryId],vendor=ind.vendors[state.selectedVendorIndex]||ind.vendors[0],prod=state.customProduct,demand=Math.max(1,prod.estDemand||ind.baseMarketDemand);
+  const term=DB.contractTerms[state.sourcingContractType]||DB.contractTerms.standard,rule=getCategoryRule(state.industryId,prod.category),serial=getPeriodSerial(),stageMult=rule.stageMult||[1,1,1,1];
+  const catScale=Math.pow(demand/Math.max(ind.baseMarketDemand,1),DB.config.salesModel.nonlinearCapacityExponent);
+  const vendorReliability=1-clampNum((vendor.defectRate+term.defectMod)/140,0,.12);
+  const vendorNoise=1+hashNoise(`vendor:${serial}`)*.045;
+  const baseVendor=Math.round(vendor.supplyCapa*catScale*vendorReliability*vendorNoise);
+  const sourcingCapa=Math.round(baseVendor*(state.sourcingContractType==='flexible'?1.14:state.sourcingContractType==='exclusive'?.98:1));
+  let minRawDays=999;state.materials.forEach(m=>{minRawDays=Math.min(minRawDays,m.stock/Math.max(m.dailyConsumption,1));});
+  const rawCoverage=clampNum(minRawDays/Math.max(1,state.targetSafetyStockDays),.28,1.25);
+  const procurementCapa=Math.round(demand*(0.72+0.34*Math.tanh(rawCoverage*1.6))* (1+hashNoise(`proc:${serial}`)*.035));
+  const workerRatio=state.lineWorkers/Math.max(DB.config.defaultLineWorkers,1),ot=Math.max(0,state.overtimeRate||0);
+  const workerBoost=1+0.18*Math.tanh((workerRatio-1)*1.6)+0.18*Math.tanh(ot/28);
+  const fatigue=1-Math.pow(Math.min(1,ot/100),DB.config.salesModel.overtimeFatigueExponent)*DB.config.salesModel.overtimeSaturation;
+  const levels=state.factoryStageLevels;
+  const fs=DB.factoryStages;
+  const fC=Math.round(demand*(fs[0].baseRatio+levels[0]*fs[0].lvlStep)*stageMult[0]*workerBoost*fatigue*(1+hashNoise(`f:${serial}:0`)*.035));
+  const mC=Math.round(demand*(fs[1].baseRatio+levels[1]*fs[1].lvlStep)*stageMult[1]*workerBoost*fatigue*(1+hashNoise(`f:${serial}:1`)*.04));
+  const aC=Math.round(demand*(fs[2].baseRatio+levels[2]*fs[2].lvlStep)*stageMult[2]*workerBoost*fatigue*(1+hashNoise(`f:${serial}:2`)*.045));
+  const qC=Math.round(demand*(fs[3].baseRatio+levels[3]*fs[3].lvlStep)*stageMult[3]*(1+0.4*Math.tanh(ot/35))*fatigue*(1+hashNoise(`f:${serial}:3`)*.03));
+  const manufacturingCapa=Math.min(fC,mC,aC,qC);
+  const freight=getFreightSnapshot(Math.max(1,demand),Math.max(1,demand*prod.finalPrice));
+  const logisticsCapa=Math.round(demand*(1.18+0.22*Math.tanh((2.2-freight.ratio*100)/2.6))*(1-hashNoise(`log:${serial}`)*.035));
+  const stages=[
+    {id:'sourcing',name:'1. 원자재 수급',capa:sourcingCapa,desc:`공급처: ${vendor.name.split(' ')[0]} · 신뢰도 ${Math.round(vendorReliability*100)}%`},
+    {id:'procurement',name:'2. 조달 & 자재창고',capa:procurementCapa,desc:`잔여일수: ${Math.floor(minRawDays)}일분 · 안전재고 ${state.targetSafetyStockDays}일`},
+    {id:'manufacturing',name:'3. 공장 제작',capa:manufacturingCapa,desc:`인력 ×${workerRatio.toFixed(2)} · OT ${ot}% · 피로도 ${Math.round((1-fatigue)*100)}%`},
+    {id:'logistics',name:'4. 운송/수출 물류',capa:logisticsCapa,desc:`${freight.mode.name} · 변동운임 ${Math.round(freight.ratio*1000)/10}%`}
   ];
-  
-  const minCapa = Math.min(...stages.map(s => s.capa));
-  const maxCapa = Math.max(...stages.map(s => s.capa));
-  const balanceEfficiency = Math.round((minCapa / maxCapa) * 100);
-  
-  const factorySubStages = [
-    { name: feedingStage.name, capa: feedingCapa, lvl: state.factoryStageLevels[0], idx: 0, cost: feedingStage.upgradeCost },
-    { name: machiningStage.name, capa: machiningCapa, lvl: state.factoryStageLevels[1], idx: 1, cost: machiningStage.upgradeCost },
-    { name: assemblyStage.name, capa: assemblyCapa, lvl: state.factoryStageLevels[2], idx: 2, cost: assemblyStage.upgradeCost },
-    { name: qcStage.name, capa: qcCapa, lvl: state.factoryStageLevels[3], idx: 3, cost: qcStage.upgradeCost }
-  ];
-
-  return {
-    stages,
-    factorySubStages,
-    minCapa,
-    maxCapa,
-    balanceEfficiency,
-    bottleneckStage: stages.find(s => s.capa === minCapa)
-  };
+  const minCapa=Math.min(...stages.map(x=>x.capa)),maxCapa=Math.max(...stages.map(x=>x.capa));
+  return {stages,factorySubStages:[{name:fs[0].name,capa:fC,lvl:levels[0],idx:0,cost:fs[0].upgradeCost},{name:fs[1].name,capa:mC,lvl:levels[1],idx:1,cost:fs[1].upgradeCost},{name:fs[2].name,capa:aC,lvl:levels[2],idx:2,cost:fs[2].upgradeCost},{name:fs[3].name,capa:qC,lvl:levels[3],idx:3,cost:fs[3].upgradeCost}],minCapa,maxCapa,balanceEfficiency:Math.round((minCapa/maxCapa)*100),bottleneckStage:stages.find(x=>x.capa===minCapa),minRawDays,freight};
 }
 
 function renderPipelineViews() {
@@ -3263,22 +3245,12 @@ function upgradeFactoryStage(stageIdx, cost) {
 // ---------------------------------------------------------
 // 9. 직관적 재무 & 자금 운용 스트림
 // ---------------------------------------------------------
-function renderFinancialStream() {
-  const prod = state.customProduct;
-  const demand = prod.estDemand || 1200;
-  const estRev = Math.round(demand * prod.finalPrice);
-  const estCogs = Math.round(demand * prod.calculatedUnitCost);
-  const estOpex = state.marketingBudget + (state.lineWorkers * DB.config.workerMonthlyWage) + Math.round(estRev * DB.config.freightCostRatio);
-  const netCash = estRev - estCogs - estOpex;
-  
-  $("fc_revenueIn").textContent = `+${fmtWon(estRev)}`;
-  $("fc_cogsOut").textContent = `-${fmtWon(estCogs)}`;
-  $("fc_opexOut").textContent = `-${fmtWon(estOpex)}`;
-  $("fc_netCashChange").textContent = `${netCash >= 0 ? '+' : ''}${fmtWon(netCash)}`;
-  $("fc_netCashChange").style.color = netCash >= 0 ? "var(--purple-vivid)" : "var(--red)";
-  
-  $("financeCashFlowStatus").textContent = netCash >= 0 ? "영업현금흐름 순유입" : "영업현금 유출 경보";
-  $("financeCashFlowStatus").className = netCash >= 0 ? "tag green" : "tag red";
+function renderFinancialStream(){
+  const f=getFinanceSnapshot(); state.lastFinanceSnapshot=f; const el=(id,v)=>{if($(id))$(id).textContent=v;};
+  el('fc_revenueIn',`+${fmtWon(f.currentCash + state.accountsReceivable*0.02)}`); el('fc_cogsOut',`-${fmtWon(f.cogs)}`); el('fc_opexOut',`-${fmtWon(f.freight.total+f.variableOpex+f.fixedOpex+f.holdingCost)}`); el('fc_netCashChange',`${f.netCashChange>=0?'+':''}${fmtWon(f.netCashChange)}`);
+  $('financeCashFlowStatus').textContent=f.netCashChange>=0?'영업현금흐름 순유입':'영업현금흐름 순유출';$('financeCashFlowStatus').className=`tag ${f.netCashChange>=0?'green':'red'}`;
+  $('financeWaterfallVisual').innerHTML=[['매출 현금',f.currentCash],['원가',-f.cogs],['물류',-f.freight.total],['고정비',-f.fixedOpex],['변동비',-f.variableOpex],['순증감',f.netCashChange]].map(([l,v])=>{const max=Math.max(...[f.currentCash,f.cogs,f.freight.total,f.fixedOpex,f.variableOpex,Math.abs(f.netCashChange),1]);return `<div class="wf-col"><div class="wf-val">${v>=0?'+':''}${fmtWon(v)}</div><div class="wf-bar" style="height:${Math.max(8,Math.round(Math.abs(v)/max*92))}px;background:${v>=0?'linear-gradient(180deg,var(--green),#34d399)':'linear-gradient(180deg,var(--red),#f87171)'}"></div><div class="wf-label">${l}</div></div>`;}).join('');
+  $('financeShockNotice').innerHTML=`회수율 <b>${(f.collectionRate*100).toFixed(1)}%</b> · 대손률 <b>${(f.badDebtRate*100).toFixed(2)}%</b> · 변동 운임 <b>${(f.freight.ratio/DB.config.freightCostRatio*100).toFixed(1)}%</b> · 변동비율 <b>${(f.varOpexRatio*100).toFixed(2)}%</b> · 재고 보유비용 <b>${fmtWon(f.holdingCost)}</b>`;
 }
 
 function adjustDeposit(amount) {
@@ -3355,69 +3327,13 @@ function sellFactoring() {
 // ---------------------------------------------------------
 // 10. 조달 창고 및 비상 발주
 // ---------------------------------------------------------
-function renderMaterialsGrid() {
-  const prod = state.customProduct;
-  let minDays = 999;
-  let bottleneckMat = null;
-  
-  $("materialsGrid").innerHTML = state.materials.map((m, idx) => {
-    const ratio = prod.matRatios[idx] || 1;
-    const dailyUse = Math.max(m.dailyConsumption, 1);
-    const days = Math.floor(m.stock / dailyUse);
-    const isBottleneck = days < 15;
-    
-    if (days < minDays) {
-      minDays = days;
-      bottleneckMat = m;
-    }
-    
-    return `
-      <div class="card interactive-card" style="padding:14px;border-color:${isBottleneck ? 'var(--red)' : 'var(--line)'};background:${isBottleneck ? 'rgba(255, 247, 248, 0.95)' : 'rgba(255, 255, 255, 0.88)'}">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <strong style="font-size:14.5px;color:var(--ink)">${m.name}</strong>
-            <span class="tag ${days < 15 ? 'red' : days < 30 ? 'amber' : 'green'}">${days}일분 보유</span>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;text-align:center">
-            <div style="background:rgba(248, 246, 252, 0.85);padding:7px;border-radius:8px">
-              <span class="small">창고 보유량</span>
-              <strong style="display:block;font-size:14px;margin-top:2px">${fmtNum(m.stock)}개</strong>
-            </div>
-            <div style="background:rgba(248, 246, 252, 0.85);padding:7px;border-radius:8px">
-              <span class="small">1일 소진량</span>
-              <strong style="display:block;font-size:14px;margin-top:2px">${Math.round(dailyUse)}개/일</strong>
-            </div>
-            <div style="background:rgba(248, 246, 252, 0.85);padding:7px;border-radius:8px">
-              <span class="small">투입 배수</span>
-              <strong style="display:block;font-size:14px;margin-top:2px;color:var(--purple-dark)">x${ratio}</strong>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
-          <span class="small" style="color:var(--muted)">개당 원가: ${fmtWon(m.unitCost)}</span>
-          <button class="btn pink sm" onclick="emergencyAirOrder('${m.id}')">비상 항공 특송 (+30일치)</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-  
-  $("scmBottleneckDays").textContent = `${minDays}일분`;
-  $("scmBottleneckName").textContent = bottleneckMat ? `최단 부족: ${bottleneckMat.name}` : "정상";
-  $("scmRawTotalVal").textContent = fmtWon(state.materials.reduce((sum, m) => sum + (m.stock * m.unitCost), 0));
-  $("scmHoldingCost").textContent = fmtWon(state.materials.reduce((sum, m) => sum + (m.stock * m.unitCost), 0) * DB.config.inventoryHoldingRate);
-  
-  $("inboundFreightModesGrid").innerHTML = DB.freightModes.map(m => {
-    const isCur = state.freightMode === m.id;
-    return `
-      <div style="border:1.5px solid ${isCur ? 'var(--purple-vivid)' : 'var(--line)'};background:${isCur ? 'rgba(246, 240, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)'};backdrop-filter:blur(6px);padding:11px;border-radius:11px;cursor:pointer" onclick="selectFreightMode('${m.id}')">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <strong style="font-size:13px;color:var(--ink)">${m.name}</strong>
-          <span class="tag ${isCur ? 'purple' : 'pink'}">${isCur ? '선택됨' : '선택'}</span>
-        </div>
-        <div class="small" style="color:var(--muted);margin-top:4px">리드타임: <b>${m.leadMonths}개월</b> / 운임 ${m.costMult}x</div>
-      </div>
-    `;
-  }).join("");
+function renderMaterialsGrid(){
+  const prod=state.customProduct; let minDays=999,bottleneckMat=null;
+  $('materialsGrid').innerHTML=state.materials.map((m,i)=>{const ratio=prod.matRatios[i]||1,dailyUse=Math.max(m.dailyConsumption,1),days=m.stock/dailyUse,target=dailyUse*state.targetSafetyStockDays,coverage=clampNum(m.stock/Math.max(target,1),0,1.6);if(days<minDays){minDays=days;bottleneckMat=m;}return `<div class="card interactive-card" style="padding:14px;border-color:${days<15?'var(--red)':days<30?'var(--amber)':'var(--line)'}"><div><div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:14.5px;color:var(--ink)">${m.name}</strong><span class="tag ${days<15?'red':days<30?'amber':'green'}">${Math.floor(days)}일분</span></div><div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:10.5px;font-weight:800;color:var(--muted)"><span>현재</span><span>안전재고 ${state.targetSafetyStockDays}일</span></div><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${Math.min(100,coverage/1.25*100)}%;background:${days<15?'linear-gradient(90deg,#dc2626,#f43f5e)':days<30?'linear-gradient(90deg,#d97706,#f59e0b)':'linear-gradient(90deg,var(--purple-vivid),var(--pink))'}"></div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;text-align:center"><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">창고</span><strong style="display:block;font-size:13px;margin-top:2px">${fmtNum(m.stock)}개</strong></div><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">일소진</span><strong style="display:block;font-size:13px;margin-top:2px">${fmtNum(dailyUse)}개</strong></div><div style="background:rgba(248,246,252,.85);padding:7px;border-radius:8px"><span class="small">투입배수</span><strong style="display:block;font-size:13px;color:var(--purple-dark);margin-top:2px">×${ratio}</strong></div></div></div></div>`;}).join('');
+  $('scmBottleneckDays').textContent=`${Math.floor(minDays)}일`; $('scmBottleneckName').textContent=`부족 자재: ${bottleneckMat?bottleneckMat.name:'—'}`; const totalVal=state.materials.reduce((a,m)=>a+m.stock*m.unitCost,0);$('scmRawTotalVal').textContent=fmtWon(totalVal);const invVal=totalVal+state.finishedGoods*prod.calculatedUnitCost;$('scmHoldingCost').textContent=fmtWon(Math.round(invVal/12*DB.config.inventoryHoldingRate));$('scmRiskStatus').textContent=minDays<15?'높음':minDays<30?'주의':'안전 가동';$('scmRiskStatus').style.color=minDays<15?'var(--red)':minDays<30?'var(--amber)':'var(--green)';
+  const rawQty=state.materials.reduce((a,m)=>a+m.stock,0),transitQty=state.inTransit.reduce((a,t)=>a+t.qty,0),monthlyNeed=state.materials.reduce((a,m)=>a+m.dailyConsumption*30,0); const max=Math.max(rawQty,transitQty,monthlyNeed,1);
+  $('inventoryFlowVisual').innerHTML=[['창고 보유',rawQty,'현재 재고'],['운송 중',transitQty,'입고 예정'],['생산 소요',monthlyNeed,'30일 필요량']].map(x=>`<div class="flow-node"><div class="small">${x[2]}</div><strong style="display:block;font-size:16px;margin-top:3px">${fmtNum(x[1])}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${Math.min(100,x[1]/max*100)}%"></div></div></div>`).join('');
+  const bars=Math.min(20,Math.max(4,Math.round(rawQty/Math.max(monthlyNeed,1)*20))); $('inventoryStackVisual').innerHTML=Array.from({length:20},(_,i)=>`<div class="unit" style="height:${i<bars?Math.round(24+Math.min(68,rawQty/Math.max(monthlyNeed,1)*58))+Math.round(Math.abs(hashNoise('stack:'+i))*12):8}px;opacity:${i<bars?.92:.18}"></div>`).join('');
 }
 
 function selectFreightMode(id) {
@@ -3596,47 +3512,15 @@ function selectContractTerm(termId) {
   toast(`계약 조건이 [${DB.contractTerms[termId].name}]으로 갱신되었습니다.`);
 }
 
-function renderOutboundLogistics() {
-  const prod = state.customProduct;
-  $("logisticsFinishedQty").textContent = `${fmtNum(state.finishedGoods)} 대`;
-  $("logisticsFinishedVal").textContent = fmtWon(state.finishedGoods * prod.calculatedUnitCost);
-  $("logisticsOnTimeRate").textContent = `${(100 - state.lastStockoutRate).toFixed(1)}%`;
-  $("logisticsFreightCost").textContent = fmtWon(state.lastRevenue * DB.config.freightCostRatio);
-  
-  $("logisticsExportRouteGrid").innerHTML = DB.logisticsRoutes.map(r => `
-    <div style="background:rgba(255,255,255,0.85);backdrop-filter:blur(6px);border:1.5px solid var(--line);border-radius:13px;padding:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <strong style="font-size:13.5px;color:var(--ink)">${r.region}</strong>
-        <span class="tag purple">${r.share}</span>
-      </div>
-      <div class="small" style="color:var(--muted)">경로: ${r.route}</div>
-      <div class="small" style="color:var(--purple-dark);font-weight:700;margin-top:2px">소요: ${r.lead}</div>
-      <div style="border-top:1px dashed var(--line);padding-top:6px;margin-top:8px;font-size:12px;font-weight:800;color:var(--ink)">
-        월 선적: ${fmtNum(Math.round(state.lastProductionQty * r.volRatio))} 대
-      </div>
-    </div>
-  `).join("");
-  
-  $("pipelineCountBadge").textContent = `${state.inTransit.length}건 배송 중`;
-  if (state.inTransit.length === 0) {
-    $("pipelineTable").innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">현재 이동 중인 인바운드 화물이 없습니다.</td></tr>`;
-  } else {
-    $("pipelineTable").innerHTML = state.inTransit.map(t => `
-      <tr>
-        <td><b>${t.id}</b></td>
-        <td>${t.matName || t.matId}</td>
-        <td>${t.mode === 'ocean_standard' ? '해상 컨테이너선' : '항공 화물기'}</td>
-        <td>${fmtWon(t.val)}</td>
-        <td>${fmtNum(t.qty)}개</td>
-        <td>협력사 &gt; 국내 항만/공항</td>
-        <td><b style="color:var(--purple-vivid)">${t.etaMonths === 0 ? '당월 결산 시 입고' : `${t.etaMonths}개월 뒤 입고`}</b></td>
-        <td><span class="tag ${t.etaMonths === 0 ? 'pink' : 'purple'}">${t.etaMonths === 0 ? '통관 대기' : '운송 중'}</span></td>
-      </tr>
-    `).join("");
-  }
+function renderOutboundLogistics(){
+  const prod=state.customProduct, freight=getFreightSnapshot(state.lastProductionQty||0,state.lastRevenue||0), demand=Math.max(1,state.lastPotentialDemand||prod.estDemand||1),available=state.finishedGoods+state.lastSoldQty, sold=state.lastSoldQty||0;
+  $('logisticsFinishedQty').textContent=`${fmtNum(state.finishedGoods)} 대`; $('logisticsFinishedVal').textContent=fmtWon(state.finishedGoods*prod.calculatedUnitCost); $('logisticsOnTimeRate').textContent=`${(100-state.lastStockoutRate).toFixed(1)}%`; $('logisticsFreightCost').textContent=fmtWon(state.lastFreightCost||freight.total);
+  $('logisticsExportRouteGrid').innerHTML=DB.logisticsRoutes.map((r,i)=>{const share=freight.weights[i]||r.volRatio;const q=Math.round((state.lastProductionQty||0)*share);return `<div style="background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:13px;padding:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong style="font-size:13.5px;color:var(--ink)">${r.region}</strong><span class="tag purple">${(share*100).toFixed(1)}%</span></div><div class="small" style="color:var(--muted)">경로: ${r.route}</div><div class="small" style="color:var(--purple-dark);font-weight:700;margin-top:2px">소요: ${r.lead}</div><div style="border-top:1px dashed var(--line);padding-top:6px;margin-top:8px;font-size:12px;font-weight:800;color:var(--ink)">월 선적: ${fmtNum(q)} 대</div></div>`;}).join('');
+  const soldRate=clampNum(sold/demand,0,1),stockRate=clampNum(state.finishedGoods/Math.max(demand,1),0,1); $('finishedGoodsFlowVisual').innerHTML=`<div class="inventory-flow"><div class="flow-node"><div class="small">월 생산</div><strong style="font-size:17px;display:block;margin-top:3px">${fmtNum(state.lastProductionQty)}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${Math.min(100,state.lastProductionQty/Math.max(demand,1)*100)}%"></div></div></div><div class="flow-node"><div class="small">실판매</div><strong style="font-size:17px;display:block;margin-top:3px">${fmtNum(sold)}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${soldRate*100}%"></div></div></div><div class="flow-node"><div class="small">기말 완제품</div><strong style="font-size:17px;display:block;margin-top:3px">${fmtNum(state.finishedGoods)}</strong><div class="inventory-gauge"><div class="inventory-gauge-fill" style="width:${stockRate*100}%"></div></div></div></div><div class="small" style="margin-top:8px;color:var(--muted)">수요 ${fmtNum(demand)} 대비 판매전환 ${((soldRate)*100).toFixed(1)}%, 기말재고 커버 ${((state.finishedGoods/demand)*100).toFixed(1)}%</div>`;
+  $('logisticsRouteFlowVisual').innerHTML=`<div style="font-size:12px;font-weight:900;color:var(--ink-soft);margin-bottom:6px">변동 운임 기반 권역별 물류 흐름</div><div class="route-flow">${DB.logisticsRoutes.map((r,i)=>{const share=freight.weights[i]||r.volRatio;const q=Math.round((state.lastProductionQty||0)*share);return `<div class="route-flow-row"><span class="small" style="font-weight:800">${r.region.replace(' 수출','')}</span><div class="route-flow-track"><div class="route-flow-fill" style="width:${share*100}%"></div></div><strong style="font-size:11px;text-align:right">${fmtNum(q)}대</strong></div>`;}).join('')}</div><div class="notice purple" style="margin-top:8px">운임 변동: 기준 대비 ${(freight.ratio/DB.config.freightCostRatio-1>=0?'+':'')}${((freight.ratio/DB.config.freightCostRatio-1)*100).toFixed(1)}% · 연료 ×${freight.fuelShock.toFixed(2)} · 혼잡 ×${freight.congestionShock.toFixed(2)}</div>`;
+  $('pipelineCountBadge').textContent=`${state.inTransit.length}건 배송 중`; $('pipelineTable').innerHTML=state.inTransit.length===0?`<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">현재 이동 중인 인바운드 화물이 없습니다.</td></tr>`:state.inTransit.map(t=>`<tr><td><b>${t.id}</b></td><td>${t.matName||t.matId}</td><td>${t.mode==='ocean_standard'?'해상 컨테이너선':'항공 화물기'}</td><td>${fmtWon(t.val)}</td><td>${fmtNum(t.qty)}개</td><td>협력사 &gt; 국내 항만/공항</td><td><b style="color:var(--purple-vivid)">${t.etaMonths===0?'당월 결산 시 입고':`${t.etaMonths}개월 뒤 입고`}</b></td><td><span class="tag ${t.etaMonths===0?'pink':'purple'}">${t.etaMonths===0?'통관 대기':'운송 중'}</span></td></tr>`).join('');
 }
 
-// ---------------------------------------------------------
 // 12. 전체 화면 통합 렌더링 & 시장 애널리틱스 & R&D 트리
 // ---------------------------------------------------------
 function render() {
@@ -3759,17 +3643,14 @@ function getMarketSupplyDemand() {
     statusDesc = "업계 전체 공급이 시장 수요를 웃돌아 재고와 가격 경쟁 압력이 커지고 있습니다. 마케팅 확대나 생산 조정을 검토할 수 있습니다.";
   }
 
-  const regions = DB.logisticsRoutes.map(r => {
-    const regionDemand = Math.round(myDemand * r.volRatio);
-    const regionSupply = Math.round(state.lastProductionQty * r.volRatio);
+  const freightSnap = getFreightSnapshot(state.lastProductionQty || 0, state.lastRevenue || 0);
+  const regions = DB.logisticsRoutes.map((r, i) => {
+    const share = freightSnap.weights[i] || r.volRatio;
+    const regionalShock = 1 + Math.max(-0.12, Math.min(0.12, hashNoise(`regionDemand:${getPeriodSerial()}:${i}`) * 0.08));
+    const regionDemand = Math.round(myDemand * share * regionalShock);
+    const regionSupply = Math.round((state.lastProductionQty || 0) * share * (1 + hashNoise(`regionSupply:${getPeriodSerial()}:${i}`) * 0.045));
     const fillRate = regionDemand > 0 ? Math.min(100, Math.round((regionSupply / regionDemand) * 100)) : 100;
-    return {
-      name: r.region,
-      share: r.share,
-      demand: regionDemand,
-      supply: regionSupply,
-      fillRate
-    };
+    return { name:r.region, share:`${(share*100).toFixed(1)}%`, demand:regionDemand, supply:regionSupply, fillRate };
   });
 
   return {
@@ -3990,151 +3871,24 @@ function drawMarketVisuals() {
   drawVolumeChart();
 }
 
-function drawDsChart() {
-  const canvas = $("dsChart");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  const rect = canvas.getBoundingClientRect();
-  
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = (rect.width || 500) * dpr;
-  canvas.height = 260 * dpr;
-  ctx.scale(dpr, dpr);
-  
-  const w = rect.width || 500;
-  const h = 260;
-  ctx.clearRect(0, 0, w, h);
-  
-  const sd = getMarketSupplyDemand();
-  const P_eq = sd.equilibriumPrice;
-  const P_my = sd.curPrice;
-  
-  const padL = 60;
-  const padR = 30;
-  const padT = 30;
-  const padB = 40;
-  const plotW = w - padL - padR;
-  const plotH = h - padT - padB;
-  
-  // 축 배경 그리드
-  ctx.strokeStyle = "rgba(226, 218, 238, 0.7)";
-  ctx.lineWidth = 1;
-  for (let i = 0; i <= 4; i++) {
-    const y = padT + (plotH / 4) * i;
-    ctx.beginPath();
-    ctx.moveTo(padL, y);
-    ctx.lineTo(w - padR, y);
-    ctx.stroke();
-  }
-  for (let i = 0; i <= 4; i++) {
-    const x = padL + (plotW / 4) * i;
-    ctx.beginPath();
-    ctx.moveTo(x, padT);
-    ctx.lineTo(x, h - padB);
-    ctx.stroke();
-  }
-  
-  // 수요 곡선 (D): 좌상단 -> 우하단 (핑크/레드)
-  ctx.strokeStyle = "#ec4899";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  const dStartX = padL + plotW * 0.08;
-  const dStartY = padT + plotH * 0.12;
-  const dEndX = padL + plotW * 0.92;
-  const dEndY = padT + plotH * 0.88;
-  ctx.moveTo(dStartX, dStartY);
-  ctx.bezierCurveTo(
-    padL + plotW * 0.4, padT + plotH * 0.35,
-    padL + plotW * 0.65, padT + plotH * 0.65,
-    dEndX, dEndY
-  );
-  ctx.stroke();
-  
-  // 공급 곡선 (S): 좌하단 -> 우상단 (보라)
-  ctx.strokeStyle = "#7c3aed";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  const sStartX = padL + plotW * 0.08;
-  const sStartY = padT + plotH * 0.88;
-  const sEndX = padL + plotW * 0.92;
-  const sEndY = padT + plotH * 0.12;
-  ctx.moveTo(sStartX, sStartY);
-  ctx.bezierCurveTo(
-    padL + plotW * 0.35, padT + plotH * 0.65,
-    padL + plotW * 0.6, padT + plotH * 0.35,
-    sEndX, sEndY
-  );
-  ctx.stroke();
-  
-  // 균형점 (Equilibrium Point E)
-  const eqX = padL + plotW * 0.5;
-  const eqY = padT + plotH * 0.5;
-  
-  ctx.setLineDash([4, 4]);
-  ctx.strokeStyle = "rgba(109, 40, 217, 0.45)";
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(eqX, padT + plotH);
-  ctx.lineTo(eqX, eqY);
-  ctx.lineTo(padL, eqY);
-  ctx.stroke();
-  ctx.setLineDash([]);
-  
-  // 균형점 포인트
-  ctx.fillStyle = "#6d28d9";
-  ctx.beginPath();
-  ctx.arc(eqX, eqY, 5, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = "#fff";
-  ctx.beginPath();
-  ctx.arc(eqX, eqY, 2.5, 0, Math.PI * 2);
-  ctx.fill();
-  
-  ctx.fillStyle = "#4c1d95";
-  ctx.font = "bold 11px sans-serif";
-  ctx.textAlign = "left";
-  ctx.fillText(`균형점 E (${fmtWon(P_eq)})`, eqX + 8, eqY - 6);
-  
-  // 현재 자사 출고가 위치 (P_my)
-  const priceRatioForPlot = Math.min(1.8, Math.max(0.4, P_my / P_eq));
-  const myY = eqY - ((priceRatioForPlot - 1.0) / 0.8) * (plotH * 0.38);
-  
-  ctx.strokeStyle = "#be185d";
-  ctx.lineWidth = 2;
-  ctx.setLineDash([3, 3]);
-  ctx.beginPath();
-  ctx.moveTo(padL, myY);
-  ctx.lineTo(w - padR, myY);
-  ctx.stroke();
-  ctx.setLineDash([]);
-  
-  // 자사 출고가 마커 배지
-  ctx.fillStyle = "#f43f5e";
-  ctx.beginPath();
-  ctx.roundRect(padL + 6, myY - 18, 120, 16, 4);
-  ctx.fill();
-  ctx.fillStyle = "#fff";
-  ctx.font = "bold 10px sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillText(`자사 출고가: ${fmtWon(P_my)}`, padL + 66, myY - 6);
-  
-  // 곡선 라벨 (D, S)
-  ctx.fillStyle = "#ec4899";
-  ctx.font = "bold 13px sans-serif";
-  ctx.fillText("수요(D)", dEndX - 8, dEndY + 18);
-  
-  ctx.fillStyle = "#7c3aed";
-  ctx.fillText("공급(S)", sEndX - 8, sEndY - 8);
-  
-  // Y축 가격 라벨 & X축 수량 라벨
-  ctx.fillStyle = "#564c66";
-  ctx.font = "10px sans-serif";
-  ctx.textAlign = "right";
-  ctx.fillText("고가격", padL - 8, padT + 12);
-  ctx.fillText("저가격", padL - 8, h - padB);
-  ctx.textAlign = "center";
-  ctx.fillText("소량 공급/수요", padL + plotW * 0.15, h - 12);
-  ctx.fillText("대량 공급/수요", padL + plotW * 0.85, h - 12);
+function drawDsChart(){
+  const canvas=$('dsChart');if(!canvas)return;const ctx=canvas.getContext('2d'),rect=canvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1,w=rect.width||500,h=260;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+  const sd=getMarketSupplyDemand(),intel=getPricingIntelligence(state.customProduct),eq=intel.equilibrium,my=intel.recommended,myActual=state.customProduct.finalPrice||my;
+  const padL=58,padR=28,padT=26,padB=38,plotW=w-padL-padR,plotH=h-padT-padB,prices=[];for(let i=0;i<=40;i++)prices.push(intel.floor+(Math.max(intel.ceiling,intel.upperTierAvg)-intel.floor)*i/40);const pMin=Math.max(1,Math.min(...prices)),pMax=Math.max(...prices);
+  const qEq=Math.sqrt(Math.max(1,sd.marketTotalDemand)*Math.max(1,sd.marketTotalSupply));
+  const demandSlope=0.92+Math.abs(hashNoise(`curveD:${getPeriodSerial()}`))*.22;
+  const supplySlope=0.62+Math.abs(hashNoise(`curveS:${getPeriodSerial()}`))*.20;
+  const qD=price=>Math.max(0,qEq*Math.exp(-((price/eq-1)*demandSlope)));
+  const qS=price=>Math.max(0,qEq*Math.exp((price/eq-1)*supplySlope));
+  const qMax=Math.max(sd.marketTotalDemand,sd.marketTotalSupply,qEq)*1.42;
+  ctx.strokeStyle='rgba(226,218,238,.7)';ctx.lineWidth=1;for(let i=0;i<=4;i++){const y=padT+plotH*i/4;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(w-padR,y);ctx.stroke();}
+  const xAt=p=>padL+(p-pMin)/Math.max(1,pMax-pMin)*plotW,yAt=q=>padT+plotH-(q/qMax)*plotH;ctx.lineWidth=2.6;
+  ctx.strokeStyle='#ec4899';ctx.beginPath();prices.forEach((p,i)=>{const x=xAt(p),y=yAt(qD(p));i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();
+  ctx.strokeStyle='#7c3aed';ctx.beginPath();prices.forEach((p,i)=>{const x=xAt(p),y=yAt(qS(p));i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();
+  const qe=(qD(eq)+qS(eq))/2,xe=xAt(eq),ye=yAt(qe);ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(109,40,217,.45)';ctx.beginPath();ctx.moveTo(xe,padT);ctx.lineTo(xe,padT+plotH);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#4c1d95';ctx.beginPath();ctx.arc(xe,ye,5,0,Math.PI*2);ctx.fill();ctx.font='bold 10px sans-serif';ctx.fillStyle='#4c1d95';ctx.textAlign='center';ctx.fillText(`균형 ${fmtWon(eq)}`,xe,Math.max(14,ye-9));
+  const xm=xAt(myActual);ctx.strokeStyle='#f43f5e';ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(xm,padT);ctx.lineTo(xm,padT+plotH);ctx.stroke();ctx.fillStyle='#be185d';ctx.textAlign='center';ctx.fillText(`자사 ${fmtWon(myActual)}`,clampNum(xm,padL+35,w-padR-35),padT+plotH+18);
+  ctx.textAlign='left';ctx.fillStyle='#564c66';ctx.font='10px sans-serif';ctx.fillText('가격 ↑',w-padR-45,12);ctx.fillText('수요/공급량 Q',padL, h-8);ctx.fillStyle='#ec4899';ctx.fillText('수요',padL+8,20);ctx.fillStyle='#7c3aed';ctx.fillText('공급',padL+45,20);
+  $('dsEquilibriumPriceLabel').textContent=`시장 균형가: ${fmtWon(eq)}`; $('dsMyPriceMarkerDesc').textContent=`자사 출고가 ${fmtWon(myActual)} · 권장가 ${fmtWon(my)}`;
 }
 
 // 2. 시장 및 제품 에널리스틱 피드백 & 경쟁사 프로필 렌더링
@@ -4259,28 +4013,12 @@ function renderPrescriptions() {
   }
 }
 
-function renderFinanceTables() {
-  const monthlyInterest = (state.debt * DB.config.debtAnnualRate + state.revolver * DB.config.revolverAnnualRate) / 12;
-  $("debt").textContent = fmtWon(state.debt + state.revolver);
-  $("netDebt").textContent = fmtWon(Math.max(0, (state.debt + state.revolver) - (state.cash + state.deposit)));
-  $("interest").textContent = fmtWon(monthlyInterest);
-  
-  const icr = monthlyInterest > 0 ? (state.lastEbitda / monthlyInterest).toFixed(1) : "무차입";
-  $("icrRatio").textContent = icr === "무차입" ? icr : `${icr}배`;
-  
-  $("financeTable").innerHTML = `
-    <tr><td>출하 매출액</td><td>${fmtWon(state.lastRevenue)}</td><td>${fmtWon(state.lastRevenue * 0.95)}</td><td class="pos">+5.0%</td></tr>
-    <tr><td>매출원가 (COGS)</td><td>${fmtWon(state.lastRevenue * 0.65)}</td><td>${fmtWon(state.lastRevenue * 0.64)}</td><td class="neg">+1.5%</td></tr>
-    <tr><td>물류 및 수출운임</td><td>${fmtWon(state.lastRevenue * DB.config.freightCostRatio)}</td><td>${fmtWon(state.lastRevenue * 0.042)}</td><td>-</td></tr>
-    <tr><td>판매관리비/마케팅</td><td>${fmtWon(state.marketingBudget)}</td><td>${fmtWon(state.marketingBudget)}</td><td>동일</td></tr>
-    <tr><td><b>영업이익 (EBITDA)</b></td><td><b>${fmtWon(state.lastEbitda)}</b></td><td><b>${fmtWon(state.lastEbitda * 0.92)}</b></td><td class="${state.lastEbitda >= 0 ? 'pos' : 'neg'}">${state.lastEbitda >= 0 ? '흑자' : '적자'}</td></tr>
-  `;
-  
-  $("covenantDesc").innerHTML = `
-    <div class="notice ${state.revolver > 1500000000 ? 'amber' : 'green'}">
-      금융기관 약정(Covenant): 리볼버 대출 한도 ${fmtWon(state.revolverLimit)} 중 ${fmtWon(state.revolver)} 사용 중입니다.
-    </div>
-  `;
+function renderFinanceTables(){
+  const monthlyInterest=(state.debt*DB.config.debtAnnualRate+state.revolver*DB.config.revolverAnnualRate)/12; $('debt').textContent=fmtWon(state.debt+state.revolver); $('netDebt').textContent=fmtWon(Math.max(0,(state.debt+state.revolver)-(state.cash+state.deposit))); $('interest').textContent=fmtWon(monthlyInterest); const icr=monthlyInterest>0?(state.lastEbitda/monthlyInterest).toFixed(1):'무차입';$('icrRatio').textContent=icr==='무차입'?icr:`${icr}배`;
+  const h=state.history||[],prev=h.length>1?h[h.length-2]:null,change=(a,b)=>b===undefined||b===0?'—':`${a-b>=0?'+':''}${((a-b)/Math.abs(b)*100).toFixed(1)}%`;
+  const c=state.lastCogs||0,f=state.lastFreightCost||0,o=state.lastOpex||0,rev=state.lastRevenue||0;
+  $('financeTable').innerHTML=`<tr><td>출하 매출액</td><td>${fmtWon(rev)}</td><td>${fmtWon(prev?.revenue||0)}</td><td class="${rev-(prev?.revenue||0)>=0?'pos':'neg'}">${change(rev,prev?.revenue)}</td></tr><tr><td>매출원가 (COGS)</td><td>${fmtWon(c)}</td><td>${fmtWon(prev?.cogs||0)}</td><td class="${c-(prev?.cogs||0)<=0?'pos':'neg'}">${change(c,prev?.cogs)}</td></tr><tr><td>물류 및 수출운임</td><td>${fmtWon(f)}</td><td>${fmtWon(prev?.freight||0)}</td><td>${change(f,prev?.freight)}</td></tr><tr><td>판매관리비/마케팅</td><td>${fmtWon(o)}</td><td>${fmtWon(prev?.opex||0)}</td><td>${change(o,prev?.opex)}</td></tr><tr><td>재고 보유·감가</td><td>${fmtWon(state.lastInventoryHoldingCost||0)}</td><td>${fmtWon(prev?.holding||0)}</td><td>${change(state.lastInventoryHoldingCost||0,prev?.holding)}</td></tr><tr><td><b>영업이익 (EBITDA)</b></td><td><b>${fmtWon(state.lastEbitda)}</b></td><td><b>${fmtWon(prev?.ebitda||0)}</b></td><td class="${state.lastEbitda>=0?'pos':'neg'}">${change(state.lastEbitda,prev?.ebitda)}</td></tr>`;
+  $('covenantDesc').innerHTML=`<div class="notice ${state.revolver>1500000000?'amber':'green'}">금융기관 약정(Covenant): 리볼버 대출 한도 ${fmtWon(state.revolverLimit)} 중 ${fmtWon(state.revolver)} 사용 중입니다.</div>`;
 }
 
 // 1. 착수 가능한 R&D 프로젝트 포트폴리오 (다단계 트리 해금 시스템)
@@ -4465,166 +4203,36 @@ function drawChart() {
 // ---------------------------------------------------------
 // 13. 월말 결산 엔진
 // ---------------------------------------------------------
-function closeMonth() {
-  const prod = state.customProduct;
-  const ind = DB.industries[state.industryId];
-  const pipe = getPipelineCapacities();
-  
-  let minDays = 999;
-  state.materials.forEach(m => {
-    const days = m.stock / Math.max(m.dailyConsumption, 1);
-    if (days < minDays) minDays = days;
-  });
-  
-  let runRate = 100;
-  if (minDays < 30) {
-    runRate = Math.max(25, Math.round((minDays / 30) * 100));
-  }
-  state.factoryRunRate = runRate;
-  
-  const actualProduction = Math.round(pipe.minCapa * (runRate / 100));
-  state.lastProductionQty = actualProduction;
-  
-  // 소싱 협력사 불량률 반영
-  const vendor = ind.vendors[state.selectedVendorIndex];
-  const curTerm = DB.contractTerms[state.sourcingContractType] || DB.contractTerms.standard;
-  const defectRate = Math.max(0.001, (vendor.defectRate + curTerm.defectMod) / 100);
-
-  state.materials.forEach((m, idx) => {
-    const ratio = prod.matRatios[idx] || 1;
-    const scrapQty = Math.round(actualProduction * ratio * defectRate);
-    m.stock = Math.max(0, m.stock - (actualProduction * ratio + scrapQty));
-  });
-  
-  if (state.inhouseFabBuilding) {
-    state.inhouseFabBuilding = false;
-    state.inhouseFabLevel = 1;
-    toast("국내 자가 부품공장이 완공되었습니다!");
-  }
-  if (state.inhouseFabLevel >= 1) {
-    state.materials[0].stock += Math.round((prod.estDemand || ind.baseMarketDemand) * DB.config.inhouseFabSupplyRatio);
-  }
-  
-  const arriving = [];
-  state.inTransit.forEach(t => {
-    t.etaMonths--;
-    if (t.etaMonths <= 0) arriving.push(t);
-  });
-  arriving.forEach(t => {
-    const mat = state.materials.find(m => m.id === t.matId);
-    if (mat) mat.stock += t.qty;
-  });
-  state.inTransit = state.inTransit.filter(t => t.etaMonths > 0);
-  
-  // 다단계 R&D 진척 및 해금 처리
-  state.projects.forEach(p => {
-    if (p.active && !p.applied) {
-      p.progress++;
-      if (p.progress >= p.duration) {
-        p.applied = true;
-        p.active = false;
-        const orig = ind.rdProjects.find(x => x.id === p.id);
-        if (orig && orig.effect) orig.effect(state);
-        toast(`R&D 완료: [${p.name}] 기술이 공장에 영구 적용되고 상위 기술이 해금되었습니다!`);
-      }
-    }
-  });
-  
-  state.finishedGoods += actualProduction;
-
-  // [다차원 동적 판매량 변동 엔진]
-  // 업종/세부카테고리 기본 수요와 가격·마케팅·브랜드·품질·계절·경기·납기·시장수급 변수를
-  // 동일한 중앙 계산기로 묶어 UI의 시장 분석값과 실제 월말 판매량이 일치하도록 한다.
-  const sales = getSalesDemandSnapshot(prod);
-  const demand = sales.potentialDemand;
-  state.lastPotentialDemand = demand;
-  state.salesFactors = sales.factors;
-
-  // 4. 실 판매량 및 결품 확정
-  const actualSold = Math.min(demand, state.finishedGoods);
-  const stockoutQty = Math.max(0, demand - actualSold);
-  state.finishedGoods -= actualSold;
-
-  const revenue = actualSold * prod.finalPrice;
-  state.lastRevenue = revenue;
-  state.lastSoldQty = actualSold;
-  state.lastStockoutQty = stockoutQty;
-  state.lastStockoutRate = demand > 0 ? (stockoutQty / demand) * 100 : 0;
-
-  let stockoutPenalty = 0;
-  if (stockoutQty > 0) {
-    stockoutPenalty = Math.round(stockoutQty * prod.finalPrice * DB.config.stockoutPenaltyRate);
-    state.marketShare = Math.max(10, state.marketShare - (stockoutQty / demand) * 3.5);
-  } else {
-    state.marketShare = Math.min(58, state.marketShare + 0.85);
-  }
-  
-  // 계약 조건에 따른 원가 조정
-  const effectiveDiscount = vendor.discount + curTerm.discountMod;
-  const cogs = Math.round(actualProduction * prod.calculatedUnitCost * (1 - effectiveDiscount * 0.6));
-  const freightCost = revenue * DB.config.freightCostRatio;
-  const opex = state.marketingBudget + (state.lineWorkers * DB.config.workerMonthlyWage);
-  const idleLoss = runRate < 100 ? (100 - runRate) * DB.config.idleLossPerRunRate : 0;
-  const interest = Math.round((state.debt * DB.config.debtAnnualRate + state.revolver * DB.config.revolverAnnualRate) / 12);
-  const depositInterestGain = Math.round(state.deposit * DB.config.depositMonthlyRate);
-  
-  const ebitda = revenue - cogs - freightCost - opex - idleLoss - stockoutPenalty;
-  state.lastEbitda = ebitda;
-  
-  const netIncome = ebitda - interest + depositInterestGain;
-  
-  state.cash += (netIncome * 0.75);
-  state.accountsReceivable += (netIncome * 0.25);
-  
-  const mode = DB.freightModes.find(m => m.id === state.freightMode) || DB.freightModes[0];
-  state.materials.forEach((m, idx) => {
-    const targetStock = m.dailyConsumption * state.targetSafetyStockDays;
-    if (m.stock < targetStock) {
-      const orderQty = Math.round(targetStock - m.stock);
-      state.inTransit.push({
-        id: `TR-${Math.floor(100 + Math.random() * 900)}`,
-        matId: m.id,
-        matName: m.name,
-        qty: orderQty,
-        val: orderQty * m.unitCost,
-        mode: mode.id,
-        etaMonths: mode.leadMonths === 0 ? 0 : mode.leadMonths
-      });
-    }
-  });
-  
-  state.history.push({
-    month: `${state.month}월`,
-    revenue: revenue,
-    ebitda: ebitda,
-    cash: state.cash,
-    demand: demand,
-    sold: actualSold,
-    production: actualProduction,
-    price: prod.finalPrice
-  });
-  
-  state.auditLogs.unshift({
-    period: `Y${state.year} M${state.month}`,
-    event: stockoutQty > 0 ? `결품 발생 (${fmtNum(stockoutQty)}대 미납)` : (runRate < 100 ? "라인 부분 셧다운" : `${prod.name} 완판 출하`),
-    rev: revenue,
-    ebitda: ebitda,
-    cash: state.cash,
-    inv: state.finishedGoods,
-    onTime: Math.round(100 - state.lastStockoutRate),
-    runRate: runRate
-  });
-  
-  openSettlementModal(actualProduction, actualSold, stockoutQty, revenue, ebitda, stockoutPenalty, depositInterestGain);
-  
-  state.month++;
-  if (state.month > 12) {
-    state.month = 1;
-    state.year++;
-  }
-  
-  save();
-  render();
+function closeMonth(){
+  const prod=state.customProduct,ind=DB.industries[state.industryId],pipe=getPipelineCapacities();
+  let minDays=pipe.minRawDays; const inventoryStress=clampNum(1-(minDays/Math.max(1,state.targetSafetyStockDays)),0,.82); const shock=hashNoise(`close:${getPeriodSerial()}`);
+  const otBoost=1+0.12*Math.tanh((state.overtimeRate||0)/28), fatigue=1-Math.pow(Math.min(1,(state.overtimeRate||0)/100),DB.config.salesModel.overtimeFatigueExponent)*DB.config.salesModel.overtimeSaturation;
+  const runRate=Math.round(clampNum(100 - inventoryStress*68 + shock*4 + (otBoost-1)*18,35,104)); state.factoryRunRate=runRate;
+  const actualProduction=Math.max(0,Math.round(pipe.minCapa*(runRate/100)*(1+shock*.028)*fatigue)); state.lastProductionQty=actualProduction;
+  const vendor=ind.vendors[state.selectedVendorIndex]||ind.vendors[0],curTerm=DB.contractTerms[state.sourcingContractType]||DB.contractTerms.standard,defectRate=Math.max(.001,(vendor.defectRate+curTerm.defectMod)/100);
+  state.materials.forEach((m,i)=>{const ratio=prod.matRatios[i]||1;const stochasticScrap=Math.max(0,1+hashNoise(`scrap:${getPeriodSerial()}:${m.id}`)*.22);const consume=actualProduction*ratio;const scrap=Math.round(consume*defectRate*stochasticScrap);m.stock=Math.max(0,m.stock-consume-scrap);});
+  if(state.inhouseFabBuilding){state.inhouseFabBuilding=false;state.inhouseFabLevel=1;toast('국내 자가 부품공장이 완공되었습니다!');}
+  if(state.inhouseFabLevel>=1){const supply=Math.round((prod.estDemand||ind.baseMarketDemand)*DB.config.inhouseFabSupplyRatio*(1+hashNoise(`fab:${getPeriodSerial()}`)*.06));state.materials[0].stock+=supply;}
+  const arriving=[];state.inTransit.forEach(t=>{t.etaMonths--;if(t.etaMonths<=0)arriving.push(t);});arriving.forEach(t=>{const mat=state.materials.find(m=>m.id===t.matId);if(mat)mat.stock+=t.qty;});state.inTransit=state.inTransit.filter(t=>t.etaMonths>0);
+  state.projects.forEach(p=>{if(p.active&&!p.applied){p.progress++;if(p.progress>=p.duration){p.applied=true;p.active=false;const orig=ind.rdProjects.find(x=>x.id===p.id);if(orig?.effect)orig.effect(state);toast(`R&D 완료: [${p.name}] 기술이 공장에 영구 적용되고 상위 기술이 해금되었습니다!`);}}});
+  state.finishedGoods+=actualProduction;
+  const sales=getSalesDemandSnapshot(prod);const demand=sales.potentialDemand;state.lastPotentialDemand=demand;state.salesFactors=sales.factors;
+  const actualSold=Math.min(demand,state.finishedGoods),stockoutQty=Math.max(0,demand-actualSold);state.finishedGoods-=actualSold;
+  const revenue=Math.round(actualSold*prod.finalPrice);state.lastRevenue=revenue;state.lastSoldQty=actualSold;state.lastStockoutQty=stockoutQty;state.lastStockoutRate=demand>0?stockoutQty/demand*100:0;
+  if(stockoutQty>0)state.marketShare=Math.max(10,state.marketShare-(stockoutQty/Math.max(1,demand))*3.5);else state.marketShare=Math.min(58,state.marketShare+.55+Math.max(0,shock)*.25);
+  const freight=getFreightSnapshot(actualSold,revenue);const effectiveDiscount=vendor.discount+curTerm.discountMod;
+  const cogs=Math.round(actualProduction*prod.calculatedUnitCost*(1-effectiveDiscount*.6)*(1+Math.abs(hashNoise(`cogs:${getPeriodSerial()}`))*.025));
+  const varOpexRatio=clampNum(DB.config.salesModel.variableOpexRatio+hashNoise(`vo:${getPeriodSerial()}`)*DB.config.salesModel.variableOpexShock,.018,.058);const variableOpex=Math.round(revenue*varOpexRatio);const fixedOpex=Math.round(state.marketingBudget+state.lineWorkers*DB.config.workerMonthlyWage);const invVal=state.finishedGoods*prod.calculatedUnitCost+state.materials.reduce((a,m)=>a+m.stock*m.unitCost,0);const holdingCost=Math.round(invVal/12*DB.config.inventoryHoldingRate*(1+hashNoise(`ih:${getPeriodSerial()}`)*DB.config.salesModel.inventoryVolatility));
+  const idleLoss=Math.round(Math.max(0,100-runRate)*DB.config.idleLossPerRunRate*(.72+Math.abs(shock)*.2));const interest=Math.round((state.debt*DB.config.debtAnnualRate+state.revolver*DB.config.revolverAnnualRate)/12);const depositInterestGain=Math.round(state.deposit*DB.config.depositMonthlyRate*(1+hashNoise(`di:${getPeriodSerial()}`)*.08));const stockoutPenalty=stockoutQty>0?Math.round(stockoutQty*prod.finalPrice*DB.config.stockoutPenaltyRate):0;
+  const ebitda=Math.round(revenue-cogs-freight.total-variableOpex-fixedOpex-holdingCost-idleLoss-stockoutPenalty);state.lastEbitda=ebitda;state.lastCogs=cogs;state.lastFreightCost=freight.total;state.lastOpex=variableOpex+fixedOpex;state.lastInventoryHoldingCost=holdingCost;state.lastFreightRatio=freight.ratio;
+  const collectionRate=clampNum(modelizedCollectionRate(),.52,.94),badDebtRate=clampNum(modelizedBadDebtRate(),.002,.022);const arCollected=Math.round(state.accountsReceivable*collectionRate);const badDebt=Math.round(state.accountsReceivable*badDebtRate+revenue*badDebtRate*.35);const currentCash=Math.round(revenue*collectionRate);
+  state.lastCollectedCash=arCollected+currentCash;state.lastBadDebt=badDebt;
+  const netIncome=ebitda-interest+depositInterestGain-badDebt;const netCashChange=currentCash+arCollected+depositInterestGain-cogs-freight.total-variableOpex-fixedOpex-holdingCost-idleLoss-stockoutPenalty-interest-badDebt;state.cash=Math.max(0,state.cash+netCashChange);state.accountsReceivable=Math.max(0,state.accountsReceivable+revenue-currentCash-badDebt-arCollected);
+  const mode=DB.freightModes.find(m=>m.id===state.freightMode)||DB.freightModes[0]; state.materials.forEach(m=>{const target=m.dailyConsumption*state.targetSafetyStockDays*(1+Math.max(0,hashNoise(`ss:${getPeriodSerial()}:${m.id}`))*.12);if(m.stock<target){const urgency=1+Math.tanh((target-m.stock)/Math.max(target,1));const orderQty=Math.round((target-m.stock)*urgency);state.inTransit.push({id:`TR-${Math.floor(100+Math.random()*900)}`,matId:m.id,matName:m.name,qty:orderQty,val:orderQty*m.unitCost,mode:mode.id,etaMonths:mode.leadMonths===0?0:mode.leadMonths});}});
+  state.history.push({month:`${state.month}월`,revenue,ebitda,cash:state.cash,demand,sold:actualSold,production:actualProduction,price:prod.finalPrice,cogs,freight:freight.total,opex:variableOpex+fixedOpex,holding:holdingCost,collectionRate,badDebt});
+  state.auditLogs.unshift({period:`Y${state.year} M${state.month}`,event:stockoutQty>0?`결품 발생 (${fmtNum(stockoutQty)}대 미납)`:runRate<78?'라인 부분 셧다운':`${prod.name} 완판 출하`,rev:revenue,ebitda,cash:state.cash,inv:state.finishedGoods,onTime:Math.round(100-state.lastStockoutRate),runRate});
+  state.lastFinanceSnapshot={collectionRate,badDebtRate,currentCash,arCollected,badDebt,cogs,freight,variableOpex,fixedOpex,holdingCost,netCashChange,netIncome};
+  openSettlementModal(actualProduction,actualSold,stockoutQty,revenue,ebitda,stockoutPenalty,depositInterestGain);state.month++;if(state.month>12){state.month=1;state.year++;}save();render();
 }
 
 function openSettlementModal(prod, sold, stockout, rev, ebitda, penalty, intGain) {
@@ -4706,6 +4314,12 @@ function load() {
   try {
     state = JSON.parse(data);
     const ind = DB.industries[state.industryId] || DB.industries.electronics;
+    if (!state.customProduct) state.customProduct = {};
+    if (!state.customProduct.sellingPrice) state.customProduct.sellingPrice = state.customProduct.finalPrice || 0;
+    if (!state.customProduct.priceMode) state.customProduct.priceMode = 'auto';
+    state.lastCogs = state.lastCogs || 0; state.lastFreightCost = state.lastFreightCost || 0; state.lastOpex = state.lastOpex || 0;
+    state.lastInventoryHoldingCost = state.lastInventoryHoldingCost || 0; state.lastCollectedCash = state.lastCollectedCash || 0; state.lastBadDebt = state.lastBadDebt || 0;
+    state.history = (state.history || []).map(h => ({...h,cogs:h.cogs||0,freight:h.freight||0,opex:h.opex||0,holding:h.holding||0}));
     if (!state.customProduct || !state.customProduct.category) {
       const cat = ind.categories[0];
       const catMeta = DB.categoryMeta[ind.id]?.[cat];
