@@ -198,7 +198,6 @@ button { cursor: pointer; }
 
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
-/* 탑바 */
 .topbar {
   height: 70px;
   background: rgba(255, 255, 255, 0.82);
@@ -227,7 +226,6 @@ button { cursor: pointer; }
   backdrop-filter: blur(6px);
 }
 
-/* 상시 가용현금 뱃지 */
 .topbar-cash-badge {
   display: flex;
   align-items: center;
@@ -622,7 +620,7 @@ button { cursor: pointer; }
 }
 
 /* =========================================================
-   튜토리얼 시스템 스타일 (집중 블러 & 줄글 가독성 팝오버)
+   튜토리얼 시스템 스타일 (집중 블러 & 단락 줄글 팝오버)
 ========================================================= */
 .tut-overlay {
   position: fixed; inset: 0; z-index: 1500; pointer-events: none; display: none;
@@ -669,7 +667,6 @@ button { cursor: pointer; }
 .tut-badge { font-size: 11.5px; font-weight: 900; color: var(--purple-vivid); background: rgba(243, 232, 255, 0.9); padding: 4px 10px; border-radius: 7px; }
 .tut-title { font-size: 16.5px; font-weight: 900; color: var(--ink); margin: 0 0 10px; letter-spacing: -0.3px; }
 
-/* 가독성 높은 줄글형 튜토리얼 바디 */
 .tut-body {
   font-size: 13.5px;
   line-height: 1.68;
@@ -725,6 +722,69 @@ button { cursor: pointer; }
 .toast.show { display: block; animation: toastUp 0.22s ease-out; }
 @keyframes toastUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
+/* 소싱 계약 상세 스타일 */
+.vendor-pros-cons {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 11.5px;
+}
+.vendor-pro-item {
+  background: rgba(209, 250, 229, 0.7);
+  color: #065f46;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.vendor-con-item {
+  background: rgba(254, 226, 226, 0.7);
+  color: #991b1b;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.contract-term-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+.contract-term-btn {
+  border: 1.5px solid var(--line);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+}
+.contract-term-btn:hover { border-color: var(--purple-mid); }
+.contract-term-btn.active {
+  border-color: var(--purple-vivid);
+  background: linear-gradient(135deg, rgba(243, 232, 255, 0.95), rgba(255, 255, 255, 0.9));
+  box-shadow: var(--shadow-sm);
+}
+.contract-term-btn strong { display: block; font-size: 13px; color: var(--ink); }
+.contract-term-btn span { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+
+/* 경쟁사 심층 분석 카드 스타일 */
+.comp-card {
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  margin-bottom: 10px;
+}
+.comp-card:last-child { margin-bottom: 0; }
+.comp-stat-badge {
+  font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 6px; display: inline-block;
+}
+
 @media(max-width:1120px) {
   .sidebar { width: 230px; }
   .kpis { grid-template-columns: repeat(3, 1fr); }
@@ -741,6 +801,7 @@ button { cursor: pointer; }
   .content { padding: 16px 14px 36px; }
   .kpis { grid-template-columns: repeat(2, 1fr); }
   #industrySelectorGrid { grid-template-columns: 1fr; }
+  .contract-term-selector { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -944,19 +1005,19 @@ button { cursor: pointer; }
   </div>
 </section>
 
-<!-- 3. 원자재 수급 계약 -->
+<!-- 3. 원자재 수급 계약 (세분화 & 계약조건 추가) -->
 <section class="section" id="sourcing">
   <div class="head">
     <div>
       <h2>1단계: 원자재 수급처 발굴 및 공급선 계약 (Sourcing)</h2>
-      <p>공급사 파트너십을 체결하여 핵심 원자재의 공급 안정성, 납품 단가 할인율, 품질을 결정합니다.</p>
+      <p>공급사 파트너십을 체결하여 핵심 원자재의 공급 안정성, 납품 단가 할인율, 품질, 여신 조건을 결정합니다.</p>
     </div>
     <span class="tag purple">수급 체계</span>
   </div>
 
-  <div class="card display-card" style="margin-bottom:16px">
+  <div class="card interactive-card" style="margin-bottom:16px">
     <div class="cardHead">
-      <h3>현재 체결된 주력 부품 공급 파트너</h3>
+      <h3>현재 체결된 주력 부품 공급 파트너 및 계약 조항</h3>
       <span class="tag green" id="sourcingActivePartnerBadge">계약 체결 중</span>
     </div>
     <div class="body" id="sourcingActivePartnerDetail"></div>
@@ -964,8 +1025,8 @@ button { cursor: pointer; }
 
   <div class="card display-card">
     <div class="cardHead">
-      <h3>수급 협상 가능한 협력업체 목록</h3>
-      <span class="affordance-badge affordance-interactive">파트너십 변경</span>
+      <h3>수급 협상 가능한 글로벌 협력업체 목록</h3>
+      <span class="affordance-badge affordance-interactive">협력사 포트폴리오</span>
     </div>
     <div class="body">
       <div class="grid two" id="sourcingVendorListGrid"></div>
@@ -1357,56 +1418,74 @@ button { cursor: pointer; }
   </div>
 </section>
 
-<!-- 8. 전략 R&D & 시장 점유율 -->
+<!-- 8. 전략 R&D & 시장 점유율 (확장 포트폴리오 & 애널리틱스) -->
 <section class="section" id="market">
   <div class="head">
     <div>
-      <h2>전략 연구개발(R&D) & 시장 경쟁</h2>
-      <p>공정 기술 R&D에 투자하여 품질과 조립 수율을 높이고, 시장 점유율을 1위로 끌어올리세요.</p>
+      <h2>전략 연구개발(R&D) & 시장 경쟁 애널리틱스</h2>
+      <p>다단계 기술 트리를 연구하여 공장 생산성을 극대화하고, 경쟁사 동향 분석을 통해 시장 지배력을 확장하세요.</p>
     </div>
-    <span class="tag purple">R&D 센터</span>
+    <span class="tag purple">R&D & 마켓 인텔리전스</span>
   </div>
 
+  <!-- 2. 시장 및 제품 에널리스틱 피드백 섹션 -->
+  <div class="grid two" style="margin-bottom:16px">
+    <div class="card display-card">
+      <div class="cardHead">
+        <h3>자사 주력 상품 시장 경쟁력 & 수요 분석</h3>
+        <span class="tag green" id="analyticsProductBadge">포지셔닝 분석</span>
+      </div>
+      <div class="body" id="analyticsProductBody"></div>
+    </div>
+
+    <div class="card display-card">
+      <div class="cardHead">
+        <h3>글로벌 시장 점유율 & 경쟁 구도 (Market Share)</h3>
+        <span class="tag pink" id="marketLeaderBadge">업계 순위</span>
+      </div>
+      <div class="body">
+        <div class="shareBarContainer" id="compShareBarLarge" style="height:32px"></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:10px;font-weight:800" id="compShareLabelsLarge"></div>
+        <div style="margin-top:14px" id="competitorProfilesContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. 착수 가능한 연구개발(R&D) 프로젝트 포트폴리오 (다단계 트리) -->
   <div class="card display-card" style="margin-bottom:16px">
     <div class="cardHead">
-      <h3>착수 가능한 연구개발(R&D) 프로젝트 포트폴리오</h3>
-      <span class="affordance-badge affordance-interactive">투자 착수 가능</span>
+      <div>
+        <h3 style="display:inline-flex;align-items:center;gap:8px">
+          착수 가능한 연구개발(R&D) 프로젝트 포트폴리오
+          <span class="tag purple" id="rdTreeStageTag">기술 트리 가동 중</span>
+        </h3>
+        <div class="small" style="margin-top:2px;color:var(--muted)">선행 기초 기술을 완료하면 상위 심화/혁신 프로젝트가 자동으로 해금됩니다.</div>
+      </div>
+      <span class="affordance-badge affordance-interactive">다단계 기술 개발</span>
     </div>
     <div class="body">
       <div class="grid three" id="rdProjectsGrid"></div>
     </div>
   </div>
 
-  <div class="grid two">
-    <div class="card display-card">
-      <div class="cardHead">
-        <h3>진행 중이거나 완료된 R&D 기술 목록</h3>
-        <span class="tag green" id="rdActiveCountTag">0건</span>
-      </div>
-      <div class="body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>기술명</th>
-              <th>투자액</th>
-              <th>진척도</th>
-              <th>효과</th>
-            </tr>
-          </thead>
-          <tbody id="rdProgressTable"></tbody>
-        </table>
-      </div>
+  <div class="card display-card">
+    <div class="cardHead">
+      <h3>진행 중이거나 완료된 R&D 기술 현황</h3>
+      <span class="tag green" id="rdActiveCountTag">0건 관리 중</span>
     </div>
-
-    <div class="card display-card">
-      <div class="cardHead">
-        <h3>글로벌 시장 점유율 비교 (Market Share)</h3>
-        <span class="tag pink" id="marketLeaderBadge">업계 순위</span>
-      </div>
-      <div class="body">
-        <div class="shareBarContainer" id="compShareBarLarge" style="height:32px"></div>
-        <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-top:10px;font-weight:800" id="compShareLabelsLarge"></div>
-      </div>
+    <div class="body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>기술 티어</th>
+            <th>기술명</th>
+            <th>투자액</th>
+            <th>진척도</th>
+            <th>영구 적용 효과</th>
+          </tr>
+        </thead>
+        <tbody id="rdProgressTable"></tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -1457,7 +1536,6 @@ button { cursor: pointer; }
     </div>
     <h3 class="tut-title" id="tutTitle">—</h3>
     
-    <!-- 가독성을 높인 단일 줄글 설명 영역 -->
     <div class="tut-body" id="tutBody">—</div>
 
     <div class="tut-footer">
@@ -1605,6 +1683,13 @@ const DB = {
     { region: "아시아 수출", share: "15%", route: "부산항 아시아 정기선 운송", lead: "5~7일", volRatio: 0.15 }
   ],
 
+  // 수급 계약 조건 메타데이터 DB
+  contractTerms: {
+    standard: { id: "standard", name: "일반 정기 공급 계약", desc: "기본 조건 납품. 위약금 없이 언제든 파트너 변경 가능", discountMod: 0.0, defectMod: 0.0, cashAdvancePct: 0.5 },
+    exclusive: { id: "exclusive", name: "1년 장기 독점 파트너십", desc: "단가 추가 5% 할인 & 품질 우선 배정. 계약 기간 중 타사 변경 시 위약금", discountMod: 0.05, defectMod: -0.5, cashAdvancePct: 0.3 },
+    flexible: { id: "flexible", name: "단기 유연 스팟 계약", desc: "긴급 CAPA 20% 유연 확대 가능하나 단가 프리미엄 2% 추가 부과", discountMod: -0.02, defectMod: 0.4, cashAdvancePct: 0.8 }
+  },
+
   industries: {
     electronics: {
       id: "electronics",
@@ -1626,20 +1711,41 @@ const DB = {
       baseLaborCost: 45000,
       baseMarketDemand: 1200,
       vendors: [
-        { name: "한국반도체 파운드리", discount: 0.0, quality: 99, supplyCapa: 2500, desc: "품질 최우수, 정가 납품" },
-        { name: "타이완테크 전장", discount: 0.08, quality: 95, supplyCapa: 2000, desc: "대량 공급에 특화된 8% 할인 파트너" },
-        { name: "심천일렉트릭", discount: 0.18, quality: 88, supplyCapa: 1600, desc: "단가 18% 저렴, 리드타임 관리 필요" },
-        { name: "삼원정밀 (국내)", discount: -0.05, quality: 98, supplyCapa: 1400, desc: "국내 당일 직송, 긴급 납기 보장" }
+        { 
+          name: "한국반도체 파운드리", origin: "국내 대형 팹", discount: 0.0, quality: 99, defectRate: 0.4, leadDays: 3, moq: 1000, paymentTerms: "30일 외상", supplyCapa: 2500,
+          pros: ["무결점 수준의 최고 신뢰도", "국내 직송 안정적인 입고"],
+          cons: ["할인 없는 표준 정가제", "최소발주수량(MOQ) 1,000개 필수"]
+        },
+        { 
+          name: "타이완테크 전장", origin: "대만 신주산단", discount: 0.08, quality: 95, defectRate: 1.2, leadDays: 14, moq: 800, paymentTerms: "45일 여신", supplyCapa: 2100,
+          pros: ["대량 발주 시 8% 안정 단가 할인", "넉넉한 45일 여신 결제 지원"],
+          cons: ["해상 운송 리드타임 14일 소요", "외환 환율 변동 위험 노출"]
+        },
+        { 
+          name: "심천일렉트릭", origin: "중국 광둥성", discount: 0.18, quality: 88, defectRate: 2.8, leadDays: 18, moq: 500, paymentTerms: "전액 현금", supplyCapa: 1700,
+          pros: ["18% 파격적인 원가 절감력", "적은 수량도 유연한 발주 가능"],
+          cons: ["상대적으로 높은 2.8% 부품 불량률", "발주 즉시 전액 현금결제 조건"]
+        },
+        { 
+          name: "삼원정밀 (국내)", origin: "경기도 화성", discount: -0.04, quality: 98, defectRate: 0.6, leadDays: 1, moq: 300, paymentTerms: "60일 여신", supplyCapa: 1400,
+          pros: ["당일/익일 긴급 직송 가능", "매우 유연한 소량 긴급 납기"],
+          cons: ["단가 4% 프리미엄 발생", "공급 용량이 1,400개로 소규모"]
+        }
       ],
       competitors: [
-        { name: "A전자", share: 34 },
-        { name: "넥스트모바일", share: 22 },
-        { name: "옴니테크", share: 16 }
+        { name: "A전자", share: 34, strategy: "글로벌 프리미엄 독점", priceBand: "고가형", threat: "강력한 브랜드 충성도와 대규모 마케팅 공세" },
+        { name: "넥스트모바일", share: 22, strategy: "가성비 볼륨 대량공급", priceBand: "중저가형", threat: "공격적인 단가 인하 및 원가 공세" },
+        { name: "옴니테크", share: 16, strategy: "틈새 하이엔드 특화", priceBand: "초고가형", threat: "신기술 선제 탑재 및 디자인 차별화" }
       ],
+      // 1. 착수 가능한 연구개발(R&D) 다단계 프로젝트 포트폴리오
       rdProjects: [
-        { id: "rd_1", name: "전력 효율 개선", cost: 1200000000, duration: 3, effectDesc: "제품 경쟁력 상승, 시장 수요 증가", effect: (s) => { s.brandValue += 14; } },
-        { id: "rd_2", name: "외장재 경량화 공정", cost: 800000000, duration: 2, effectDesc: "원자재 매입원가 8% 절감", effect: (s) => { s.materials.forEach(m => m.unitCost *= 0.92); } },
-        { id: "rd_3", name: "공정 자동화 설비 도입", cost: 1500000000, duration: 4, effectDesc: "공장 메인 조립 처리능력 25% 확장", effect: (s) => { s.factoryStageLevels[2] += 2; } }
+        { id: "rd_e1", tier: 1, prereq: null, name: "고성능 방열 설계 기술", cost: 800000000, duration: 2, effectDesc: "기기 발열 30% 억제, 브랜드 신뢰도 +12 상승", effect: (s) => { s.brandValue += 12; } },
+        { id: "rd_e2", tier: 1, prereq: null, name: "공정 라인 자동 피딩 도입", cost: 950000000, duration: 2, effectDesc: "자재 피딩 CAPA +25% 확장 및 불량 1% 감소", effect: (s) => { s.factoryStageLevels[0] += 1; } },
+        { id: "rd_e3", tier: 2, prereq: "rd_e1", name: "초저전력 AP 구동 아키텍처", cost: 1500000000, duration: 3, effectDesc: "배터리 효율 극대화, 시장 월간 수요 18% 증가", effect: (s) => { s.customProduct.estDemand = Math.round(s.customProduct.estDemand * 1.18); } },
+        { id: "rd_e4", tier: 2, prereq: "rd_e2", name: "모듈 정밀 가공 로봇 자동화", cost: 1600000000, duration: 3, effectDesc: "1차 가공 CAPA +30% 증설 및 원자재비 6% 절감", effect: (s) => { s.factoryStageLevels[1] += 2; s.materials.forEach(m => m.unitCost *= 0.94); } },
+        { id: "rd_e5", tier: 2, prereq: "rd_e2", name: "스마트 AI 광학 검사(AOI) 시스템", cost: 1200000000, duration: 2, effectDesc: "검사/포장 속도 +35% 향상 및 불량 손실 원천 방어", effect: (s) => { s.factoryStageLevels[3] += 2; } },
+        { id: "rd_e6", tier: 3, prereq: "rd_e3", name: "차세대 플래그십 뉴럴 프로세싱", cost: 2600000000, duration: 4, effectDesc: "출고가 15% 프리미엄 수용력 확보, 점유율 상한 +8%p", effect: (s) => { s.brandValue += 18; s.marketShare += 5; } },
+        { id: "rd_e7", tier: 3, prereq: "rd_e4", name: "지능형 무인 풀오토메이션 컨베이어", cost: 2400000000, duration: 4, effectDesc: "메인 조립 공정 CAPA 40% 대폭 확장, 작업자 의존도 대폭 완화", effect: (s) => { s.factoryStageLevels[2] += 3; } }
       ]
     },
     auto: {
@@ -1662,20 +1768,22 @@ const DB = {
       baseLaborCost: 2200000,
       baseMarketDemand: 1000,
       vendors: [
-        { name: "보쉬시스템즈", discount: 0.0, quality: 99, supplyCapa: 2200, desc: "글로벌 표준 부품사. 최고 품질 보장" },
-        { name: "한일모빌리티", discount: 0.07, quality: 96, supplyCapa: 1800, desc: "국내 모빌리티 파트너. 안정적 공급력" },
-        { name: "대륙부품연합", discount: 0.16, quality: 89, supplyCapa: 1500, desc: "단가 16% 인하, 해상 수송 시차 관리" },
-        { name: "삼우샤시 (국내)", discount: -0.04, quality: 97, supplyCapa: 1300, desc: "국내 신속 직송. 긴급 납품 최적화" }
+        { name: "보쉬시스템즈", origin: "독일 슈투트가르트", discount: 0.0, quality: 99, defectRate: 0.3, leadDays: 30, moq: 500, paymentTerms: "30일 외상", supplyCapa: 2200, pros: ["글로벌 표준 최고 수준의 안전성", "공차 정밀도 최우수"], cons: ["정가 납품 고수", "해상 수송 기간 장기 소요"] },
+        { name: "한일모빌리티", origin: "울산 자동차 밸리", discount: 0.07, quality: 96, defectRate: 1.1, leadDays: 5, moq: 400, paymentTerms: "45일 여신", supplyCapa: 1800, pros: ["국내 공급망 정시 납품 보장", "7% 안정적 볼륨 단가 인하"], cons: ["특정 차종 규격 호환성 점검 필요", "초기 검수 비용 발생"] },
+        { name: "대륙부품연합", origin: "중국 상하이", discount: 0.16, quality: 89, defectRate: 3.2, leadDays: 20, moq: 300, paymentTerms: "전액 현금", supplyCapa: 1500, pros: ["원가 대폭 절감 16% 할인", "소량 추가 발주 유연 대응"], cons: ["부품 내구성 검증 필요", "선수금 현금 결제 요구"] },
+        { name: "삼우샤시 (국내)", origin: "충남 아산", discount: -0.04, quality: 97, defectRate: 0.5, leadDays: 2, moq: 200, paymentTerms: "60일 여신", supplyCapa: 1300, pros: ["긴급 라인 가동용 2일 내 직송", "최장 60일 외상 여신"], cons: ["단가 4% 프리미엄", "대량 수요 충족엔 CAPA 제한"] }
       ],
       competitors: [
-        { name: "테라모터스", share: 36 },
-        { name: "하이퍼모빌리티", share: 20 },
-        { name: "볼트오토", share: 16 }
+        { name: "테라모터스", share: 36, strategy: "전동화 플랫폼 주도", priceBand: "프리미엄", threat: "자율주행 및 통합 OS 생태계 장악" },
+        { name: "하이퍼모빌리티", share: 20, strategy: "패밀리 세단 가성비", priceBand: "대중형", threat: "광범위한 딜러망 및 프로모션 공세" },
+        { name: "볼트오토", share: 16, strategy: "도심형 소형 EV", priceBand: "실속형", threat: "초저가 생산 체계 및 빠른 라인 전환" }
       ],
       rdProjects: [
-        { id: "rd_1", name: "모터 효율 최적화", cost: 2000000000, duration: 4, effectDesc: "출하 단가 8% 인상 수용력 확보", effect: (s) => { s.brandValue += 16; } },
-        { id: "rd_2", name: "프레임 성형 공정 개선", cost: 2500000000, duration: 5, effectDesc: "차체 조립원가 12% 절감", effect: (s) => { s.materials[2].unitCost *= 0.88; } },
-        { id: "rd_3", name: "주행 제어 소프트웨어 개선", cost: 1800000000, duration: 3, effectDesc: "시장 점유율 상한 6%p 확장", effect: (s) => { s.marketShare += 6; } }
+        { id: "rd_a1", tier: 1, prereq: null, name: "모터 구동 효율 최적화", cost: 1800000000, duration: 3, effectDesc: "출하 단가 8% 인상 수용력 확보, 브랜드 +14", effect: (s) => { s.brandValue += 14; } },
+        { id: "rd_a2", tier: 1, prereq: null, name: "차체 프레임 성형 공정 개선", cost: 1600000000, duration: 3, effectDesc: "차체 조립원가 12% 절감 및 가공 속도 향상", effect: (s) => { s.materials[2].unitCost *= 0.88; } },
+        { id: "rd_a3", tier: 2, prereq: "rd_a1", name: "차량 통합 제어 OS 소프트웨어", cost: 2200000000, duration: 4, effectDesc: "시장 점유율 상한 6%p 확장 및 수요 20% 증가", effect: (s) => { s.marketShare += 6; s.customProduct.estDemand = Math.round(s.customProduct.estDemand * 1.2); } },
+        { id: "rd_a4", tier: 2, prereq: "rd_a2", name: "초고장력 강판 레이저 용접 로봇", cost: 2000000000, duration: 3, effectDesc: "메인 조립 라인 CAPA 35% 증설", effect: (s) => { s.factoryStageLevels[2] += 2; } },
+        { id: "rd_a5", tier: 3, prereq: "rd_a3", name: "차세대 자율주행 센서 퓨전 플랫폼", cost: 3200000000, duration: 5, effectDesc: "플래그십 모델 가격 20% 인상 가능, 브랜드 +25", effect: (s) => { s.brandValue += 25; } }
       ]
     },
     food: {
@@ -1698,20 +1806,22 @@ const DB = {
       baseLaborCost: 1400,
       baseMarketDemand: 15000,
       vendors: [
-        { name: "한양농산물유통", discount: 0.0, quality: 99, supplyCapa: 35000, desc: "HACCP 최고 등급 식자재 공급" },
-        { name: "제일식자재", discount: 0.08, quality: 96, supplyCapa: 28000, desc: "대량 식자재 조달 전문. 8% 할인" },
-        { name: "삼양유통", discount: 0.17, quality: 88, supplyCapa: 22000, desc: "대량 수입 식자재. 선도 관리 주의" },
-        { name: "동아패키징 (국내)", discount: -0.03, quality: 98, supplyCapa: 20000, desc: "국내 직송. 보랭 성능 및 포장성 우수" }
+        { name: "한양농산물유통", origin: "국내 산지 직거래", discount: 0.0, quality: 99, defectRate: 0.5, leadDays: 1, moq: 5000, paymentTerms: "30일 외상", supplyCapa: 35000, pros: ["HACCP 최고 등급 식자재", "신선도 극상 직송망"], cons: ["표준 정가제", "최소발주량 5,000개"] },
+        { name: "제일식자재", origin: "수도권 대형 물류센터", discount: 0.08, quality: 96, defectRate: 1.5, leadDays: 3, moq: 4000, paymentTerms: "45일 여신", supplyCapa: 28000, pros: ["대량 식자재 조달 전문 8% 할인", "안정된 재고 공급력"], cons: ["성수기 품목별 가격 변동", "창고 적재 조건 엄수 필요"] },
+        { name: "삼양유통", origin: "글로벌 수입 원자재", discount: 0.17, quality: 88, defectRate: 3.5, leadDays: 15, moq: 2000, paymentTerms: "전액 현금", supplyCapa: 22000, pros: ["17% 파격 원가 인하", "대형 박스 단위 유연 조달"], cons: ["통관 시기 선도 저하 리스크", "외상 결제 불가"] },
+        { name: "동아패키징 (국내)", origin: "충북 진천", discount: -0.03, quality: 98, defectRate: 0.7, leadDays: 1, moq: 1500, paymentTerms: "60일 여신", supplyCapa: 20000, pros: ["보랭·밀폐 성능 극상", "국내 당일 신속 포장재 공급"], cons: ["단가 3% 인상", "생산 규모 한계"] }
       ],
       competitors: [
-        { name: "미식식품", share: 33 },
-        { name: "프레시푸드", share: 22 },
-        { name: "네이처밀", share: 17 }
+        { name: "미식식품", share: 33, strategy: "프리미엄 HMR", priceBand: "고가형", threat: "스타 셰프 콜라보 및 백화점 유통망 독점" },
+        { name: "프레시푸드", share: 22, strategy: "새벽배송 초신선 라인", priceBand: "표준형", threat: "풀필먼트 속도 및 공격적 할인" },
+        { name: "네이처밀", share: 17, strategy: "비건·건강식 틈새시장", priceBand: "특화형", threat: "충성도 높은 헬스케어 소비자층 장악" }
       ],
       rdProjects: [
-        { id: "rd_1", name: "보존 기간 연장 기술", cost: 700000000, duration: 2, effectDesc: "유통기한 연장, 폐기 손실 방어", effect: (s) => { s.brandValue += 12; } },
-        { id: "rd_2", name: "원료 배합 자동화", cost: 900000000, duration: 3, effectDesc: "원재료 매입원가 10% 절감", effect: (s) => { s.materials[0].unitCost *= 0.90; } },
-        { id: "rd_3", name: "친환경 포장재 적용", cost: 600000000, duration: 2, effectDesc: "브랜드 신뢰도 상승, 수요 12% 증가", effect: (s) => { s.brandValue += 10; } }
+        { id: "rd_f1", tier: 1, prereq: null, name: "식품 보존 기간 연장 기술", cost: 700000000, duration: 2, effectDesc: "유통기한 30일 연장, 폐기 손실 80% 방어", effect: (s) => { s.brandValue += 12; } },
+        { id: "rd_f2", tier: 1, prereq: null, name: "배합 및 계량 자동화 라인", cost: 850000000, duration: 2, effectDesc: "원재료 매입원가 10% 절감 및 가공 속도 향상", effect: (s) => { s.materials[0].unitCost *= 0.90; s.factoryStageLevels[1] += 1; } },
+        { id: "rd_f3", tier: 2, prereq: "rd_f1", name: "친환경 생분해 밀폐 패키징", cost: 1100000000, duration: 3, effectDesc: "ESG 브랜드 신뢰도 상승, 수요 15% 증가", effect: (s) => { s.brandValue += 15; s.customProduct.estDemand = Math.round(s.customProduct.estDemand * 1.15); } },
+        { id: "rd_f4", tier: 2, prereq: "rd_f2", name: "고온 초고압 살균 연속 레토르트", cost: 1300000000, duration: 3, effectDesc: "검사 및 포장 CAPA 35% 증설", effect: (s) => { s.factoryStageLevels[3] += 2; } },
+        { id: "rd_f5", tier: 3, prereq: "rd_f3", name: "기능성 바이오 영양 배합 특허", cost: 2100000000, duration: 4, effectDesc: "제품 마진율 허용폭 25% 확장, 시장 점유율 +7%p", effect: (s) => { s.marketShare += 7; } }
       ]
     },
     fashion: {
@@ -1734,20 +1844,22 @@ const DB = {
       baseLaborCost: 18000,
       baseMarketDemand: 2500,
       vendors: [
-        { name: "한국섬유공업", discount: 0.0, quality: 99, supplyCapa: 6000, desc: "기능성 원단 공급. 신뢰도 최상" },
-        { name: "영진텍스타일", discount: 0.08, quality: 95, supplyCapa: 5000, desc: "대량 봉제 및 부자재 전문 파트너" },
-        { name: "동남패브릭", discount: 0.18, quality: 87, supplyCapa: 4000, desc: "단가 대폭 절감. 통관 일정 관리 필요" },
-        { name: "세종부자재 (국내)", discount: -0.04, quality: 98, supplyCapa: 3500, desc: "국내 당일 발주 생산 직송망" }
+        { name: "한국섬유공업", origin: "대구 섬유복합단지", discount: 0.0, quality: 99, defectRate: 0.4, leadDays: 2, moq: 1000, paymentTerms: "30일 외상", supplyCapa: 6000, pros: ["최상급 기능성 원단 규격 보장", "불량률 극소"], cons: ["단가 할인 전무", "최소발주량 1,000야드"] },
+        { name: "영진텍스타일", origin: "서울 동대문 직송", discount: 0.08, quality: 95, defectRate: 1.4, leadDays: 4, moq: 800, paymentTerms: "45일 여신", supplyCapa: 5000, pros: ["대량 봉제 부자재 8% 인하", "넉넉한 45일 여신"], cons: ["염색 로트별 미세 색차 발생", "재고 변동성"] },
+        { name: "동남패브릭", origin: "베트남 호치민", discount: 0.18, quality: 87, defectRate: 3.3, leadDays: 21, moq: 500, paymentTerms: "전액 현금", supplyCapa: 4000, pros: ["18% 대폭 원가 절감", "소량 특수 직조 발주 지원"], cons: ["해외 운송 리드타임 3주", "현금 선입금 조건"] },
+        { name: "세종부자재 (국내)", origin: "경기도 성남", discount: -0.04, quality: 98, defectRate: 0.5, leadDays: 1, moq: 300, paymentTerms: "60일 여신", supplyCapa: 3500, pros: ["당일 퀵 직송 체계", "최장 60일 외상 지원"], cons: ["단가 4% 비쌈", "월간 공급량 한계"] }
       ],
       competitors: [
-        { name: "볼텍스어패럴", share: 35 },
-        { name: "에이펙스패션", share: 21 },
-        { name: "메트로웨어", share: 16 }
+        { name: "볼텍스어패럴", share: 35, strategy: "글로벌 SPA 패스트패션", priceBand: "실속형", threat: "초고속 신제품 출시 및 글로벌 유통망" },
+        { name: "에이펙스패션", share: 21, strategy: "아웃도어 고기능성", priceBand: "고가형", threat: "기술 소재 특허 및 프리미엄 브랜드 파워" },
+        { name: "메트로웨어", share: 16, strategy: "어반 스트리트 캐주얼", priceBand: "트렌드형", threat: "SNS 인플루언서 마케팅 장악" }
       ],
       rdProjects: [
-        { id: "rd_1", name: "원단 발수 코팅 기술", cost: 850000000, duration: 3, effectDesc: "제품 반품률 감소, 브랜드 신뢰도 상승", effect: (s) => { s.brandValue += 13; } },
-        { id: "rd_2", name: "자동 재단 시스템 구축", cost: 650000000, duration: 2, effectDesc: "원단 매입가 8% 절감", effect: (s) => { s.materials[0].unitCost *= 0.92; } },
-        { id: "rd_3", name: "무봉제 공정 설비 개선", cost: 1100000000, duration: 3, effectDesc: "공정 단축, 조립수율 5% 증가", effect: (s) => { s.factoryStageLevels[2] += 2; } }
+        { id: "rd_c1", tier: 1, prereq: null, name: "초발수 통기성 코팅 공법", cost: 850000000, duration: 3, effectDesc: "원단 반품률 제로화, 브랜드 가치 +13", effect: (s) => { s.brandValue += 13; } },
+        { id: "rd_c2", tier: 1, prereq: null, name: "3D 자동 레이저 재단 시스템", cost: 750000000, duration: 2, effectDesc: "원단 재단 손실 8% 절감 및 피딩 속도 향상", effect: (s) => { s.materials[0].unitCost *= 0.92; s.factoryStageLevels[0] += 1; } },
+        { id: "rd_c3", tier: 2, prereq: "rd_c1", name: "스마트 발열 기능성 원사 직조", cost: 1400000000, duration: 3, effectDesc: "추동 시즌 수요 22% 대폭 증가", effect: (s) => { s.customProduct.estDemand = Math.round(s.customProduct.estDemand * 1.22); } },
+        { id: "rd_c4", tier: 2, prereq: "rd_c2", name: "무봉제 초음파 본딩 자동화 설비", cost: 1500000000, duration: 3, effectDesc: "조립 컨베이어 CAPA 35% 증설 및 인건비 절감", effect: (s) => { s.factoryStageLevels[2] += 2; } },
+        { id: "rd_c5", tier: 3, prereq: "rd_c3", name: "친환경 리사이클 하이엔드 텍스타일", cost: 2300000000, duration: 4, effectDesc: "글로벌 패션 어워드 획득, 점유율 +8%p", effect: (s) => { s.marketShare += 8; } }
       ]
     }
   },
@@ -1800,6 +1912,7 @@ let state = {
   
   freightMode: "ocean_standard",
   selectedVendorIndex: 0,
+  sourcingContractType: "standard", // standard | exclusive | flexible
   
   materials: [],
   inTransit: [],
@@ -1823,7 +1936,7 @@ let state = {
 };
 
 // ---------------------------------------------------------
-// 3. 튜토리얼 시스템 (간결한 줄글형 가이드 & 자동 탭 전환)
+// 3. 튜토리얼 시스템 (줄글 가독성 & 집중 블러)
 // ---------------------------------------------------------
 const tutorialSteps = [
   {
@@ -1848,7 +1961,7 @@ const tutorialSteps = [
     tabId: "sourcing",
     targetId: "sourcingVendorListGrid",
     title: "주력 협력업체 공급선 계약 (Sourcing)",
-    desc: "공장에 핵심 부품을 안정적으로 조달할 공급 파트너사를 선정하여 계약을 체결합니다. 목표 생산량을 충족하는 공급 용량을 갖추고 납품 단가 할인율과 품질 지수가 우수한 파트너를 선택하세요. 계약 체결 후에는 원자재가 창고에 제때 들어오고 있는지 인바운드 조달 창고에서 확인해야 합니다."
+    desc: "공장에 핵심 부품을 안정적으로 조달할 공급 파트너사를 선정하여 계약을 체결합니다. 각 협력사의 장단점, 불량률, 외상 결제 여신 조건 및 3대 계약 유형(일반, 장기독점, 유연스팟)을 종합 비교하여 최적의 파트너십을 체결하세요."
   },
   {
     tabId: "procurement",
@@ -1887,10 +2000,10 @@ const tutorialSteps = [
     desc: "예상 출하 매출에서 원자재비와 공장 운영비를 차감한 당월 순현금 증감을 실시간 추적합니다. 순현금이 마이너스라면 흑자도산 위험이 있으므로 정기예금 해지, 마이너스 리볼버 인출, 매출채권 팩토링을 선제적으로 실행하여 안전 유동성을 확보해 두어야 합니다."
   },
   {
-    tabId: "overview",
-    targetId: "closeMonth",
-    title: "최종 점검 및 월말 결산 단행",
-    desc: "한 달간 수립한 원자재 조달, 공장 생산, 수출 선적, 유동성 포트폴리오를 확정하고 실제 판매 실적과 영업이익을 집계하는 메인 실행 버튼입니다. 상단 가용현금과 공장 가동률을 최종 점검한 뒤 결산을 진행하여 월간 경영 성과 리포트를 확인하세요."
+    tabId: "market",
+    targetId: "rdProjectsGrid",
+    title: "전략 R&D 다단계 기술 트리 & 시장 분석",
+    desc: "기초 기술을 연구 완료하면 상위 심화/혁신 기술이 연쇄적으로 해금되어 공장 수율과 제품 경쟁력을 영구 업그레이드합니다. 우측 경쟁사 프로필과 시장 가격 밴드를 주기적으로 확인하여 시장 점유율 1위를 달성하세요."
   }
 ];
 
@@ -1923,7 +2036,7 @@ function renderTutorialStep() {
   
   setTimeout(() => {
     positionTutorialElements(step.targetId);
-  }, 60);
+  }, 70);
 }
 
 function positionTutorialElements(targetId) {
@@ -2047,6 +2160,8 @@ function initGame(industryId, companyName) {
   state.overtimeRate = 0;
   state.inhouseFabLevel = 0;
   state.inhouseFabBuilding = false;
+  state.sourcingContractType = "standard";
+  state.selectedVendorIndex = 0;
   
   const baseMonthlyProd = ind.baseMarketDemand;
   const dailyUse = baseMonthlyProd / 30;
@@ -2068,11 +2183,17 @@ function initGame(industryId, companyName) {
   
   state.competitors = ind.competitors.map(c => ({
     name: c.name,
-    share: c.share
+    share: c.share,
+    strategy: c.strategy,
+    priceBand: c.priceBand,
+    threat: c.threat
   }));
   
+  // 전체 R&D 프로젝트 복사 (다단계 트리 초기화)
   state.projects = ind.rdProjects.map(p => ({
     id: p.id,
+    tier: p.tier,
+    prereq: p.prereq,
     name: p.name,
     cost: p.cost,
     duration: p.duration,
@@ -2443,7 +2564,8 @@ function getPipelineCapacities() {
   const prod = state.customProduct;
   const demand = prod.estDemand || ind.baseMarketDemand;
   
-  const sourcingCapa = vendor.supplyCapa;
+  const term = DB.contractTerms[state.sourcingContractType] || DB.contractTerms.standard;
+  const sourcingCapa = state.sourcingContractType === "flexible" ? Math.round(vendor.supplyCapa * 1.2) : vendor.supplyCapa;
   
   let minRawDays = 999;
   state.materials.forEach(m => {
@@ -2468,7 +2590,7 @@ function getPipelineCapacities() {
   const outboundCapa = Math.round(demand * 1.35);
   
   const stages = [
-    { id: "sourcing", name: "1. 원자재 수급", capa: sourcingCapa, desc: `공급처: ${vendor.name.split(' ')[0]}` },
+    { id: "sourcing", name: "1. 원자재 수급", capa: sourcingCapa, desc: `공급처: ${vendor.name.split(' ')[0]} (${term.name.split(' ')[0]})` },
     { id: "procurement", name: "2. 조달 & 자재창고", capa: procurementCapa, desc: `잔여일수: ${Math.floor(minRawDays)}일분` },
     { id: "manufacturing", name: "3. 공장 제작", capa: manufacturingCapa, desc: `공정 최저속도 구간` },
     { id: "logistics", name: "4. 운송/수출 물류", capa: outboundCapa, desc: "해상/항공/국내 배송" }
@@ -2817,41 +2939,98 @@ function investInhouseFab() {
 }
 
 // ---------------------------------------------------------
-// 11. 수급처 계약 및 아웃바운드 운송/수출 뷰
+// 11. 수급처 계약 및 아웃바운드 운송/수출 뷰 (3. 수급 다각화)
 // ---------------------------------------------------------
 function renderSourcing() {
   const ind = DB.industries[state.industryId];
   const cur = ind.vendors[state.selectedVendorIndex];
+  const curTerm = DB.contractTerms[state.sourcingContractType] || DB.contractTerms.standard;
+  const effectiveDiscount = cur.discount + curTerm.discountMod;
+  const effectiveDefect = Math.max(0.1, cur.defectRate + curTerm.defectMod);
   
-  $("sourcingActivePartnerBadge").textContent = `현재 파트너: ${cur.name}`;
+  $("sourcingActivePartnerBadge").textContent = `현재 파트너: ${cur.name} (${curTerm.name.split(' ')[0]})`;
   $("sourcingActivePartnerDetail").innerHTML = `
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
-      <div class="metric"><span>업체명</span><strong>${cur.name}</strong></div>
-      <div class="metric"><span>납품 조건</span><strong style="color:var(--green)">${cur.discount > 0 ? `-${cur.discount*100}% 할인` : '표준 정가'}</strong></div>
-      <div class="metric"><span>월간 공급 용량(CAPA)</span><strong style="color:var(--purple-dark)">${fmtNum(cur.supplyCapa)}개 / 월</strong></div>
-      <div class="metric"><span>품질 신뢰도 지수</span><strong>${cur.quality}점</strong></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+      <div class="metric"><span>업체명 / 소재</span><strong>${cur.name}</strong><span class="small">${cur.origin}</span></div>
+      <div class="metric"><span>최종 납품 조건</span><strong style="color:${effectiveDiscount>0?'var(--green)':'var(--purple-dark)'}">${effectiveDiscount > 0 ? `-${(effectiveDiscount*100).toFixed(1)}% 할인` : effectiveDiscount < 0 ? `+${Math.abs(effectiveDiscount*100).toFixed(1)}% 할증` : '표준 정가'}</strong><span class="small">계약 옵션 반영</span></div>
+      <div class="metric"><span>부품 불량률</span><strong style="color:${effectiveDefect>2.0?'var(--red)':'var(--green)'}">${effectiveDefect.toFixed(1)}%</strong><span class="small">수율 손실 지표</span></div>
+      <div class="metric"><span>월간 공급 용량(CAPA)</span><strong style="color:var(--purple-dark)">${fmtNum(state.sourcingContractType === 'flexible' ? Math.round(cur.supplyCapa*1.2) : cur.supplyCapa)}개 / 월</strong><span class="small">리드타임 ${cur.leadDays}일</span></div>
+      <div class="metric"><span>결제 여신 조건</span><strong>${cur.paymentTerms}</strong><span class="small">MOQ: ${fmtNum(cur.moq)}개</span></div>
+    </div>
+
+    <div style="margin-top:14px">
+      <strong style="font-size:12.5px;color:var(--ink-soft);display:block;margin-bottom:6px">계약 체결 옵션 선택</strong>
+      <div class="contract-term-selector">
+        ${Object.values(DB.contractTerms).map(term => `
+          <div class="contract-term-btn ${state.sourcingContractType === term.id ? 'active' : ''}" onclick="selectContractTerm('${term.id}')">
+            <strong>${term.name}</strong>
+            <span>${term.desc}</span>
+            <div style="margin-top:5px;font-size:10.5px;font-weight:800;color:var(--purple-dark)">
+              효과: 단가 변동 ${term.discountMod >= 0 ? `+${(term.discountMod*100).toFixed(0)}%` : `${(term.discountMod*100).toFixed(0)}%`} / 불량 ${(term.defectMod >= 0 ? `+${term.defectMod}` : `${term.defectMod}`)}%p
+            </div>
+          </div>
+        `).join('')}
+      </div>
     </div>
   `;
   
-  $("sourcingVendorListGrid").innerHTML = ind.vendors.map((v, idx) => `
-    <div class="card interactive-card" style="padding:14px;border-color:${idx === state.selectedVendorIndex ? 'var(--purple-vivid)' : 'var(--line)'};background:${idx === state.selectedVendorIndex ? 'rgba(246, 240, 255, 0.95)' : 'rgba(255, 255, 255, 0.88)'}" onclick="selectVendor(${idx})">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <strong style="font-size:14.5px;color:var(--ink)">${v.name}</strong>
-        <span class="tag ${idx === state.selectedVendorIndex ? 'purple' : 'pink'}">${idx === state.selectedVendorIndex ? '계약 체결됨' : '계약 가능'}</span>
+  $("sourcingVendorListGrid").innerHTML = ind.vendors.map((v, idx) => {
+    const isSelected = idx === state.selectedVendorIndex;
+    return `
+      <div class="card interactive-card" style="padding:14px;border-color:${isSelected ? 'var(--purple-vivid)' : 'var(--line)'};background:${isSelected ? 'rgba(246, 240, 255, 0.95)' : 'rgba(255, 255, 255, 0.88)'}" onclick="selectVendor(${idx})">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong style="font-size:14.5px;color:var(--ink)">${v.name}</strong>
+            <span class="small" style="display:block;color:var(--muted)">소재지: ${v.origin} · MOQ: ${fmtNum(v.moq)}개</span>
+          </div>
+          <span class="tag ${isSelected ? 'purple' : 'pink'}">${isSelected ? '현재 주력 협력사' : '파트너십 변경'}</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0;text-align:center">
+          <div style="background:rgba(243,232,255,0.7);padding:6px;border-radius:8px">
+            <span class="small">단가 할인</span>
+            <strong style="display:block;font-size:13.5px;color:var(--purple-dark)">${v.discount > 0 ? `-${(v.discount*100).toFixed(0)}%` : v.discount < 0 ? `+${Math.abs(v.discount*100).toFixed(0)}%` : '정가'}</strong>
+          </div>
+          <div style="background:rgba(243,232,255,0.7);padding:6px;border-radius:8px">
+            <span class="small">부품 불량률</span>
+            <strong style="display:block;font-size:13.5px;color:${v.defectRate>2.0?'var(--red)':'var(--green)'}">${v.defectRate}%</strong>
+          </div>
+          <div style="background:rgba(243,232,255,0.7);padding:6px;border-radius:8px">
+            <span class="small">리드타임</span>
+            <strong style="display:block;font-size:13.5px">${v.leadDays}일</strong>
+          </div>
+        </div>
+
+        <div class="vendor-pros-cons">
+          <div>
+            <span style="font-size:10px;font-weight:900;color:var(--green);text-transform:uppercase;display:block;margin-bottom:3px">핵심 장점 (PROS)</span>
+            ${v.pros.map(p => `<div class="vendor-pro-item">+ ${p}</div>`).join('')}
+          </div>
+          <div>
+            <span style="font-size:10px;font-weight:900;color:var(--red);text-transform:uppercase;display:block;margin-bottom:3px">리스크 & 단점 (CONS)</span>
+            ${v.cons.map(c => `<div class="vendor-con-item">- ${c}</div>`).join('')}
+          </div>
+        </div>
+
+        <div style="border-top:1px dashed var(--line);padding-top:10px;margin-top:12px;display:flex;justify-content:space-between;align-items:center;font-size:12px">
+          <span>여신: <b>${v.paymentTerms}</b> / 공급력: <b>${fmtNum(v.supplyCapa)}개</b></span>
+          <button class="btn sm ${isSelected ? 'disabled' : 'primary'}">${isSelected ? '계약 가동 중' : '이 협력사로 전환'}</button>
+        </div>
       </div>
-      <p style="font-size:12px;color:var(--muted);margin:8px 0">${v.desc}</p>
-      <div style="border-top:1px dashed var(--line);padding-top:8px;display:flex;justify-content:space-between;align-items:center;font-size:12px">
-        <span>월 공급능력: <b>${fmtNum(v.supplyCapa)}개</b></span>
-        <button class="btn sm ${idx === state.selectedVendorIndex ? 'disabled' : 'primary'}">${idx === state.selectedVendorIndex ? '주력 공급처' : '파트너십 체결'}</button>
-      </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 }
 
 function selectVendor(idx) {
   state.selectedVendorIndex = idx;
   render();
   toast(`부품 주력 공급사가 [${DB.industries[state.industryId].vendors[idx].name}]로 변경되었습니다.`);
+}
+
+function selectContractTerm(termId) {
+  state.sourcingContractType = termId;
+  render();
+  toast(`계약 조건이 [${DB.contractTerms[termId].name}]으로 갱신되었습니다.`);
 }
 
 function renderOutboundLogistics() {
@@ -2895,7 +3074,7 @@ function renderOutboundLogistics() {
 }
 
 // ---------------------------------------------------------
-// 12. 전체 화면 통합 렌더링 & 경영 진단 전환
+// 12. 전체 화면 통합 렌더링 & 시장 애널리틱스 & R&D 트리
 // ---------------------------------------------------------
 function render() {
   const ind = DB.industries[state.industryId] || DB.industries.electronics;
@@ -2950,6 +3129,7 @@ function render() {
   renderFinanceTables();
   renderRdProjects();
   renderShareBars();
+  renderMarketAnalytics();
   renderPrescriptions();
   renderAuditLogs();
   drawChart();
@@ -2969,7 +3149,7 @@ function renderShareBars() {
   
   const barHtml = segments.map(s => `
     <div class="shareSegment" style="width:${s.share}%;background:${s.color}">
-      ${s.share > 8 ? `${s.name.split(' ')[0]}${s.share.toFixed(1)}%` : ''}
+      ${s.share > 8 ? `${s.name.split(' ')[0]} ${s.share.toFixed(1)}%` : ''}
     </div>
   `).join("");
   
@@ -2985,6 +3165,78 @@ function renderShareBars() {
   
   $("overviewShareLabels").innerHTML = labelsHtml;
   $("compShareLabelsLarge").innerHTML = labelsHtml;
+}
+
+// 2. 시장 및 제품 에널리스틱 피드백 & 경쟁사 프로필 렌더링
+function renderMarketAnalytics() {
+  const prod = state.customProduct;
+  const ind = DB.industries[state.industryId];
+  
+  const myShare = state.marketShare;
+  const sortedComps = [...state.competitors, { name: state.companyName, share: myShare }].sort((a,b) => b.share - a.share);
+  const myRank = sortedComps.findIndex(c => c.name === state.companyName) + 1;
+  $("marketLeaderBadge").textContent = `업계 ${myRank}위 (${myShare.toFixed(1)}%)`;
+  $("marketLeaderBadge").className = `tag ${myRank === 1 ? 'green' : myRank === 2 ? 'purple' : 'pink'}`;
+  
+  $("analyticsProductBadge").textContent = `${prod.name} [${prod.tier.toUpperCase()}]`;
+  
+  // 제품 시장 분석 피드백 바디
+  $("analyticsProductBody").innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px">
+      <div class="metric">
+        <span>브랜드 인지도 지수</span>
+        <strong style="color:var(--purple-vivid)">${state.brandValue}점</strong>
+        <span class="small">R&D로 영구 상승</span>
+      </div>
+      <div class="metric">
+        <span>목표 판매 마진율</span>
+        <strong style="color:var(--green)">${prod.targetMargin}%</strong>
+        <span class="small">대당 ${fmtWon(prod.finalPrice - prod.calculatedUnitCost)}</span>
+      </div>
+      <div class="metric">
+        <span>월간 시장 추정 수요</span>
+        <strong style="color:var(--ink)">${fmtNum(prod.estDemand)}대</strong>
+        <span class="small">라인업 계수 반영</span>
+      </div>
+      <div class="metric">
+        <span>최근 납기 충족률</span>
+        <strong style="color:${state.lastStockoutRate > 0 ? 'var(--red)' : 'var(--green)'}">${(100 - state.lastStockoutRate).toFixed(1)}%</strong>
+        <span class="small">${state.lastStockoutQty > 0 ? `${fmtNum(state.lastStockoutQty)}대 결품` : '결품 없음'}</span>
+      </div>
+    </div>
+
+    <div class="notice ${state.lastStockoutRate > 0 ? 'red' : 'purple'}" style="margin-bottom:8px">
+      <b>시장 피드백:</b> ${state.lastStockoutRate > 0 
+        ? `지난 달 ${fmtNum(state.lastStockoutQty)}대의 결품이 발생하여 시장 점유율이 일시 하락했습니다! 공장 출하 능력을 보강하세요.` 
+        : `현재 [${prod.name}]은(는) 전 세계 바이어에게 결품 없이 100% 정상 공급되고 있으며, 마진율 ${prod.targetMargin}%로 탄탄한 영업현금흐름을 창출하고 있습니다.`}
+    </div>
+
+    <div style="background:rgba(255,255,255,0.75);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)">
+      - 기획 사양: <b>${prod.category}</b> · <b>${ind.finishes.find(f=>f.id===prod.finishId)?.name || '표준 마감'}</b><br>
+      - 공정 소요 난이도: <b>${prod.laborReq}x</b> (정규 작업자 ${state.lineWorkers}명 가동 중)<br>
+      - BOM 원자재 투입비: <b>${prod.matRatios.join(' : ')}</b>
+    </div>
+  `;
+
+  // 경쟁사 정밀 프로필 렌더링
+  $("competitorProfilesContainer").innerHTML = `
+    <div style="font-size:12px;font-weight:900;color:var(--muted);text-transform:uppercase;margin-bottom:8px">경쟁사 동향 인텔리전스 (Competitor Intelligence)</div>
+    ${state.competitors.map(c => `
+      <div class="comp-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <div>
+            <strong style="font-size:13.5px;color:var(--ink)">${c.name}</strong>
+            <span class="tag purple" style="font-size:10px;padding:1px 6px;margin-left:4px">${c.strategy}</span>
+          </div>
+          <span class="comp-stat-badge" style="background:rgba(243,232,255,0.8);color:var(--purple-dark)">점유율 ${c.share.toFixed(1)}%</span>
+        </div>
+        <div class="small" style="color:var(--muted);line-height:1.4">
+          - 가격 포지션: <b>${c.priceBand}</b><br>
+          - 위협 요인: <span style="color:#991b1b">${c.threat}</span>
+        </div>
+      </div>
+    `).join('')}
+  `;
 }
 
 function renderPrescriptions() {
@@ -3060,42 +3312,76 @@ function renderFinanceTables() {
   `;
 }
 
+// 1. 착수 가능한 R&D 프로젝트 포트폴리오 (다단계 트리 해금 시스템)
 function renderRdProjects() {
   const grid = $("rdProjectsGrid");
   const table = $("rdProgressTable");
   
-  grid.innerHTML = state.projects.map(p => `
-    <div class="card interactive-card" style="padding:14px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <strong style="font-size:14px;color:var(--ink)">${p.name}</strong>
-        <span class="tag ${p.applied ? 'green' : p.active ? 'purple' : 'pink'}">
-          ${p.applied ? '적용 완료' : p.active ? '연구 중' : '투자 가능'}
-        </span>
+  // 잠금 여부 계산: prereq가 없거나, prereq 프로젝트가 이미 applied 상태이면 해금
+  const processedProjects = state.projects.map(p => {
+    const isPrereqMet = !p.prereq || state.projects.some(x => x.id === p.prereq && x.applied);
+    const prereqObj = p.prereq ? state.projects.find(x => x.id === p.prereq) : null;
+    return { ...p, isUnlocked: isPrereqMet, prereqName: prereqObj ? prereqObj.name : "" };
+  });
+
+  grid.innerHTML = processedProjects.map(p => {
+    let statusTag = "";
+    let btnText = "R&D 투자 착수";
+    let isBtnDisabled = false;
+
+    if (p.applied) {
+      statusTag = `<span class="tag green">연구 완료</span>`;
+      btnText = "영구 적용됨";
+      isBtnDisabled = true;
+    } else if (p.active) {
+      statusTag = `<span class="tag purple">연구 진행 중 (${p.progress}/${p.duration}M)</span>`;
+      btnText = `진행 중 (${p.progress}/${p.duration}개월)`;
+      isBtnDisabled = true;
+    } else if (!p.isUnlocked) {
+      statusTag = `<span class="tag amber">선행 연구 필요</span>`;
+      btnText = `🔒 [${p.prereqName}] 선행 필요`;
+      isBtnDisabled = true;
+    } else {
+      statusTag = `<span class="tag pink">즉시 착수 가능</span>`;
+      btnText = "R&D 투자 착수";
+      isBtnDisabled = false;
+    }
+
+    return `
+      <div class="card interactive-card" style="padding:14px;opacity:${!p.isUnlocked && !p.applied ? 0.72 : 1.0}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div>
+            <span class="small" style="font-weight:900;color:var(--purple-vivid)">TIER ${p.tier}</span>
+            <strong style="font-size:13.5px;color:var(--ink);display:block">${p.name}</strong>
+          </div>
+          ${statusTag}
+        </div>
+        <div class="small" style="color:var(--purple-dark);font-weight:700;margin-bottom:6px;line-height:1.4">${p.effectDesc}</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:10px">
+          투자비: <b>${fmtWon(p.cost)}</b> / 연구 기간: <b>${p.duration}개월</b>
+        </div>
+        <div style="margin-top:auto">
+          <button class="btn sm ${isBtnDisabled ? 'disabled' : 'primary'}" style="width:100%" onclick="startRdProject('${p.id}')" ${isBtnDisabled ? 'disabled' : ''}>
+            ${btnText}
+          </button>
+        </div>
       </div>
-      <div class="small" style="color:var(--purple-dark);font-weight:700;margin-bottom:6px">${p.effectDesc}</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">
-        투자비: <b>${fmtWon(p.cost)}</b> / 연구 기간: <b>${p.duration}개월</b>
-      </div>
-      <div style="margin-top:auto">
-        <button class="btn sm ${p.applied || p.active ? 'disabled' : 'primary'}" style="width:100%" onclick="startRdProject('${p.id}')" ${p.applied || p.active ? 'disabled' : ''}>
-          ${p.applied ? '영구 적용됨' : p.active ? `연구 진행 중 (${p.progress}/${p.duration}M)` : 'R&D 투자 착수'}
-        </button>
-      </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
   
   const activeOrDone = state.projects.filter(p => p.active || p.applied);
-  $("rdActiveCountTag").textContent = `${activeOrDone.length}건 관리 중`;
+  $("rdActiveCountTag").textContent = `${activeOrDone.length}건 완료/진행 중`;
   
   if (activeOrDone.length === 0) {
-    table.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted)">착수된 프로젝트가 없습니다.</td></tr>`;
+    table.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">현재 진행 중이거나 완료된 프로젝트가 없습니다.</td></tr>`;
   } else {
     table.innerHTML = activeOrDone.map(p => `
       <tr>
+        <td><span class="tag purple">Tier ${p.tier}</span></td>
         <td><b>${p.name}</b></td>
         <td>${fmtWon(p.cost)}</td>
-        <td>${p.applied ? '완료' : `${p.progress}/${p.duration}개월`}</td>
-        <td style="color:var(--green)">${p.effectDesc}</td>
+        <td>${p.applied ? '<span class="pos">완료 (영구)</span>' : `${p.progress}/${p.duration}개월`}</td>
+        <td style="color:var(--green);font-weight:700">${p.effectDesc}</td>
       </tr>
     `).join("");
   }
@@ -3104,6 +3390,10 @@ function renderRdProjects() {
 function startRdProject(id) {
   const p = state.projects.find(x => x.id === id);
   if (!p || p.active || p.applied) return;
+  if (p.prereq && !state.projects.some(x => x.id === p.prereq && x.applied)) {
+    toast("선행 기술 연구가 먼저 완료되어야 착수할 수 있습니다.");
+    return;
+  }
   if (state.cash < p.cost) {
     toast("가용 보통예금 잔고가 부족하여 R&D에 착수할 수 없습니다.");
     return;
@@ -3114,9 +3404,9 @@ function startRdProject(id) {
   render();
   openActionModal(
     "전략 R&D 투자 착수",
-    `<b>[${p.name}]</b> 원천 기술 개발 투자가 집행되었습니다.<br>
+    `<b>[${p.name}]</b> 기술 개발 투자가 성공적으로 집행되었습니다.<br>
      - 투자액: <b>${fmtWon(p.cost)}</b> (보통예금 차감)<br>
-     - 앞으로 ${p.duration}개월 동안 월말 결산 시 진척도가 축적되며 완료 시 영구 적용됩니다.`
+     - 소요 기간: <b>${p.duration}개월</b> 동안 월말 결산 시 진척도가 축적되며 완료 시 상위 기술이 해금됩니다.`
   );
 }
 
@@ -3224,9 +3514,15 @@ function closeMonth() {
   const actualProduction = Math.round(pipe.minCapa * (runRate / 100));
   state.lastProductionQty = actualProduction;
   
+  // 소싱 협력사 불량률 반영
+  const vendor = ind.vendors[state.selectedVendorIndex];
+  const curTerm = DB.contractTerms[state.sourcingContractType] || DB.contractTerms.standard;
+  const defectRate = Math.max(0.001, (vendor.defectRate + curTerm.defectMod) / 100);
+
   state.materials.forEach((m, idx) => {
     const ratio = prod.matRatios[idx] || 1;
-    m.stock = Math.max(0, m.stock - (actualProduction * ratio));
+    const scrapQty = Math.round(actualProduction * ratio * defectRate);
+    m.stock = Math.max(0, m.stock - (actualProduction * ratio + scrapQty));
   });
   
   if (state.inhouseFabBuilding) {
@@ -3249,6 +3545,7 @@ function closeMonth() {
   });
   state.inTransit = state.inTransit.filter(t => t.etaMonths > 0);
   
+  // 다단계 R&D 진척 및 해금 처리
   state.projects.forEach(p => {
     if (p.active && !p.applied) {
       p.progress++;
@@ -3257,7 +3554,7 @@ function closeMonth() {
         p.active = false;
         const orig = ind.rdProjects.find(x => x.id === p.id);
         if (orig && orig.effect) orig.effect(state);
-        toast(`R&D 완료: [${p.name}] 기술이 공장에 영구 적용되었습니다!`);
+        toast(`R&D 완료: [${p.name}] 기술이 공장에 영구 적용되고 상위 기술이 해금되었습니다!`);
       }
     }
   });
@@ -3285,7 +3582,9 @@ function closeMonth() {
     state.marketShare = Math.min(52, state.marketShare + 0.8);
   }
   
-  const cogs = actualProduction * prod.calculatedUnitCost;
+  // 계약 조건에 따른 원가 조정
+  const effectiveDiscount = vendor.discount + curTerm.discountMod;
+  const cogs = Math.round(actualProduction * prod.calculatedUnitCost * (1 - effectiveDiscount * 0.6));
   const freightCost = revenue * DB.config.freightCostRatio;
   const opex = state.marketingBudget + (state.lineWorkers * DB.config.workerMonthlyWage);
   const idleLoss = runRate < 100 ? (100 - runRate) * DB.config.idleLossPerRunRate : 0;
