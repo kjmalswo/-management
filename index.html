@@ -33,7 +33,6 @@
      - 또한 해당 지침 주석은 삭제하거나 간략화, 수정, 생략하지 말고 그대로 둔다. 하위의 코드만 수정한다.
   7. [버전 관리 규칙]:
      - 소규모 기능/버그/가시성 패치는 직전 버전에서 +0.1, 대규모 구조/시스템 업데이트는 +1.0으로 버전업한다.
-     - 이번 업데이트 버전은 V0.1부터 시작한다.
   8. [가시성 개선과 시스템 복잡도 분리 원칙]:
      - 모든 편의성 및 가시성, 가독성, 직관성 개선의 목적은 사용자가 정보를 시각적으로 더 직관적이고 효율적으로 파악하도록 만드는 데 있다.
      - 하지만 이는 로직, 알고리즘, 시스템 자체를 단순화하거나 의사결정 요소를 제거하라는 의미가 아니며, 기존 또는 추가된 복합 상호작용과 현실성을 유지한 상태에서 표현과 탐색만 개선한다.
@@ -268,7 +267,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border:0;border-radiu
    ========================================================================== */
 const DB = {
 
-  meta:{ title:"제조업 경영 시뮬레이터", version:"V1.1", tickUnit:"주", tickLabel:"주차" },
+  meta:{ title:"제조업 경영 시뮬레이터", version:"V1.2", tickUnit:"주", tickLabel:"주차" },
 
   /* 전역 운영 상수 ------------------------------------------------------- */
   config:{
@@ -1881,56 +1880,12 @@ function viewShip(cap){
 }
 
 /* ── 5. 상품 기획 스튜디오 ────────────────────────── */
-function viewStudio(){
-  const sc=sec(), d=S.draft;
-  const mixSum=sum(Object.keys(d.mix).map(k=>d.mix[k]));
-  const probe=draftProbe();
-  return `<div class="grid g2">
-    <div class="card neu">
-      <h3>상품 기획 스튜디오 <span class="hint">제품명부터 투입 비율·마진까지 직접 설계한다</span></h3>
-      <div class="sub">설계 값은 즉시 원가·품질·수요 추정에 반영된다. 양산 착수 시 품목으로 등록된다.</div>
-
-      <label class="fld"><span>제품명</span>
-        <input type="text" data-in="dname" value="${esc(d.name)}" placeholder="예: 리어 크로스멤버 1형" maxlength="28"></label>
-
-      <div class="split">
-        <label class="fld"><span>제품 분류</span>
-          <select data-in="dcat">${sc.categories.map(c=>`<option value="${c.id}" ${d.catId===c.id?"selected":""}>${esc(c.name)}</option>`).join("")}</select></label>
-        <label class="fld"><span>라인업</span>
-          <select data-in="dtier">${DB.tiers.map(t=>`<option value="${t.id}" ${d.tierId===t.id?"selected":""}>${esc(t.name)}</option>`).join("")}</select></label>
-      </div>
-
-      <label class="fld"><span>마감 공법</span>
-        <select data-in="dfin">${sc.finishes.map(fid=>{const f=FIN(fid);
-          return `<option value="${fid}" ${d.finishId===fid?"selected":""}>${esc(f.name)} · 원가 ${pct(f.costRatio,1)} · 품질 +${dec(f.qBonus,2)} · CAPA −${pct(f.capaPenalty,0)}</option>`;}).join("")}</select></label>
-
-      <div class="sec-title">원자재 투입 비율 <span class="mini">합계 ${mixSum}% ${mixSum===100?"":"(100% 필요)"}</span></div>
-      ${sc.materials.map(mid=>{
-        const m=M(mid);
-        return `<div class="slrow"><span class="nm">${esc(m.name)}</span>
-          <input type="range" min="0" max="100" step="${DB.formulas.mixStep}" value="${d.mix[mid]}" data-in="dmix" data-id="${mid}">
-          <span class="vl" id="mixv_${mid}">${d.mix[mid]}%</span></div>`;
-      }).join("")}
-      <div style="display:flex;gap:7px;margin:9px 0 14px">
-        <button class="btn sm" data-act="normmix">비율 100% 정규화</button>
-        <button class="btn sm" data-act="qualmix">품질 우선 배분</button>
-        <button class="btn sm" data-act="costmix">원가 우선 배분</button>
-      </div>
-
-      <div class="sec-title">목표 마진율 및 판매금액</div>
-      <div class="slrow"><span class="nm">목표 마진율</span>
-        <input type="range" min="${DB.formulas.marginMin*100}" max="${DB.formulas.marginMax*100}" step="1" value="${Math.round(d.margin*100)}" data-in="dmargin">
-        <span class="vl" id="marginv">${pct(d.margin,0)}</span></div>
-      <label class="fld"><span>판매금액 직접 지정 (비우면 마진율 기준 자동 산출)</span>
-        <input type="number" data-in="dprice" value="${d.priceOverride!=null?Math.round(d.priceOverride):""}" placeholder="${Math.round(probe.price)}"></label>
-
-      <button class="btn primary" data-act="launch" style="width:100%" ${(!d.name.trim()||mixSum!==100)?"disabled":""}>양산 착수</button>
-      ${mixSum!==100?`<div class="mini" style="margin-top:7px">원자재 투입 비율 합계를 100%로 맞춰야 착수할 수 있다.</div>`:""}
-      ${!d.name.trim()?`<div class="mini" style="margin-top:7px">제품명을 입력해야 착수할 수 있다.</div>`:""}
-    </div>
-
-    <div>
-      <div class="card neu">
+function studioHintsInner(d,mixSum){
+  return `${mixSum!==100?`<div class="mini" style="margin-top:7px">원자재 투입 비율 합계를 100%로 맞춰야 착수할 수 있다.</div>`:""}
+      ${!d.name.trim()?`<div class="mini" style="margin-top:7px">제품명을 입력해야 착수할 수 있다.</div>`:""}`;
+}
+function studioReviewInner(d,probe){
+  return `<div class="card neu">
         <h3>설계 검토 <span class="hint">실시간 원가·품질·수요 추정</span></h3>
         <div class="grid g2" style="margin-bottom:12px">
           <div class="kpi neu-flat"><i>단위 원가</i><b>${won(probe.cost.total)}</b><small>투입중량 ${dec(probe.cost.kg,2)}kg</small></div>
@@ -1962,8 +1917,56 @@ function viewStudio(){
           <td>${dec(t.priceFactor,2)}</td><td>${dec(t.materialFactor,2)}</td><td>${dec(t.demandFactor,2)}</td>
           <td>${dec(t.reqQuality,2)}</td><td>${dec(t.capaFactor,2)}</td></tr>`).join("")}
         </tbody></table>
+      </div>`;
+}
+function viewStudio(){
+  const sc=sec(), d=S.draft;
+  const mixSum=sum(Object.keys(d.mix).map(k=>d.mix[k]));
+  const probe=draftProbe();
+  return `<div class="grid g2">
+    <div class="card neu">
+      <h3>상품 기획 스튜디오 <span class="hint">제품명부터 투입 비율·마진까지 직접 설계한다</span></h3>
+      <div class="sub">설계 값은 즉시 원가·품질·수요 추정에 반영된다. 양산 착수 시 품목으로 등록된다.</div>
+
+      <label class="fld"><span>제품명</span>
+        <input type="text" data-in="dname" value="${esc(d.name)}" placeholder="예: 리어 크로스멤버 1형" maxlength="28"></label>
+
+      <div class="split">
+        <label class="fld"><span>제품 분류</span>
+          <select data-in="dcat">${sc.categories.map(c=>`<option value="${c.id}" ${d.catId===c.id?"selected":""}>${esc(c.name)}</option>`).join("")}</select></label>
+        <label class="fld"><span>라인업</span>
+          <select data-in="dtier">${DB.tiers.map(t=>`<option value="${t.id}" ${d.tierId===t.id?"selected":""}>${esc(t.name)}</option>`).join("")}</select></label>
       </div>
+
+      <label class="fld"><span>마감 공법</span>
+        <select data-in="dfin">${sc.finishes.map(fid=>{const f=FIN(fid);
+          return `<option value="${fid}" ${d.finishId===fid?"selected":""}>${esc(f.name)} · 원가 ${pct(f.costRatio,1)} · 품질 +${dec(f.qBonus,2)} · CAPA −${pct(f.capaPenalty,0)}</option>`;}).join("")}</select></label>
+
+      <div class="sec-title">원자재 투입 비율 <span class="mini" id="mixSumTxt">합계 ${mixSum}% ${mixSum===100?"":"(100% 필요)"}</span></div>
+      ${sc.materials.map(mid=>{
+        const m=M(mid);
+        return `<div class="slrow"><span class="nm">${esc(m.name)}</span>
+          <input type="range" min="0" max="100" step="${DB.formulas.mixStep}" value="${d.mix[mid]}" data-in="dmix" data-id="${mid}">
+          <span class="vl" id="mixv_${mid}">${d.mix[mid]}%</span></div>`;
+      }).join("")}
+      <div style="display:flex;gap:7px;margin:9px 0 14px">
+        <button class="btn sm" data-act="normmix">비율 100% 정규화</button>
+        <button class="btn sm" data-act="qualmix">품질 우선 배분</button>
+        <button class="btn sm" data-act="costmix">원가 우선 배분</button>
+      </div>
+
+      <div class="sec-title">목표 마진율 및 판매금액</div>
+      <div class="slrow"><span class="nm">목표 마진율</span>
+        <input type="range" min="${DB.formulas.marginMin*100}" max="${DB.formulas.marginMax*100}" step="1" value="${Math.round(d.margin*100)}" data-in="dmargin">
+        <span class="vl" id="marginv">${pct(d.margin,0)}</span></div>
+      <label class="fld"><span>판매금액 직접 지정 (비우면 마진율 기준 자동 산출)</span>
+        <input type="number" data-in="dprice" value="${d.priceOverride!=null?Math.round(d.priceOverride):""}" placeholder="${Math.round(probe.price)}"></label>
+
+      <button class="btn primary" data-act="launch" id="launchBtn" style="width:100%" ${(!d.name.trim()||mixSum!==100)?"disabled":""}>양산 착수</button>
+      <div id="studioHints">${studioHintsInner(d,mixSum)}</div>
     </div>
+
+    <div id="studioReview">${studioReviewInner(d,probe)}</div>
   </div>`;
 }
 
@@ -2398,13 +2401,25 @@ document.addEventListener("change",e=>{
      없이 초기화되므로 change 시점에는 굳이 다시 그리지 않는다. */
 });
 
-/* 스튜디오 부분 갱신 */
+/* 스튜디오 부분 갱신 — 제품명/원자재 비율/마진 입력 중에는 전체 뷰를 다시 그리지 않는다.
+   input 이벤트마다 전체 HTML을 교체하면 방금 입력 중이던 텍스트 필드나 드래그 중인
+   슬라이더가 매번 새 DOM 노드로 바뀌어 포커스·드래그가 끊긴다(제품명을 한 글자만
+   쳐도 엔터를 친 것처럼 입력이 끊기는 현상의 원인). 그래서 입력값 자체를 담고 있는
+   좌측 폼은 그대로 두고, 그 값에 파생되는 합계 표시·버튼 활성화·안내문·우측 "설계
+   검토" 패널만 targeted하게 갱신한다. */
 function refreshStudio(){
   if(S.tab!=="studio") return;
-  const view=$("#view"); if(!view) return;
-  const scrollY=window.scrollY;
-  view.innerHTML=viewStudio();
-  window.scrollTo(0,scrollY);
+  const d=S.draft;
+  const mixSum=sum(Object.keys(d.mix).map(k=>d.mix[k]));
+  const probe=draftProbe();
+  const mixSumEl=$("#mixSumTxt");
+  if(mixSumEl) mixSumEl.textContent=`합계 ${mixSum}% ${mixSum===100?"":"(100% 필요)"}`;
+  const launchBtn=$("#launchBtn");
+  if(launchBtn) launchBtn.disabled=!d.name.trim()||mixSum!==100;
+  const hints=$("#studioHints");
+  if(hints) hints.innerHTML=studioHintsInner(d,mixSum);
+  const review=$("#studioReview");
+  if(review) review.innerHTML=studioReviewInner(d,probe);
 }
 
 function normalizeMix(){
