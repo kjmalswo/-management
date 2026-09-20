@@ -1,6 +1,8 @@
-<html lang="ko"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>제조업 경영 시뮬레이터</title>
 
 <!--
@@ -256,99 +258,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border:0;border-radiu
 </style>
 </head>
 <body>
-<div id="app">
-  <div class="intro">
-    <div class="intro-h">
-      <h1>제조업 경영 시뮬레이터</h1>
-      <p>원자재 수급부터 인바운드 조달, 공장 제작, 운송·물류까지 4대 공정을 직접 설계하고 병목을 해소한다. 진출할 제조업 분야를 선택하라.</p>
-      <div class="tagrow" style="justify-content:center;margin-top:10px">
-        <span class="tag" style="color:#7d12b8;background:#f0dcff"><span class="pt"></span>V0.1</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>주 단위 경영</span><span class="tag" style="color:#c1006b;background:#ffdcef"><span class="pt"></span>TOC 병목 관리</span>
-      </div>
-    </div>
-    <div class="grid g3">
-      <div class="sector-card neu" data-act="pick" data-id="auto">
-          <h4>자동차 부품</h4>
-          <p>완성차사 납품 구조. 단가 압박이 크고 품질·납기 규율이 엄격하다.</p>
-          <div class="meta">
-            <div>기준 단가<b>60,000</b></div>
-            <div>주간 시장수요<b>8,000</b></div>
-            <div>단위 투입중량<b>12.00kg</b></div>
-            <div>주간 시장규모<b>4.80억</b></div>
-          </div>
-          <div class="tagrow">
-            <span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>차체 패널</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>서스펜션 부품</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>구동계 부품</span>
-            <span class="tag" style="color:#7d12b8;background:#f0dcff"><span class="pt"></span>필수공정 4</span>
-          </div>
-        </div><div class="sector-card neu" data-act="pick" data-id="appliance">
-          <h4>생활가전</h4>
-          <p>내수 유통망과 수출 물량이 공존한다. 계절 수요 변동이 뚜렷하다.</p>
-          <div class="meta">
-            <div>기준 단가<b>650,000</b></div>
-            <div>주간 시장수요<b>900</b></div>
-            <div>단위 투입중량<b>68.00kg</b></div>
-            <div>주간 시장규모<b>5.85억</b></div>
-          </div>
-          <div class="tagrow">
-            <span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>냉장고</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>세탁기</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>전기레인지</span>
-            <span class="tag" style="color:#7d12b8;background:#f0dcff"><span class="pt"></span>필수공정 3</span>
-          </div>
-        </div><div class="sector-card neu" data-act="pick" data-id="machinery">
-          <h4>산업기계</h4>
-          <p>수주 단위가 크고 납기가 길다. 설비 투자 회수 주기가 길지만 마진이 높다.</p>
-          <div class="meta">
-            <div>기준 단가<b>1,200만</b></div>
-            <div>주간 시장수요<b>40</b></div>
-            <div>단위 투입중량<b>1050.00kg</b></div>
-            <div>주간 시장규모<b>4.80억</b></div>
-          </div>
-          <div class="tagrow">
-            <span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>유압 프레스</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>컨베이어 시스템</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>공작기계</span>
-            <span class="tag" style="color:#7d12b8;background:#f0dcff"><span class="pt"></span>필수공정 4</span>
-          </div>
-        </div><div class="sector-card neu" data-act="pick" data-id="electronic">
-          <h4>전자부품</h4>
-          <p>물량 기반 박리다매. 원자재 가격 변동과 기술 요구 수준이 동시에 높다.</p>
-          <div class="meta">
-            <div>기준 단가<b>25,000</b></div>
-            <div>주간 시장수요<b>20,000</b></div>
-            <div>단위 투입중량<b>1.05kg</b></div>
-            <div>주간 시장규모<b>5.00억</b></div>
-          </div>
-          <div class="tagrow">
-            <span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>인쇄회로기판</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>커넥터</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>전원 모듈</span>
-            <span class="tag" style="color:#7d12b8;background:#f0dcff"><span class="pt"></span>필수공정 3</span>
-          </div>
-        </div><div class="sector-card neu" data-act="pick" data-id="building">
-          <h4>건축자재</h4>
-          <p>건설 경기와 직결된다. 물류 비중이 크고 규격 표준화가 관건이다.</p>
-          <div class="meta">
-            <div>기준 단가<b>320,000</b></div>
-            <div>주간 시장수요<b>1,600</b></div>
-            <div>단위 투입중량<b>40.00kg</b></div>
-            <div>주간 시장규모<b>5.12억</b></div>
-          </div>
-          <div class="tagrow">
-            <span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>알루미늄 창호</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>단열 패널</span><span class="tag" style="color:#6b6383;background:#e9e5f3"><span class="pt"></span>강재 구조물</span>
-            <span class="tag" style="color:#7d12b8;background:#f0dcff"><span class="pt"></span>필수공정 4</span>
-          </div>
-        </div>
-    </div>
-    <div class="card neu" style="margin-top:16px">
-      <h3>시작 조건 <span class="hint">업종 공통 규칙</span></h3>
-      <div class="split">
-        <div>
-          <div class="row"><span class="k">초기 현금</span><span class="v">주간 시장규모 × 3.4</span></div>
-          <div class="row"><span class="k">매출채권 회수</span><span class="v">4주</span></div>
-          <div class="row"><span class="k">매입채무 지급</span><span class="v">2주</span></div>
-        </div>
-        <div>
-          <div class="row"><span class="k">기준금리</span><span class="v">3.25%</span></div>
-          <div class="row"><span class="k">입고 검사 기본 양품률</span><span class="v">98.6%</span></div>
-          <div class="row"><span class="k">지급불능 허용</span><span class="v">3주</span></div>
-        </div>
-      </div>
-    </div>
-  </div></div>
+<div id="app"></div>
 
 <script>
 "use strict";
@@ -358,7 +268,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border:0;border-radiu
    ========================================================================== */
 const DB = {
 
-  meta:{ title:"제조업 경영 시뮬레이터", version:"V0.1", tickUnit:"주", tickLabel:"주차" },
+  meta:{ title:"제조업 경영 시뮬레이터", version:"V1.0", tickUnit:"주", tickLabel:"주차" },
 
   /* 전역 운영 상수 ------------------------------------------------------- */
   config:{
@@ -384,7 +294,9 @@ const DB = {
     costMinUtilRate:0.35,        // 가공비 배부 하한 조업도율(설비 생산능력 대비)
     costDenomFloorRatio:0.02,    // 가공비 배부 기준 하한(업종 기준수요 대비) — 조업도 0 구간 발산 방지
     marketStockDecay:0.02,       // 시장 미판매 재고 주간 진부화율
-    insolvencyWeeks:3            // 연속 지급불능 허용 주
+    insolvencyWeeks:3,           // 연속 지급불능 허용 주
+    saveKeyPrefix:"mfgSimSave_", // 브라우저 저장 키 접두사 — 버전과 결합해 실제 키를 구성한다
+    defaultCompanySuffix:"법인"  // 회사명 미입력 시 "{업종} {접미사}"로 대체
   },
 
   /* 수요·품질·원가 공식 계수 -------------------------------------------- */
@@ -418,24 +330,30 @@ const DB = {
 
   /* 원자재 마스터 -------------------------------------------------------- */
   materials:[
-    {id:"m_crs",  name:"냉연강판",       unit:"kg", price:1150,  vol:0.030, q:0.62},
-    {id:"m_hrs",  name:"열연강판",       unit:"kg", price:980,   vol:0.032, q:0.55},
-    {id:"m_gi",   name:"용융아연도금강판",unit:"kg", price:1320,  vol:0.030, q:0.66},
-    {id:"m_sus",  name:"스테인리스강",   unit:"kg", price:5200,  vol:0.036, q:0.80},
-    {id:"m_al",   name:"알루미늄 합금",  unit:"kg", price:4300,  vol:0.041, q:0.75},
-    {id:"m_cu",   name:"전기동",         unit:"kg", price:12800, vol:0.048, q:0.78},
-    {id:"m_abs",  name:"ABS 수지",       unit:"kg", price:2750,  vol:0.034, q:0.60},
-    {id:"m_pp",   name:"폴리프로필렌",   unit:"kg", price:1880,  vol:0.030, q:0.50},
-    {id:"m_pc",   name:"폴리카보네이트", unit:"kg", price:4600,  vol:0.035, q:0.74},
-    {id:"m_gf",   name:"유리섬유",       unit:"kg", price:3350,  vol:0.026, q:0.68},
-    {id:"m_rub",  name:"합성고무",       unit:"kg", price:2450,  vol:0.033, q:0.58},
-    {id:"m_cast", name:"주철",           unit:"kg", price:920,   vol:0.028, q:0.48},
-    {id:"m_brg",  name:"베어링강",       unit:"kg", price:2350,  vol:0.031, q:0.72},
-    {id:"m_foil", name:"동박",           unit:"kg", price:19000, vol:0.052, q:0.86},
-    {id:"m_epx",  name:"에폭시 수지",    unit:"kg", price:6400,  vol:0.037, q:0.70},
-    {id:"m_cer",  name:"전자 세라믹",    unit:"kg", price:9200,  vol:0.040, q:0.83},
-    {id:"m_pu",   name:"폴리우레탄 단열재",unit:"kg",price:5100,  vol:0.029, q:0.64},
-    {id:"m_gls",  name:"판유리",         unit:"kg", price:1450,  vol:0.024, q:0.56}
+    {id:"m_crs",  name:"냉연강판",       unit:"kg", price:1150,  vol:0.030, q:0.62, pool:"generic"},
+    {id:"m_hrs",  name:"열연강판",       unit:"kg", price:980,   vol:0.032, q:0.55, pool:"generic"},
+    {id:"m_gi",   name:"용융아연도금강판",unit:"kg", price:1320,  vol:0.030, q:0.66, pool:"generic"},
+    {id:"m_sus",  name:"스테인리스강",   unit:"kg", price:5200,  vol:0.036, q:0.80, pool:"generic"},
+    {id:"m_al",   name:"알루미늄 합금",  unit:"kg", price:4300,  vol:0.041, q:0.75, pool:"generic"},
+    {id:"m_cu",   name:"전기동",         unit:"kg", price:12800, vol:0.048, q:0.78, pool:"generic"},
+    {id:"m_abs",  name:"ABS 수지",       unit:"kg", price:2750,  vol:0.034, q:0.60, pool:"generic"},
+    {id:"m_pp",   name:"폴리프로필렌",   unit:"kg", price:1880,  vol:0.030, q:0.50, pool:"generic"},
+    {id:"m_pc",   name:"폴리카보네이트", unit:"kg", price:4600,  vol:0.035, q:0.74, pool:"generic"},
+    {id:"m_rub",  name:"합성고무",       unit:"kg", price:2450,  vol:0.033, q:0.58, pool:"generic"},
+    {id:"m_foil", name:"동박",           unit:"kg", price:19000, vol:0.052, q:0.86, pool:"electronic"},
+    {id:"m_epx",  name:"에폭시 수지",    unit:"kg", price:6400,  vol:0.037, q:0.70, pool:"electronic"},
+    {id:"m_gls",  name:"판유리",         unit:"kg", price:1450,  vol:0.024, q:0.56, pool:"generic"},
+    /* 전자기기 전용 — 디스플레이·배터리·강화유리 */
+    {id:"m_disp", name:"디스플레이 패널", unit:"kg", price:45000, vol:0.045, q:0.88, pool:"electronic"},
+    {id:"m_batt", name:"배터리 셀",       unit:"kg", price:28000, vol:0.050, q:0.72, pool:"electronic"},
+    {id:"m_tgls", name:"강화유리",        unit:"kg", price:8200,  vol:0.028, q:0.78, pool:"electronic"},
+    /* 스포츠의류 전용 — 원단·원사·부자재 */
+    {id:"m_poly",  name:"폴리에스터 원단", unit:"kg", price:8800,  vol:0.026, q:0.52, pool:"textile"},
+    {id:"m_cotton",name:"면 원단",         unit:"kg", price:11500, vol:0.030, q:0.58, pool:"textile"},
+    {id:"m_span",  name:"스판덱스 원사",   unit:"kg", price:15200, vol:0.034, q:0.64, pool:"textile"},
+    {id:"m_mesh",  name:"메쉬 원단",       unit:"kg", price:7600,  vol:0.024, q:0.48, pool:"textile"},
+    {id:"m_eva",   name:"EVA 폼",          unit:"kg", price:6400,  vol:0.027, q:0.55, pool:"textile"},
+    {id:"m_trim",  name:"부자재",          unit:"kg", price:4200,  vol:0.020, q:0.40, pool:"textile"}
   ],
 
   /* 협력사 등급 프로필 --------------------------------------------------- */
@@ -449,17 +367,29 @@ const DB = {
   ],
 
   /* 협력사 상호 풀 ------------------------------------------------------- */
-  supplierNames:[
-    "대성금속","한성소재","동진화학","광일산업","신흥제강","서일금속",
-    "태영공업","삼원소재","우진화성","대진알루미늄","성진테크","명성산업",
-    "한영정밀","동방소재","국일산업","진영금속","태광화학","세진공업",
-    "남광소재","영일금속","대한정밀","유성산업","한백소재","금강화학",
-    "부일소재","중앙금속","해성공업","일신화학","경일산업","보성소재",
-    "청우금속","삼정소재","덕산공업","정우화학","신일소재","호남금속",
-    "가온소재","백양금속","한림공업","세일화학","동아금속","유일소재",
-    "천일산업","태성금속","성우화학","광명소재","현진공업","대륭소재",
-    "일진금속","남성소재","동원화학","한주금속","세림소재","영진공업"
-  ],
+  /* 협력사 상호는 원자재 재질군(pool)별로 분리해 업종에 걸맞은 이름이 붙게 한다.
+     materials[].pool 값과 키가 대응한다(metal/chem → generic, textile, electronic). */
+  supplierNamePools:{
+    generic:[
+      "대성금속","한성소재","동진화학","광일산업","신흥제강","서일금속",
+      "태영공업","삼원소재","우진화성","대진알루미늄","성진테크","명성산업",
+      "한영정밀","동방소재","국일산업","진영금속","태광화학","세진공업",
+      "남광소재","영일금속","대한정밀","유성산업","한백소재","금강화학",
+      "부일소재","중앙금속","해성공업","일신화학","경일산업","보성소재",
+      "청우금속","삼정소재","덕산공업","정우화학","신일소재","호남금속",
+      "가온소재","백양금속","한림공업","세일화학","동아금속","유일소재",
+      "천일산업","태성금속","성우화학","광명소재","현진공업","대륭소재",
+      "일진금속","남성소재","동원화학","한주금속","세림소재","영진공업"
+    ],
+    textile:[
+      "부영텍스타일","한신섬유","대현텍스","광진니트","서라원단","동일텍스타일",
+      "청람섬유","가림텍스","한도니트원단","성지원단","우신텍스타일","대명섬유"
+    ],
+    electronic:[
+      "성원전자부품","일렉트로한강","청담일렉트로닉스","한빛디스플레이","선일모바일소재","하나배터리텍",
+      "미래전자소재","동인일렉트로닉스","한성모바일부품","서강디스플레이","대일배터리","코리아일렉트로닉스"
+    ]
+  },
 
   /* 설비 마스터 (공정 사양) ---------------------------------------------
      capaRatio  : 업종 기준수요 대비 주간 처리 비율
@@ -474,23 +404,33 @@ const DB = {
      capaRatio:0.34, capexRatio:0.05, opexRatio:0.0075, labor:{lb_proc:1}, qBonus:0.00, sectors:"all"},
 
     {id:"eq_press", name:"프레스 라인", stage:"produce", group:"forming",
-     capaRatio:0.42, capexRatio:0.58, opexRatio:0.0130, labor:{lb_prod:6}, qBonus:0.06, sectors:["auto","appliance","building"]},
+     capaRatio:0.42, capexRatio:0.58, opexRatio:0.0130, labor:{lb_prod:6}, qBonus:0.06, sectors:["auto","appliance"]},
     {id:"eq_inj", name:"사출성형기", stage:"produce", group:"forming",
-     capaRatio:0.46, capexRatio:0.44, opexRatio:0.0125, labor:{lb_prod:4}, qBonus:0.05, sectors:["auto","appliance","electronic","building"]},
+     capaRatio:0.46, capexRatio:0.44, opexRatio:0.0125, labor:{lb_prod:4}, qBonus:0.05, sectors:["auto","appliance","electronic"]},
     {id:"eq_cnc", name:"CNC 가공기", stage:"produce", group:"forming",
-     capaRatio:0.29, capexRatio:0.52, opexRatio:0.0140, labor:{lb_prod:5}, qBonus:0.10, sectors:["auto","machinery","building"]},
+     capaRatio:0.29, capexRatio:0.52, opexRatio:0.0140, labor:{lb_prod:5}, qBonus:0.10, sectors:["auto","electronic"]},
     {id:"eq_smt", name:"표면실장 라인", stage:"produce", group:"forming",
      capaRatio:0.58, capexRatio:0.72, opexRatio:0.0150, labor:{lb_prod:5}, qBonus:0.11, sectors:["electronic"]},
     {id:"eq_weld", name:"용접 로봇", stage:"produce", group:"joining",
-     capaRatio:0.38, capexRatio:0.46, opexRatio:0.0120, labor:{lb_prod:3}, qBonus:0.07, sectors:["auto","machinery","building"]},
+     capaRatio:0.38, capexRatio:0.46, opexRatio:0.0120, labor:{lb_prod:3}, qBonus:0.07, sectors:["auto"]},
     {id:"eq_solder", name:"리플로우 솔더링기", stage:"produce", group:"joining",
      capaRatio:0.52, capexRatio:0.40, opexRatio:0.0118, labor:{lb_prod:2}, qBonus:0.08, sectors:["electronic","appliance"]},
     {id:"eq_paint", name:"도장 설비", stage:"produce", group:"finishing",
-     capaRatio:0.40, capexRatio:0.36, opexRatio:0.0135, labor:{lb_prod:3}, qBonus:0.06, sectors:"all"},
+     capaRatio:0.40, capexRatio:0.36, opexRatio:0.0135, labor:{lb_prod:3}, qBonus:0.06, sectors:["auto","appliance","electronic"]},
     {id:"eq_assy", name:"조립 라인", stage:"produce", group:"assembly",
      capaRatio:0.50, capexRatio:0.31, opexRatio:0.0105, labor:{lb_prod:8}, qBonus:0.04, sectors:"all"},
     {id:"eq_test", name:"검사 장비", stage:"produce", group:"inspection",
      capaRatio:0.63, capexRatio:0.23, opexRatio:0.0080, labor:{lb_qc:3}, qBonus:0.13, sectors:"all"},
+
+    /* 스포츠의류 전용 — 재단·봉제·밑창 성형·섬유 코팅 */
+    {id:"eq_cut", name:"재단기", stage:"produce", group:"forming",
+     capaRatio:0.55, capexRatio:0.18, opexRatio:0.0060, labor:{lb_prod:3}, qBonus:0.03, sectors:["sportswear"]},
+    {id:"eq_mold", name:"밑창 성형기", stage:"produce", group:"forming",
+     capaRatio:0.40, capexRatio:0.34, opexRatio:0.0110, labor:{lb_prod:4}, qBonus:0.06, sectors:["sportswear"]},
+    {id:"eq_sew", name:"봉제 라인", stage:"produce", group:"joining",
+     capaRatio:0.48, capexRatio:0.26, opexRatio:0.0090, labor:{lb_prod:6}, qBonus:0.08, sectors:["sportswear"]},
+    {id:"eq_coat", name:"섬유 코팅 설비", stage:"produce", group:"finishing",
+     capaRatio:0.50, capexRatio:0.21, opexRatio:0.0075, labor:{lb_prod:3}, qBonus:0.05, sectors:["sportswear"]},
 
     {id:"eq_pack", name:"포장 라인", stage:"ship", group:"outbound",
      capaRatio:0.58, capexRatio:0.15, opexRatio:0.0060, labor:{lb_logi:4}, qBonus:0.01, sectors:"all"},
@@ -538,7 +478,12 @@ const DB = {
     {id:"f_zinc",  name:"아연도금",    costRatio:0.026, qBonus:0.07, capaPenalty:0.10, group:"finishing"},
     {id:"f_hair",  name:"헤어라인 가공",costRatio:0.029, qBonus:0.08, capaPenalty:0.11, group:"finishing"},
     {id:"f_polish",name:"표면 연마",   costRatio:0.019, qBonus:0.05, capaPenalty:0.07, group:"finishing"},
-    {id:"f_conf",  name:"컨포멀 코팅", costRatio:0.024, qBonus:0.09, capaPenalty:0.09, group:"finishing"}
+    {id:"f_conf",  name:"컨포멀 코팅", costRatio:0.024, qBonus:0.09, capaPenalty:0.09, group:"finishing"},
+    /* 스포츠의류 전용 — 원단·봉제 마감 기법 */
+    {id:"f_dwr",   name:"발수 코팅",   costRatio:0.021, qBonus:0.07, capaPenalty:0.08, group:"finishing"},
+    {id:"f_bond",  name:"접합 성형",   costRatio:0.033, qBonus:0.10, capaPenalty:0.13, group:"finishing"},
+    {id:"f_print", name:"실리콘 프린팅",costRatio:0.016, qBonus:0.04, capaPenalty:0.05, group:"finishing"},
+    {id:"f_uv",    name:"UV 큐어 코팅", costRatio:0.027, qBonus:0.08, capaPenalty:0.10, group:"finishing"}
   ],
 
   /* 라인업(티어) --------------------------------------------------------- */
@@ -583,22 +528,22 @@ const DB = {
      refPrice   : 업종 기준 단가
      matPerUnit : 제품 1단위당 원자재 투입 중량                            */
   sectors:[
-    {id:"auto", name:"자동차 부품", refPrice:60000, baseDemand:8000, matPerUnit:12,
-     desc:"완성차사 납품 구조. 단가 압박이 크고 품질·납기 규율이 엄격하다.",
+    {id:"auto", name:"자동차(완성차)", refPrice:24000000, baseDemand:45, matPerUnit:2200,
+     desc:"완성차 제조. 대규모 설비투자와 긴 개발주기, 엄격한 인증·품질 기준이 요구된다.",
      categories:[
-       {id:"c_panel", name:"차체 패널", sizeFactor:1.20, priceFactor:0.95},
-       {id:"c_susp",  name:"서스펜션 부품", sizeFactor:0.85, priceFactor:1.15},
-       {id:"c_drive", name:"구동계 부품", sizeFactor:0.75, priceFactor:1.35},
-       {id:"c_interior",name:"내장 모듈", sizeFactor:0.60, priceFactor:0.88}
+       {id:"c_sedan",   name:"소형 세단",   sizeFactor:0.75, priceFactor:0.80},
+       {id:"c_hatch",   name:"준중형 해치백",sizeFactor:0.85, priceFactor:0.90},
+       {id:"c_suv",     name:"스포츠유틸리티차량", sizeFactor:1.25, priceFactor:1.20},
+       {id:"c_ev",      name:"전기 승용차", sizeFactor:1.05, priceFactor:1.45}
      ],
-     materials:["m_crs","m_hrs","m_al","m_abs","m_rub","m_brg","m_cast"],
+     materials:["m_crs","m_hrs","m_al","m_sus","m_abs","m_rub","m_cu"],
      finishes:["f_none","f_edp","f_powder","f_zinc","f_polish"],
      reqGroups:["forming","joining","assembly","inspection"],
      season:[1.02,1.06,0.94,0.98],
      competitors:[
-       {name:"한일정밀", share:0.30, price:0.96, quality:0.62, brand:1.10},
-       {name:"동성기공", share:0.22, price:1.04, quality:0.70, brand:1.02},
-       {name:"신우부품", share:0.16, price:0.90, quality:0.52, brand:0.88}
+       {name:"동양모터스", share:0.29, price:1.02, quality:0.68, brand:1.18},
+       {name:"한별자동차", share:0.20, price:0.95, quality:0.58, brand:0.95},
+       {name:"선진모빌리티", share:0.13, price:1.10, quality:0.75, brand:1.02}
      ]},
 
     {id:"appliance", name:"생활가전", refPrice:650000, baseDemand:900, matPerUnit:68,
@@ -619,58 +564,40 @@ const DB = {
        {name:"우신산업", share:0.14, price:0.88, quality:0.48, brand:0.82}
      ]},
 
-    {id:"machinery", name:"산업기계", refPrice:12000000, baseDemand:40, matPerUnit:1050,
-     desc:"수주 단위가 크고 납기가 길다. 설비 투자 회수 주기가 길지만 마진이 높다.",
+    {id:"electronic", name:"전자기기", refPrice:900000, baseDemand:800, matPerUnit:22,
+     desc:"소비자 대상 전자기기 제조. 브랜드력과 기술 혁신 속도가 점유율을 좌우한다.",
      categories:[
-       {id:"c_hyd", name:"유압 프레스", sizeFactor:1.55, priceFactor:1.30},
-       {id:"c_conv",name:"컨베이어 시스템", sizeFactor:1.10, priceFactor:0.82},
-       {id:"c_mt",  name:"공작기계", sizeFactor:0.95, priceFactor:1.45},
-       {id:"c_pump",name:"산업용 펌프", sizeFactor:0.55, priceFactor:0.70}
+       {id:"c_phone",  name:"스마트폰",    sizeFactor:0.55, priceFactor:1.00},
+       {id:"c_tablet", name:"태블릿",      sizeFactor:0.85, priceFactor:1.35},
+       {id:"c_laptop", name:"노트북",      sizeFactor:1.30, priceFactor:1.85},
+       {id:"c_wear",   name:"웨어러블 기기",sizeFactor:0.25, priceFactor:0.55}
      ],
-     materials:["m_hrs","m_sus","m_cast","m_brg","m_cu","m_al"],
-     finishes:["f_none","f_powder","f_zinc","f_polish"],
+     materials:["m_al","m_pc","m_cu","m_foil","m_epx","m_disp","m_batt","m_tgls"],
+     finishes:["f_none","f_anod","f_polish","f_conf"],
      reqGroups:["forming","joining","assembly","inspection"],
-     season:[0.95,1.05,1.02,0.98],
+     season:[0.92,0.96,1.02,1.28],
      competitors:[
-       {name:"대륙기계", share:0.28, price:1.08, quality:0.74, brand:1.14},
-       {name:"삼호중공업", share:0.22, price:1.00, quality:0.66, brand:1.04},
-       {name:"영신기계", share:0.15, price:0.92, quality:0.54, brand:0.86}
+       {name:"동남전자", share:0.33, price:1.05, quality:0.78, brand:1.30},
+       {name:"상원모바일", share:0.20, price:0.92, quality:0.60, brand:0.90},
+       {name:"청림테크", share:0.14, price:1.15, quality:0.82, brand:1.05}
      ]},
 
-    {id:"electronic", name:"전자부품", refPrice:25000, baseDemand:20000, matPerUnit:1.05,
-     desc:"물량 기반 박리다매. 원자재 가격 변동과 기술 요구 수준이 동시에 높다.",
+    {id:"sportswear", name:"스포츠의류", refPrice:89000, baseDemand:6000, matPerUnit:4.5,
+     desc:"스포츠 의류·신발 제조. 브랜드 마케팅과 트렌드 대응 속도가 핵심이다.",
      categories:[
-       {id:"c_pcb", name:"인쇄회로기판", sizeFactor:1.00, priceFactor:1.00},
-       {id:"c_conn",name:"커넥터", sizeFactor:0.40, priceFactor:0.62},
-       {id:"c_pwr", name:"전원 모듈", sizeFactor:0.85, priceFactor:1.35},
-       {id:"c_sens",name:"센서 모듈", sizeFactor:0.55, priceFactor:1.55}
+       {id:"c_shoe",  name:"운동화",      sizeFactor:1.00, priceFactor:1.30},
+       {id:"c_top",   name:"트레이닝 상의", sizeFactor:0.45, priceFactor:0.55},
+       {id:"c_bottom",name:"트레이닝 하의", sizeFactor:0.50, priceFactor:0.60},
+       {id:"c_outer", name:"아우터 재킷",  sizeFactor:0.75, priceFactor:1.05}
      ],
-     materials:["m_foil","m_epx","m_cer","m_cu","m_pc","m_gf"],
-     finishes:["f_none","f_conf","f_polish","f_zinc"],
-     reqGroups:["forming","joining","inspection"],
-     season:[1.00,0.96,1.08,1.06],
-     competitors:[
-       {name:"서일전자", share:0.31, price:0.98, quality:0.76, brand:1.16},
-       {name:"한백전자", share:0.23, price:1.05, quality:0.68, brand:1.00},
-       {name:"진명소재", share:0.17, price:0.88, quality:0.50, brand:0.84}
-     ]},
-
-    {id:"building", name:"건축자재", refPrice:320000, baseDemand:1600, matPerUnit:40,
-     desc:"건설 경기와 직결된다. 물류 비중이 크고 규격 표준화가 관건이다.",
-     categories:[
-       {id:"c_win", name:"알루미늄 창호", sizeFactor:1.00, priceFactor:1.10},
-       {id:"c_insul",name:"단열 패널", sizeFactor:0.80, priceFactor:0.72},
-       {id:"c_steel",name:"강재 구조물", sizeFactor:1.60, priceFactor:1.25},
-       {id:"c_panel2",name:"내외장 패널", sizeFactor:0.90, priceFactor:0.85}
-     ],
-     materials:["m_al","m_gi","m_pu","m_gls","m_sus","m_pp"],
-     finishes:["f_none","f_anod","f_powder","f_zinc","f_hair"],
+     materials:["m_poly","m_cotton","m_span","m_mesh","m_rub","m_eva","m_trim"],
+     finishes:["f_none","f_dwr","f_bond","f_print","f_uv"],
      reqGroups:["forming","joining","assembly","inspection"],
-     season:[0.88,1.14,1.12,0.86],
+     season:[1.05,0.95,1.10,0.98],
      competitors:[
-       {name:"국원건자재", share:0.29, price:0.95, quality:0.60, brand:1.06},
-       {name:"동방창호", share:0.21, price:1.03, quality:0.70, brand:1.02},
-       {name:"세광판넬", share:0.18, price:0.86, quality:0.46, brand:0.80}
+       {name:"에이스포츠", share:0.32, price:1.08, quality:0.80, brand:1.35},
+       {name:"블루런", share:0.21, price:0.98, quality:0.68, brand:1.05},
+       {name:"테라핏", share:0.15, price:0.85, quality:0.55, brand:0.85}
      ]}
   ],
 
@@ -806,8 +733,9 @@ function sectorEquipment(sc){
 function buildSuppliers(sc){
   const list=[]; let n=0;
   sc.materials.forEach((mid,mi)=>{
+    const pool=DB.supplierNamePools[M(mid).pool]||DB.supplierNamePools.generic;
     DB.supplierGrades.forEach((g,gi)=>{
-      const nm=DB.supplierNames[(mi*DB.supplierGrades.length+gi+sc.name.length)%DB.supplierNames.length];
+      const nm=pool[(mi*DB.supplierGrades.length+gi+sc.name.length)%pool.length];
       list.push({
         id:"sp_"+mid+"_"+g.id, name:nm, matId:mid, gradeId:g.id,
         capaKg:g.capaRatio*sc.matPerUnit*sc.baseDemand,
@@ -819,11 +747,15 @@ function buildSuppliers(sc){
   return list;
 }
 
-function newGame(sectorId){
+function defaultCompanyName(sc){ return `${sc.name} ${DB.config.defaultCompanySuffix}`; }
+
+function newGame(sectorId,companyName){
   const sc=DB.sectors.find(s=>s.id===sectorId);
   const pot=weeklyPotential(sc);
   S={
-    sectorId, week:DB.config.startWeek, running:false, over:null,
+    sectorId, companyName:(companyName&&companyName.trim())||defaultCompanyName(sc),
+    editingName:false,
+    week:DB.config.startWeek, running:false, over:null,
     cash:pot*DB.config.startCashRatio,
     brand:DB.config.brandStart,
     suppliers:buildSuppliers(sc),
@@ -862,7 +794,7 @@ function newGame(sectorId){
   DB.labor.forEach(l=>S.staff[l.id]=need[l.id]||0);
 
   S.draft=newDraft();
-  pushLog(`${sc.name} 업종으로 법인을 설립했다. 초기 현금 ${won(S.cash)}원.`,"accent");
+  pushLog(`${S.companyName} 법인을 ${sc.name} 업종으로 설립했다. 초기 현금 ${won(S.cash)}원.`,"accent");
   render();
 }
 
@@ -879,6 +811,29 @@ function newDraft(){
 function pushLog(msg,tagKey){
   S.log.unshift({w:S.week,msg,tag:tagKey||"mute"});
   if(S.log.length>DB.config.logKeep) S.log.pop();
+}
+
+/* ── 브라우저 저장 ───────────────────────────────────
+   저장 키에 버전을 결합해, 구조가 바뀌는 버전업 시 이전 세이브를
+   자동으로 무효화한다(별도 마이그레이션 로직 없이 안전하게 새로 시작). */
+function saveKey(){ return DB.config.saveKeyPrefix+DB.meta.version; }
+function saveGame(){
+  if(!S) return;
+  try{ localStorage.setItem(saveKey(), JSON.stringify(S)); }catch(e){ /* 저장 불가 환경은 무시 */ }
+}
+function loadGame(){
+  try{
+    const raw=localStorage.getItem(saveKey());
+    if(!raw) return null;
+    const obj=JSON.parse(raw);
+    if(!obj||!obj.sectorId||!DB.sectors.some(s=>s.id===obj.sectorId)) return null;
+    obj.running=false; obj.editingName=false;   // 자동 진행 상태·편집 상태는 이어받지 않는다
+    if(!obj.companyName) obj.companyName=defaultCompanyName(DB.sectors.find(s=>s.id===obj.sectorId));
+    return obj;
+  }catch(e){ return null; }
+}
+function clearSave(){
+  try{ localStorage.removeItem(saveKey()); }catch(e){ /* 무시 */ }
 }
 
 /* ============================================================================
@@ -1427,9 +1382,11 @@ function render(){
   if(!S){ renderIntro(); return; }
   const cap=capacities();
   $("#app").innerHTML = renderHeader(cap)+renderTabs()+`<div id="view">`+renderView(cap)+`</div>`+(S.over?renderOver():"");
+  saveGame();
 }
 
 function renderIntro(){
+  const hasSave=!!loadGame();
   $("#app").innerHTML=`
   <div class="intro">
     <div class="intro-h">
@@ -1439,7 +1396,13 @@ function renderIntro(){
         ${tag("accent",DB.meta.version)}${tag("mute","주 단위 경영")}${tag("pink","TOC 병목 관리")}
       </div>
     </div>
-    <div class="grid g3">
+    <div class="card neu" style="max-width:520px;margin:0 auto 18px">
+      <h3>회사명 <span class="hint">미입력 시 업종명으로 자동 지정된다</span></h3>
+      <label class="fld" style="margin-bottom:0">
+        <input type="text" id="companyNameInput" placeholder="예: 대한모빌리티" maxlength="24">
+      </label>
+    </div>
+    <div class="grid g2">
       ${DB.sectors.map(s=>{
         const pot=weeklyPotential(s);
         return `<div class="sector-card neu" data-act="pick" data-id="${s.id}">
@@ -1458,6 +1421,13 @@ function renderIntro(){
         </div>`;
       }).join("")}
     </div>
+    ${hasSave?`<div class="card neu" style="margin-top:16px;text-align:center">
+      <div class="row" style="border-bottom:0;justify-content:center;gap:10px">
+        <span class="k">진행 중이던 저장 데이터가 있다.</span>
+        <button class="btn sm primary" data-act="continueSave">이어하기</button>
+        <button class="btn sm" data-act="resetData">데이터 초기화</button>
+      </div>
+    </div>`:""}
     <div class="card neu" style="margin-top:16px">
       <h3>시작 조건 <span class="hint">업종 공통 규칙</span></h3>
       <div class="split">
@@ -1482,8 +1452,17 @@ function renderHeader(cap){
   const runway = net<0 ? S.cash/Math.abs(net) : Infinity;
   return `<div class="topbar neu">
     <div class="brand">
-      <b>${esc(sc.name)} 법인</b>
-      <span>${esc(DB.meta.title)} ${esc(DB.meta.version)}</span>
+      ${S.editingName
+        ? `<div style="display:flex;gap:6px;align-items:center">
+             <input type="text" id="companyRenameInput" value="${esc(S.companyName)}" maxlength="24" style="max-width:200px">
+             <button class="btn sm primary" data-act="renameConfirm">저장</button>
+             <button class="btn sm" data-act="renameCancel">취소</button>
+           </div>`
+        : `<div style="display:flex;gap:7px;align-items:baseline">
+             <b>${esc(S.companyName)}</b>
+             <button class="btn sm" data-act="renameStart" style="padding:3px 9px">이름 변경</button>
+           </div>`}
+      <span>${esc(sc.name)} · ${esc(DB.meta.title)} ${esc(DB.meta.version)}</span>
     </div>
     <div class="hdr-stats">
       <div class="hstat"><i>${DB.meta.tickLabel}</i><b>${S.week}</b></div>
@@ -1495,6 +1474,7 @@ function renderHeader(cap){
     </div>
     <div class="hdr-ctl">
       ${isFinite(runway)?tag(runway<DB.ui.runwayRisk?"risk":(runway<DB.ui.runwayWarn?"warn":"mute"),"런웨이 "+dec(runway,0)+"주"):tag("ok","흑자 기조")}
+      <button class="btn" data-act="resetData" title="브라우저에 저장된 데이터를 지우고 처음부터 시작한다">초기화</button>
       <button class="btn ${S.running?"on":""}" data-act="auto">${S.running?"자동 중지":"자동 진행"}</button>
       <button class="btn primary" data-act="tick">다음 주</button>
     </div>
@@ -2219,14 +2199,33 @@ document.addEventListener("click",e=>{
   const el=e.target.closest("[data-act]"); if(!el) return;
   const act=el.dataset.act, id=el.dataset.id;
 
-  if(act==="pick"){ newGame(id); return; }
-  if(act==="restart"){ stopAuto(); S=null; render(); return; }
+  if(act==="pick"){
+    const inp=document.getElementById("companyNameInput");
+    newGame(id, inp?inp.value:"");
+    return;
+  }
+  if(act==="continueSave"){ const loaded=loadGame(); if(loaded){ S=loaded; render(); } return; }
+  if(act==="restart"){ stopAuto(); clearSave(); S=null; render(); return; }
+  if(act==="resetData"){
+    if(window.confirm("저장된 데이터를 초기화하고 처음부터 시작한다. 되돌릴 수 없다. 계속할까?")){
+      stopAuto(); clearSave(); S=null; render();
+    }
+    return;
+  }
   if(!S) return;
 
   switch(act){
     case "tab": S.tab=el.dataset.tab; render(); return;
     case "tick": tick(); return;
     case "auto": S.running?stopAuto():startAuto(); render(); return;
+    case "renameStart": S.editingName=true; render(); return;
+    case "renameCancel": S.editingName=false; render(); return;
+    case "renameConfirm":{
+      const inp=document.getElementById("companyRenameInput");
+      const v=inp?inp.value.trim():"";
+      if(v) S.companyName=v;
+      S.editingName=false; render(); return;
+    }
 
     case "contract":{
       const sp=S.suppliers.find(x=>x.id===id);
@@ -2434,9 +2433,9 @@ function launchProduct(){
   S.draft=newDraft(); S.tab="produce";
 }
 
-/* 기동 */
+/* 기동 — 저장된 데이터가 있어도 곧바로 이어받지 않고, 선택 화면에서
+   "이어하기"로 명시적으로 재개하게 한다(의도치 않은 복귀를 막는다). */
 render();
 </script>
-
-
-</body></html>
+</body>
+</html>
