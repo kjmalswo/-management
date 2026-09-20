@@ -268,7 +268,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border:0;border-radiu
    ========================================================================== */
 const DB = {
 
-  meta:{ title:"제조업 경영 시뮬레이터", version:"V1.0", tickUnit:"주", tickLabel:"주차" },
+  meta:{ title:"제조업 경영 시뮬레이터", version:"V1.1", tickUnit:"주", tickLabel:"주차" },
 
   /* 전역 운영 상수 ------------------------------------------------------- */
   config:{
@@ -528,7 +528,7 @@ const DB = {
      refPrice   : 업종 기준 단가
      matPerUnit : 제품 1단위당 원자재 투입 중량                            */
   sectors:[
-    {id:"auto", name:"자동차(완성차)", refPrice:24000000, baseDemand:45, matPerUnit:2200,
+    {id:"auto", name:"자동차", refPrice:24000000, baseDemand:45, matPerUnit:2200,
      desc:"완성차 제조. 대규모 설비투자와 긴 개발주기, 엄격한 인증·품질 기준이 요구된다.",
      categories:[
        {id:"c_sedan",   name:"소형 세단",   sizeFactor:0.75, priceFactor:0.80},
@@ -819,7 +819,7 @@ function pushLog(msg,tagKey){
 function saveKey(){ return DB.config.saveKeyPrefix+DB.meta.version; }
 function saveGame(){
   if(!S) return;
-  try{ localStorage.setItem(saveKey(), JSON.stringify(S)); }catch(e){ /* 저장 불가 환경은 무시 */ }
+  try{ S.lastSavedWeek=S.week; localStorage.setItem(saveKey(), JSON.stringify(S)); }catch(e){ /* 저장 불가 환경은 무시 */ }
 }
 function loadGame(){
   try{
@@ -1380,9 +1380,9 @@ function avgDefect(mid){
    ========================================================================== */
 function render(){
   if(!S){ renderIntro(); return; }
+  saveGame(); /* 헤더에 표시되는 저장 시점(lastSavedWeek)이 이번 화면과 어긋나지 않도록 그리기 전에 저장한다 */
   const cap=capacities();
   $("#app").innerHTML = renderHeader(cap)+renderTabs()+`<div id="view">`+renderView(cap)+`</div>`+(S.over?renderOver():"");
-  saveGame();
 }
 
 function renderIntro(){
@@ -1474,6 +1474,8 @@ function renderHeader(cap){
     </div>
     <div class="hdr-ctl">
       ${isFinite(runway)?tag(runway<DB.ui.runwayRisk?"risk":(runway<DB.ui.runwayWarn?"warn":"mute"),"런웨이 "+dec(runway,0)+"주"):tag("ok","흑자 기조")}
+      <span class="mini" id="saveInd" style="min-width:64px">${S.lastSavedWeek!=null?`${S.lastSavedWeek}주 저장됨`:""}</span>
+      <button class="btn" data-act="saveNow" title="지금 브라우저에 즉시 저장한다">저장</button>
       <button class="btn" data-act="resetData" title="브라우저에 저장된 데이터를 지우고 처음부터 시작한다">초기화</button>
       <button class="btn ${S.running?"on":""}" data-act="auto">${S.running?"자동 중지":"자동 진행"}</button>
       <button class="btn primary" data-act="tick">다음 주</button>
@@ -2215,6 +2217,9 @@ document.addEventListener("click",e=>{
   if(!S) return;
 
   switch(act){
+    case "saveNow":{
+      saveGame(); pushLog("현재 상태를 브라우저에 저장했다.","mute"); render(); return;
+    }
     case "tab": S.tab=el.dataset.tab; render(); return;
     case "tick": tick(); return;
     case "auto": S.running?stopAuto():startAuto(); render(); return;
@@ -2386,7 +2391,11 @@ document.addEventListener("change",e=>{
   if(k==="dcat"){ S.draft.catId=v; render(); }
   if(k==="dtier"){ S.draft.tierId=v; render(); }
   if(k==="dfin"){ S.draft.finishId=v; render(); }
-  if(k==="alloc"||k==="ctr"||k==="cover") render();
+  if(k==="alloc"||k==="cover") render();
+  /* ctr(계약 물량 슬라이더)는 "계약 확정" 버튼으로만 S.contracts에 반영된다.
+     여기서 render()를 호출하면 드래그를 놓는 순간 슬라이더가 아직 미확정 상태인
+     이전 값으로 되돌아가 버려(당겨도 안 당겨지는 것처럼 보임), 값을 커밋할 기회조차
+     없이 초기화되므로 change 시점에는 굳이 다시 그리지 않는다. */
 });
 
 /* 스튜디오 부분 갱신 */
