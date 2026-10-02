@@ -32,8 +32,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "8.0.0",
-    "schema": 7,
+    "version": "9.0.0",
+    "schema": 8,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
     "locale": "ko-KR",
@@ -3360,7 +3360,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "contextTitle": "경기력에 작용한 조건",
       "contextHint": "경기 당시 체력, 압박과 맡은 포지션을 반영한 능력치입니다.",
       "legacyReport": "이 경기의 추가 분석은 없습니다.",
-      "worldTitle": "플레이어 밖에서도 움직이는 축구계",
+      "worldTitle": "축구계 상황",
       "worldHint": "다른 선수와 구단의 변화도 살펴보세요. 새 유망주, 이적과 감독 교체가 커리어의 기회가 될 수 있습니다.",
       "trend": "전술 트렌드",
       "worldEvents": "세계 소식",
@@ -3687,7 +3687,6 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "broadcastSecondHalf": "후반 시작",
       "broadcastKickoff": "킥오프",
       "broadcastFulltime": "풀타임",
-      "broadcastEventCount": "이벤트 {current} / {total}",
       "broadcastAssist": " · 도움: {name}",
       "broadcastInjuryReason": "부상",
       "broadcastBanReason": "징계",
@@ -3719,7 +3718,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "saveImportGeneral": "커리어 정보를 읽지 못했습니다.",
       "senderWithRole": "{role} · {name}",
       "senderWithClub": "{sender} · {club}",
-      "positionSwapHint": "이미 선택한 포지션을 고르면 두 칸의 포지션이 서로 바뀝니다."
+      "positionSwapHint": "이미 선택한 포지션을 고르면 두 칸의 포지션이 서로 바뀝니다.",
+      "broadcastSkip": "스킵하고 결과로 이동"
     },
     "statFields": [
       {
@@ -5356,7 +5356,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       3,
       4,
       5,
-      6
+      6,
+      7
     ],
     "legacyTypeTraits": {
       "steady": "consistency",
@@ -6593,7 +6594,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   ],
   "matchBroadcast": {
     "loadingMs": 900,
-    "eventIntervalMs": 3000,
+    "eventIntervalMs": 1500,
     "halfMinute": 45,
     "halftimeOrder": 20,
     "secondHalfOrder": -1,
@@ -7972,7 +7973,7 @@ function matchScoreboard(record,events=[],stage='broadcastLineups'){
 }
 function broadcastLineup(record,side){
   const team=record.result[side],club=idx().clubs[record[side]],cfg=DB.matchBroadcast,starters=team.players.filter(p=>p.starter),rows=cfg.formationRows[team.tactic.id]||starters.map(p=>cfg.positionRows[p.position]),maxRow=Math.max(...rows),points=starters.map((p,index)=>{const row=rows[index],same=starters.map((p,i)=>({p,i})).filter(x=>rows[x.i]===row).sort((a,b)=>cfg.positionOrder.indexOf(a.p.position)-cfg.positionOrder.indexOf(b.p.position)||a.i-b.i),column=same.findIndex(x=>x.i===index);return {p,x:(column+1)/(same.length+1)*cfg.pitchScale,y:cfg.pitchBottom-(row/Math.max(1,maxRow))*(cfg.pitchBottom-cfg.pitchTop)};}),bench=team.players.filter(p=>!p.starter&&(p.id!=='player'||record.result.preMatch.available));
-  return `<section class="card formation-card"><div class="section-head"><div class="row">${crest(club)}<div><h2>${h(club.name)}</h2><p class="small muted">${h(team.tactic.name)}</p></div></div>${badge(starters.length)}</div><div class="formation-pitch" role="img" aria-label="${h(club.name+' · '+t('broadcastLineups'))}"><div class="pitch-boundary"><i class="pitch-half"></i><i class="pitch-circle"></i><i class="pitch-box top"></i><i class="pitch-box bottom"></i></div>${points.map(({p,x,y})=>`<div class="formation-player ${p.id==='player'?'is-player':''}" style="left:${x}%;top:${y}%;--kitMain:${h(club.color)};--kitInk:${h(kitInk(club.color))}"><span class="formation-kit" aria-hidden="true">${n(p.number)}</span><b>${h(p.displayName||p.name)}</b><small>${h(p.position)}${p.id==='player'?' · '+h(t('myPlayer')):''}</small></div>`).join('')}</div><details class="broadcast-bench" open><summary>${h(t('broadcastBench'))}</summary><div>${bench.map(p=>`<span class="${p.id==='player'?'is-player':''}">${h(p.name)} <small>${h(p.naturalPosition||p.position)}</small></span>`).join('')}</div></details></section>`;
+  return `<section class="card formation-card"><div class="section-head"><div class="row">${crest(club)}<div><h2>${h(club.name)}</h2><p class="small muted">${h(team.tactic.name)}</p></div></div>${badge(starters.length)}</div><div class="formation-pitch" role="img" aria-label="${h(club.name+' · '+t('broadcastLineups'))}"><div class="pitch-boundary"><i class="pitch-half"></i><i class="pitch-circle"></i><i class="pitch-box top"></i><i class="pitch-box bottom"></i></div>${points.map(({p,x,y})=>`<div class="formation-player ${p.id==='player'?'is-player':''}" style="left:${x}%;top:${y}%;--kitMain:${h(club.color)};--kitInk:${h(kitInk(club.color))}"><span class="formation-kit" aria-hidden="true">${n(p.number)}</span><b>${h(p.name)}</b><small>${h(p.position)}${p.id==='player'?' · '+h(t('myPlayer')):''}</small></div>`).join('')}</div><details class="broadcast-bench" open><summary>${h(t('broadcastBench'))}</summary><div>${bench.map(p=>`<span class="${p.id==='player'?'is-player':''}">${h(p.name)} <small>${h(p.naturalPosition||p.position)}</small></span>`).join('')}</div></details></section>`;
 }
 function kitInk(color){const cfg=DB.uniformRules,rgb=color.replace('#','').match(/.{2}/g).map(x=>parseInt(x,16));return Core.sum(rgb.map((x,i)=>x*cfg.luminanceWeights[i]))>cfg.luminanceThreshold?cfg.darkContrast:cfg.lightContrast;}
 function lockerInstructions(record){const pre=record.result.preMatch,cfg=DB.matchBroadcast,tactic=pre.tactic,group=idx().positions[pre.position].group,keys=[tactic.press>=cfg.coachPressThreshold?'press':'shape',tactic.pace>=cfg.coachPaceThreshold?'fast':'patient',tactic.creativity>=cfg.coachCreativeThreshold?'creative':'disciplined',pre.available?pre.starter?'starter':'bench':'unavailable',group==='keeper'?'keeper':group];if(pre.fit<cfg.coachFitThreshold&&pre.available)keys.push('adapt');return keys.map(key=>(cfg.coachInstructions[key]||'').replace(/\{(\w+)\}/g,(_,k)=>k==='position'?pre.position:k==='reason'?t(pre.reason):'')).filter(Boolean);}
@@ -7989,7 +7990,7 @@ function renderMatchExperience(){
   let body;
   if(phase==='lineup')body=`${matchScoreboard(record)}<div class="section-head"><div><h1>${h(t('broadcastLineups'))}</h1><p class="small muted">${h(t('broadcastLineupHint'))}</p></div>${badge(t(status),pre.starter?'green':'pink')}</div><div class="formation-grid">${broadcastLineup(record,'home')}${broadcastLineup(record,'away')}</div><div class="match-footer">${btn(t('broadcastToLocker'),'match-locker','','primary')}</div>`;
   else if(phase==='locker')body=`${matchScoreboard(record,[],'broadcastLocker')}<section class="card locker-room"><div class="eyebrow">${h(t('broadcastCoach'))}</div><h1>${h(pre.manager.name||t('manager'))}</h1><p class="muted">${h(pre.tactic.name)} · ${h(t(status))}</p><div class="locker-instructions">${lockerInstructions(record).map((line,i)=>`<blockquote><span class="num">${n(i+1)}</span><p>${h(line)}</p></blockquote>`).join('')}</div><div class="match-footer">${btn(t('broadcastStart'),'match-start','','primary')}</div></section>`;
-  else body=`${matchScoreboard(record,shown,phase==='finished'?'broadcastFinished':'broadcastLive')}<section class="card broadcast-live"><div class="section-head"><div><h1>${h(t('broadcastLive'))}</h1><p class="small muted">${h(p.paused?t('broadcastPaused'):t('broadcastCadence',{seconds:DB.matchBroadcast.eventIntervalMs/1000}))}</p></div>${phase==='live'?btn(t(p.paused?'broadcastResume':'broadcastPause'),'match-pause'):badge(t('broadcastFinished'),'green')}</div><div class="live-events" role="log" aria-label="${h(t('broadcastLive'))}">${shown.slice(-DB.matchBroadcast.feedKeep).map((event,i)=>{const isPlayer=event.playerId==='player'||event.assisterId==='player'||event.inId==='player'||event.outId==='player';return `<article class="live-event ${isPlayer?'is-player':''} ${event.type==='goalEvent'?'is-goal':''} ${i===Math.min(shown.length,DB.matchBroadcast.feedKeep)-1?'latest':''}"><time class="num">${h(broadcastClock(event.minute))}</time><span class="event-symbol" aria-hidden="true">${h(DB.matchBroadcast.eventSymbols[event.type])}</span><div><p>${h(broadcastText(event,record,broadcastScore(record,shown.slice(0,shown.indexOf(event)+1))))}</p>${isPlayer?badge(t('myPlayer'),'green'):''}</div></article>`;}).join('')}</div><div class="sr-only" aria-live="polite">${h(shown.length?broadcastText(shown.at(-1),record,score):'')}</div><div class="broadcast-progress">${progress(p.cursor,timeline.length)}<p class="small muted">${h(t('broadcastEventCount',{current:p.cursor,total:timeline.length}))}</p></div><div class="match-footer"><p class="small muted">${h(t(phase==='finished'?'broadcastFinished':'broadcastWait'))}</p><button type="button" data-action="match-results" class="primary" ${phase==='finished'?'':'disabled'}>${h(t('broadcastContinue'))}</button></div></section>`;
+  else body=`${matchScoreboard(record,shown,phase==='finished'?'broadcastFinished':'broadcastLive')}<section class="card broadcast-live"><div class="section-head"><div><h1>${h(t('broadcastLive'))}</h1><p class="small muted">${h(p.paused?t('broadcastPaused'):t('broadcastCadence',{seconds:DB.matchBroadcast.eventIntervalMs/1000}))}</p></div>${phase==='live'?btn(t(p.paused?'broadcastResume':'broadcastPause'),'match-pause'):badge(t('broadcastFinished'),'green')}</div><div class="live-events" role="log" aria-label="${h(t('broadcastLive'))}">${shown.slice(-DB.matchBroadcast.feedKeep).map((event,i)=>{const isPlayer=event.playerId==='player'||event.assisterId==='player'||event.inId==='player'||event.outId==='player';return `<article class="live-event ${isPlayer?'is-player':''} ${event.type==='goalEvent'?'is-goal':''} ${i===Math.min(shown.length,DB.matchBroadcast.feedKeep)-1?'latest':''}"><time class="num">${h(broadcastClock(event.minute))}</time><span class="event-symbol" aria-hidden="true">${h(DB.matchBroadcast.eventSymbols[event.type])}</span><div><p>${h(broadcastText(event,record,broadcastScore(record,shown.slice(0,shown.indexOf(event)+1))))}</p>${isPlayer?badge(t('myPlayer'),'green'):''}</div></article>`;}).join('')}</div><div class="sr-only" aria-live="polite">${h(shown.length?broadcastText(shown.at(-1),record,score):'')}</div><div class="broadcast-progress">${progress(p.cursor,timeline.length)}</div><div class="match-footer"><p class="small muted">${h(t(phase==='finished'?'broadcastFinished':'broadcastWait'))}</p><div class="row wrap">${phase==='live'?btn(t('broadcastSkip'),'match-skip'): ''}<button type="button" data-action="match-results" class="primary" ${phase==='finished'?'':'disabled'}>${h(t('broadcastContinue'))}</button></div></div></section>`;
   document.getElementById('app').innerHTML=`<main class="match-shell"><header class="match-header"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(t('broadcastTitle'))}</small></div></div><div class="small muted">${h(idx().leagues[record.league].name)} · ${h(record.date)}</div></header>${body}<p class="small muted match-save-hint">${h(t('broadcastSaving'))}</p>${!storageHealthy?`<div class="notice warning">${h(t('saveWarning'))}</div>`:''}</main>`;
   if(isLive){const feed=document.querySelector('.live-events');feed.scrollTop=feed.scrollHeight;}scheduleBroadcast();
 }
@@ -8005,6 +8006,7 @@ document.addEventListener('click',event=>{const b=event.target.closest('[data-ac
     case 'match-locker':if(p.phase!=='lineup')return;p.phase='locker';break;
     case 'match-start':if(p.phase!=='locker')return;p.phase='live';p.cursor=1;p.paused=false;break;
     case 'match-pause':if(p.phase!=='live')return;p.paused=!p.paused;break;
+    case 'match-skip':if(p.phase!=='live')return;clearMatchTimer();reportId=record.id;screen='fixtures';state.matchPresentation=null;break;
     case 'match-results':if(p.phase!=='finished')return;clearMatchTimer();reportId=record.id;screen='fixtures';state.matchPresentation=null;break;
     default:return;
   }persist();render();if(b.dataset.action!=='match-pause')window.scrollTo({top:0});
