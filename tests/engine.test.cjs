@@ -34,10 +34,10 @@ function verifyReport(result){
 }
 test('all countries produce domestic, European and academy offers',()=>{
   for(const country of DB.countries){const p={...profile(),country:country.id},offers=C.startingOffers(DB,p);assert.equal(offers.length,DB.routes.length);assert.equal(offers[0].club.league,country.league);assert.ok(offers[2].club.parent);}
-  for(const club of DB.clubs.filter(c=>c.parent)){const p={...profile(),dreamClub:club.parent,preferredLeague:C.indexes(DB).clubs[club.parent].league};assert.equal(C.startingOffers(DB,p).find(o=>o.route.id==='academy').club.parent,club.parent);}
+  for(const seed of [0,1,2,3,4]){const p={...profile(),startingSeed:seed},offer=C.startingOffers(DB,p).find(o=>o.route.id==='academy'),parent=C.indexes(DB).clubs[offer.club.parent];assert.ok(DB.startingRouteRules.academyTiers.includes(parent.prestigeTier));assert.equal(C.indexes(DB).leagues[offer.club.league].country,C.indexes(DB).leagues[parent.league].country);}
 });
 test('round robin contains each home/away pair once and no round double booking',()=>{
-  for(const league of DB.leagues){const fixtures=C.schedule(DB,league.id,1,DB.meta.initialDate),teams=DB.clubs.filter(c=>c.league===league.id);assert.equal(fixtures.length,teams.length*(teams.length-1));const pairs=new Set(fixtures.map(f=>`${f.home}:${f.away}`));assert.equal(pairs.size,fixtures.length);for(const round of new Set(fixtures.map(f=>f.round))){const ids=fixtures.filter(f=>f.round===round).flatMap(f=>[f.home,f.away]);assert.equal(ids.length,new Set(ids).size);}}
+  for(const league of DB.leagues.filter(l=>l.kind!=='continental')){const fixtures=C.schedule(DB,league.id,1,DB.meta.initialDate),teams=DB.clubs.filter(c=>!c.historical&&c.league===league.id);assert.equal(fixtures.length,teams.length*(teams.length-1));const pairs=new Set(fixtures.map(f=>`${f.home}:${f.away}`));assert.equal(pairs.size,fixtures.length);for(const round of new Set(fixtures.map(f=>f.round))){const ids=fixtures.filter(f=>f.round===round).flatMap(f=>[f.home,f.away]);assert.equal(ids.length,new Set(ids).size);}}
 });
 test('deterministic detailed reports, every position and availability restrictions',()=>{
   for(const position of DB.positions){const state=create('domestic',position.id),f=state.fixtures[C.indexes(DB).clubs[state.player.club].league].find(f=>f.home===state.player.club||f.away===state.player.club);state.player.trust=DB.rules.scale;state.player.fitness=DB.rules.scale;
@@ -52,20 +52,25 @@ test('calibrated aggregate football output and coherent player/team records',()=
   const values={shots:shots/calibration.samples,goals:goals/calibration.samples,passesPerTeam:passes/(calibration.samples*2),passAccuracy:completed/passes};
   assert.ok(values.shots>=calibration.meanShotsMin&&values.shots<=calibration.meanShotsMax,JSON.stringify(values));assert.ok(values.goals>=calibration.meanGoalsMin&&values.goals<=calibration.meanGoalsMax,JSON.stringify(values));assert.ok(values.passesPerTeam>=calibration.meanPassesMin&&values.passesPerTeam<=calibration.meanPassesMax,JSON.stringify(values));assert.ok(values.passAccuracy>=calibration.passAccuracyMin&&values.passAccuracy<=calibration.passAccuracyMax,JSON.stringify(values));console.log('Calibration',values);
 });
-test('career records, league standings, round progression and JSON save round trip',()=>{
-  const state=create(),league=C.indexes(DB).clubs[state.player.club].league;
-  const rounds=C.totalRounds(state);for(let i=0;i<rounds;i++){const record=C.advance(DB,state);assert.equal(state.round,i+1);assert.ok(record);verifyReport(record.result);const saved=normalize(state);assert.equal(saved.player.history.length,i+1);}
-  const totals=C.totals(DB,state.player.history);assert.equal(totals.minutes,state.player.history.reduce((n,h)=>n+h.stats.minutes,0));assert.ok(totals.apps<=rounds);const table=C.standings(DB,state,league);assert.equal(table.reduce((n,t)=>n+t.goalDiff,0),0);assert.ok(table.every(t=>t.played===rounds));assert.equal(C.advance(DB,state),false);
-  assert.ok(C.nextSeason(DB,state));assert.equal(state.season,2);assert.equal(state.player.age,profile().age+DB.rules.seasonAgeStep);assert.equal(state.date,C.dateAdd(DB.meta.initialDate,DB.competitionRules.seasonLengthDays));assert.equal(state.archives.length,1);assert.ok(state.player.earned>rounds*state.player.contract.weekly);
+test('calendar advances a complete season and records league/cup results coherently',()=>{
+  const state=C.createCareer(DB,profile(),'domestic','en1-0'),league='en-1';let count=0,reports=0;
+  while(C.nextCalendar(state)){const previous=state.date,result=C.advance(DB,state);assert.ok(state.date>=previous);if(result.report){reports++;verifyReport(result.report.result);}assert.ok(++count<500);}
+  assert.ok(C.seasonReady(state));assert.equal(C.standings(DB,state,league).length,20);assert.ok(C.standings(DB,state,league).every(t=>t.played===38));assert.equal(state.player.history.length,reports);
+  for(const id of ['ucl','uel','uecl']){const matches=state.fixtures[id];assert.equal(matches.filter(f=>f.stage==='final').length,1);assert.ok(matches.at(-1).result.winner);for(const f of matches.filter(f=>f.result.penalties))assert.equal(f.result.winner,f.result.penalties[0]>f.result.penalties[1]?f.home:f.away);}
+  assert.equal(C.advance(DB,state),false);assert.ok(C.nextSeason(DB,state));assert.equal(state.season,2);assert.equal(state.archives.length,1);assert.ok(ctx.validation.validateSave({schema:DB.meta.schema,db:DB,state}));
 });
-test('transfer windows, contract expiration, renewal and academy callup',()=>{
-  const state=create(),candidate=DB.clubs.find(c=>!c.parent&&c.id!==state.player.club);state.offers=[{club:candidate.id,weekly:C.wage(DB,candidate.id,state.player),expires:DB.rules.offerExpiryRounds,years:DB.rules.contractYears}];state.round=DB.rules.initialWindowRounds;assert.equal(C.transfer(DB,state,candidate.id),false);state.round=0;assert.ok(C.transfer(DB,state,candidate.id));assert.equal(state.player.club,candidate.id);
-  state.player.contract.expiresSeason=state.season+1;assert.ok(C.renew(DB,state));assert.equal(state.player.contract.expiresSeason,state.season+DB.rules.contractYears);
-  const youth=create('academy'),parent=C.indexes(DB).clubs[youth.player.club].parent;assert.equal(C.canCallup(DB,youth),false);youth.player.trust=DB.rules.callupTrust;for(const key of DB.attributes.map(a=>a.id))youth.player.stats[key]=DB.rules.callupOverall;
-  youth.player.history=Array.from({length:DB.rules.callupApps},()=>({club:youth.player.club,stats:{minutes:DB.rules.matchMinutes}}));assert.ok(C.canCallup(DB,youth));assert.ok(C.transfer(DB,youth,parent,'callup'));assert.equal(youth.player.club,parent);
+test('actual arrival starts the offer grace period; renewals and free agents remain distinct',()=>{
+  const state=create(),candidate=DB.clubs.find(c=>!c.parent&&!c.historical&&c.id!==state.player.club);state.player.freeAgent=true;state.world.clubs[candidate.id].finance=DB.dynamics.financeMax;
+  C.refreshOffers(DB,state);const offer=state.offers[0];assert.ok(offer);const target=offer.club;state.world.clubs[target].finance=DB.dynamics.financeMax;
+  const deal=C.startDeal(DB,state,target);assert.ok(deal);deal.status='ready';deal.awaiting=false;deal.seller.status=deal.buyer.status=deal.agent.status='agreed';deal.terms.fee=0;deal.terms.signingBonus=0;
+  const inquiry={id:'stale-contact',club:candidate.id,sourceClub:state.player.club,date:C.dateAdd(state.date,2),resolved:false};state.agentInquiries.push(inquiry);state.calendar.entries.push({id:inquiry.id,date:inquiry.date,type:'contact',name:'test',priority:1,completed:false});
+  assert.ok(C.signDeal(DB,state,deal.id));assert.equal(state.player.club,target);assert.equal(inquiry.resolved,true);assert.ok(state.calendar.entries.find(e=>e.id===inquiry.id).completed);assert.ok(C.newClubGrace(DB,state));
+  state.player.reputation=DB.rules.scale;C.refreshOffers(DB,state);assert.equal(state.offers.length,0);const joined=state.player.lastClubChangeDate;state.date=C.dateAdd(joined,DB.offerRules.newClubGraceDays-1);assert.ok(C.newClubGrace(DB,state));state.date=C.dateAdd(joined,DB.offerRules.newClubGraceDays);assert.equal(C.newClubGrace(DB,state),null);
+  state.player.freeAgent=true;state.date=joined;assert.equal(C.newClubGrace(DB,state),null);
+  const renewed=create();renewed.date=C.dateAdd(renewed.date,DB.offerRules.newClubGraceDays);renewed.player.contract.arrivalDate=renewed.date;renewed.player.career.push({season:renewed.season,date:renewed.date,club:renewed.player.club,type:'renewed'});assert.equal(C.newClubGrace(DB,renewed),null);
 });
 test('database edits and save imports reject broken references before changing state',()=>{
-  const state=create();C.advance(DB,state);const envelope={schema:DB.meta.schema,db:C.clone(DB),state:C.clone(state)};
+  const state=create();while(!state.player.history.length)C.advance(DB,state);const envelope={schema:DB.meta.schema,db:C.clone(DB),state:C.clone(state)};
   assert.ok(ctx.validation.validateDB(DB));assert.ok(ctx.validation.validateSave(envelope));
   const invalidState=C.clone(envelope);delete invalidState.state.player.history[0].result.home.players[0].match;assert.throws(()=>ctx.validation.validateSave(invalidState));
   const invalidDB=C.clone(DB);invalidDB.clubs=invalidDB.clubs.filter(c=>c.id!==state.player.club);assert.throws(()=>ctx.validation.validateDB(invalidDB,state));
