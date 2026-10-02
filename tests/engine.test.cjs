@@ -61,7 +61,7 @@ test('calendar advances a complete season and records league/cup results coheren
 });
 test('actual arrival starts the offer grace period; renewals and free agents remain distinct',()=>{
   const state=create(),candidate=DB.clubs.find(c=>!c.parent&&!c.historical&&c.id!==state.player.club);state.player.freeAgent=true;state.world.clubs[candidate.id].finance=DB.dynamics.financeMax;
-  C.refreshOffers(DB,state);const offer=state.offers[0];assert.ok(offer);const target=offer.club;state.world.clubs[target].finance=DB.dynamics.financeMax;
+  C.refreshOffers(DB,state);assert.equal(state.offers.length,0);for(let attempt=0;attempt<40&&!state.offers.length;attempt++){state.date=state.marketReview.date;C.refreshOffers(DB,state);}const offer=state.offers[0];assert.ok(offer);const target=offer.club;state.world.clubs[target].finance=DB.dynamics.financeMax;
   const deal=C.startDeal(DB,state,target);assert.ok(deal);deal.status='ready';deal.awaiting=false;deal.seller.status=deal.buyer.status=deal.agent.status='agreed';deal.terms.fee=0;deal.terms.signingBonus=0;
   const inquiry={id:'stale-contact',club:candidate.id,sourceClub:state.player.club,date:C.dateAdd(state.date,2),resolved:false};state.agentInquiries.push(inquiry);state.calendar.entries.push({id:inquiry.id,date:inquiry.date,type:'contact',name:'test',priority:1,completed:false});
   assert.ok(C.signDeal(DB,state,deal.id));assert.equal(state.player.club,target);assert.equal(inquiry.resolved,true);assert.ok(state.calendar.entries.find(e=>e.id===inquiry.id).completed);assert.ok(C.newClubGrace(DB,state));
