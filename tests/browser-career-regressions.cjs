@@ -6,7 +6,7 @@ try{for(const device of [{name:'desktop',viewport:{width:1440,height:1050}},{...
   await page.evaluate(()=>{const p={...Core.clone(DB.profile.defaults),name:'훈련·대회 확인',stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial]))};state=Core.createCareer(DB,p,'europe','en1-0');screen='dashboard';render();});
   await page.locator('[data-action="training"][data-id="shooting"]').click();assert.equal(await page.evaluate(()=>state.training),'shooting');
   const gain=await page.evaluate(()=>{while(state.date<Core.dateAdd(state.seasonStart,28))Core.advance(DB,state);render();return state.player.development.training.gains.shooting;});assert.ok(gain>0);
-  assert.ok(await page.getByText('이번 시즌 훈련 성장',{exact:true}).isVisible());assert.ok((await page.locator('.quick-abilities').first().innerText()).includes('+'));
+  assert.ok(await page.getByText('최근 훈련 상태',{exact:true}).isVisible());assert.ok((await page.locator('.quick-abilities').first().innerText()).includes('+'));
   if(output)await page.screenshot({path:path.join(output,device.name+'-training-progress.png'),fullPage:true});
   await page.evaluate(()=>{screen='fixtures';reportId=null;fixtureScope='schedule';render();});await page.locator('#fixture-competition').selectOption('ucl');
   const schedule=await page.locator('table tbody tr').allTextContents();assert.ok(schedule.length>0);assert.ok(schedule.every(row=>row.includes('유럽 챔피언스 대회')));
