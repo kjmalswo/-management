@@ -16,12 +16,14 @@ async function importFile(page,file,name){
   assert.equal(await page.locator('#save-input').inputValue(),'');
 }
 async function exportFile(page,file){
+  if(!await page.locator('[data-action="export"]').isVisible())await page.locator('.header-tools>summary').click();
   const wait=page.waitForEvent('download');await page.locator('[data-action="export"]').click();
   const download=await wait;await download.saveAs(file);assert.ok(fs.statSync(file).size>0);
 }
 async function shirtMetrics(page,name){
   if(await page.locator('#profile-displayName').count())await page.locator('#profile-displayName').fill(name);
   else await page.evaluate(value=>{state.player.displayName=value;render();},name);
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   return page.locator('.shirt-name').evaluate(element=>{const box=element.getBBox();return {text:element.textContent,width:box.width,center:box.x+box.width/2,font:parseFloat(getComputedStyle(element).fontSize),textLength:element.getAttribute('textLength'),anchor:element.getAttribute('text-anchor'),x:element.getAttribute('x')};});
 }
 (async()=>{
@@ -38,14 +40,18 @@ async function shirtMetrics(page,name){
       await page.locator('#begin-career').click();await page.locator('[data-action="personality-next"]').click();await page.locator('[data-action="sign"]').first().click();await page.waitForSelector('.sidebar');
       const short=await shirtMetrics(page,'김'),normal=await shirtMetrics(page,'김민수'),long=await shirtMetrics(page,'알렉산더아놀드프란체스코');
       assert.equal(short.textLength,null);assert.equal(short.font,normal.font);assert.ok(short.width<normal.width);
-      // Glyph ink may extend beyond its advance width; keep it inside the 58px torso.
-      for(const result of [short,normal,long]){assert.equal(result.anchor,'middle');assert.equal(result.x,'60');assert.ok(Math.abs(result.center-60)<1,JSON.stringify(result));assert.ok(result.width<=57,JSON.stringify(result));}
+      // Font bearings can offset ink from its centered advance box; keep all ink inside the torso.
+      for(const result of [short,normal,long]){assert.equal(result.anchor,'middle');assert.equal(result.x,'60');assert.ok(Math.abs(result.center-60)<3,JSON.stringify(result));assert.ok(result.center-result.width/2>=31&&result.center+result.width/2<=89,JSON.stringify(result));}
       assert.ok(long.font<short.font);console.log(device.name,'shirt natural width and center',JSON.stringify({short,normal,long}));
       await page.evaluate(()=>{state.player.displayName='김';render();});
       assert.equal(await page.evaluate(()=>validateSave(envelope())),true);
       if(device.name==='desktop'){
         // Play an actual scheduled match and retain its live presentation in a downloaded save.
         for(let step=0;step<40&&!await page.evaluate(()=>Boolean(state.matchPresentation));step++){
+          if(await page.locator('.top-actions [data-action="respond-required"]').count()){
+            await page.locator('.top-actions [data-action="respond-required"]').click();
+            await page.locator('[data-action="coach-reply"][data-reply="accept"]').click();
+          }
           await page.locator('[data-action="advance"]').click();await page.waitForFunction(()=>!matchLoading);
         }
         assert.ok(await page.evaluate(()=>state.matchPresentation));
