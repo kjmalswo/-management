@@ -1,6 +1,6 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8'),section=id=>html.match(new RegExp(`<script id="${id}"[^>]*>([\\s\\S]*?)<\\/script>`))[1],DB=JSON.parse(section('game-db')),ctx=vm.createContext({});
-vm.runInContext(section('game-engine').replace('return {pendingResponses','return {generateRoster,pendingResponses')+';globalThis.C=FootballCore;',ctx);const C=ctx.C,ui=section('game-ui');
+vm.runInContext(section('game-engine').replace(/return \{(?=[^}]*normalizeCareerSave)/,'return {generateRoster,')+';globalThis.C=FootballCore;',ctx);const C=ctx.C,ui=section('game-ui');
 const validators=ui.slice(ui.indexOf('function validateDB('),ui.indexOf('function toast(')),imports=ui.slice(ui.indexOf('function prepareImportedCareer('),ui.indexOf('async function restoreCareer('));
 vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)},Core=FootballCore,t=k=>k;${validators}${imports};globalThis.reload=prepareImportedCareer;`,ctx);
 const create=()=>C.createCareer(DB,{...C.clone(DB.profile.defaults),name:'화면 회귀 확인',stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial]))},'domestic','kr2-0');
