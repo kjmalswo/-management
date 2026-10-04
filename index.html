@@ -57,7 +57,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "16.0.0",
+    "version": "16.0.1",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -22847,6 +22847,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "databaseVersion": 1,
     "storeName": "career",
     "slot": "current",
+    "backupSlot": "previous",
     "backupKey": "firstxi-career-backup-v1",
     "backupFormat": "firstxi-browser-save",
     "exportFormat": "firstxi-career",
@@ -26902,8 +26903,11 @@ function openCareerStorage(){
     request.onsuccess=()=>{if(finished){request.result.close();return;}finished=true;clearTimeout(timer);request.result.onversionchange=()=>request.result.close();resolve(request.result);};
   });return storageDBPromise;
 }
-async function careerStorageOperation(mode,value=null){const db=await openCareerStorage(),cfg=DEFAULT_DB.storageRules;return new Promise((resolve,reject)=>{const tx=db.transaction(cfg.storeName,mode==='get'?'readonly':'readwrite'),store=tx.objectStore(cfg.storeName),request=mode==='get'?store.get(cfg.slot):mode==='delete'?store.delete(cfg.slot):store.put(value,cfg.slot);let result;
-  request.onsuccess=()=>{result=request.result;};request.onerror=()=>reject(request.error);tx.onabort=()=>reject(tx.error||Error('storageUnavailable'));tx.onerror=()=>reject(tx.error||Error('storageUnavailable'));tx.oncomplete=()=>resolve(result);
+async function careerStorageOperation(mode,value=null,slot=null){const db=await openCareerStorage(),cfg=DEFAULT_DB.storageRules;return new Promise((resolve,reject)=>{const key=slot??cfg.slot,tx=db.transaction(cfg.storeName,mode==='get'?'readonly':'readwrite'),store=tx.objectStore(cfg.storeName);let result;
+  const bind=request=>{request.onsuccess=()=>{result=request.result;};request.onerror=()=>reject(request.error);};
+  if(mode==='put'&&key===cfg.slot){const prior=store.get(key);prior.onerror=()=>reject(prior.error);prior.onsuccess=()=>{if(prior.result)store.put(prior.result,cfg.backupSlot);bind(store.put(value,key));};}
+  else bind(mode==='get'?store.get(key):mode==='delete'?store.delete(key):store.put(value,key));
+  tx.onabort=()=>reject(tx.error||Error('storageUnavailable'));tx.onerror=()=>reject(tx.error||Error('storageUnavailable'));tx.oncomplete=()=>resolve(result);
 });}
 async function encodeCareer(text){const cfg=DEFAULT_DB.storageRules;if(typeof CompressionStream==='function'){try{const stream=new Blob([text]).stream().pipeThrough(new CompressionStream(cfg.compression));return {encoding:cfg.compression,payload:await new Response(stream).blob()};}catch{}}
   return {encoding:'json',payload:new Blob([text],{type:'application/json'})};
@@ -26939,8 +26943,9 @@ function upgradePresentationDatabase(database,previousDatabase=null){
   // Patch only the old bundled colors; user-edited palettes keep their colors.
   const colorRules=DEFAULT_DB.teamColorRules,stock=new Map(DEFAULT_DB.clubs.map(club=>[club.id,club])),byId=new Map(database.clubs.map(club=>[club.id,club]));
   if(previousDatabase&&previousDatabase.meta.schema!==DEFAULT_DB.meta.schema)for(const previous of previousDatabase.clubs){const club=byId.get(previous.id);if(!club)continue;club.color=previous.color;if(Object.hasOwn(previous,'secondaryColor'))club.secondaryColor=previous.secondaryColor;else delete club.secondaryColor;}
-  database.teamColorRules??=Core.clone(colorRules);
+  database.teamColorRules={...Core.clone(colorRules),...database.teamColorRules,legacyMain:{...Core.clone(colorRules.legacyMain),...database.teamColorRules?.legacyMain},legacyContrast:{...Core.clone(colorRules.legacyContrast),...database.teamColorRules?.legacyContrast}};
   database.uniformRules={...Core.clone(DEFAULT_DB.uniformRules),...database.uniformRules};
+  database.storageRules.backupSlot??=DEFAULT_DB.storageRules.backupSlot;
   for(const [key,legacy] of [['darkContrast',colorRules.legacyContrast.dark],['lightContrast',colorRules.legacyContrast.light]])if(database.uniformRules[key].toLowerCase()===legacy.toLowerCase())database.uniformRules[key]=DEFAULT_DB.uniformRules[key];
   const patchColors=club=>{
     const original=stock.get(club.id),legacy=colorRules.legacyMain[club.id];
@@ -26959,7 +26964,7 @@ function upgradePresentationDatabase(database,previousDatabase=null){
 function parseCareerText(text){try{return JSON.parse(text.replace(/^\uFEFF/,''));}catch{throw Error('saveImportDamaged');}}
 async function restoreCareer(){
   const candidates=[],cfg=DEFAULT_DB.storageRules;let failed=false;
-  const reads=await Promise.allSettled([careerStorageOperation('get'),Promise.resolve().then(()=>localStorage.getItem(DEFAULT_DB.meta.storageKey)),Promise.resolve().then(()=>localStorage.getItem(cfg.backupKey))]);
+  const reads=await Promise.allSettled([careerStorageOperation('get'),careerStorageOperation('get',null,cfg.backupSlot),Promise.resolve().then(()=>localStorage.getItem(DEFAULT_DB.meta.storageKey)),Promise.resolve().then(()=>localStorage.getItem(cfg.backupKey))]);
   for(const r of reads)if(r.status==='fulfilled'&&r.value){let value=r.value;if(typeof value==='string'){try{const parsed=parseCareerText(value);value=parsed.format===cfg.backupFormat?parsed:{encoding:'legacy',payload:value,savedAt:0};}catch{failed=true;continue;}}candidates.push(value);}
   candidates.sort((a,b)=>(b.savedAt||0)-(a.savedAt||0));
   for(const record of candidates){try{const raw=record.encoding==='legacy'?record.payload:await decodeCareer(record),loaded=prepareImportedCareer(parseCareerText(raw));DB=loaded.db;state=loaded.state;storageHealthy=true;return;}catch{failed=true;}}
@@ -26968,7 +26973,7 @@ async function restoreCareer(){
 async function bootGame(){
   render();try{try{const custom=localStorage.getItem(DEFAULT_DB.meta.dbStorageKey);if(custom){const previous=parseCareerText(custom),configured=upgradePresentationDatabase(Core.upgradeDatabase(DEFAULT_DB,previous),previous);validateDB(configured);DB=configured;}}catch{}await restoreCareer();}finally{storageLoading=false;render();if(state)persist();}
 }
-async function clearCareerStorage(){storageEpoch++;storageQueue=null;if(storageWriter)await storageWriter;await Promise.allSettled([careerStorageOperation('delete'),Promise.resolve().then(()=>{localStorage.removeItem(DEFAULT_DB.meta.storageKey);localStorage.removeItem(DEFAULT_DB.storageRules.backupKey);})]);storageHealthy=true;storageStatus='saveReady';}
+async function clearCareerStorage(){storageEpoch++;storageQueue=null;if(storageWriter)await storageWriter;await Promise.allSettled([careerStorageOperation('delete'),careerStorageOperation('delete',null,DEFAULT_DB.storageRules.backupSlot),Promise.resolve().then(()=>{localStorage.removeItem(DEFAULT_DB.meta.storageKey);localStorage.removeItem(DEFAULT_DB.storageRules.backupKey);})]);storageHealthy=true;storageStatus='saveReady';}
 window.addEventListener('pagehide',()=>{if(state&&!storageLoading)persist();});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&state&&!storageLoading)persist();});
 
