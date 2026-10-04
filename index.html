@@ -57,7 +57,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "15.0.0",
+    "version": "15.0.1",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -12835,7 +12835,10 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "reviewGrowthUp": "상승",
       "reviewGrowthDown": "하락",
       "reviewGrowthSame": "변화 없음",
-      "reviewPlayed": "경기"
+      "reviewPlayed": "경기",
+      "reviewGrowthUpSymbol": "+",
+      "reviewGrowthDownSymbol": "−",
+      "reviewGrowthSameSymbol": "—"
     },
     "statFields": [
       {
@@ -18730,6 +18733,10 @@ function openSeasonReview(season=state.season){
   if(state.matchPresentation||matchLoading||calendarLoading)return;if(season===state.season&&Core.seasonReviewReady(DB,state))Core.captureSeasonReview(DB,state);
   const review=state.seasonRecaps.find(r=>r.season===season);if(!review){toast(t('reviewNotReady'));return;}reviewSeason=season;reviewPage=0;reviewLeague=review.league;drawSeasonReview();
 }
+function seasonGrowthItem(attribute,growth){
+  const direction=growth>0?'Up':growth<0?'Down':'Same',style=growth>0?'positive':growth<0?'negative':'muted',label='reviewGrowth'+direction;
+  return '<div class="row between"><span>'+h(attribute.name)+'</span><b class="num"><span class="'+style+'" data-growth-attribute="'+h(attribute.id)+'" aria-label="'+h(t(label))+'">'+h(t(label+'Symbol'))+'</span></b></div>';
+}
 function drawSeasonReview(){
   const r=state.seasonRecaps.find(r=>r.season===reviewSeason);if(!r)return;const pages=DB.seasonReviewRules.pages;reviewPage=Core.clamp(reviewPage,0,pages.length-1);const page=pages[reviewPage],league=r.leagues.find(l=>l.id===reviewLeague)||r.leagues[0],finish=r.leagues.find(l=>l.id===r.league)?.table.find(row=>row.club===r.club),stats=r.stats;
   let content='';
@@ -18739,7 +18746,7 @@ function drawSeasonReview(){
     content='<label>'+h(t('competition'))+'<select id="review-league">'+r.leagues.map(l=>'<option value="'+h(l.id)+'" '+(l.id===league.id?'selected':'')+'>'+h(l.name)+'</option>').join('')+'</select></label><section class="card"><h3>'+h(league.name)+'</h3><div class="review-list table-wrap"><table><thead><tr>'+['rank','club','reviewPlayed','wins','draws','losses','goalDiff','points'].map(k=>'<th>'+h(t(k))+'</th>').join('')+'</tr></thead><tbody>'+league.table.map(row=>'<tr class="'+(row.club===r.club?'highlight':'')+'"><td>'+n(row.rank)+'</td><td>'+h(row.name)+'</td>'+['played','wins','draws','losses','goalDiff','points'].map(k=>'<td>'+n(row[k])+'</td>').join('')+'</tr>').join('')+'</tbody></table></div></section><div class="review-leaders">'+leader(league.goals,'goals')+leader(league.assists,'assists')+'</div>';
   }
   if(page==='records')content='<div class="review-stat-groups">'+DB.ui.statGroups.map(group=>'<section class="card"><h3>'+h(group.name)+'</h3><table><tbody>'+group.fields.map(key=>{const f=DB.ui.statFields.find(f=>f.id===key);return '<tr><td>'+h(f.label)+'</td><td class="right num">'+n(Core.metric(DB,stats,key),f.digits)+' '+h(f.unit||'')+'</td></tr>';}).join('')+'</tbody></table></section>').join('')+'</div>';
-  if(page==='journey')content='<section class="card"><h3>'+h(t('reviewGrowth'))+'</h3><p class="small muted">'+h(t('reviewGrowthHint'))+'</p><p class="small muted">'+h(t('reviewBaseline',{date:r.baselineDate}))+(r.baselineDate!==r.start?' · '+h(t('reviewPartial')):'')+'</p><div class="role-metrics">'+DB.attributes.map(a=>detail(a.name,'<span class="'+(r.growth[a.id]>0?'positive':r.growth[a.id]<0?'negative':'muted')+'" aria-label="'+h(t(r.growth[a.id]>0?'reviewGrowthUp':r.growth[a.id]<0?'reviewGrowthDown':'reviewGrowthSame'))+'">'+(r.growth[a.id]>0?'+':r.growth[a.id]<0?'−':'—')+'</span>')).join('')+'</div></section><section class="card"><h3>'+h(t('reviewBestMatches'))+'</h3><div class="review-list">'+(r.best.length?r.best.map(m=>'<article class="review-story"><div class="row between wrap"><b>'+h(m.date)+' · '+h(m.opponent)+'</b>'+badge(n(m.stats.rating,1),'green')+'</div><p class="small">'+h(m.score)+' · '+h(m.position)+' · '+h(t('goal'))+' '+n(m.stats.goals)+' · '+h(t('assist'))+' '+n(m.stats.assists)+'</p></article>').join(''):'<p class="notice">'+h(t('reviewNoMatches'))+'</p>')+'</div></section><section class="card"><h3>'+h(t('decisionHistory'))+'</h3><div class="review-list">'+(r.choices.length?r.choices.map(e=>'<article class="review-story"><p class="small muted">'+h(e.date)+(e.automatic?' · '+h(t('decisionAutomatic')):'')+'</p><b>'+h(e.name)+' · '+h(e.choice)+'</b><p class="small">'+h(e.description)+'</p></article>').join(''):'<p class="notice">'+h(t('reviewNoChoices'))+'</p>')+'</div></section>';
+  if(page==='journey')content='<section class="card"><h3>'+h(t('reviewGrowth'))+'</h3><p class="small muted">'+h(t('reviewGrowthHint'))+'</p><p class="small muted">'+h(t('reviewBaseline',{date:r.baselineDate}))+(r.baselineDate!==r.start?' · '+h(t('reviewPartial')):'')+'</p><div class="role-metrics">'+DB.attributes.map(a=>seasonGrowthItem(a,r.growth[a.id])).join('')+'</div></section><section class="card"><h3>'+h(t('reviewBestMatches'))+'</h3><div class="review-list">'+(r.best.length?r.best.map(m=>'<article class="review-story"><div class="row between wrap"><b>'+h(m.date)+' · '+h(m.opponent)+'</b>'+badge(n(m.stats.rating,1),'green')+'</div><p class="small">'+h(m.score)+' · '+h(m.position)+' · '+h(t('goal'))+' '+n(m.stats.goals)+' · '+h(t('assist'))+' '+n(m.stats.assists)+'</p></article>').join(''):'<p class="notice">'+h(t('reviewNoMatches'))+'</p>')+'</div></section><section class="card"><h3>'+h(t('decisionHistory'))+'</h3><div class="review-list">'+(r.choices.length?r.choices.map(e=>'<article class="review-story"><p class="small muted">'+h(e.date)+(e.automatic?' · '+h(t('decisionAutomatic')):'')+'</p><b>'+h(e.name)+' · '+h(e.choice)+'</b><p class="small">'+h(e.description)+'</p></article>').join(''):'<p class="notice">'+h(t('reviewNoChoices'))+'</p>')+'</div></section>';
   openModal('<div class="season-review" data-review-season="'+r.season+'"><header class="section-head"><div><p class="eyebrow">'+h(seasonLabel(r.season))+' · '+h(r.start)+' — '+h(r.date)+'</p><h2 id="dialog-title">'+h(t('seasonReview'))+' · '+h(t('review'+page[0].toUpperCase()+page.slice(1)))+'</h2></div>'+btn(t('reviewClose'),'close')+'</header><nav class="tabs-inline review-tabs">'+pages.map((id,i)=>btn(t('review'+id[0].toUpperCase()+id.slice(1)),'review-page','data-page="'+i+'"',reviewPage===i?'selected':'')).join('')+'</nav><div class="review-content">'+content+'</div><footer class="review-footer"><button type="button" data-action="review-page" data-page="'+(reviewPage-1)+'" '+(reviewPage===0?'disabled':'')+'>'+h(t('reviewPrevious'))+'</button><span class="small muted">'+h(t('reviewPage',{page:reviewPage+1,total:pages.length}))+'</span>'+(reviewPage===pages.length-1&&r.season===state.season&&Core.seasonReady(state)?btn(t('reviewStart'),'review-start','','primary'):'<button type="button" data-action="review-page" data-page="'+(reviewPage+1)+'" '+(reviewPage===pages.length-1?'disabled':'')+'>'+h(t('reviewNext'))+'</button>')+'</footer></div>');
   document.querySelector('#review-league')?.addEventListener('change',event=>{reviewLeague=event.target.value;drawSeasonReview();document.getElementById('review-league')?.focus({preventScroll:true});});
 }
