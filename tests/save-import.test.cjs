@@ -19,6 +19,17 @@ const create=()=>{
   return {schema:DB.meta.schema,db:C.clone(DB),state:C.createCareer(DB,profile,offer.route.id,offer.club.id)};
 };
 const reload=value=>context.importSave.prepareImportedCareer(context.importSave.parseCareerText(JSON.stringify(value)));
+
+test('a schema 13 save with the pre-expansion color registry restores without changing its career',()=>{
+  const saved=create();saved.db.meta.version='15.0.2';
+  for(const club of saved.db.clubs.filter(c=>/^(?:youth-)?(?:en-champ|es-segunda|de-bundesliga2|fr-ligue2|it-serieb|pt-liga2|br-serieb|jp-3)-2026-/.test(c.id)))delete saved.db.teamColorRules.legacyMain[club.id];
+  saved.db.clubs.find(c=>c.id===saved.state.player.club).color='#123456';
+  const before=JSON.stringify(saved.state),snapshot=s=>JSON.stringify({date:s.date,player:s.player,fixtures:s.fixtures}),expected=snapshot(saved.state),loaded=reload(saved);
+  assert.equal(snapshot(loaded.state)===expected,true,'player, date, contract, attributes, history and fixtures preserved');
+  assert.equal(loaded.db.clubs.find(c=>c.id===saved.state.player.club).color,'#123456');
+  assert.equal(Object.keys(loaded.db.teamColorRules.legacyMain).length,Object.keys(DB.teamColorRules.legacyMain).length);
+  assert.equal(JSON.stringify(saved.state),before);
+});
 test('an exported new career imports without requiring every tactic to share weight keys',()=>{
   const saved=create(),loaded=reload(saved);
   assert.equal(loaded.state.player.name,saved.state.player.name);
