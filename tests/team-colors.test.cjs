@@ -1,0 +1,26 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8'),section=id=>html.match(new RegExp(`<script id="${id}"[^>]*>([\\s\\S]*?)<\\/script>`))[1],DB=JSON.parse(section('game-db')),context=vm.createContext({});
+vm.runInContext(section('game-engine')+';globalThis.C=FootballCore;',context);const C=context.C,ui=section('game-ui');
+const validators=ui.slice(ui.indexOf('function validateDB('),ui.indexOf('function toast(')),imports=ui.slice(ui.indexOf('function prepareImportedCareer('),ui.indexOf('async function restoreCareer('));
+vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)},Core=FootballCore,t=k=>k;${validators}${imports};globalThis.reload=prepareImportedCareer;globalThis.validate=validateDB;`,context);
+const copy=value=>JSON.parse(JSON.stringify(value)),oldDatabase=()=>{const old=copy(DB);old.meta.version='15.0.1';delete old.teamColorRules;delete old.uniformRules.contrastRules;old.uniformRules.darkContrast=DB.teamColorRules.legacyContrast.dark;old.uniformRules.lightContrast=DB.teamColorRules.legacyContrast.light;for(const club of old.clubs){club.color=DB.teamColorRules.legacyMain[club.id];delete club.secondaryColor;}return old;};
+const save=()=>{const old=oldDatabase();return {schema:old.meta.schema,db:old,state:C.createCareer(old,{...copy(old.profile.defaults),name:'투톤 저장 확인',stats:Object.fromEntries(old.attributes.map(a=>[a.id,a.initial]))},'domestic','kr2-0')};};
+test('all bundled clubs have distinct valid colors and youth inherit both parent colors',()=>{
+  context.validate(DB);for(const club of DB.clubs){assert.match(club.color,/^#[0-9a-f]{6}$/i);assert.match(club.secondaryColor,/^#[0-9a-f]{6}$/i);assert.notEqual(club.color.toLowerCase(),club.secondaryColor.toLowerCase(),club.id);if(club.parent){const parent=DB.clubs.find(c=>c.id===club.parent);assert.equal(club.color,parent.color);assert.equal(club.secondaryColor,parent.secondaryColor);}}
+  for(const [name,colors] of [['바르셀로나',['#004D98','#A50044']],['유벤투스',['#111111','#FFFFFF']],['인터 마이애미',['#F7B5CD','#111111']],['김해 FC2008',['#D71920','#111111']]]){const club=DB.clubs.find(c=>c.name===name);assert.deepEqual([club.color,club.secondaryColor],colors);}
+  for(const league of DB.leagues.filter(l=>l.kind!=='youth'&&l.kind!=='continental'))assert.ok(new Set(DB.clubs.filter(c=>!c.historical&&!c.parent&&c.league===league.id).map(c=>c.color+'/'+c.secondaryColor)).size>2,league.id);
+});
+test('a pre-update career gains new colors without changing any career state or input',()=>{
+  const original=save();while(!original.state.player.history.length)C.advance(original.db,original.state);original.state.matchPresentation={reportId:original.state.player.history.at(-1).id,phase:'live',cursor:2,paused:true};const before=JSON.stringify(original),loaded=context.reload(original);assert.equal(JSON.stringify(original),before);assert.equal(JSON.stringify(loaded.state),JSON.stringify(original.state));
+  for(const stock of DB.clubs){const club=loaded.db.clubs.find(c=>c.id===stock.id);assert.deepEqual([club.color,club.secondaryColor],[stock.color,stock.secondaryColor],stock.id);}const twice=context.reload(loaded);assert.deepEqual(copy(twice),copy(loaded));
+});
+test('custom primary, explicit secondary and extra clubs survive color migration',()=>{
+  const original=save(),one=original.db.clubs.find(c=>c.id==='kr2-0'),two=original.db.clubs.find(c=>c.id==='kr2-1');one.color='#123456';two.secondaryColor='#AB1234';const extra={...copy(one),id:'custom-club',name:'사용자 추가 구단',color:'#FFFFFF'};delete extra.secondaryColor;original.db.clubs.push(extra);
+  const loaded=context.reload(original);assert.equal(loaded.db.clubs.find(c=>c.id===one.id).color,'#123456');assert.deepEqual([loaded.db.clubs.find(c=>c.id===two.id).color,loaded.db.clubs.find(c=>c.id===two.id).secondaryColor],[two.color,two.secondaryColor]);const custom=loaded.db.clubs.find(c=>c.id===extra.id);assert.equal(custom.color,'#FFFFFF');assert.notEqual(custom.color,custom.secondaryColor);assert.match(custom.secondaryColor,/^#[0-9a-f]{6}$/i);
+});
+test('invalid secondary colors and contrast settings are rejected',()=>{
+  const wrong=copy(DB);wrong.clubs[0].secondaryColor='red;position:fixed';assert.throws(()=>context.validate(wrong),/clubs/);const missing=copy(DB);delete missing.clubs[0].secondaryColor;assert.throws(()=>context.validate(missing),/secondaryColor/);const contrast=copy(DB);contrast.uniformRules.contrastRules.gammaDivisor=0;assert.throws(()=>context.validate(contrast),/uniformRules.colors/);
+});
+test('legacy schema upgrades preserve edited club colors and refresh bundled youth palettes',()=>{
+  const original=save();original.schema=original.state.schema=original.db.meta.schema=12;original.db.meta.version='13.0.0';original.db.clubs.find(c=>c.id==='kr2-0').color='#123456';const loaded=context.reload(original);assert.equal(loaded.schema,DB.meta.schema);assert.equal(loaded.db.clubs.find(c=>c.id==='kr2-0').color,'#123456');for(const youth of loaded.db.clubs.filter(c=>c.parent)){const parent=loaded.db.clubs.find(c=>c.id===youth.parent);assert.equal(youth.color,parent.color);assert.equal(youth.secondaryColor,parent.secondaryColor);}
+});
