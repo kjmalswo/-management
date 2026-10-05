@@ -99,7 +99,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "19.1.0",
+    "version": "19.1.1",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -31565,7 +31565,6 @@ function myHistory(){return state.player.history.filter(f=>f.season===state.seas
 function nextFixture(){return state.player.freeAgent?null:Core.myFixtures(state).filter(f=>!f.result&&f.date>=state.date&&(f.home===state.player.club||f.away===state.player.club)).sort((a,b)=>a.date.localeCompare(b.date))[0];}
 function fixtureCard(f,result=null){const i=idx(),score=result?`${result.home.stats.goals} : ${result.away.stats.goals}`:t('versus');return `<div class="fixture"><div>${crest(i.clubs[f.home])}<b>${clubLink(f.home)}</b><p>${h(t('home'))}</p></div><div><div class="${result?'score':'vs'} num">${h(score)}</div><p>${h(f.date)}</p>${result?`<p class="small">${continentalResult(result,f.stage==='final')}</p>`:''}</div><div>${crest(i.clubs[f.away])}<b>${clubLink(f.away)}</b><p>${h(t('away'))}</p></div></div>`;}
 function matchOutcome(record){const isHome=record.club===record.home,own=(isHome?record.result.home:record.result.away).stats.goals,opp=(isHome?record.result.away:record.result.home).stats.goals;return {class:record.result.winner?(record.result.winner===record.club?'win':'loss'):own>opp?'win':own<opp?'loss':'draw',label:t(record.result.winner?(record.result.winner===record.club?'win':'loss'):own>opp?'win':own<opp?'loss':'draw'),score:`${own}–${opp}${record.result.penalties?' · '+t('competitionTieBreak')+' '+record.result.penalties.join('–'):''}`};}
-document.addEventListener('change',event=>{if(event.target.id==='fixture-competition'){fixtureCompetition=event.target.value;render();}if(event.target.id==='team-competition'){teamCompetition=event.target.value;render();}});
 function competitionName(f){const league=idx().leagues[f.competition||f.league||currentClub().league],cfg=DB.continentalRules,ids=f.formatRevision?cfg.stageIds:cfg.legacyStageIds,labels=f.formatRevision?cfg.stageLabels:cfg.legacyStageLabels,stage=f.stage==='league'?cfg.leaguePhaseLabel:labels[ids.indexOf(f.stage)];return league.name+(f.postseason?' · '+t('postseasonRound',{name:DB.postseasonRules.stageNames[f.tie]||f.tie||f.group,leg:f.leg||f.round+1}):stage?' · '+t(stage)+(f.legs>1?' · '+t('competitionLeg',{leg:f.leg}):''):'');}
 
 function historyItems(records){if(!records.length)return `<div class="empty">${h(t('noMatches'))}</div>`;return records.slice().reverse().map(record=>{const result=matchOutcome(record),opponent=idx().clubs[record.home===record.club?record.away:record.home];return `<div class="history-item"><div class="result-badge ${result.class}">${h(result.label)} ${h(result.score)}</div><div><b>${clubLink(opponent.id)}</b><p>${h(record.date)} · ${h(competitionName(record))} · ${h(t(record.appearance))} · ${n(record.stats.minutes)}${h(t('minutesShort'))}</p></div><div class="row">${record.stats.minutes?`<span class="rating num">${n(record.stats.rating,1)}</span>`:badge(t('unused'))}${btn(t('matchDetails'),'report',`data-id="${h(record.id)}"`,'subtle small')}</div></div>`;}).join('');}
@@ -31699,14 +31698,21 @@ function traitSliders(){return `<div class="divider"></div><h3>${h(t('traitTitle
 function tacticsCard(){const p=state.player,club=currentClub(),manager=state.world.clubs[p.club].manager,tactic=Core.managerTactic(DB,state,p.club),role=Core.roleAssignment(DB,p,p.club,state);return `<section class="card"><div class="section-head"><h2>${h(t('tacticalFit'))}</h2>${badge(tactic.name)}</div><div class="detail-list">${detail(t('manager'),manager.name)}${detail(t('roleRank'),[p.position,p.secondaryPosition,p.tertiaryPosition].join(' / '))}${detail(t('actualRole'),role.position)}${detail(t('roleFit'),n(role.fit*DB.rules.scale,1)+'%')}${detail(t('coaching'),n(manager.coaching,1))}${detail(t('adaptation'),n(p.adaptation,1))}</div><p class="small muted" style="margin-top:16px">${h(t('managerHint'))}</p></section>`;}
 
 
-document.addEventListener('change',event=>{
+function changeBrowseFilter(event){
+ // Commit select input before a redraw can replace its pending change target.
+ // Capture also handles hosts that deliver change without bubbling.
+ if(!event.target.matches('select')||!event.target.isConnected)return;
  const id=event.target.id,value=event.target.value;
  if(event.target.dataset.profileFilter){const key=event.target.dataset.profileFilter,field=DB.profile.fields.find(f=>f.id===key),location=profileLocations[key];if(event.target.dataset.step==='country'){location.country=value;location.league=sortedBrowseLeagues(DB.leagues.filter(l=>l.country===value&&DB.profile.preferredLeagues.some(p=>p.id===l.id)))[0]?.id;}else location.league=value;draft[key]=DB.profile.unspecifiedId;document.querySelector(`[data-profile-location="${key}"]`).outerHTML=profileLocationField(field);document.getElementById(id)?.focus({preventScroll:true});return;}
  if(!state)return;
  if(id==='agent-country-filter'){agentCountryFilter=value;agentLeagueFilter='all';agentTarget=null;agentClubQuery='';render();}
+ else if(id==='agent-league-filter'){agentLeagueFilter=value;agentTarget=null;refreshAgentTargets();return;}
+ else if(id==='agent-target'){agentTarget=value;refreshAgentTargets();return;}
  else if(id==='team-country'){teamCompetition=sortedBrowseLeagues(DB.leagues.filter(l=>l.country===value))[0]?.id;teamClubSelection=null;render();}
+ else if(id==='team-competition'){teamCompetition=value;teamClubSelection=null;render();}
  else if(id==='team-browse-club'){teamClubSelection=value;render();}
  else if(id==='fixture-country'){fixtureCountryFilter=value;fixtureCompetition='all';render();}
+ else if(id==='fixture-competition'){fixtureCompetition=value;render();}
  else if(id==='world-browse-country'){worldCountryFilter=value;worldLeagueFilter='all';worldClubFilter='all';worldClubQuery='';render();}
  else if(id==='world-browse-league'){worldLeagueFilter=value;worldClubFilter='all';render();}
  else if(id==='world-browse-club'){worldClubFilter=value;render();}
@@ -31715,7 +31721,9 @@ document.addEventListener('change',event=>{
  else if(id==='world-player-club'){worldPlayerClubFilter=value;render();}
  else return;
  document.getElementById(id)?.focus({preventScroll:true});
-});
+}
+document.addEventListener('input',changeBrowseFilter,true);
+document.addEventListener('change',changeBrowseFilter,true);
 
 function sectionNavigation(){const group=DB.ui.navigationGroups.find(g=>g.views.includes(screen));return group&&group.views.length>1?`<nav class="group-tabs" aria-label="${h(t('secondaryNavigation'))}"><div class="section-path"><span class="section-icon" aria-hidden="true">${h(group.icon)}</span><strong>${h(group.label)}</strong><span aria-hidden="true">›</span><span>${h(t('navigationPages'))}</span></div><div class="page-tab-grid" style="--page-count:${group.views.length}">${group.views.map(id=>{const view=DB.ui.tabs.find(v=>v.id===id);return btn(view.label,'tab',`data-tab="${h(id)}" aria-current="${screen===id?'page':'false'}"`,screen===id?'selected':'');}).join('')}</div></nav>`:'';}
 function organizeView(){const content=document.querySelector('.content');if(!content)return;const pane=el=>{if(el)el.classList.add('list-pane');};for(const table of content.querySelectorAll('.table-wrap'))pane(table);for(const list of content.querySelectorAll('.calendar-list,.deal-list'))pane(list);
@@ -31789,8 +31797,8 @@ function drawSeasonReview(){
   if(page==='records')content='<div class="review-stat-groups">'+DB.ui.statGroups.map(group=>'<section class="card"><h3>'+h(group.name)+'</h3><table><tbody>'+group.fields.map(key=>{const f=DB.ui.statFields.find(f=>f.id===key);return '<tr><td>'+h(f.label)+'</td><td class="right num">'+n(Core.metric(DB,stats,key),f.digits)+' '+h(f.unit||'')+'</td></tr>';}).join('')+'</tbody></table></section>').join('')+'</div>';
   if(page==='journey')content='<section class="card"><h3>'+h(t('reviewGrowth'))+'</h3><p class="small muted">'+h(t('reviewGrowthHint'))+'</p><p class="small muted">'+h(t('reviewBaseline',{date:r.baselineDate}))+(r.baselineDate!==r.start?' · '+h(t('reviewPartial')):'')+'</p><div class="role-metrics">'+DB.attributes.map(a=>seasonGrowthItem(a,r.growth[a.id])).join('')+'</div></section><section class="card"><h3>'+h(t('reviewBestMatches'))+'</h3><div class="review-list">'+(r.best.length?r.best.map(m=>'<article class="review-story"><div class="row between wrap"><b>'+h(m.date)+' · '+h(m.opponent)+'</b>'+badge(n(m.stats.rating,1),'green')+'</div><p class="small">'+h(m.score)+' · '+h(m.position)+' · '+h(t('goal'))+' '+n(m.stats.goals)+' · '+h(t('assist'))+' '+n(m.stats.assists)+'</p></article>').join(''):'<p class="notice">'+h(t('reviewNoMatches'))+'</p>')+'</div></section><section class="card"><h3>'+h(t('decisionHistory'))+'</h3><div class="review-list">'+(r.choices.length?r.choices.map(e=>'<article class="review-story"><p class="small muted">'+h(e.date)+(e.automatic?' · '+h(t('decisionAutomatic')):'')+'</p><b>'+h(e.name)+' · '+h(e.choice)+'</b><p class="small">'+h(e.description)+'</p></article>').join(''):'<p class="notice">'+h(t('reviewNoChoices'))+'</p>')+'</div></section>';
   openModal('<div class="season-review" data-review-season="'+r.season+'"><header class="section-head"><div><p class="eyebrow">'+h(seasonLabel(r.season))+' · '+h(r.start)+' — '+h(r.date)+'</p><h2 id="dialog-title">'+h(t('seasonReview'))+' · '+h(t('review'+page[0].toUpperCase()+page.slice(1)))+'</h2></div>'+btn(t('reviewClose'),'close')+'</header><nav class="tabs-inline review-tabs">'+pages.map((id,i)=>btn(t('review'+id[0].toUpperCase()+id.slice(1)),'review-page','data-page="'+i+'"',reviewPage===i?'selected':'')).join('')+'</nav><div class="review-content">'+content+'</div><footer class="review-footer"><button type="button" data-action="review-page" data-page="'+(reviewPage-1)+'" '+(reviewPage===0?'disabled':'')+'>'+h(t('reviewPrevious'))+'</button><span class="small muted">'+h(t('reviewPage',{page:reviewPage+1,total:pages.length}))+'</span>'+(reviewPage===pages.length-1&&r.season===state.season&&Core.seasonReady(state)?btn(t('reviewStart'),'review-start','','primary'):'<button type="button" data-action="review-page" data-page="'+(reviewPage+1)+'" '+(reviewPage===pages.length-1?'disabled':'')+'>'+h(t('reviewNext'))+'</button>')+'</footer></div>');
-  document.querySelector('#review-country')?.addEventListener('change',event=>{reviewLeague=sortedBrowseLeagues(r.leagues.map(l=>idx().leagues[l.id]).filter(l=>l.country===event.target.value))[0].id;drawSeasonReview();document.getElementById('review-country')?.focus({preventScroll:true});});
-  document.querySelector('#review-league')?.addEventListener('change',event=>{reviewLeague=event.target.value;drawSeasonReview();document.getElementById('review-league')?.focus({preventScroll:true});});
+  const changeReviewFilter=event=>{if(!event.target.isConnected)return;const id=event.target.id;reviewLeague=id==='review-country'?sortedBrowseLeagues(r.leagues.map(l=>idx().leagues[l.id]).filter(l=>l.country===event.target.value))[0].id:event.target.value;drawSeasonReview();document.getElementById(id)?.focus({preventScroll:true});};
+  for(const id of ['review-country','review-league'])for(const type of ['input','change'])document.getElementById(id)?.addEventListener(type,changeReviewFilter);
 }
 
 function syncSeasonCalendar(){
@@ -31835,8 +31843,6 @@ document.addEventListener('input',event=>{if(event.target.id==='agent-club-searc
 document.addEventListener('compositionend',event=>{if(event.target.id==='agent-club-search'){agentClubQuery=event.target.value;refreshAgentTargets();}});
 document.addEventListener('change',event=>{
  if(!state)return;const form=event.target.closest('form');
- if(event.target.id==='agent-league-filter'){agentLeagueFilter=event.target.value;agentTarget=null;refreshAgentTargets();}
- if(event.target.id==='agent-target'){agentTarget=event.target.value;refreshAgentTargets();}
  if(event.target.id==='agent-select'){const agent=DB.agents.find(a=>a.id===event.target.value);document.querySelector('[data-action="agent-change"]').disabled=agent.id===state.agent.id;document.getElementById('agent-candidate-notes').textContent=agent.description+' · '+t('agentCommission')+' '+n(agent.commission)+'% · '+t('agentCapacity')+' '+agent.skills.capacity;}
  if(form?.id==='agent-mandate-form'){const mandate=Object.fromEntries(new FormData(form));document.getElementById('agent-mandate-notes').innerHTML=agentMandateNotes(mandate);}
  if(form?.id==='agent-brief-form')document.getElementById('agent-brief-notes').innerHTML=agentBriefNotes(Object.fromEntries(new FormData(form)));
