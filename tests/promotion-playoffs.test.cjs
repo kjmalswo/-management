@@ -5,7 +5,7 @@ const validators=ui.slice(ui.indexOf('function validateDB('),ui.indexOf('functio
 vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)},Core=FootballCore,t=k=>k;${validators}${imports};globalThis.V={validateDB,validateSave,prepareImportedCareer};`,ctx);
 const plain=value=>JSON.parse(JSON.stringify(value));let base;
 const create=()=>{base??=C.createCareer(DB,{...C.clone(DB.profile.defaults),name:'승강 검증',startingSeed:7,stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial]))},'domestic','kr2-0');return C.clone(base);};
-function completeRegular(s,{gimLast=false,dropParent=null,reserveFirst=null}={}){
+function completeRegular(s,{gimLast=false,dropParent=null,reserveFirst=null}={},db=DB){
   for(const league of DB.leagues.filter(l=>l.kind==='domestic')){
     let clubs=DB.clubs.filter(c=>!c.parent&&!c.historical&&C.indexes(DB,s).clubs[c.id].league===league.id).map(c=>c.id);
     if(gimLast&&league.id==='kr-1')clubs=[...clubs.filter(id=>id!==DB.postseasonRules.krSpecial.forcedClub),DB.postseasonRules.krSpecial.forcedClub];
@@ -13,7 +13,7 @@ function completeRegular(s,{gimLast=false,dropParent=null,reserveFirst=null}={})
     if(clubs.includes(reserveFirst))clubs=[reserveFirst,...clubs.filter(id=>id!==reserveFirst)];
     for(const f of s.fixtures[league.id]||[])f.result={duration:90,home:{stats:{goals:clubs.indexOf(f.home)<clubs.indexOf(f.away)?2:0}},away:{stats:{goals:clubs.indexOf(f.away)<clubs.indexOf(f.home)?2:0}}};
   }
-  s.date=C.dateAdd(s.seasonStart,DB.calendarRules.scheduleEnd);C.advancePostseason(DB,s);return s;
+  s.date=C.dateAdd(s.seasonStart,DB.calendarRules.scheduleEnd);s.trainingProgram.reviewDate=C.dateAdd(s.seasonStart,DB.calendarRules.finalDay);C.advancePostseason(db,s);return s;
 }
 function finish(s,db=DB,{bestOfThree=false}={}){
   for(let pass=0;pass<30;pass++){
@@ -88,9 +88,36 @@ test('old saves preserve existing results, contracts and promoted teams while de
   const old=plain(DB),s=create();delete old.postseasonRules;delete s.postseason;
   const extra=new Set(['en-champ','es-segunda','de-bundesliga2','fr-ligue2','it-serieb','pt-liga2','br-serieb','jp-3']);old.leagues=old.leagues.filter(l=>!extra.has(l.id)&&!l.sourceLeagues&&!extra.has(l.parentLeague));old.clubs=old.clubs.filter(c=>old.leagues.some(l=>l.id===c.league));for(const id of Object.keys(s.fixtures))if(!old.leagues.some(l=>l.id===id))delete s.fixtures[id];
   s.world.clubs['kr2-0'].league='kr-1';s.world.clubs['kr1-0'].league='kr-2';C.applyClubPolicy(DB,s);s.fixtures['kr-1']=C.schedule(DB,'kr-1',s.season,s.seasonStart,s);s.fixtures['kr-2']=C.schedule(DB,'kr-2',s.season,s.seasonStart,s);const first=s.fixtures['kr-2'][0];first.result={duration:90,home:{stats:{goals:1}},away:{stats:{goals:0}}};s.world.clubs['kr2-0'].league='kr-1';old.meta.version='15.0.2';delete old.careerDecisionRules.rewardRevision;const before=plain({fixtures:s.fixtures,contract:s.player.contract,stats:s.player.stats});const loaded=ctx.V.prepareImportedCareer({schema:old.meta.schema,db:old,state:s});assert.deepEqual(plain(loaded.state.fixtures),before.fixtures);assert.deepEqual(plain(loaded.state.player.contract),before.contract);assert.deepEqual(plain(loaded.state.player.stats),before.stats);assert.equal(loaded.state.world.clubs['kr2-0'].league,'kr-1');assert.ok(loaded.state.postseason.deferred.includes('en-champ'));assert.equal(loaded.db.careerDecisionRules.focusDays,21);ctx.V.validateSave(loaded);
-  const late=C.clone(s);late.date=C.dateAdd(late.seasonStart,DB.calendarRules.finalDay);delete late.postseason;const after=ctx.V.prepareImportedCareer({schema:old.meta.schema,db:old,state:late});assert.ok(after.state.postseason.deferred.includes('kr-1'));assert.doesNotThrow(()=>C.advancePostseason(after.db,after.state));
+  const late=C.clone(s);late.date=C.dateAdd(late.seasonStart,DB.calendarRules.finalDay);late.trainingProgram.reviewDate=late.date;delete late.postseason;const after=ctx.V.prepareImportedCareer({schema:old.meta.schema,db:old,state:late});assert.ok(after.state.postseason.deferred.includes('kr-1'));assert.doesNotThrow(()=>C.advancePostseason(after.db,after.state));
 });
 test('invalid bracket references and duplicate movement data are rejected',()=>{
   const broken=C.clone(DB);broken.postseasonRules.boundaries[0].nodes[0].home='w:missing';assert.throws(()=>ctx.V.validateDB(broken),/postseason.node/);
   const s=completeRegular(create());s.postseason.moves.push(C.clone(s.postseason.moves[0]));assert.throws(()=>ctx.V.validateSave({schema:DB.meta.schema,db:DB,state:s}),/postseason.state/);
+});
+
+test('normal Korean playoffs use actual bottom ranks in legacy twelve-team seasons',()=>{
+  const s=create();s.seasonStart='2028-08-01';s.date=s.seasonStart;delete s.postseason;
+  completeRegular(s);const t=s.postseason.competitions.kr12,upper=C.standings(DB,s,'kr-1');
+  assert.equal(upper.length,12);
+  assert.equal(t.nodes.find(n=>n.id==='exchange1').home,'u'+(upper.length-2));
+  assert.equal(t.nodes.find(n=>n.id==='exchange2').home,'u'+(upper.length-1));
+  finish(s);assert.equal(t.status,'complete');
+  assert.equal(s.postseason.moves.filter(m=>m.reason==='kr12'&&m.to==='kr-2').length,s.postseason.moves.filter(m=>m.reason==='kr12'&&m.to==='kr-1').length);
+});
+
+test('a legacy season-end deadlock recovers without rewriting any created match or player record',()=>{
+  const old=C.clone(DB);delete old.postseasonRules.boundaries.find(r=>r.id==='kr12').upperSeedOffsets;
+  const s=create();s.seasonStart='2028-08-01';s.date=s.seasonStart;delete s.postseason;
+  finish(completeRegular(s,{},old),old);const t=s.postseason.competitions.kr12;
+  assert.equal(t.ties.length,3);assert.equal(t.seeds.u13,undefined);
+  t.nodes.push(C.clone(old.postseasonRules.boundaries.find(r=>r.id==='kr12').nodes.find(n=>n.id==='exchange2')));t.status='playing';
+  s.date=C.dateAdd(s.seasonStart,DB.calendarRules.finalDay);for(const e of s.calendar.entries)e.completed=true;s.calendar.ended=true;
+  assert.equal(C.nextCalendar(s),null);assert.equal(C.seasonReady(s),false);
+  const before=plain({fixtures:s.fixtures,player:s.player,moves:s.postseason.moves,date:s.date,ties:t.ties});
+  const loaded=ctx.V.prepareImportedCareer({schema:old.meta.schema,db:old,state:s});
+  assert.equal(C.seasonReady(loaded.state),true);assert.equal(loaded.state.postseason.competitions.kr12.status,'complete');
+  assert.deepEqual(plain({fixtures:loaded.state.fixtures,player:loaded.state.player,moves:loaded.state.postseason.moves,date:loaded.state.date,ties:loaded.state.postseason.competitions.kr12.ties}),before);
+  const normalized=plain(loaded.state);C.normalizeCareerSave(loaded.db,loaded.state);assert.deepEqual(plain(loaded.state),normalized);
+  assert.equal(C.advance(loaded.db,loaded.state),false);assert.equal(C.nextSeason(loaded.db,loaded.state),true);assert.equal(loaded.state.season,s.season+1);
+  const bad=C.clone(DB);bad.postseasonRules.boundaries.find(r=>r.id==='kr12').upperSeedOffsets.u13=0;assert.throws(()=>ctx.V.validateDB(bad),/postseason.upperSeedOffsets/);
 });

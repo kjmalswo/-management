@@ -99,7 +99,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "19.1.2",
+    "version": "19.1.3",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -27947,6 +27947,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         ],
         "up": 1,
         "down": 1,
+        "upperSeedOffsets": {"u12": 3, "u13": 2},
         "nodes": [
           {
             "id": "pre",
@@ -28545,6 +28546,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       ],
       "up": 2,
       "down": 0,
+      "upperSeedOffsets": {"u12": 1},
       "nodes": [
         {
           "id": "semi1",
@@ -29812,7 +29814,10 @@ const FootballCore = (() => {
     return s.postseason;
   }
   function postseasonRule(db,s,rule){
-    return rule.id==='kr12'&&s.seasonStart.slice(0,4)===db.postseasonRules.specialYear?db.postseasonRules.krSpecial:rule;
+    rule=rule.id==='kr12'&&s.seasonStart.slice(0,4)===db.postseasonRules.specialYear?db.postseasonRules.krSpecial:rule;
+    if(!rule.upperSeedOffsets)return rule;
+    const count=standings(db,s,rule.upper).length,ref=value=>Object.hasOwn(rule.upperSeedOffsets,value)?'u'+(count-rule.upperSeedOffsets[value]+1):value;
+    return {...rule,nodes:rule.nodes.map(node=>({...node,home:ref(node.home),away:ref(node.away)})),exchange:(rule.exchange||[]).map(exchange=>({...exchange,upper:ref(exchange.upper)}))};
   }
   function promotionEligible(db,s,club,to){
     const c=indexes(db,s).clubs[club],parent=c.reserveParent&&indexes(db,s).clubs[c.reserveParent];if(!parent)return true;
@@ -29889,7 +29894,7 @@ const FootballCore = (() => {
       rule.lowers.forEach((id,i)=>{const table=standings(db,s,id).filter(row=>promotionEligible(db,s,row.club,rule.upper));add(rule.lowers.length===1?'l':db.postseasonRules.rankingPrefixes[i+1],table);for(const row of table.slice(0,rule.up))recordMovement(db,s,row.club,rule.upper,rule.id);});
       if(rule.forcedClub&&upper.some(row=>row.club===rule.forcedClub)){
         recordMovement(db,s,rule.forcedClub,rule.lowers[0],rule.id);t.nodes=t.nodes.map(n=>n.id==='final'?{...n,legs:upper.at(-1).club===rule.forcedClub?2:1,draw:upper.at(-1).club===rule.forcedClub?'extra-penalties':'seed'}:n);
-        if(upper.at(-1).club!==rule.forcedClub)t.nodes.push({id:'exchange',home:'u12',away:'x:final',legs:2,draw:'extra-penalties'});
+        if(upper.at(-1).club!==rule.forcedClub)t.nodes.push({id:'exchange',home:rule.exchange.find(exchange=>exchange.node==='exchange').upper,away:'x:final',legs:2,draw:'extra-penalties'});
       }
       if(rule.automaticGap!==undefined&&t.seeds.l3.points-t.seeds.l4.points>rule.automaticGap){recordMovement(db,s,t.seeds.l3.club,rule.upper,rule.id);t.nodes=[];}
       if(rule.type==='groups'){
@@ -29910,6 +29915,11 @@ const FootballCore = (() => {
       const leagues=original.league?[original.league]:[original.upper,...original.lowers];if(leagues.some(id=>s.postseason.deferred.includes(id)))continue;
       if(!s.postseason.competitions[original.id]){if(!leagues.every(id=>s.fixtures[id]?.length&&s.fixtures[id].filter(f=>!f.historical).every(f=>f.result)))continue;createPostseason(db,s,original);}
       const t=s.postseason.competitions[original.id],rule=postseasonRule(db,s,original);if(t.status==='complete')continue;
+      // Older seasons can have fewer clubs than the current catalog. Preserve
+      // every created tie and discard only paths with no possible participant.
+      const available=new Set(Object.keys(t.seeds));
+      for(const group of t.groups||[])for(let rank=1;rank<=group.clubs.length;rank++)available.add('g:'+group.id+':'+rank);
+      t.nodes=t.nodes.filter(node=>{const possible=t.ties.some(tie=>tie.id===node.id)||[node.home,node.away].every(ref=>available.has(ref));if(possible){available.add('w:'+node.id);available.add('x:'+node.id);}return possible;});
       if(t.groups&&!t.groupComplete){
         const list=s.fixtures[t.competition].filter(f=>f.group);if(!list.every(f=>f.result))continue;
         for(const group of t.groups){const fixtures=list.filter(f=>f.group===group.id),table=standings(db,{...s,fixtures:{...s.fixtures,[t.competition]:fixtures}},t.competition).filter(row=>group.clubs.includes(row.club));group.table=clone(table);
@@ -29928,7 +29938,7 @@ const FootballCore = (() => {
       }
       if(t.ties.length===t.nodes.length&&t.ties.every(tie=>tie.winner)){
         for(const ref of rule.promoted||[]){const club=postseasonClub(t,ref);if(club&&promotionEligible(db,s,club,rule.upper))recordMovement(db,s,club,rule.upper,rule.id);}
-        for(const exchange of rule.exchange||[]){const tie=t.ties.find(n=>n.id===exchange.node);if(!tie)continue;const upper=postseasonClub(t,exchange.upper);if(tie.winner!==upper){recordMovement(db,s,tie.winner,rule.upper,rule.id);recordMovement(db,s,upper,postseasonSeed(t,tie.winner).league,rule.id);}}
+        for(const exchange of rule.exchange||[]){const tie=t.ties.find(n=>n.id===exchange.node);if(!tie)continue;const upper=tie.clubs.find(club=>postseasonSeed(t,club)?.league===rule.upper)||postseasonClub(t,exchange.upper);if(tie.winner!==upper){recordMovement(db,s,tie.winner,rule.upper,rule.id);recordMovement(db,s,upper,postseasonSeed(t,tie.winner).league,rule.id);}}
         t.status='complete';t.completed=s.date;t.champion=rule.league||rule.type==='groups'?t.ties.find(tie=>tie.id==='final')?.winner:null;
         const changes=s.postseason.moves.filter(m=>m.reason===t.id),body=changes.map(m=>text(db,'postseasonMove',{club:indexes(db,s).clubs[m.club].name,league:indexes(db).leagues[m.to].name})).join('\n');
         mail(db,s,{key:'postseason-result:'+s.season+':'+t.id,subject:indexes(db).leagues[t.competition].name,body:body||(t.champion?text(db,'postseasonAdvance',{club:indexes(db,s).clubs[t.champion].name}):text(db,'postseasonComplete'))});
@@ -30433,7 +30443,7 @@ function simulateWorldFixture(db,f,s){
     indexCache.delete(s.world);p.growthBaseline??=clone(p.stats);
     for(const [clubId,list] of Object.entries(s.world.rosters))for(const npc of list){npc.club??=clubId;npc.seasonMinutes??=0;npc.careerMinutes??=npc.seasonMinutes;initializePlayer(db,npc,s);}
     if(legacy)for(const record of p.history){for(const stats of [record.stats,...['home','away'].flatMap(side=>record.result?.[side]?.players?.map(person=>person.match)||[])])if(stats&&Number.isFinite(stats.minutes))for(const field of db.ui.statFields.filter(f=>!f.derived))stats[field.id]??=0;}
-    initializeSystems(db,s,legacy);normalizeInbox(db,s);s.matchPresentation??=null;return s;
+    initializeSystems(db,s,legacy);normalizeInbox(db,s);s.matchPresentation??=null;if(s.calendar.ended&&!nextCalendar(s))advancePostseason(db,s);return s;
   }
 
   function initializeSystems(db,s,legacy=false){
@@ -30494,9 +30504,10 @@ function simulateWorldFixture(db,f,s){
   }
   function nextSeason(db,s){
     advancePostseason(db,s);if(!seasonReady(s)||s.careerStories?.pending)return false;captureSeasonReview(db,s,true);const p=s.player,oldLeague=indexes(db,s).clubs[p.club].league,oldContract=p.contract;
-    s.continentalQualification=Object.fromEntries(db.continentalRules.domesticLeagues.map(id=>[id,standings(db,s,id).map(row=>row.club)]));ensureWorld(db,s);worldSeason(db,s);indexCache.delete(s.world);
-    s.archives.push({season:s.season,fixtures:s.fixtures,postseason:clone(s.postseason)});s.archives=s.archives.slice(-db.dynamics.archiveLimit);
+    s.continentalQualification=Object.fromEntries(db.continentalRules.domesticLeagues.map(id=>[id,standings(db,s,id).map(row=>row.club)]));ensureWorld(db,s);
     const start=dateAdd(s.seasonStart,db.calendarRules.seasonDays),elapsed=Math.max(0,daysBetween(db,s.date,start));p.earned+=elapsed/db.calendarRules.daysToWeeks*p.contract.weekly;advanceTrainingDays(db,s,start,true);
+    worldSeason(db,s);indexCache.delete(s.world);
+    s.archives.push({season:s.season,fixtures:s.fixtures,postseason:clone(s.postseason)});s.archives=s.archives.slice(-db.dynamics.archiveLimit);
     s.date=start;s.seasonStart=start;s.season++;s.continentalBrackets={};s.postseason=null;s.careerStories.pending=null;s.careerStories.focus=null;s.careerStories.lastDate=null;s.seasonBaseline={season:s.season,date:start,stats:clone(p.stats),earned:p.earned};s.marketReview=null;s.competitionStats=null;p.development.training={season:s.season,gains:Object.fromEntries(db.attributes.map(a=>[a.id,0])),total:0,weeks:0};s.round=0;p.age+=db.rules.seasonAgeStep;p.suspension=0;p.yellows=0;
     if(!p.freeAgent){
       const newLeague=indexes(db,s).clubs[p.club].league,relegated=indexes(db).leagues[newLeague].level>indexes(db).leagues[oldLeague].level;
@@ -31028,6 +31039,7 @@ function simulateWorldFixture(db,f,s){
     if(!old.careerDecisionRules?.rewardRevision){old.careerDecisionRules=clone(db.careerDecisionRules);old.careerDecisions=clone(db.careerDecisions);}
     if(!old.names.pyramidRevision){old.names.firstNamesByCountry.ES=[...new Set([...old.names.firstNamesByCountry.ES,...db.names.firstNamesByCountry.ES])];old.names.pyramidRevision=db.names.pyramidRevision;namePoolCache.delete(old);}
     old.updateRules??=clone(db.updateRules);old.postseasonRules??=clone(db.postseasonRules);
+    for(const rule of old.postseasonRules.boundaries){const offsets=db.postseasonRules.boundaries.find(stock=>stock.id===rule.id)?.upperSeedOffsets;if(offsets)rule.upperSeedOffsets??=clone(offsets);}old.postseasonRules.krSpecial.upperSeedOffsets??=clone(db.postseasonRules.krSpecial.upperSeedOffsets);
     if(old.meta.schema===db.meta.schema){
       old.competitionRules.ranking??=clone(db.competitionRules.ranking);
       old.dealRules.medicalReviewDays??=db.dealRules.medicalReviewDays;
@@ -31203,6 +31215,7 @@ function validateDB(db,career=null){
     if(rule!==postseason.krSpecial){if(postIds.has(rule.id))throw Error('postseason.id');postIds.add(rule.id);}
     if(rule.league){if(refs.leagues[rule.league]?.country!=='US'||refs.leagues[rule.league]?.kind!=='domestic')throw Error('postseason.title');}
     else{if(!Number.isInteger(rule.up)||!Number.isInteger(rule.down)||rule.up<0||rule.down<0||!Array.isArray(rule.lowers)||!rule.lowers.length||rule.lowers.some(id=>refs.leagues[id]?.kind!=='domestic'||refs.leagues[id].country!==refs.leagues[rule.upper]?.country||refs.leagues[id].level!==refs.leagues[rule.upper].level+1))throw Error('postseason.pyramid');}
+    if(rule.upperSeedOffsets&&Object.entries(rule.upperSeedOffsets).some(([ref,offset])=>!/^u\d+$/.test(ref)||!Number.isInteger(offset)||offset<1))throw Error('postseason.upperSeedOffsets');
     const nodes=new Set();for(const node of rule.nodes){if(nodes.has(node.id)||!Number.isInteger(node.legs)||node.legs<1||node.legs>postseason.fixtureLegsMax||!drawModes.includes(node.draw)||![node.home,node.away].every(ref=>typeof ref==='string'&&(/^(?:[ulab]\d+|(?:east|west)\d+|g:[ab]:\d+)$/.test(ref)||/^[wx]:/.test(ref)&&nodes.has(ref.slice(2)))))throw Error('postseason.node');nodes.add(node.id);}
   }
   for(const club of db.clubs){if(club.reserveParent&&(club.parent||!refs.clubs[club.reserveParent]||refs.leagues[club.league].country!==refs.leagues[refs.clubs[club.reserveParent].league].country))throw Error('postseason.reserve');if(club.conference&&!['east','west'].includes(club.conference))throw Error('postseason.conference');}
@@ -31935,7 +31948,7 @@ document.addEventListener('click',event=>{const b=event.target.closest('[data-ac
 let calendarLoading=false,calendarLoadingTimer=null,matchLoading=false,matchTimer=null,matchLoadingTimer=null;
 function startCalendarExperience(){
   if(calendarLoading||matchLoading||state.matchPresentation)return;if(state.careerStories.pending){openCareerDecision();return;}if(Core.pendingResponses(DB,state).length){openRequiredResponse();return;}calendarLoading=true;closeModal();render();
-  calendarLoadingTimer=setTimeout(()=>{calendarLoadingTimer=null;const before=Core.clone(state);try{const result=Core.advance(DB,state);screen=result?.report?'fixtures':result?.event.type==='reply'||result?.event.type==='contact'?'inbox':'calendar';reportId=result?.report?.id||null;activeMail=null;calendarLoading=false;persist();render();window.scrollTo({top:0});}catch(error){state=before;calendarLoading=false;render();toast(t('calendarProgressFailure'));}},DB.progressRules.delayMs);
+  calendarLoadingTimer=setTimeout(()=>{calendarLoadingTimer=null;const before=Core.clone(state);try{const result=Core.advance(DB,state);screen=result?.report?'fixtures':result?.event?.type==='reply'||result?.event?.type==='contact'?'inbox':'calendar';reportId=result?.report?.id||null;activeMail=null;calendarLoading=false;persist();render();window.scrollTo({top:0});}catch(error){state=before;calendarLoading=false;render();toast(t('calendarProgressFailure'));}},DB.progressRules.delayMs);
 }
 function isPlayerMatchDay(){
   Core.queueCareerDecision(DB,state);const event=Core.nextCalendar(state);if(event?.type!=='match'||state.player.freeAgent)return false;
