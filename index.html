@@ -99,7 +99,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "19.1.3",
+    "version": "19.1.4",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -146,7 +146,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "offerExpiryRounds": 3,
     "annualSalaryWeeks": 52,
     "wagePower": 1.7,
-    "valueBase": 1800,
+    "valueBase": 1500,
     "valuePower": 2.2,
     "valueAbilityBase": 40,
     "valueRepMultiplier": 0.035,
@@ -20274,7 +20274,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "crossAccuracy": 0.27
     },
     "shot": {
-      "chancePerPossessionMinute": 0.265,
+      "chancePerPossessionMinute": 0.255,
       "strengthWeight": 0.008,
       "chanceMin": 0.1,
       "chanceMax": 0.46,
@@ -20284,7 +20284,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "onTargetMax": 0.85,
       "onTargetMin": 0.23,
       "blockedShare": 0.27,
-      "finishingWeight": 0.012,
+      "finishingWeight": 0.0105,
       "keeperWeight": 0.007,
       "bodyAerialWeight": 0.007,
       "xgMax": 0.93,
@@ -20349,8 +20349,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     },
     "rating": {
       "base": 6.25,
-      "goal": 0.68,
-      "assist": 0.43,
+      "goal": 0.64,
+      "assist": 0.41,
       "keyPass": 0.045,
       "shotTarget": 0.025,
       "tackle": 0.05,
@@ -22784,7 +22784,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "creatorMin": 0.7,
     "creatorMax": 1.15,
     "starScoutingRating": 0.006,
-    "psychologyPower": 1.5,
+    "psychologyPower": 1.25,
     "pressureImportance": 0.28,
     "pressureMentalWeight": 0.001,
     "languageFloor": 0.65,
@@ -24591,9 +24591,9 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "expiryDays": 42,
     "interestDays": 45,
     "maxDeals": 6,
-    "sellerBase": 1.08,
-    "sellerYearsWeight": 0.12,
-    "sellerImportanceWeight": 0.45,
+    "sellerBase": 0.85,
+    "sellerYearsWeight": 0.04,
+    "sellerImportanceWeight": 0.12,
     "sellerFinancialDiscount": 0.12,
     "sellerAskSpread": 0.18,
     "sellerMinimumUpfront": 45,
@@ -24608,7 +24608,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "transferRequestTrustCost": 8,
     "permissionTrustCost": 1,
     "buyerFeeBudgetShare": 0.65,
-    "buyerWageBudgetShare": 0.32,
+    "buyerWageBudgetShare": 0.5,
     "buyerMaxWageFactor": 1.45,
     "buyerFitMin": 0.55,
     "buyerMinimumReleaseFactor": 1.3,
@@ -25069,7 +25069,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     }
   },
   "offerRules": {
-    "financeFeeShare": 0.42,
+    "financeFeeShare": 0.68,
     "annualWageShare": 0.16,
     "roleWages": {
       "key": 1.2,
@@ -25086,7 +25086,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "feeNeedBase": 0.9,
     "feeNeedWeight": 0.17,
     "feePotentialWeight": 0.003,
-    "minimumBidRatio": 0.66,
+    "minimumBidRatio": 0.55,
     "signingAnnualShare": 0.12,
     "loyaltyAnnualShare": 0.06,
     "appearanceWeeklyShare": 0.14,
@@ -25126,7 +25126,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "ageWaitDiscount": 0.04,
     "rolePromiseGapPenalty": 0.8,
     "baseWageWeight": 0.75,
-    "wageValueShare": 0.065,
+    "wageValueShare": 0.055,
     "newClubGraceDays": 90
   },
   "dashboardAdvice": {
@@ -26314,24 +26314,24 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "reputationChanceWeight": 0.003,
     "freeChance": 0.85,
     "maxChance": 0.8,
-    "recentDays": 180,
-    "minApps": 4,
-    "minMinutes": 270,
-    "minRating": 6.55,
+    "recentDays": 270,
+    "minApps": 3,
+    "minMinutes": 180,
+    "minRating": 6.35,
     "qualityGap": 8,
     "potentialGap": 5,
-    "minimumNeed": 0.12,
+    "minimumNeed": 0.05,
     "needWeight": 0.6,
     "prospectWeight": 0.2,
     "talentPotential": 86,
     "talentGap": 6,
-    "repeatClubDays": 365,
-    "strongCooldownDays": 730,
+    "repeatClubDays": 240,
+    "strongCooldownDays": 365,
     "strongQuality": 84,
     "strongAbility": 76,
-    "strongApps": 8,
-    "strongMinutes": 600,
-    "strongRating": 6.9,
+    "strongApps": 6,
+    "strongMinutes": 450,
+    "strongRating": 6.65,
     "strongPotential": 90,
     "strongProspectAbility": 72
   },
@@ -28900,8 +28900,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   },
   "growthRules": {
     "revision": 1,
-    "trainingMultiplier": 1.8,
-    "matchMultiplier": 1.5,
+    "trainingMultiplier": 1.65,
+    "matchMultiplier": 1.4,
     "previousTrainingLimits": {
       "weeklyFocusedMax": 0.08,
       "weeklyBalancedMax": 0.018,
@@ -29708,6 +29708,52 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "mark": "3C"
       }
     ]
+  },
+  "balanceRules": {
+    "revision": 1,
+    "previous": {
+      "scoutingRules": {
+        "recentDays": 180,
+        "minApps": 4,
+        "minMinutes": 270,
+        "minRating": 6.55,
+        "minimumNeed": 0.12,
+        "repeatClubDays": 365,
+        "strongCooldownDays": 730,
+        "strongApps": 8,
+        "strongMinutes": 600,
+        "strongRating": 6.9
+      },
+      "offerRules": {
+        "financeFeeShare": 0.42,
+        "minimumBidRatio": 0.66,
+        "wageValueShare": 0.065
+      },
+      "dealRules": {
+        "sellerBase": 1.08,
+        "sellerYearsWeight": 0.12,
+        "sellerImportanceWeight": 0.45,
+        "buyerWageBudgetShare": 0.32
+      },
+      "rules": {
+        "valueBase": 1800
+      },
+      "dynamics": {
+        "psychologyPower": 1.5
+      },
+      "engine.shot": {
+        "chancePerPossessionMinute": 0.265,
+        "finishingWeight": 0.012
+      },
+      "engine.rating": {
+        "goal": 0.68,
+        "assist": 0.43
+      },
+      "growthRules": {
+        "trainingMultiplier": 1.8,
+        "matchMultiplier": 1.5
+      }
+    }
   }
 }
 </script>
@@ -31025,6 +31071,8 @@ function simulateWorldFixture(db,f,s){
     return old===undefined?base:old;
   }
   function upgradeDatabase(db,old){
+    // Apply changed bundled coefficients to saved databases; retain custom values.
+    for(const [path,values] of Object.entries(db.balanceRules.previous)){const keys=path.split('.'),source=keys.reduce((p,key)=>p?.[key],db),target=keys.reduce((p,key)=>p?.[key],old);for(const [key,value] of Object.entries(values))if(target?.[key]===value)target[key]=source[key];}old.balanceRules??=clone(db.balanceRules);
     for(const group of ['clubNegotiationRules','matchImportanceRules','careerTraitRules','captainRules'])old[group]??=clone(db[group]);for(const group of ['eventTemplates','eventSymbols'])for(const [key,value] of Object.entries(db.matchBroadcast[group]))old.matchBroadcast[group][key]??=clone(value);for(const field of ['careerTraits'])if(!old.dynamics.matchIdentityFields.includes(field))old.dynamics.matchIdentityFields.push(field);
     for(const group of ['agentSystem','trainingProgramRules'])old[group]??=clone(db[group]);for(const agent of old.agents)agent.skills??=clone(db.agents.find(a=>a.id===agent.id)?.skills||db.agents[0].skills);
     old.seasonReviewRules??=clone(db.seasonReviewRules);old.continentalRules??=clone(db.continentalRules);old.offerFitRules??=clone(db.offerFitRules);old.awardTypes??=clone(db.awardTypes);old.awardRules??=clone(db.awardRules);
@@ -31201,6 +31249,7 @@ function validateDB(db,career=null){
   new RegExp(db.settings.layoutRules.mobileTokens,'i');
   if(db.progressRules.delayMs<0||db.marketFlow.responseMinDays<1||db.marketFlow.responseMaxDays<db.marketFlow.responseMinDays||db.marketFlow.contactMinDays<1||db.marketFlow.contactMaxDays<db.marketFlow.contactMinDays||db.marketFlow.recentClubWeight<=0||db.marketFlow.sameLeagueWeight<=0||db.startingRouteRules.europeLeagues.some(id=>!db.leagues.some(l=>l.id===id)))throw Error('marketFlow');
   if(!db.ui.calendarView||db.ui.calendarView.weekdays.length!==7||db.ui.calendarView.weekdays.some(day=>typeof day!=='string')||!Number.isInteger(db.ui.calendarView.previewLimit)||db.ui.calendarView.previewLimit<1)throw Error('ui.calendarView');
+  if(!db.balanceRules||!Number.isInteger(db.balanceRules.revision)||db.balanceRules.revision<1||Object.entries(db.balanceRules.previous).some(([path,values])=>{const source=path.split('.').reduce((p,key)=>p?.[key],db);return !source||Object.entries(values).some(([key,value])=>!Number.isFinite(value)||!Number.isFinite(source[key]));}))throw Error('balanceRules');
   const grouped=db.ui.navigationGroups.flatMap(g=>g.views);if(new Set(db.ui.navigationGroups.map(g=>g.id)).size!==db.ui.navigationGroups.length||new Set(grouped).size!==grouped.length||db.ui.tabs.some(tab=>!grouped.includes(tab.id))||grouped.some(id=>!db.ui.tabs.some(tab=>tab.id===id)))throw Error('ui.navigationGroups');
   const broadcast=db.matchBroadcast;if(!broadcast.speedOptions.some(option=>option.rate===db.settings.defaults.broadcastSpeed)||new Set(broadcast.speedOptions.map(option=>option.rate)).size!==broadcast.speedOptions.length||broadcast.speedOptions.some(option=>option.rate<=0||broadcast.eventIntervalMs/option.rate<broadcast.minimumIntervalMs)||broadcast.eventIntervalMs<broadcast.minimumIntervalMs||broadcast.loadingMs<0||broadcast.subsMax>broadcast.benchSize||broadcast.subsMin<0||broadcast.subsMin>broadcast.subsMax||broadcast.subWindowCount<1||broadcast.subWindowMinutes.length<broadcast.subWindowCount||broadcast.halfMinute<1||broadcast.halfMinute>=db.rules.matchMinutes||broadcast.positionOrder.length!==db.positions.length||db.positions.some(p=>!broadcast.positionOrder.includes(p.id)||!Number.isFinite(broadcast.positionRows[p.id]))||broadcast.teamSize!==db.tactics[0].formation.length||broadcast.numberPool.some(n=>!Number.isInteger(n)||n<db.profile.limits.numberMin||n>db.profile.limits.numberMax)||broadcast.numberPool.length<db.profile.limits.numberMax||new Set(broadcast.numberPool).size!==broadcast.numberPool.length||Object.values(broadcast.eventSymbols).some(x=>!x)||Object.keys(broadcast.eventSymbols).some(key=>!broadcast.eventTemplates[key])||Object.keys(broadcast.formationRows).some(key=>!db.tactics.some(t=>t.id===key))||db.tactics.some(t=>t.formation.length!==broadcast.formationRows[t.id]?.length||t.formation.length!==broadcast.teamSize))throw Error('matchBroadcast');
   const walk=(obj,path)=>{if(obj&&typeof obj==='object')for(const [key,value] of Object.entries(obj)){if(['__proto__','constructor','prototype'].includes(key))throw Error(`${path}.${key}`);if(typeof value==='number'&&!Number.isFinite(value))throw Error(`${path}.${key}`);if(typeof value==='string'&&value.length>db.meta.maxSaveBytes)throw Error(`${path}.${key}`);walk(value,`${path}.${key}`);}};walk(db,'DB');
