@@ -70,6 +70,10 @@ button.info-link:active:enabled{background:var(--soft);color:var(--accent);trans
 .live-events{contain:paint;scrollbar-gutter:stable;overflow-anchor:auto}
 .content[data-screen="fixtures"] .table-wrap,.content[data-screen="fixtures"] .events{overscroll-behavior:auto}
 .dialog{overscroll-behavior:contain}
+
+/* Compact agent workspace and periodised training. */
+.rework-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px;margin-bottom:18px}.rework-grid>*{min-width:0}.plan-notes{display:grid;gap:8px;margin:14px 0}.training-plan-label{font-weight:650;margin-bottom:14px}.training-preview-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin-bottom:12px}.training-day{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);background:var(--bg);padding:12px 7px;border-radius:9px;min-width:0;overflow-wrap:anywhere}.training-day.is-recovery{border-color:var(--green)}.training-day b{font-size:12px}.rework-list{max-height:420px;overflow:auto;scrollbar-gutter:stable;overscroll-behavior:auto}.coach-review{padding:14px 0;border-bottom:1px solid var(--line);display:grid;gap:9px}.review-markers{display:flex;gap:10px;flex-wrap:wrap;font-size:12px}.review-markers strong{font-size:17px}.training-history-row{display:grid;grid-template-columns:96px 1fr 1fr;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}.agent-system .profile-facts{margin:12px 0}.agent-system .tabs-inline{margin:14px 0}.agent-system [hidden]{display:none!important}.agent-system fieldset,.agent-brief-card fieldset{padding:0;margin:14px 0;border:0;min-width:0}.agent-system #agent-target{padding:4px;min-height:190px;max-height:250px;font-size:12px}.agent-system #agent-target option{padding:8px 7px;white-space:normal;overflow-wrap:anywhere}.agent-search-tools{grid-template-columns:1fr}.agent-inquiries{max-height:280px}.agent-brief-card{margin-bottom:18px}.agent-system .detail-list{gap:8px}.agent-system .detail-list>div{flex-wrap:wrap}.training-card .profile-facts{margin-top:12px}
+@media(max-width:900px){.rework-grid{grid-template-columns:1fr}.training-preview-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:560px){.training-preview-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.training-history-row{grid-template-columns:86px 1fr}.training-history-row>span{grid-column:2}.rework-grid .form-grid{grid-template-columns:1fr}.rework-list{max-height:340px}}
 </style>
 </head>
 <body>
@@ -82,7 +86,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "17.1.1",
+    "version": "18.0.0",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -18179,6 +18183,11 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "id": "career",
         "label": "프로필·계약",
         "icon": "◉"
+      },
+      {
+        "id": "training",
+        "label": "훈련 센터",
+        "icon": "◈"
       }
     ],
     "labels": {
@@ -18242,7 +18251,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "allCareer": "전체 커리어",
       "allCompetitions": "모든 대회",
       "training": "이번 주 훈련",
-      "trainingHint": "훈련은 경과한 7일마다 누적됩니다. 최근 2주 안에 실제 훈련한 항목은 초록색 +, 4주 이상 훈련하지 않은 항목은 빨간색 -로 표시합니다. 표시는 훈련 이력이며 능력치 변화량을 뜻하지 않습니다. 부상 중에는 훈련을 기록하지 않습니다.",
+      "trainingHint": "초록색 +는 최근 연습한 항목, 빨간색 −는 오래 연습하지 않은 항목입니다. 즉시 상승·하락 수치가 아닙니다. 성장은 내부 소수점과 기존 시즌 상한으로 제한됩니다.",
       "coachReport": "감독 리포트",
       "coachReportText": "전술 역할 경쟁 적합도 {competition} · 예상 선발 확률 {chance}%. 신뢰·숙련·적응·건강·최근 경기력이 함께 작용합니다.",
       "roleStarter": "주전 경쟁 우위",
@@ -18592,7 +18601,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "agentSelect": "에이전트 선택",
       "agentSeek": "관심 클럽 접촉 요청",
       "agentTarget": "접촉할 클럽",
-      "agentDeclined": "{club}: 현재 선수 수준·포지션 경쟁·예산에서 영입 관심이 부족합니다.",
+      "agentDeclined": "{club}이 현재 영입을 진행하지 않기로 했습니다. 구단 수준·역할·재정과 시장 수요를 다시 비교하세요.",
       "agentInterest": "에이전트가 구단 접촉을 시작했습니다. 회신을 기다려 주세요.",
       "contractDetails": "현재 계약 세부사항",
       "contractPromise": "계약상 역할",
@@ -18767,13 +18776,13 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "broadcastSpeedValue": "{speed}배 · {seconds}초 간격",
       "calendarAdvancing": "일정을 진행하고 있습니다",
       "calendarProgressFailure": "일정을 진행하지 못했습니다. 다시 시도해 주세요.",
-      "agentContactQueued": "{club}에 접촉을 요청했습니다. {date} 이후 답변을 확인하세요.",
+      "agentContactQueued": "{club}에 접촉했습니다. {date}에 회신을 확인합니다.",
       "marketAwaiting": "회신 대기 · {date}",
       "marketClosed": "종료된 제안",
       "marketOfferOpen": "검토 가능한 제안",
       "marketContinue": "협상 이어보기",
       "contactUnavailable": "이미 접촉·협상이 진행 중이거나 지금은 새 접촉을 요청할 수 없습니다.",
-      "trainingProgress": "최근 훈련 상태",
+      "trainingProgress": "능력 변화 · 훈련 이력",
       "trainingGain": "{attribute} +{gain}",
       "trainingRecovery": "회복 중 · 훈련 성장 없음",
       "trainingBudget": "전체 +{gain} / +{max}",
@@ -18950,7 +18959,103 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "infoSquadView": "선수단 검색으로 이동",
       "infoSquadCount": "선수단 인원",
       "infoLeagueHint": "현재 시즌 순위입니다. 전체 순위와 개인 기록은 위 버튼으로 확인하세요.",
-      "infoUnavailable": "현재 상세 정보를 찾을 수 없습니다."
+      "infoUnavailable": "현재 상세 정보를 찾을 수 없습니다.",
+      "agentStrategy": "에이전트 전략",
+      "agentContactTab": "클럽 접촉",
+      "agentMandate": "커리어 우선순위",
+      "agentApproach": "접촉 방식",
+      "agentStyle": "협상 태도",
+      "agentMandateSave": "전략 적용",
+      "agentMandateSaved": "에이전트 전략을 적용했습니다. 진행 중인 접촉과 협상의 전략은 유지합니다.",
+      "agentAgreement": "위임 시작",
+      "agentCapacity": "진행 중 접촉",
+      "agentCommission": "기본 수수료",
+      "agentChange": "에이전트 교체",
+      "agentChangeCooldown": "에이전트 교체는 {date}부터 가능합니다.",
+      "agentChangeQueued": "진행 중 접촉·협상 또는 예약된 이적을 먼저 마무리하세요.",
+      "agentChanged": "새 에이전트에게 위임했습니다.",
+      "agentSearch": "클럽 검색",
+      "agentSearchPlaceholder": "클럽·리그·국가 검색",
+      "agentAlphabetical": "클럽명 가나다순",
+      "agentAllLeagues": "모든 리그",
+      "agentNoClubs": "검색 결과가 없습니다.",
+      "agentSelected": "접촉 전 보고서",
+      "agentReportHint": "구단 수준·전술·재정과 현재 역할을 비교한 게임 내 전망입니다. 관심이나 출전을 보장하지 않습니다.",
+      "agentChance": "접촉 전망",
+      "agentSquadLevel": "선수단 평균 오버롤",
+      "agentRoleForecast": "예상 역할",
+      "agentEnvironment": "성장 환경",
+      "agentBlockedFunds": "현재 예산으로 계약 제안이 어렵습니다.",
+      "agentBlockedFit": "현 전술과 포지션이 잘 맞지 않습니다.",
+      "agentBlockedLevel": "현재 실력에 비해 영입 요구 수준이 높습니다.",
+      "agentContactCapacity": "에이전트의 접촉 한도가 찼습니다. 회신을 기다리세요.",
+      "agentRecentReports": "최근 접촉 결과",
+      "agentInquiryOpen": "회신 대기",
+      "agentInquiryOffer": "계약 제안 도착",
+      "agentInquiryRejected": "영입 의사 없음",
+      "agentInquiryCancelled": "소속팀 변경으로 종료",
+      "agentInquirySnapshot": "접촉 당시 전략 · {priority} / {approach}",
+      "agentConsultResult": "상담 보고서",
+      "agentConsultHint": "현재 우선순위에 맞는 접촉 후보입니다. 에이전트의 추천도 실제 영입을 보장하지 않습니다.",
+      "agentConsultEmpty": "현재 조건에 맞는 추천 클럽을 찾지 못했습니다.",
+      "agentBrief": "이번 협상 지시",
+      "agentBriefHint": "우선순위를 정하면 에이전트는 그 조건에 협상력을 집중합니다. 모든 조건의 동시 개선과 출전 보장은 불가능합니다.",
+      "agentBriefSave": "협상 지시 적용",
+      "agentBriefSaved": "다음 제안부터 협상 지시를 적용합니다.",
+      "agentTermsDraft": "에이전트 추천 조건",
+      "agentTermsHint": "추천 조건은 수정 가능한 초안이며 제출해야 효력이 생깁니다.",
+      "agentRelationship": "구단 협상 관계",
+      "agentRelationshipHint": "반복된 과도한 요구는 구단 관계를 소모합니다. 회신 대기·메디컬 재검사는 소모하지 않습니다.",
+      "agentRelationshipEnded": "반복된 무리한 요구로 구단이 협상을 중단했습니다.",
+      "agentFirmCost": "강경 협상 지시로 에이전트 신뢰를 사용했습니다.",
+      "agentBriefFrozen": "회신 대기 중이거나 합의된 협상은 지시를 바꿀 수 없습니다.",
+      "trainingCenter": "훈련 센터",
+      "trainingOpen": "계획·훈련 기록",
+      "trainingPlan": "개인 발전 계획",
+      "trainingPrimary": "주목표",
+      "trainingSecondary": "보조목표",
+      "trainingIntensity": "훈련 강도",
+      "trainingSchedule": "훈련 주기",
+      "trainingApply": "새 계획 적용",
+      "trainingRecommended": "코치 추천 계획",
+      "trainingSaved": "앞으로의 훈련 계획을 적용했습니다. 이미 진행한 훈련과 성장 예산은 유지합니다.",
+      "trainingInvalidPlan": "훈련 항목·강도·주기를 확인하세요. 같은 집중 항목을 주목표와 보조목표에 동시에 지정할 수 없습니다.",
+      "trainingPlanHint": "28일 발전 주기를 운영합니다. 실제 경기일·출전 후 회복·부상·누적 피로에 따라 일일 훈련이 조절되며, 계획을 바꿔도 지난 훈련은 바뀌지 않습니다.",
+      "trainingActive": "현재 계획",
+      "trainingNextReview": "다음 정기 평가",
+      "trainingFatigue": "누적 훈련 피로",
+      "trainingFatigueLow": "관리 가능한 부하",
+      "trainingFatigueHigh": "회복이 필요한 부하",
+      "trainingFatigueHeavy": "회복 우선 · 자동 부하 보호",
+      "trainingDays": "실제 훈련일",
+      "trainingRecoveryDays": "회복·재활일",
+      "trainingNextSeven": "앞으로 7일 · 현재 일정 기준",
+      "trainingPreviewHint": "출전·부상과 추가 일정에 따라 달라집니다.",
+      "trainingFocusNone": "성장 훈련 없음",
+      "trainingWeeklyReview": "주간 코치 기록",
+      "trainingNoReviews": "일정을 진행하면 실제 훈련과 주간 평가가 쌓입니다.",
+      "trainingReviewGood": "계획대로 훈련을 소화했습니다. 연속적인 연습이 중요합니다.",
+      "trainingReviewTired": "누적 피로로 효율이 낮아졌습니다. 강도를 낮추거나 경기 준비 주기를 고려하세요.",
+      "trainingReviewRecover": "이번 기간은 회복·재활 비중이 높았습니다. 컨디션을 먼저 관리하세요.",
+      "trainingReviewSubject": "28일 훈련 평가",
+      "trainingReviewMail": "개인 발전 계획을 {days}일 운영했습니다. 훈련 센터에서 성장 방향과 피로, 경기 전후 회복 기록을 검토하세요. 현재 계획은 다음 주기에도 이어집니다.",
+      "trainingSessionHistory": "최근 실제 훈련",
+      "trainingNoSessions": "아직 진행한 훈련이 없습니다.",
+      "trainingRoleGoal": "포지션 핵심 능력",
+      "trainingCycleSummary": "{primary} + {secondary} · {intensity} · {schedule}",
+      "trainingPlanStart": "현재 계획 시작",
+      "trainingAutomatic": "일정에 따른 자동 조절",
+      "trainingConsistency": "연속 계획 기간",
+      "trainingRealisticNote": "훈련 부하와 회복을 반영한 게임용 모델입니다. 실제 선수 훈련 처방이나 의료 판정은 아닙니다.",
+      "agentInquiryLegacy": "회신 완료 · 업데이트 이전",
+      "agentBlockedRecord": "이 수준 구단이 요구하는 최근 출전·경기력을 아직 충족하지 못했습니다.",
+      "agentBlockedNeed": "현재 해당 포지션의 영입 수요가 낮습니다.",
+      "agentCancelInquiry": "접촉 철회",
+      "trainingPendingDays": "다음 주간 평가까지",
+      "trainingPendingDaysValue": "{days}일",
+      "trainingReviewPlan": "평가일 계획",
+      "agentLeagueFilter": "리그",
+      "agentCenter": "에이전트 센터"
     },
     "statFields": [
       {
@@ -19353,6 +19458,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "icon": "◉",
         "views": [
           "career",
+          "training",
           "statistics"
         ]
       },
@@ -19599,7 +19705,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "market": "영입 제안을 비교하고 이적·재계약을 협상합니다.",
         "world": "다른 구단, 선수와 감독을 검색합니다.",
         "news": "축구계 소식과 SNS 반응을 확인합니다.",
-        "settings": "화면 크기, 화면 배치와 표시 단위를 설정합니다."
+        "settings": "화면 크기, 화면 배치와 표시 단위를 설정합니다.",
+        "training": "목표·강도·회복 주기를 설계하고 실제 훈련과 주간 평가를 확인합니다."
       },
       "actionHints": {
         "advance": "다음 일정으로 진행합니다. 경기나 선택이 있으면 해당 화면이 열립니다.",
@@ -19624,8 +19731,21 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "app-update": "현재 커리어를 저장한 뒤 최신 버전을 불러옵니다.",
         "world-sort": "이 항목으로 정렬합니다. 다시 누르면 순서가 바뀝니다.",
         "match-pause": "텍스트 중계를 일시정지하거나 이어 봅니다.",
-        "match-skip": "이 경기의 중계를 건너뛰고 상세 결과를 확인합니다."
+        "match-skip": "이 경기의 중계를 건너뛰고 상세 결과를 확인합니다.",
+        "agent-change": "선택한 에이전트에게 위임합니다. 이후 60일 동안 교체할 수 없으며 진행 중인 접촉·협상은 먼저 마무리해야 합니다.",
+        "agent-seek": "현재 접촉 방식과 우선순위로 이 구단에 접촉합니다. 실제 회신에는 시간이 걸리며 거절될 수 있습니다.",
+        "agent-consult": "현재 우선순위에 맞는 접촉 후보를 분석합니다. 상담만으로 신뢰나 계약 조건이 상승하지 않습니다.",
+        "agent-terms-draft": "이번 협상 지시에 맞는 수정 가능한 조건 초안을 작성합니다. 제안서를 제출해야 구단이 검토합니다.",
+        "training-recommend": "포지션·현재 능력·피로에 맞는 초안을 작성합니다. 새 계획 적용을 누르면 앞으로의 훈련에 반영합니다.",
+        "agent-cancel-inquiry": "회신 전 접촉을 철회합니다. 사용한 신뢰와 접촉 재요청 대기 기간은 되돌리지 않습니다.",
+        "agent-focus": "에이전트 전략·클럽 검색·접촉 보고서로 바로 이동합니다."
       }
+    },
+    "reworkLegacyLabels": {
+      "trainingHint": "훈련은 경과한 7일마다 누적됩니다. 최근 2주 안에 실제 훈련한 항목은 초록색 +, 4주 이상 훈련하지 않은 항목은 빨간색 -로 표시합니다. 표시는 훈련 이력이며 능력치 변화량을 뜻하지 않습니다. 부상 중에는 훈련을 기록하지 않습니다.",
+      "trainingProgress": "최근 훈련 상태",
+      "agentDeclined": "{club}: 현재 선수 수준·포지션 경쟁·예산에서 영입 관심이 부족합니다.",
+      "agentContactQueued": "{club}에 접촉을 요청했습니다. {date} 이후 답변을 확인하세요."
     }
   },
   "traits": [
@@ -22104,7 +22224,12 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "commission": 5,
       "mediation": 0.08,
       "roleWeight": 1.2,
-      "trust": 70
+      "trust": 70,
+      "skills": {
+        "network": 0.035,
+        "negotiation": 0.65,
+        "capacity": 2
+      }
     },
     {
       "id": "closer",
@@ -22113,7 +22238,12 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "commission": 8,
       "mediation": 0.14,
       "roleWeight": 1,
-      "trust": 60
+      "trust": 60,
+      "skills": {
+        "network": 0.02,
+        "negotiation": 1,
+        "capacity": 2
+      }
     },
     {
       "id": "network",
@@ -22122,7 +22252,12 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "commission": 7,
       "mediation": 0.1,
       "roleWeight": 1.1,
-      "trust": 65
+      "trust": 65,
+      "skills": {
+        "network": 0.12,
+        "negotiation": 0.55,
+        "capacity": 4
+      }
     }
   ],
   "contractRoles": [
@@ -26587,6 +26722,311 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "maxGoalContribution": 12,
     "maxAssistContribution": 12,
     "maxSaveContribution": 80
+  },
+  "agentSystem": {
+    "revision": 1,
+    "defaults": {
+      "priority": "development",
+      "approach": "targeted",
+      "style": "balanced"
+    },
+    "changeCooldownDays": 60,
+    "consultCooldownDays": 14,
+    "reportLimit": 12,
+    "recommendationLimit": 5,
+    "minimumChance": 0.04,
+    "maximumChance": 0.85,
+    "baseChance": 0.32,
+    "fitWeight": 0.22,
+    "gapWeight": 0.016,
+    "trustWeight": 0.0015,
+    "roleWeight": 0.06,
+    "environmentWeight": 0.0015,
+    "leverageBase": 0.35,
+    "firmTrustCost": 2,
+    "relationshipStart": 100,
+    "relationshipMinimum": 20,
+    "relationshipCost": 9,
+    "priorities": [
+      {
+        "id": "development",
+        "name": "출전과 성장",
+        "description": "선수 역할과 코칭 환경을 먼저 봅니다. 전술 적합도와 실력이 받쳐주면 한 단계 높은 역할을 협상할 수 있습니다.",
+        "wageBonus": 0,
+        "roleBonus": 1,
+        "yearsRiskFactor": 1,
+        "releaseFactor": 1,
+        "fitFloor": 0.82,
+        "gapFloor": -4
+      },
+      {
+        "id": "earnings",
+        "name": "보수 극대화",
+        "description": "주급 협상에 자원을 집중합니다. 구단의 전체 계약 예산은 넘길 수 없으며 높은 역할을 보장하지 않습니다.",
+        "wageBonus": 0.1,
+        "roleBonus": 0,
+        "yearsRiskFactor": 1,
+        "releaseFactor": 1,
+        "fitFloor": 0,
+        "gapFloor": -100
+      },
+      {
+        "id": "stability",
+        "name": "장기 안정",
+        "description": "장기 계약의 주급 부담을 조율합니다. 자유롭게 팀을 옮기기보다 계약 기간을 우선합니다.",
+        "wageBonus": 0,
+        "roleBonus": 0,
+        "yearsRiskFactor": 0.35,
+        "releaseFactor": 1,
+        "fitFloor": 0,
+        "gapFloor": -100
+      },
+      {
+        "id": "ambition",
+        "name": "다음 도약",
+        "description": "상위 무대 진출과 향후 이적 여지를 우선합니다. 낮은 바이아웃을 조율하지만 구단의 영입 의사가 먼저 필요합니다.",
+        "wageBonus": 0,
+        "roleBonus": 0,
+        "yearsRiskFactor": 1,
+        "releaseFactor": 0.82,
+        "fitFloor": 0,
+        "gapFloor": -100
+      }
+    ],
+    "approaches": [
+      {
+        "id": "quiet",
+        "name": "비공개 탐색",
+        "description": "느리게 의사를 확인합니다. 감독 관계를 소모하지 않으며 현재 팀에서 뛰면서 다음 기회를 알아봅니다.",
+        "delay": 3,
+        "chance": 0,
+        "coachCost": 0,
+        "trustCost": 0
+      },
+      {
+        "id": "targeted",
+        "name": "직접 제안",
+        "description": "에이전트가 영입 담당자에게 역할과 조건을 제안합니다. 접촉 때 신뢰 1을 사용하고 관심 확률이 조금 높아집니다.",
+        "delay": 0,
+        "chance": 0.05,
+        "coachCost": 0,
+        "trustCost": 1
+      },
+      {
+        "id": "public",
+        "name": "공개 구직",
+        "description": "접촉이 빠르고 노출이 늘지만 감독 신뢰 5와 에이전트 신뢰 2를 사용합니다. 실제 수요가 없는 팀은 거절할 수 있습니다.",
+        "delay": -1,
+        "chance": 0.1,
+        "coachCost": 5,
+        "trustCost": 2
+      }
+    ],
+    "styles": [
+      {
+        "id": "cooperative",
+        "name": "타협형",
+        "description": "회신이 하루 빠르고 무리한 요구의 관계 비용이 낮습니다. 에이전트의 조건 개선 폭은 작습니다.",
+        "leverage": 0.55,
+        "delay": -1,
+        "relationshipFactor": 0.5
+      },
+      {
+        "id": "balanced",
+        "name": "균형형",
+        "description": "조건 개선과 구단 관계를 함께 관리합니다.",
+        "leverage": 1,
+        "delay": 0,
+        "relationshipFactor": 1
+      },
+      {
+        "id": "firm",
+        "name": "강경형",
+        "description": "조건 개선 폭이 크지만 제안마다 에이전트 신뢰 2를 사용하고 회신이 2일 느립니다. 반복된 무리한 요구는 구단 관계를 빠르게 소모합니다.",
+        "leverage": 1.3,
+        "delay": 2,
+        "relationshipFactor": 1.8
+      }
+    ],
+    "reportBands": [
+      {
+        "id": "unlikely",
+        "name": "가능성 낮음",
+        "min": 0
+      },
+      {
+        "id": "stretch",
+        "name": "도전적인 접촉",
+        "min": 0.2
+      },
+      {
+        "id": "suitable",
+        "name": "검토할 만한 접촉",
+        "min": 0.45
+      },
+      {
+        "id": "strong",
+        "name": "좋은 조건의 접촉",
+        "min": 0.65
+      }
+    ]
+  },
+  "trainingProgramRules": {
+    "revision": 1,
+    "blockDays": 28,
+    "previewDays": 7,
+    "sessionLimit": 14,
+    "historyLimit": 12,
+    "defaults": {
+      "secondary": "role",
+      "intensity": "standard",
+      "schedule": "balanced"
+    },
+    "fatigueRecovery": 2.4,
+    "restFatigueRecovery": 7,
+    "loadFatigue": 0.52,
+    "matchFatigue": 16,
+    "riskLoadFactor": 0.2,
+    "fatigueGrowthPenalty": 0.005,
+    "minimumGrowthReadiness": 0.4,
+    "fitnessGrowthFloor": 0.5,
+    "consistencyWeeklyBonus": 0.035,
+    "consistencyMax": 1.14,
+    "workGrowth": 1.45,
+    "roleTrustDaily": 0.08,
+    "rehabRecovery": 2,
+    "minimumDays": 1,
+    "heavyFatigue": 65,
+    "veryHeavyFatigue": 85,
+    "fitnessProtection": 55,
+    "maximumExposure": 4,
+    "intensities": [
+      {
+        "id": "light",
+        "name": "가벼움",
+        "description": "회복을 빠르게 하고 피로를 적게 쌓습니다. 기술 훈련량은 줄어듭니다.",
+        "growth": 0.7,
+        "load": 0.65,
+        "recovery": 0.5
+      },
+      {
+        "id": "standard",
+        "name": "보통",
+        "description": "개인 발전과 경기 준비를 균형 있게 가져갑니다.",
+        "growth": 1,
+        "load": 1,
+        "recovery": 0
+      },
+      {
+        "id": "intensive",
+        "name": "집중",
+        "description": "건강하고 일정이 여유로울 때 효율적입니다. 피로가 누적되면 훈련 효율과 경기 중 부상 위험이 불리해집니다.",
+        "growth": 1.25,
+        "load": 1.6,
+        "recovery": -0.3
+      }
+    ],
+    "schedules": [
+      {
+        "id": "development",
+        "name": "발전 중심",
+        "description": "개인 목표에 더 많은 날짜를 씁니다. 경기 전후에는 부하를 낮추며 자동 보호 아래에서는 회복으로 전환합니다.",
+        "pattern": [
+          "primary",
+          "secondary",
+          "primary",
+          "team",
+          "primary",
+          "secondary",
+          "recovery"
+        ],
+        "eveGrowth": 0.4,
+        "eveLoad": 0.4,
+        "recoveryDays": 1
+      },
+      {
+        "id": "balanced",
+        "name": "균형 주기",
+        "description": "개인 목표·포지션 훈련·회복을 섞습니다. 출전 후 이틀은 회복을 우선합니다.",
+        "pattern": [
+          "primary",
+          "secondary",
+          "team",
+          "primary",
+          "secondary",
+          "team",
+          "recovery"
+        ],
+        "eveGrowth": 0.3,
+        "eveLoad": 0.3,
+        "recoveryDays": 2
+      },
+      {
+        "id": "matchready",
+        "name": "경기 준비",
+        "description": "포지션 훈련과 회복 비중이 높습니다. 개인 능력 개발량을 줄이고 경기 컨디션을 지킵니다.",
+        "pattern": [
+          "team",
+          "primary",
+          "recovery",
+          "team",
+          "secondary",
+          "team",
+          "recovery"
+        ],
+        "eveGrowth": 0.2,
+        "eveLoad": 0.2,
+        "recoveryDays": 2
+      }
+    ],
+    "sessionTypes": [
+      {
+        "id": "primary",
+        "name": "주목표"
+      },
+      {
+        "id": "secondary",
+        "name": "보조목표"
+      },
+      {
+        "id": "team",
+        "name": "포지션 훈련"
+      },
+      {
+        "id": "recovery",
+        "name": "회복"
+      },
+      {
+        "id": "rehab",
+        "name": "재활"
+      },
+      {
+        "id": "match",
+        "name": "경기일 준비"
+      },
+      {
+        "id": "protection",
+        "name": "부하 보호"
+      },
+      {
+        "id": "taper",
+        "name": "경기 전 조절"
+      }
+    ],
+    "secondaryOptions": [
+      {
+        "id": "role",
+        "name": "내 포지션 핵심 능력"
+      },
+      {
+        "id": "none",
+        "name": "추가 개인 훈련 없이 회복"
+      }
+    ],
+    "restTraining": "rest",
+    "balancedTraining": "balanced",
+    "recoveryIntensity": "light",
+    "recoverySchedule": "matchready"
   }
 }
 </script>
@@ -26945,7 +27385,7 @@ const FootballCore = (() => {
       const cfg=db.matchBroadcast,d=db.dynamics,training=state?db.training.find(t=>t.id===state.training):null;
       if(minute<cfg.injuryEarliestMinute||minute>=duration)return;
       for(let side=0;side<teams.length;side++)for(const person of active(side,minute)){
-        const subject=person.id==='player'?state.player:person,dna=traits(db,subject),fitness=subject.fitness??cfg.npcFitness,risk=clamp((d.injuryBase+dna.injuryProneness*d.injuryVulnerabilityWeight+Math.max(0,r.scale-fitness)*d.injuryFatigueWeight+(training&&person.id==='player'?training.load:0)*d.injuryLoadWeight)*(1-dna.professionalism/d.traitUnit*d.injuryHabitShield)*(person.id==='player'?1:cfg.npcInjuryFactor),0,cfg.injuryRiskMax);
+        const subject=person.id==='player'?state.player:person,dna=traits(db,subject),fitness=subject.fitness??cfg.npcFitness,risk=clamp((d.injuryBase+dna.injuryProneness*d.injuryVulnerabilityWeight+Math.max(0,r.scale-fitness)*d.injuryFatigueWeight+(training&&person.id==='player'?trainingLoad(db,state):0)*d.injuryLoadWeight)*(1-dna.professionalism/d.traitUnit*d.injuryHabitShield)*(person.id==='player'?1:cfg.npcInjuryFactor),0,cfg.injuryRiskMax);
         if(rng()>=risk/r.matchMinutes)continue;
         const injury=weighted(rng,d.injuries,x=>x.weight);person.exitMinute=minute;teams[side].injuries.push({id:person.id,injury:injury.id,minute});
         events.push({minute,type:'injuryEvent',club:teams[side].club,player:person.name,playerId:person.id,injury:injury.name,injuryId:injury.id});
@@ -27238,7 +27678,7 @@ function simulateWorldFixture(db,f,s){
     initializeCareerStories(db,s);const story=s.careerStories,pending=story.pending,template=db.careerDecisions.find(e=>e.id===pending?.template),option=template?.options.find(o=>o.id===optionId);if(!pending||!option||pending.season!==s.season)return false;
     const p=s.player,role=db.roleProfiles.find(r=>r.position===p.position);for(const [key,value] of Object.entries(option.effects)){if(key==='agentTrust')s.agent.trust=clamp(s.agent.trust+value,0,db.rules.scale);else p[key]=clamp(p[key]+value,0,db.rules.scale);}
     const attribute=option.focus==='role'?role.focus:option.focus;story.focus=attribute?{attribute,from:s.date,until:dateAdd(s.date,db.careerDecisionRules.focusDays),decision:pending.id}:null;
-    if(option.training)s.training=option.training==='role'?role.focus:option.training;
+    if(option.training){const primary=option.training==='role'?role.focus:option.training;setTrainingPlan(db,s,{...s.trainingProgram.plan,primary,secondary:s.trainingProgram.plan.secondary===primary?db.trainingProgramRules.defaults.secondary:s.trainingProgram.plan.secondary});}
     const result={...pending,option:option.id,name:template.name,choice:option.name,description:option.description,effects:clone(option.effects),focus:clone(story.focus),automatic};story.history.push(result);story.history=story.history.slice(-db.careerDecisionRules.historyLimit);story.lastDate=s.date;story.pending=null;
     mail(db,s,{key:pending.id,subject:text(db,'decisionResult',{name:template.name,choice:option.name}),body:option.description});queueCareerDecision(db,s);return result;
   }
@@ -27264,7 +27704,7 @@ function simulateWorldFixture(db,f,s){
   function initializeSystems(db,s,legacy=false){
     initializeCareerStories(db,s);initializeCompetitionStats(db,s);initializeAwards(db,s);s.continentalBrackets??={};initializePostseason(db,s);s.automaticOfferHistory??=Object.fromEntries(Object.entries(s.offerHistory||{}).map(([club,date])=>[club,{date}]));s.marketReview??=null;s.inbox||=[];s.inboxSerial??=0;s.deals||=[];s.dealSerial??=0;s.offerSerial??=0;s.agent||={id:db.agents[0].id,trust:db.agents[0].trust};s.agentContacts||={};s.agentInquiries||=[];s.offerHistory||={};s.scoutingCycle??=0;s.worldTickSerial??=0;s.pendingTransfer??=null;
     const p=s.player;p.development.practice??={since:s.date,last:{}};p.displayName??=p.name;p.injuryDays??=p.injury*db.calendarRules.injuryDaysPerWeek;p.freeAgent??=false;p.contract={...clone(db.dealDefaults),role:db.contractRoles.at(-1).id,position:p.position,agentCommissionPercent:db.agents[0].commission,...p.contract};
-    if(!s.calendar)buildCalendar(db,s,legacy);
+    if(!s.calendar)buildCalendar(db,s,legacy);initializeTrainingProgram(db,s);initializeAgentSystem(db,s);
     for(const o of s.offers){o.id||=`offer:${++s.offerSerial}`;o.expiresDate||=dateAdd(s.date,db.dealRules.interestDays);}
     for(const d of s.deals){if((d.timingRevision||0)<db.dealRules.timingRevision){if(['negotiating','ready'].includes(d.status)&&d.deadline>=s.date)d.deadline=[d.deadline,dateAdd(d.createdDate,db.dealRules.expiryDays)].sort().at(-1);d.timingRevision=db.dealRules.timingRevision;}d.terms.arrival??='nearest';if(d.counter)d.counter.arrival??='nearest';d.plannedArrival??=d.kind==='transfer'?arrivalPlan(db,s,d.terms.arrival).date:s.date;}
     ensureManagers(db,s);normalizeInbox(db,s);s.offers=s.offers.filter(o=>{o.status??='open';o.shortlisted??=false;o.extensions??=0;o.createdDate??=s.date;if(!o.terms||!o.context){const draft=offerTerms(db,s,o.club);if(!draft)return false;o.terms=draft.terms;o.context=draft.context;o.weekly=draft.terms.weekly;o.years=draft.terms.years;}return true;});queueArrival(db,s);coachMail(db,s);syncMarketState(db,s);return s;
@@ -27282,7 +27722,7 @@ function simulateWorldFixture(db,f,s){
     for(const offset of db.continentalRules.knockoutOffsets){const date=dateAdd(s.seasonStart,offset);if(date>=s.date&&!dates.includes(date))dates.push(date);}dates.sort();
     dates.forEach((date,i)=>entries.push({id:'match:'+s.season+':'+date,date,type:'match',name:text(db,'calendarMatch',{n:i+1}),description:'',priority:c.matchPriority,completed:false}));
     for(const event of db.calendarEvents){const date=dateAdd(s.seasonStart,event.offset);entries.push({...clone(event),id:'calendar:'+s.season+':'+event.id,eventId:event.id,date,priority:event.type==='deadline'?c.deadlinePriority:c.eventPriority,completed:legacy&&date<s.date});}
-    s.calendar={entries,trainingDays:0,ended:false,lastEvent:null};if(legacy)mail(db,s,{key:'migration:'+s.season,subject:text(db,'calendarTitle'),body:text(db,'catalogMigration')});
+    s.calendar={entries,trainingDays:s.trainingProgram?.pending.days||0,ended:false,lastEvent:null};if(legacy)mail(db,s,{key:'migration:'+s.season,subject:text(db,'calendarTitle'),body:text(db,'catalogMigration')});
     s.round=0;
   }
 
@@ -27294,17 +27734,13 @@ function simulateWorldFixture(db,f,s){
     for(const d of s.deals)if(['negotiating','ready'].includes(d.status)&&d.deadline<s.date){d.status='failed';d.awaiting=false;d.medicalWaiting=false;d.medicalDeferred=false;dealLog(db,s,d,'negotiationDeadline');mail(db,s,{subject:text(db,'mailResponseSubject',{club:indexes(db,s).clubs[d.club].name,round:d.round}),body:text(db,'negotiationDeadline'),deal:d.id,action:'deal'});}
   }
   function advance(db,s){
-    ensureWorld(db,s);initializeSystems(db,s);advancePostseason(db,s);if(s.careerStories.pending)resolveCareerDecision(db,s,db.careerDecisionRules.defaultOption,true);queueCareerDecision(db,s);const event=nextCalendar(s);if(!event)return false;
-    const p=s.player,c=db.calendarRules,elapsed=Math.max(0,daysBetween(db,s.date,event.date)),training=db.training.find(x=>x.id===s.training),injuredDays=Math.min(elapsed,p.injuryDays),effectiveTraining={...training,growth:training.growth*(elapsed?(elapsed-injuredDays)/elapsed:0)};
-    p.earned+=elapsed/c.daysToWeeks*p.contract.weekly;
-    p.injuryDays=Math.max(0,p.injuryDays-elapsed);p.injury=Math.ceil(p.injuryDays/c.injuryDaysPerWeek);
-    p.fitness=clamp(p.fitness+elapsed*(c.recoveryDaily+(training.id===db.training.at(-1).id?c.restDailyBonus:0)-training.load/c.trainingUnitDays),0,db.rules.scale);
-    s.date=event.date;s.calendar.trainingDays+=elapsed;let ticks=0;
-    while(s.calendar.trainingDays>=c.trainingUnitDays&&ticks<c.maxIdleSteps){s.calendar.trainingDays-=c.trainingUnitDays;ticks++;grow(db,s,0,effectiveTraining,event.type==='seasonend'||daysBetween(db,s.seasonStart,s.date)>=db.calendarEvents.find(x=>x.type==='seasonclose').offset);adapt(db,s);s.worldTickSerial++;worldTick(db,s);}
+    if(s.trainingProgram&&s.trainingProgram.plan.primary!==s.training&&db.training.some(t=>t.id===s.training))setTrainingPlan(db,s,{...s.trainingProgram.plan,primary:s.training,secondary:s.trainingProgram.plan.secondary===s.training?db.trainingProgramRules.defaults.secondary:s.trainingProgram.plan.secondary});ensureWorld(db,s);initializeSystems(db,s);advancePostseason(db,s);if(s.careerStories.pending)resolveCareerDecision(db,s,db.careerDecisionRules.defaultOption,true);queueCareerDecision(db,s);const event=nextCalendar(s);if(!event)return false;
+    const p=s.player,c=db.calendarRules,elapsed=Math.max(0,daysBetween(db,s.date,event.date));p.earned+=elapsed/c.daysToWeeks*p.contract.weekly;
+    advanceTrainingDays(db,s,event.date,event.type==='seasonend'||daysBetween(db,s.seasonStart,event.date)>=db.calendarEvents.find(x=>x.type==='seasonclose').offset);
     settleObligations(db,s);indexCache.delete(s.world);expireDeals(db,s);event.completed=true;s.calendar.lastEvent={id:event.id,type:event.type,name:event.name,date:event.date};let report=null;
     if(event.type==='match'){
       report=playRound(db,s);applyClubPolicy(db,s);externalIssues(db,s);
-      if(report){p.earned+=report.stats.minutes?p.contract.appearanceBonus:0;p.earned+=report.stats.goals*p.contract.goalBonus;reviewPromise(db,s);}
+      if(report){s.trainingProgram.fatigue=clamp(s.trainingProgram.fatigue+report.stats.minutes/db.rules.matchMinutes*db.trainingProgramRules.matchFatigue,0,db.rules.scale);p.earned+=report.stats.minutes?p.contract.appearanceBonus:0;p.earned+=report.stats.goals*p.contract.goalBonus;reviewPromise(db,s);}
       refreshOffers(db,s);
     }else if(event.type==='decision'){s.careerStories.pending={id:event.id,template:event.template,date:s.date,season:s.season};
     }else if(event.type==='arrival'){resolveArrival(db,s);
@@ -27325,7 +27761,7 @@ function simulateWorldFixture(db,f,s){
     advancePostseason(db,s);if(!seasonReady(s)||s.careerStories?.pending)return false;captureSeasonReview(db,s,true);const p=s.player,oldLeague=indexes(db,s).clubs[p.club].league,oldContract=p.contract;
     s.continentalQualification=Object.fromEntries(db.continentalRules.domesticLeagues.map(id=>[id,standings(db,s,id).map(row=>row.club)]));ensureWorld(db,s);worldSeason(db,s);indexCache.delete(s.world);
     s.archives.push({season:s.season,fixtures:s.fixtures,postseason:clone(s.postseason)});s.archives=s.archives.slice(-db.dynamics.archiveLimit);
-    const start=dateAdd(s.seasonStart,db.calendarRules.seasonDays),elapsed=Math.max(0,daysBetween(db,s.date,start));p.earned+=elapsed/db.calendarRules.daysToWeeks*p.contract.weekly;p.injuryDays=Math.max(0,p.injuryDays-elapsed);p.injury=Math.ceil(p.injuryDays/db.calendarRules.injuryDaysPerWeek);
+    const start=dateAdd(s.seasonStart,db.calendarRules.seasonDays),elapsed=Math.max(0,daysBetween(db,s.date,start));p.earned+=elapsed/db.calendarRules.daysToWeeks*p.contract.weekly;advanceTrainingDays(db,s,start,true);
     s.date=start;s.seasonStart=start;s.season++;s.continentalBrackets={};s.postseason=null;s.careerStories.pending=null;s.careerStories.focus=null;s.careerStories.lastDate=null;s.seasonBaseline={season:s.season,date:start,stats:clone(p.stats),earned:p.earned};s.marketReview=null;s.competitionStats=null;p.development.training={season:s.season,gains:Object.fromEntries(db.attributes.map(a=>[a.id,0])),total:0,weeks:0};s.round=0;p.age+=db.rules.seasonAgeStep;p.suspension=0;p.yellows=0;
     if(!p.freeAgent){
       const newLeague=indexes(db,s).clubs[p.club].league,relegated=indexes(db).leagues[newLeague].level>indexes(db).leagues[oldLeague].level;
@@ -27396,16 +27832,15 @@ function simulateWorldFixture(db,f,s){
     }s.lastOfferRefresh=s.date;clock.date=dateAdd(s.date,integer(rng,p.freeAgent?cfg.freeMinDays:cfg.reviewMinDays,p.freeAgent?cfg.freeMaxDays:cfg.reviewMaxDays));scheduleMarketReview(db,s);
   }
   function seekClub(db,s,clubId){
-    initializeSystems(db,s);const p=s.player,c=indexes(db,s).clubs[clubId],r=db.dealRules;
-    if(s.pendingTransfer||!c||c.historical||c.parent||clubId===p.club&&!p.freeAgent||s.agentInquiries.some(q=>q.club===clubId&&!q.resolved)||s.offers.some(o=>o.club===clubId&&o.status==='open'&&o.expiresDate>=s.date)||s.deals.some(d=>d.club===clubId&&dealLive(d))||s.agentContacts[clubId]&&daysBetween(db,s.agentContacts[clubId],s.date)<r.requestCooldownDays)return false;
-    const cfg=db.marketFlow,days=integer(random(hash(`${s.seed}:contact:${clubId}:${s.date}`)),cfg.contactMinDays,cfg.contactMaxDays),date=dateAdd(s.date,days);if(date>dateAdd(s.seasonStart,db.calendarRules.finalDay))return false;
-    s.agentContacts[clubId]=s.date;const id=`contact:${clubId}:${s.date}`,q={id,club:clubId,sourceClub:p.club,date,requestedDate:s.date,resolved:false};s.agentInquiries.push(q);
-    s.calendar.entries.push({id,date,type:'contact',club:clubId,name:text(db,'calendarReply'),description:'',priority:db.calendarRules.replyPriority,completed:false});mail(db,s,{key:id,subject:text(db,'mailAgentSubject'),body:text(db,'agentContactQueued',{club:c.name,date}),from:'mailAgent'});return true;
+    initializeSystems(db,s);if(agentContactIssue(db,s,clubId))return false;const cfg=db.marketFlow,approach=db.agentSystem.approaches.find(a=>a.id===s.agent.mandate.approach),rng=random(hash(`${s.seed}:contact:${clubId}:${s.date}`)),days=Math.max(db.trainingProgramRules.minimumDays,integer(rng,cfg.contactMinDays,cfg.contactMaxDays)+approach.delay),date=dateAdd(s.date,days);if(date>dateAdd(s.seasonStart,db.calendarRules.finalDay))return false;
+    s.agentContacts[clubId]=s.date;const id=`contact:${clubId}:${s.date}`,q={id,club:clubId,sourceClub:s.player.club,date,requestedDate:s.date,resolved:false,agentId:s.agent.id,mandate:clone(s.agent.mandate),agentRevision:db.agentSystem.revision};s.agentInquiries.push(q);s.agent.trust=clamp(s.agent.trust-approach.trustCost,0,db.rules.scale);if(!s.player.freeAgent)s.player.trust=clamp(s.player.trust-approach.coachCost,0,db.rules.scale);
+    s.calendar.entries.push({id,date,type:'contact',club:clubId,name:text(db,'calendarReply'),description:'',priority:db.calendarRules.replyPriority,completed:false});mail(db,s,{key:id,subject:text(db,'mailAgentSubject'),body:text(db,'agentContactQueued',{club:indexes(db,s).clubs[clubId].name,date}),from:'mailAgent'});return true;
   }
   function resolveInquiry(db,s,event){
-    const q=s.agentInquiries.find(q=>q.id===event.id);if(!q||q.resolved||q.date>s.date)return;q.resolved=true;if(q.sourceClub!==s.player.club||s.pendingTransfer)return;
-    const c=indexes(db,s).clubs[q.club],r=db.dealRules,limits=buyerLimits(db,s,q.club),gap=c.quality-suitability(db,s.player);
-    if(gap>r.maximumClubInterestGap+s.player.reputation*db.rules.scoutingReputationFactor||limits.fit<r.buyerFitMin||!addOffer(db,s,q.club))mail(db,s,{key:q.id+':response',subject:text(db,'mailAgentSubject'),body:text(db,'agentDeclined',{club:c.name}),from:'mailAgent'});
+    const q=s.agentInquiries.find(q=>q.id===event.id);if(!q||q.resolved||q.date>s.date)return;q.resolved=true;q.result='cancelled';q.resolvedDate=s.date;if(q.sourceClub!==s.player.club||s.pendingTransfer)return;
+    const report=contactAssessment(db,s,q.club,q.mandate,q.agentId),rng=random(hash(`${s.seed}:inquiry:${q.id}:${q.agentId}:${q.mandate.approach}`));q.result=report&&!report.blocked&&(!q.agentRevision||rng()<report.chance)&&addOffer(db,s,q.club)?'offer':'rejected';
+    s.agent.reports.push({inquiry:q.id,club:q.club,date:s.date,result:q.result,mandate:clone(q.mandate),agentId:q.agentId});s.agent.reports=s.agent.reports.slice(-db.agentSystem.reportLimit);
+    if(q.result==='rejected')mail(db,s,{key:q.id+':response',subject:text(db,'mailAgentSubject'),body:text(db,'agentDeclined',{club:indexes(db,s).clubs[q.club].name}),from:'mailAgent'});
   }
   function queueMedicalReview(db,s,d){
     const lastDate=[d.deadline,dateAdd(s.seasonStart,db.calendarRules.finalDay)].sort()[0];
@@ -27438,7 +27873,7 @@ function simulateWorldFixture(db,f,s){
     if(kind==='transfer'&&(!offer||clubId===p.club&&!p.freeAgent))return null;if(kind==='callup'&&(!canCallup(db,s)||indexes(db,s).clubs[p.club].parent!==clubId))return null;if(kind==='renewal'&&(p.freeAgent||clubId!==p.club))return null;
     const generated=offer?.terms||offerTerms(db,s,clubId)?.terms;if(!generated)return null;const terms=clone(generated),agent=db.agents.find(a=>a.id===s.agent.id);if(kind!=='transfer'){terms.fee=0;terms.arrival='nearest';terms.upfrontPercent=db.rules.scale;terms.sellOnPercent=0;}
     const plan=kind==='transfer'?arrivalPlan(db,s,terms.arrival):{date:s.date,mode:'nearest',window:null},seller=kind==='transfer'?sellerLimits(db,s,plan.date):{...sellerLimits(db,s,s.date),minimum:0,ask:0,status:'agreed'},buyer=buyerLimits(db,s,clubId),deadline=dateAdd(s.date,r.expiryDays);
-    const d={timingRevision:r.timingRevision,id:`deal:${++s.dealSerial}`,club:clubId,sourceClub:p.club,kind,offerId:offer?.id||null,status:'negotiating',round:0,createdDate:s.date,deadline,awaiting:false,responseDate:null,log:[],counter:null,medical:'pending',plannedArrival:plan.date,buyer:{...buyer,status:'pending'},seller,agent:{status:'pending',id:agent.id},terms};s.deals.push(d);if(kind==='renewal')for(const m of s.inbox)if(m.action==='renewal'&&m.fromClub===p.club&&m.contractExpiry===p.contract.expiresSeason)m.answered=true;dealLog(db,s,d,'negotiationHint');mail(db,s,{key:d.id+':opened',subject:text(db,'mailAgentSubject'),body:text(db,'mailAgentBody'),from:agent.name,deal:d.id,action:'deal'});return d;
+    const d={timingRevision:r.timingRevision,id:`deal:${++s.dealSerial}`,club:clubId,sourceClub:p.club,kind,offerId:offer?.id||null,status:'negotiating',round:0,createdDate:s.date,deadline,awaiting:false,responseDate:null,log:[],counter:null,medical:'pending',brief:{priority:s.agent.mandate.priority,style:db.agentSystem.defaults.style},relationship:db.agentSystem.relationshipStart,plannedArrival:plan.date,buyer:{...buyer,status:'pending'},seller,agent:{status:'pending',id:agent.id},terms};s.deals.push(d);if(kind==='renewal')for(const m of s.inbox)if(m.action==='renewal'&&m.fromClub===p.club&&m.contractExpiry===p.contract.expiresSeason)m.answered=true;dealLog(db,s,d,'negotiationHint');mail(db,s,{key:d.id+':opened',subject:text(db,'mailAgentSubject'),body:text(db,'mailAgentBody'),from:agent.name,deal:d.id,action:'deal'});return d;
   }
   function prepareArrival(db,s,d){
     const plan=d.kind==='transfer'?arrivalPlan(db,s,d.terms.arrival):{date:s.date},fresh=d.kind==='transfer'?sellerLimits(db,s,plan.date):null;d.plannedArrival=plan.date;
@@ -27481,14 +27916,14 @@ function simulateWorldFixture(db,f,s){
   }
   function submitDeal(db,s,id,terms){
     const issue=dealSubmissionIssue(db,s,id,terms),d=s.deals.find(d=>d.id===id);if(issue){if(d&&['negotiationDeadline','negotiationLimit'].includes(issue.key)){d.status='failed';d.awaiting=false;d.medicalWaiting=false;d.medicalDeferred=false;dealLog(db,s,d,issue.key);mail(db,s,{key:d.id+':closed:'+issue.key,subject:text(db,'mailResponseSubject',{club:indexes(db,s).clubs[d.club].name,round:d.round}),body:text(db,issue.key),deal:d.id,action:'deal'});syncMarketState(db,s);}return false;}expireDeals(db,s);
-    const cfg=db.marketFlow,lastDate=[d.deadline,dateAdd(s.seasonStart,db.calendarRules.finalDay)].sort()[0],available=daysBetween(db,s.date,lastDate);if(available<=0)return false;const responseDays=Math.min(available,integer(random(hash(`${s.seed}:${d.id}:${d.round+1}:${s.date}`)),cfg.responseMinDays,cfg.responseMaxDays));
+    const cfg=db.marketFlow,lastDate=[d.deadline,dateAdd(s.seasonStart,db.calendarRules.finalDay)].sort()[0],available=daysBetween(db,s.date,lastDate);if(available<=0)return false;const style=db.agentSystem.styles.find(x=>x.id===d.brief.style),responseDays=Math.min(available,Math.max(db.trainingProgramRules.minimumDays,integer(random(hash(`${s.seed}:${d.id}:${d.round+1}:${s.date}`)),cfg.responseMinDays,cfg.responseMaxDays)+style.delay));
     if(d.round>=db.dealRules.maxRounds){d.status='failed';dealLog(db,s,d,'negotiationLimit');return false;}
-    if(d.kind!=='transfer'||s.player.freeAgent){terms.fee=0;terms.upfrontPercent=db.rules.scale;terms.sellOnPercent=0;}d.terms=clone(terms);prepareArrival(db,s,d);d.round++;d.awaiting=true;d.medicalWaiting=false;d.medicalDeferred=false;d.status='negotiating';d.medical='pending';d.seller.status=d.kind==='transfer'&&!s.player.freeAgent?'pending':'agreed';d.buyer.status='pending';d.agent.status='pending';d.counter=null;
+    if(d.brief.style==='firm'){s.agent.trust=clamp(s.agent.trust-db.agentSystem.firmTrustCost,0,db.rules.scale);dealLog(db,s,d,'agentFirmCost');}if(d.kind!=='transfer'||s.player.freeAgent){terms.fee=0;terms.upfrontPercent=db.rules.scale;terms.sellOnPercent=0;}d.terms=clone(terms);prepareArrival(db,s,d);d.round++;d.awaiting=true;d.medicalWaiting=false;d.medicalDeferred=false;d.status='negotiating';d.medical='pending';d.seller.status=d.kind==='transfer'&&!s.player.freeAgent?'pending':'agreed';d.buyer.status='pending';d.agent.status='pending';d.counter=null;
     d.responseDate=dateAdd(s.date,responseDays);s.calendar.entries.push({id:`reply:${d.id}:${d.round}`,date:d.responseDate,type:'reply',name:text(db,'calendarReply'),description:'',deal:d.id,round:d.round,priority:db.calendarRules.replyPriority,completed:false});dealLog(db,s,d,'negotiationWait');syncMarketState(db,s);return true;
   }
   function evaluateDeal(db,s,d,notify=true){
-    const deferred=d.medicalDeferred===true;if(!dealLive(d))return;prepareArrival(db,s,d);if(d.sourceClub!==s.player.club){d.status='withdrawn';d.awaiting=false;d.medicalWaiting=false;d.medicalDeferred=false;return;}const p=s.player,r=db.dealRules,terms=d.terms,counter=clone(terms),reasons=[],c=indexes(db,s).clubs[d.club],annual=terms.weekly*db.rules.annualSalaryWeeks,agent=db.agents.find(a=>a.id===d.agent.id),limits=buyerLimits(db,s,d.club);
-    d.buyer={...limits,status:'agreed'};d.seller.status='agreed';d.agent.status='agreed';d.awaiting=false;d.medicalWaiting=false;d.medicalDeferred=false;
+    const deferred=d.medicalDeferred===true;if(!dealLive(d))return;prepareArrival(db,s,d);if(d.sourceClub!==s.player.club){d.status='withdrawn';d.awaiting=false;d.medicalWaiting=false;d.medicalDeferred=false;return;}const p=s.player,r=db.dealRules,terms=d.terms,counter=clone(terms),reasons=[],c=indexes(db,s).clubs[d.club],annual=terms.weekly*db.rules.annualSalaryWeeks,agent=db.agents.find(a=>a.id===d.agent.id),limits=buyerLimits(db,s,d.club),support=agentNegotiationSupport(db,s,d,limits);
+    d.buyer={...limits,maxWeekly:support.maxWeekly,role:support.role,status:'agreed'};d.seller.status='agreed';d.agent.status='agreed';d.awaiting=false;d.medicalWaiting=false;d.medicalDeferred=false;
     const sellerFail=(key)=>{d.seller.status='pending';reasons.push(key);},buyerFail=key=>{d.buyer.status='pending';reasons.push(key);};
     if(d.kind==='transfer'&&!p.freeAgent){
       const clause=p.contract.releaseClause,bypass=clause>0&&terms.fee>=clause&&terms.upfrontPercent===db.rules.scale;
@@ -27501,10 +27936,10 @@ function simulateWorldFixture(db,f,s){
     }
     const agentFee=annual*terms.agentCommissionPercent/db.rules.scale,totalCost=terms.fee+annual*terms.years+terms.signingBonus+terms.loyaltyBonus+agentFee,spendBudget=limits.budget+c.finance*r.buyerWageBudgetShare;
     if(totalCost>spendBudget){buyerFail('buyerBudgetReject');counter.fee=Math.max(0,Math.floor(spendBudget-annual*terms.years-terms.signingBonus-terms.loyaltyBonus-agentFee));}
-    if(terms.weekly*Math.pow(1+terms.annualRaisePercent/db.rules.scale,terms.years-1)>limits.maxWeekly*(1-r.buyerYearsRisk*Math.max(0,terms.years-db.rules.contractYears))){buyerFail('buyerWageReject');counter.weekly=Math.max(db.rules.minimumSalary,Math.floor(limits.maxWeekly/Math.pow(1+terms.annualRaisePercent/db.rules.scale,terms.years-1)));counter.annualRaisePercent=db.dealDefaults.annualRaisePercent;}
-    if(db.contractRoles.find(x=>x.id===terms.role).rank>db.contractRoles.find(x=>x.id===limits.role).rank){buyerFail('buyerRoleReject');counter.role=limits.role;}
+    if(terms.weekly*Math.pow(1+terms.annualRaisePercent/db.rules.scale,terms.years-1)>support.maxWeekly*(1-support.yearsRisk*Math.max(0,terms.years-db.rules.contractYears))){buyerFail('buyerWageReject');counter.weekly=Math.max(db.rules.minimumSalary,Math.floor(support.maxWeekly*(1-support.yearsRisk*Math.max(0,terms.years-db.rules.contractYears))/Math.pow(1+terms.annualRaisePercent/db.rules.scale,terms.years-1)));counter.annualRaisePercent=db.dealDefaults.annualRaisePercent;}
+    if(db.contractRoles.find(x=>x.id===terms.role).rank>db.contractRoles.find(x=>x.id===support.role).rank){buyerFail('buyerRoleReject');counter.role=support.role;}
     if(!managerTactic(db,s,d.club).formation.includes(terms.position)){buyerFail('buyerPositionReject');counter.position=limits.position;}
-    if(terms.releaseClause>0&&terms.releaseClause<(terms.fee+annual)*r.buyerMinimumReleaseFactor){buyerFail('buyerReleaseReject');counter.releaseClause=Math.ceil((terms.fee+annual)*r.buyerMinimumReleaseFactor);}
+    if(terms.releaseClause>0&&terms.releaseClause<(terms.fee+annual)*support.releaseFactor){buyerFail('buyerReleaseReject');counter.releaseClause=Math.ceil((terms.fee+annual)*support.releaseFactor);}
     if(terms.signingBonus>annual*r.buyerSigningAnnualShare||terms.loyaltyBonus>annual*r.buyerLoyaltyAnnualShare||terms.appearanceBonus+terms.goalBonus>terms.weekly*r.buyerBonusWeeklyShare){buyerFail('buyerBonusReject');counter.signingBonus=Math.min(terms.signingBonus,Math.floor(annual*r.buyerSigningAnnualShare));counter.loyaltyBonus=Math.min(terms.loyaltyBonus,Math.floor(annual*r.buyerLoyaltyAnnualShare));counter.appearanceBonus=Math.min(terms.appearanceBonus,Math.floor(terms.weekly*r.buyerBonusWeeklyShare/db.dealRules.bonusSplit));counter.goalBonus=Math.min(terms.goalBonus,Math.floor(terms.weekly*r.buyerBonusWeeklyShare/db.dealRules.bonusSplit));}
     if(d.kind==='transfer'&&terms.arrival==='nextSummer'&&limits.urgent){buyerFail('arrivalBuyerReject');counter.arrival='nearest';}
     if(s.agent.trust<r.agentTrustRefusal){d.agent.status='pending';reasons.push('agentTrustReject');}
@@ -27512,6 +27947,7 @@ function simulateWorldFixture(db,f,s){
     d.medical=p.injuryDays>r.medicalHighInjuryDays||p.fitness<r.medicalFitnessMin?'pending':'agreed';if(d.medical==='pending')reasons.push('medicalBlocked');
     for(const f of db.dealFields)if(f.type==='number'||f.type==='money')counter[f.id]=clamp(counter[f.id],f.min,f.max);
     if(db.contractRoles.find(x=>x.id===terms.role).rank<db.contractRoles.find(x=>x.id===limits.role).rank-db.dealRules.agentRoleReduction&&s.agent.trust<db.dealRules.agentRoleTrust){d.agent.status='pending';reasons.push('agentLowRole');counter.role=limits.role;}d.counter=counter;
+    const demands=reasons.filter(key=>r.relationshipCostReasons.includes(key)).length;if(notify&&!deferred&&demands){d.relationship=clamp(d.relationship-demands*db.agentSystem.relationshipCost*support.style.relationshipFactor,0,db.rules.scale);if(d.relationship<=db.agentSystem.relationshipMinimum){d.status='failed';d.awaiting=false;d.medicalWaiting=false;d.medicalDeferred=false;dealLog(db,s,d,'agentRelationshipEnded');mail(db,s,{subject:text(db,'mailAgentSubject'),body:text(db,'agentRelationshipEnded'),deal:d.id,action:'deal'});return;}}
     if(reasons.length){if(notify&&!deferred&&reasons.filter(key=>r.relationshipCostReasons.includes(key)).length>=r.relationshipCostThreshold)s.agent.trust=clamp(s.agent.trust-r.requestTrustPenalty,0,db.rules.scale);d.medicalDeferred=deferred&&reasons.includes('medicalBlocked');d.status=d.round>=r.maxRounds&&!d.medicalDeferred&&reasons.some(key=>key!=='medicalBlocked')?'failed':'negotiating';if(notify){for(const reason of reasons)dealLog(db,s,d,reason);if(d.status==='failed')dealLog(db,s,d,'negotiationLimit');}}
     else{d.status='ready';if(notify){s.agent.trust=clamp(s.agent.trust+db.dealRules.agentAdviceTrust,0,db.rules.scale);dealLog(db,s,d,'negotiationAccepted');dealLog(db,s,d,'medicalPassed');}}
     if(d.status==='negotiating'&&(d.medicalDeferred||reasons.length===1&&reasons[0]==='medicalBlocked'))queueMedicalReview(db,s,d);
@@ -27529,7 +27965,7 @@ function simulateWorldFixture(db,f,s){
     const old=p.club,c=indexes(db,s).clubs[d.club],terms=d.terms,annual=terms.weekly*db.rules.annualSalaryWeeks,agentFee=annual*terms.agentCommissionPercent/db.rules.scale,upfront=terms.fee*terms.upfrontPercent/db.rules.scale;
     if(!reserved&&s.world.clubs[d.club].finance<upfront+terms.signingBonus+agentFee)return false;
     if(old!==d.club){s.world.clubs[old].finance+=upfront;if(!reserved)s.world.clubs[d.club].finance-=upfront;s.world.obligations||=[];const balance=terms.fee-upfront;if(balance>0)s.world.obligations.push({from:d.club,to:old,remaining:balance,months:terms.installmentMonths,start:s.date,paidUntil:s.date,perMonth:balance/terms.installmentMonths});s.world.sellOn||=[];for(const prior of s.world.sellOn.filter(x=>x.player==='player'&&x.buyer===old)){const share=Math.max(0,terms.fee-prior.basis)*prior.percent/db.rules.scale;s.world.clubs[old].finance=Math.max(0,s.world.clubs[old].finance-share);s.world.clubs[prior.seller].finance+=share;}s.world.sellOn=s.world.sellOn.filter(x=>x.player!=='player');s.world.sellOn.push({player:'player',seller:old,buyer:d.club,percent:terms.sellOnPercent,basis:terms.fee});}
-    if(!reserved)s.world.clubs[d.club].finance-=terms.signingBonus+agentFee;p.earned+=terms.signingBonus;if(old!==d.club){p.lastClubChangeDate=s.date;s.lastOfferRefresh=s.date;for(const q of s.agentInquiries)if(!q.resolved){q.resolved=true;const event=s.calendar.entries.find(e=>e.id===q.id);if(event)event.completed=true;}}p.club=d.club;p.freeAgent=false;p.adaptation=clubCountry(db,c)===p.country?db.dynamics.initialAdaptation:db.dynamics.foreignAdaptation;p.trust=terms.role==='key'?r.signTrustKey:r.signTrustDefault;
+    if(!reserved)s.world.clubs[d.club].finance-=terms.signingBonus+agentFee;p.earned+=terms.signingBonus;if(old!==d.club){p.lastClubChangeDate=s.date;s.lastOfferRefresh=s.date;for(const q of s.agentInquiries)if(!q.resolved){q.resolved=true;q.result='cancelled';q.resolvedDate=s.date;const event=s.calendar.entries.find(e=>e.id===q.id);if(event)event.completed=true;}}p.club=d.club;p.freeAgent=false;p.adaptation=clubCountry(db,c)===p.country?db.dynamics.initialAdaptation:db.dynamics.foreignAdaptation;p.trust=terms.role==='key'?r.signTrustKey:r.signTrustDefault;
     p.contract={...clone(terms),expiresSeason:s.season+terms.years,initial:false,signedDate:s.date,agreementDate:d.signedDate||s.date,arrivalDate:s.date,promiseReviewed:0};p.career.push({season:s.season,date:s.date,club:d.club,type:d.kind==='renewal'?'renewed':d.kind==='callup'?'promoted':'joined'});d.status='completed';indexCache.delete(s.world);dealLog(db,s,d,'contractSigned');s.offers=[];
     for(const other of s.deals)if(other.id!==d.id&&dealLive(other)){other.status='withdrawn';other.awaiting=false;other.medicalWaiting=false;other.medicalDeferred=false;}
     if(old!==d.club)worldEvents(db,s,'eventTransfer',{name:p.name,from:indexes(db,s).clubs[old].name,to:c.name},d.club);else worldEvents(db,s,'eventContract',{name:p.name,club:c.name},d.club);
@@ -27627,6 +28063,94 @@ function simulateWorldFixture(db,f,s){
     const progress=d.adaptationGain*(t.adaptability+t.language)/d.traitUnit*(1-(abroad?t.homesickness:0)/d.traitUnit);
     p.adaptation=clamp(p.adaptation+progress,0,db.rules.scale);if(abroad){p.traits.language=clamp(t.language+d.languageGain*t.adaptability/d.traitUnit,d.traitMin,d.traitMax);p.morale=clamp(p.morale-(1-p.adaptation/db.rules.scale)*t.homesickness*d.homesickMorale,0,db.rules.scale);}
   }
+  function validTrainingPlan(db,plan){
+    const cfg=db.trainingProgramRules;return Boolean(plan&&db.training.some(t=>t.id===plan.primary)&&(db.training.some(t=>t.id===plan.secondary)||cfg.secondaryOptions.some(t=>t.id===plan.secondary))&&cfg.intensities.some(t=>t.id===plan.intensity)&&cfg.schedules.some(t=>t.id===plan.schedule)&&(plan.primary!==plan.secondary||!db.training.find(t=>t.id===plan.primary)?.attribute));
+  }
+  function initializeTrainingProgram(db,s){
+    if(s.trainingProgram)return;const cfg=db.trainingProgramRules,days=s.calendar?.trainingDays||0,legacy=db.training.find(t=>t.id===s.training)||db.training[0],weights=Object.fromEntries(db.attributes.map(a=>[a.id,legacy.attribute?(legacy.attribute===a.id?legacy.growth:0):legacy.growth/db.attributes.length]));
+    s.trainingProgram={revision:cfg.revision,plan:{primary:legacy.id,...clone(cfg.defaults)},startedDate:s.date,reviewDate:dateAdd(s.date,cfg.blockDays),fatigue:0,pending:{days,exposure:Object.fromEntries(db.attributes.map(a=>[a.id,weights[a.id]*days/db.calendarRules.trainingUnitDays])),workDays:legacy.growth>0?days:0,recoveryDays:legacy.growth>0?0:days},sessions:[],history:[]};
+  }
+  function setTrainingPlan(db,s,plan){
+    if(!validTrainingPlan(db,plan))return false;initializeTrainingProgram(db,s);const program=s.trainingProgram;if(JSON.stringify(program.plan)===JSON.stringify(plan))return true;
+    program.plan=clone(plan);program.startedDate=s.date;program.reviewDate=dateAdd(s.date,db.trainingProgramRules.blockDays);s.training=plan.primary;return true;
+  }
+  function trainingSession(db,s,date=s.date,preview=false){
+    const cfg=db.trainingProgramRules,program=s.trainingProgram,plan=program?.plan||{primary:s.training,...cfg.defaults},schedule=cfg.schedules.find(t=>t.id===plan.schedule),intensity=cfg.intensities.find(t=>t.id===plan.intensity),fixtures=myFixtures(s),offset=Math.max(0,daysBetween(db,program?.startedDate||s.date,date)),pattern=schedule.pattern[offset%schedule.pattern.length],zero=()=>Object.fromEntries(db.attributes.map(a=>[a.id,0]));
+    let kind=pattern,focus=kind==='primary'?plan.primary:kind==='secondary'?plan.secondary:'role',factor=1,loadFactor=1;
+    const latest=s.player.history.filter(r=>r.date<date&&r.stats.minutes>0).at(-1)?.date,planned=preview?fixtures.filter(f=>f.date<date&&daysBetween(db,f.date,date)<=schedule.recoveryDays).at(-1)?.date:null,last=[latest,planned].filter(Boolean).sort().at(-1);
+    if(s.player.injuryDays>0)kind='rehab';else if((program?.fatigue||0)>=cfg.veryHeavyFatigue||s.player.fitness<cfg.fitnessProtection)kind='protection';else if(fixtures.some(f=>f.date===date))kind='match';else if(last&&daysBetween(db,last,date)<=schedule.recoveryDays)kind='recovery';
+    if(plan.primary===db.trainingProgramRules.restTraining&&!['rehab','protection','match'].includes(kind))kind='recovery';
+    if(['rehab','protection','recovery','match'].includes(kind)||focus==='none'||focus===db.trainingProgramRules.restTraining)return {date,kind:['none',db.trainingProgramRules.restTraining].includes(focus)&&!['rehab','protection','match'].includes(kind)?'recovery':kind,focus:db.trainingProgramRules.restTraining,exposure:zero(),load:0,recovery:db.calendarRules.restDailyBonus+(kind==='rehab'?cfg.rehabRecovery:0),work:false};
+    if(fixtures.some(f=>f.date===dateAdd(date,cfg.minimumDays))){kind='taper';factor=schedule.eveGrowth;loadFactor=schedule.eveLoad;}
+    const type=db.training.find(t=>t.id===focus),role=indexes(db).positions[s.player.position].weights,base=type?type.growth:db.training.find(t=>t.id===cfg.balancedTraining).growth,weights=type?.attribute?Object.fromEntries(db.attributes.map(a=>[a.id,a.id===type.attribute?1:0])):focus==='role'?Object.fromEntries(db.attributes.map(a=>[a.id,role[a.id]/sum(Object.values(role))])):Object.fromEntries(db.attributes.map(a=>[a.id,1/db.attributes.length]));
+    const readiness=Math.max(cfg.minimumGrowthReadiness,(cfg.fitnessGrowthFloor+(1-cfg.fitnessGrowthFloor)*s.player.fitness/db.rules.scale)*(1-(program?.fatigue||0)*cfg.fatigueGrowthPenalty)),consistency=Math.min(cfg.consistencyMax,1+Math.floor(offset/db.calendarRules.trainingUnitDays)*cfg.consistencyWeeklyBonus),exposure=Object.fromEntries(db.attributes.map(a=>[a.id,weights[a.id]*base*cfg.workGrowth*intensity.growth*factor*readiness*consistency/db.calendarRules.trainingUnitDays]));
+    return {date,kind,focus,exposure,load:(type?.load??db.training.find(t=>t.id===cfg.balancedTraining).load)*intensity.load*loadFactor,recovery:intensity.recovery,work:true};
+  }
+  function trainingLoad(db,s){return s.trainingProgram?trainingSession(db,s).load+s.trainingProgram.fatigue*db.trainingProgramRules.riskLoadFactor:db.training.find(t=>t.id===s.training)?.load||0;}
+  function trainingPreview(db,s){
+    const preview={...s,player:{...s.player},trainingProgram:{...s.trainingProgram}},list=[];for(let day=db.trainingProgramRules.minimumDays;day<=db.trainingProgramRules.previewDays;day+=db.trainingProgramRules.minimumDays){const session=trainingSession(db,preview,dateAdd(s.date,day),true);list.push(session);preview.player.injuryDays=Math.max(0,preview.player.injuryDays-db.trainingProgramRules.minimumDays);updateTrainingCondition(db,preview,session);}return list;
+  }
+  function updateTrainingCondition(db,s,session){
+    const cfg=db.trainingProgramRules,p=s.player,program=s.trainingProgram;p.fitness=clamp(p.fitness+db.calendarRules.recoveryDaily+session.recovery-session.load/db.calendarRules.trainingUnitDays,0,db.rules.scale);
+    program.fatigue=clamp(program.fatigue+session.load*cfg.loadFatigue-(session.work?cfg.fatigueRecovery:cfg.restFatigueRecovery),0,db.rules.scale);
+  }
+  function advanceTrainingDays(db,s,endDate,offseason){
+    initializeTrainingProgram(db,s);const cfg=db.trainingProgramRules,program=s.trainingProgram,p=s.player,c=db.calendarRules,start=s.date,elapsed=Math.max(0,daysBetween(db,start,endDate));
+    // Every day earns its own exposure before a future plan can replace it.
+    for(let day=cfg.minimumDays;day<=elapsed;day+=cfg.minimumDays){s.date=dateAdd(start,day);const session=trainingSession(db,s,s.date);updateTrainingCondition(db,s,session);p.injuryDays=Math.max(0,p.injuryDays-cfg.minimumDays);p.injury=Math.ceil(p.injuryDays/c.injuryDaysPerWeek);
+      const pending=program.pending;pending.days+=cfg.minimumDays;pending.workDays+=session.work?cfg.minimumDays:0;pending.recoveryDays+=session.work?0:cfg.minimumDays;for(const a of db.attributes){pending.exposure[a.id]+=session.exposure[a.id];if(session.exposure[a.id]>0)p.development.practice.last[a.id]=s.date;}
+      if(session.focus==='role'&&session.work)p.trust=clamp(p.trust+cfg.roleTrustDaily,0,db.rules.scale);
+      program.sessions.push({date:s.date,kind:session.kind,focus:session.focus,load:session.load,fatigue:program.fatigue});program.sessions=program.sessions.slice(-cfg.sessionLimit);s.calendar.trainingDays=pending.days;
+      if(pending.days>=c.trainingUnitDays){const before=clone(p.stats);grow(db,s,0,{id:program.plan.primary,attribute:null,growth:1,weights:clone(pending.exposure),recordPractice:false},offseason);program.history.push({date:s.date,season:s.season,plan:clone(program.plan),workDays:pending.workDays,recoveryDays:pending.recoveryDays,fatigue:program.fatigue,changes:Object.fromEntries(db.attributes.map(a=>[a.id,p.stats[a.id]-before[a.id]]))});program.history=program.history.slice(-cfg.historyLimit);program.pending={days:0,exposure:Object.fromEntries(db.attributes.map(a=>[a.id,0])),workDays:0,recoveryDays:0};s.calendar.trainingDays=0;adapt(db,s);s.worldTickSerial++;worldTick(db,s);}
+      if(s.date>=program.reviewDate){mail(db,s,{key:'training-review:'+program.reviewDate,subject:text(db,'trainingReviewSubject'),body:text(db,'trainingReviewMail',{days:cfg.blockDays}),from:'mailCoach'});program.reviewDate=dateAdd(program.reviewDate,cfg.blockDays);}
+    }s.date=endDate;
+  }
+  function recommendedTrainingPlan(db,s){
+    const cfg=db.trainingProgramRules,role=indexes(db).positions[s.player.position],primary=db.attributes.slice().sort((a,b)=>role.weights[b.id]*(db.rules.scale-s.player.stats[b.id])-role.weights[a.id]*(db.rules.scale-s.player.stats[a.id]))[0].id,recovery=s.player.injuryDays>0||s.trainingProgram.fatigue>=cfg.heavyFatigue||s.player.fitness<cfg.fitnessProtection;
+    return {primary:recovery?db.trainingProgramRules.restTraining:primary,secondary:cfg.defaults.secondary,intensity:recovery?cfg.recoveryIntensity:cfg.defaults.intensity,schedule:recovery?cfg.recoverySchedule:cfg.defaults.schedule};
+  }
+
+  function initializeAgentSystem(db,s){
+    const cfg=db.agentSystem;s.agent.mandate??={priority:cfg.defaults.priority,approach:cfg.defaults.approach};s.agent.agreementDate??=s.date;s.agent.changedDate??=dateAdd(s.date,-cfg.changeCooldownDays);s.agent.reports??=[];
+    for(const d of s.deals){d.brief??={priority:cfg.defaults.priority,style:cfg.defaults.style};d.relationship??=cfg.relationshipStart;}
+    for(const q of s.agentInquiries){q.agentId??=s.agent.id;q.mandate??=clone(s.agent.mandate);if(q.resolved)q.result??='legacy';}
+  }
+  function setAgentMandate(db,s,mandate){if(!mandate||!db.agentSystem.priorities.some(p=>p.id===mandate.priority)||!db.agentSystem.approaches.some(p=>p.id===mandate.approach))return false;s.agent.mandate=clone(mandate);return true;}
+  function changeAgent(db,s,id){
+    const a=db.agents.find(a=>a.id===id);if(!a||id===s.agent.id||s.pendingTransfer||s.deals.some(dealLive)||s.agentInquiries.some(q=>!q.resolved)||daysBetween(db,s.agent.changedDate,s.date)<db.agentSystem.changeCooldownDays)return false;
+    s.agent={id,trust:a.trust,mandate:clone(s.agent.mandate),agreementDate:s.date,changedDate:s.date,reports:clone(s.agent.reports)};return true;
+  }
+  function contactAssessment(db,s,clubId,mandate=s.agent.mandate,agentId=s.agent.id){
+    const cfg=db.agentSystem,c=indexes(db,s).clubs[clubId],a=db.agents.find(a=>a.id===agentId),approach=cfg.approaches.find(a=>a.id===mandate.approach);if(!c||c.parent||c.historical)return null;const limits=buyerLimits(db,s,clubId),level=squadOverall(db,clubId,s),gap=level-suitability(db,s.player),role=db.contractRoles.find(r=>r.id===limits.role),highest=Math.max(...db.contractRoles.map(r=>r.rank)),draft=offerTerms(db,s,clubId);
+    const recent=totals(db,s.player.history.filter(record=>record.date>=dateAdd(s.date,-db.scoutingRules.recentDays))),strong=c.quality>=db.scoutingRules.strongQuality,prospect=s.player.age<=db.offerRules.potentialAgeMax&&s.player.traits.potential>=db.scoutingRules.talentPotential&&mean(Object.values(s.player.development.birth))>=level&&overall(db,s.player.stats)>=db.offerFitRules.prospectMinOverall&&level-overall(db,s.player.stats)<=db.offerFitRules.prospectMaxGap,
+    blocked=!draft?'agentBlockedFunds':limits.fit<db.dealRules.buyerFitMin?'agentBlockedFit':gap>db.dealRules.maximumClubInterestGap+s.player.reputation*db.rules.scoutingReputationFactor?'agentBlockedLevel':strong&&!(recent.apps>=db.scoutingRules.strongApps&&recent.minutes>=db.scoutingRules.strongMinutes&&recent.rating>=db.scoutingRules.strongRating&&(overall(db,s.player.stats)>=db.scoutingRules.strongAbility||s.player.traits.potential>=db.scoutingRules.strongPotential&&prospect))?'agentBlockedRecord':limits.need<db.scoutingRules.minimumNeed&&!prospect?'agentBlockedNeed':null;
+    let chance=cfg.baseChance+limits.fit*cfg.fitWeight-Math.max(0,gap)*cfg.gapWeight+s.agent.trust*cfg.trustWeight+a.skills.network+approach.chance;
+    if(mandate.priority==='development')chance+=role.rank/highest*cfg.roleWeight+c.environment*cfg.environmentWeight;
+    if(mandate.priority==='ambition')chance-=Math.max(0,gap)*cfg.gapWeight;if(mandate.priority==='earnings'&&s.player.contract.weekly>limits.weekly)chance-=cfg.roleWeight;
+    chance=blocked?0:clamp(chance,cfg.minimumChance,cfg.maximumChance);return {club:clubId,chance,blocked,level,fit:limits.fit,role:limits.role,weekly:limits.weekly,environment:c.environment,band:cfg.reportBands.filter(b=>b.min<=chance).at(-1).id};
+  }
+  function agentContactIssue(db,s,clubId){
+    const c=indexes(db,s).clubs[clubId],a=db.agents.find(a=>a.id===s.agent.id);if(s.agentInquiries.filter(q=>!q.resolved).length>=a.skills.capacity)return 'agentContactCapacity';
+    if(s.pendingTransfer||!c||c.historical||c.parent||clubId===s.player.club&&!s.player.freeAgent||s.agentInquiries.some(q=>q.club===clubId&&!q.resolved)||s.offers.some(o=>o.club===clubId&&o.status==='open'&&o.expiresDate>=s.date)||s.deals.some(d=>d.club===clubId&&dealLive(d))||s.agentContacts[clubId]&&daysBetween(db,s.agentContacts[clubId],s.date)<db.dealRules.requestCooldownDays||s.agent.trust<db.agentSystem.approaches.find(a=>a.id===s.agent.mandate.approach).trustCost)return 'contactUnavailable';return null;
+  }
+  function cancelAgentInquiry(db,s,id){const q=s.agentInquiries.find(q=>q.id===id);if(!q||q.resolved)return false;q.resolved=true;q.result='cancelled';q.resolvedDate=s.date;const event=s.calendar.entries.find(e=>e.id===id);if(event)event.completed=true;return true;}
+  function consultAgent(db,s){
+    if(s.agent.lastConsult&&dateAdd(s.agent.lastConsult,db.agentSystem.consultCooldownDays)>s.date)return false;
+    const cfg=db.agentSystem,priority=s.agent.mandate.priority,list=Object.values(indexes(db,s).clubs).filter(c=>!c.historical&&!c.parent&&(s.player.freeAgent||c.id!==s.player.club)&&!agentContactIssue(db,s,c.id)).map(c=>contactAssessment(db,s,c.id)).filter(r=>r&&!r.blocked);
+    const score=r=>r.chance+(priority==='development'?r.environment/db.rules.scale:priority==='earnings'?Math.min(1,r.weekly/Math.max(db.rules.minimumSalary,s.player.contract.weekly)):priority==='ambition'?r.level/db.rules.scale:db.contractRoles.find(t=>t.id===r.role).rank/Math.max(...db.contractRoles.map(t=>t.rank)));
+    s.agent.consultation={date:s.date,priority,clubs:list.sort((a,b)=>score(b)-score(a)||indexes(db,s).clubs[a.club].name.localeCompare(indexes(db,s).clubs[b.club].name,db.meta.locale)).slice(0,cfg.recommendationLimit).map(r=>r.club)};s.agent.lastConsult=s.date;return true;
+  }
+  function setDealBrief(db,s,id,brief){const d=s.deals.find(d=>d.id===id);if(!d||d.status!=='negotiating'||d.awaiting||!db.agentSystem.priorities.some(p=>p.id===brief?.priority)||!db.agentSystem.styles.some(p=>p.id===brief?.style))return false;d.brief=clone(brief);return true;}
+  function agentNegotiationSupport(db,s,d,limits){
+    const cfg=db.agentSystem,priority=cfg.priorities.find(p=>p.id===d.brief?.priority)||cfg.priorities[0],style=cfg.styles.find(p=>p.id===d.brief?.style)||cfg.styles.find(p=>p.id===cfg.defaults.style),agent=db.agents.find(a=>a.id===d.agent.id),leverage=agent.skills.negotiation*(cfg.leverageBase+(1-cfg.leverageBase)*s.agent.trust/db.rules.scale)*style.leverage,roles=db.contractRoles.slice().sort((a,b)=>a.rank-b.rank),current=roles.find(r=>r.id===limits.role),gap=suitability(db,s.player)-squadOverall(db,d.club,s),canRole=priority.roleBonus&&gap>=priority.gapFloor&&limits.fit>=priority.fitFloor;
+    return {priority,style,maxWeekly:limits.maxWeekly*(1+priority.wageBonus*leverage),role:canRole?roles.filter(r=>r.rank<=current.rank+priority.roleBonus).at(-1).id:limits.role,yearsRisk:db.dealRules.buyerYearsRisk*priority.yearsRiskFactor,releaseFactor:db.dealRules.buyerMinimumReleaseFactor*(1-(1-priority.releaseFactor)*Math.min(1,leverage))};
+  }
+  function recommendedDealTerms(db,s,id){
+    const d=s.deals.find(d=>d.id===id);if(!d||d.awaiting||d.status!=='negotiating')return null;const limits=buyerLimits(db,s,d.club),support=agentNegotiationSupport(db,s,d,limits),terms=clone(d.counter||d.terms),priority=support.priority.id;
+    if(priority==='development'){terms.role=support.role;terms.position=limits.position;}else if(priority==='earnings'){terms.annualRaisePercent=db.dealDefaults.annualRaisePercent;terms.weekly=support.maxWeekly*(1-support.yearsRisk*Math.max(0,terms.years-db.rules.contractYears))/Math.pow(1+terms.annualRaisePercent/db.rules.scale,terms.years-1);}else if(priority==='stability'){terms.years=Math.max(terms.years,db.offerRules.standardYears);}else if(priority==='ambition')terms.releaseClause=Math.ceil((terms.fee+terms.weekly*db.rules.annualSalaryWeeks)*support.releaseFactor);
+    terms.agentCommissionPercent=db.agents.find(a=>a.id===d.agent.id).commission;for(const f of db.dealFields)if(['money','number'].includes(f.type))terms[f.id]=clamp(Math.round(terms[f.id]),f.min,f.max);return terms;
+  }
+
   function trainingStatus(db,state,attribute){const practice=state.player.development.practice,last=practice?.last[attribute];if(last&&daysBetween(db,last,state.date)<=db.trainingRules.recentPracticeDays)return 'positive';if(practice&&daysBetween(db,last||practice.since,state.date)>=db.trainingRules.stalePracticeDays)return 'negative';return 'neutral';}
   function grow(db,state,minutes,training,offseason=false){
     const p=state.player,d=db.dynamics,dev=p.development,t=p.traits,club=state.world.clubs[p.club],type=growthType(db,p),rng=random(hash(`${state.seed}:${state.season}:${state.round}:${dev.records.length}:development`));
@@ -27636,17 +28160,17 @@ function simulateWorldFixture(db,f,s){
     const realization=clamp(d.capRealizationBase+experience*d.capExperience+environment*d.capEnvironment+habits*d.capHabits+p.morale/db.rules.scale*d.capMorale-dev.damage*d.capInjury,0,1);
     const age=p.age+dev.ageOffset,curve=type.curve;let left=curve[0],right=curve.at(-1);for(let i=1;i<curve.length;i++)if(age<=curve[i].age){left=curve[i-1];right=curve[i];break;}
     const rate=left===right?left.rate:left.rate+(right.rate-left.rate)*clamp((age-left.age)/(right.age-left.age),0,1);
-    const burst=rng()<type.burstChance&&experience>d.capExperience,plateau=p.injury>0||rng()<d.stagnationChance*(1-experience);let speed=rate*(burst?type.burst:1)*(plateau?d.stagnationFactor:1);
-    if(p.injury)speed=0;const ledger=dev.training;if(ledger.season!==state.season){ledger.season=state.season;ledger.gains=Object.fromEntries(db.attributes.map(a=>[a.id,0]));ledger.total=0;ledger.weeks=0;}if(!minutes&&training.growth>0&&!p.injury){ledger.weeks++;const practice=dev.practice??={since:state.date,last:{}};for(const a of db.attributes)if(!training.attribute||training.attribute===a.id)practice.last[a.id]=state.date;}const style=d.styles.find(x=>x.id===dev.style)||d.styles[0],before=overall(db,p.stats),oldCap=mean(Object.values(dev.caps));
+    const earnedPractice=training.weights&&sum(Object.values(training.weights))>0,burst=rng()<type.burstChance&&experience>d.capExperience,plateau=p.injury>0&&!earnedPractice||rng()<d.stagnationChance*(1-experience);let speed=rate*(burst?type.burst:1)*(plateau?d.stagnationFactor:1);
+    if(p.injury&&!earnedPractice)speed=0;const ledger=dev.training;if(ledger.season!==state.season){ledger.season=state.season;ledger.gains=Object.fromEntries(db.attributes.map(a=>[a.id,0]));ledger.total=0;ledger.weeks=0;}if(!minutes&&training.growth>0&&(!p.injury||earnedPractice)&&(!training.weights||earnedPractice)){ledger.weeks++;if(training.recordPractice!==false){const practice=dev.practice??={since:state.date,last:{}};for(const a of db.attributes)if(training.weights?training.weights[a.id]>0:!training.attribute||training.attribute===a.id)practice.last[a.id]=state.date;}}const style=d.styles.find(x=>x.id===dev.style)||d.styles[0],before=overall(db,p.stats),oldCap=mean(Object.values(dev.caps));
     for(const a of db.attributes){
       const target=Math.min(dev.birth[a.id],Math.max(db.rules.abilityMin,p.stats[a.id]+db.trainingRules.practiceHeadroom,dev.birth[a.id]*realization));dev.caps[a.id]=clamp(dev.caps[a.id]+(target-dev.caps[a.id])*d.capAdjustment,db.rules.abilityMin,dev.birth[a.id]);
-      const focused=training.attribute===a.id?training.growth:(!training.attribute?training.growth/db.attributes.length:0);
+      const focused=minutes?0:training.weights?training.weights[a.id]:training.attribute===a.id?training.growth:(!training.attribute?training.growth/db.attributes.length:0);
       const athletic=d.physicalAttributes.includes(a.id)?1+(t.talent-d.traitCenter)*d.talentPhysicalWeight/d.traitUnit:1+(t.intelligence-d.traitCenter)*d.capLearning;
       const brain=type.id==='cerebral'&&d.technicalAttributes.includes(a.id)?d.cerebralBonus:1;
       const headroom=clamp((dev.caps[a.id]-p.stats[a.id])/d.potentialOffset,0,1);
       let gain=(p.freeAgent?db.dealRules.freeAgentGrowthFactor:1)*(d.trainingGrowth*db.growthRules.trainingMultiplier*focused+d.matchGrowth*db.growthRules.matchMultiplier*minutes/db.rules.matchMinutes*indexes(db).positions[p.position].weights[a.id])*habits*(d.coachBase+coaching*d.coachWeight*db.rules.scale)*athletic*brain*style.weights[a.id]*speed*headroom*(offseason?d.offseasonTrainingFactor:1);
       gain=Math.max(0,Math.min(gain,dev.birth[a.id]-p.stats[a.id]));
-      if(!minutes){gain=Math.max(0,Math.min(gain,training.attribute?db.trainingRules.weeklyFocusedMax:db.trainingRules.weeklyBalancedMax,db.trainingRules.seasonAttributeMax-ledger.gains[a.id],db.trainingRules.seasonTotalMax-ledger.total,dev.birth[a.id]-p.stats[a.id]));ledger.gains[a.id]+=gain;ledger.total+=gain;}
+      if(!minutes){gain=Math.max(0,Math.min(gain,training.weights?Math.min(db.trainingRules.weeklyFocusedMax,db.trainingRules.weeklyBalancedMax+training.weights[a.id]*db.trainingRules.weeklyFocusedMax):training.attribute?db.trainingRules.weeklyFocusedMax:db.trainingRules.weeklyBalancedMax,db.trainingRules.seasonAttributeMax-ledger.gains[a.id],db.trainingRules.seasonTotalMax-ledger.total,dev.birth[a.id]-p.stats[a.id]));ledger.gains[a.id]+=gain;ledger.total+=gain;}
       const physical=d.decliningAttributes.includes(a.id),declineAge=physical?d.physicalDeclineAge:d.technicalDeclineAge,decline=Math.max(0,p.age-declineAge)*(physical?d.physicalDecline:d.technicalDecline)*(1-t.talent*d.declineTalentShield);
       p.stats[a.id]=clamp(p.stats[a.id]+gain-decline,db.rules.abilityMin,db.rules.abilityMax);
     }
@@ -27749,6 +28273,7 @@ function simulateWorldFixture(db,f,s){
     return old===undefined?base:old;
   }
   function upgradeDatabase(db,old){
+    for(const group of ['agentSystem','trainingProgramRules'])old[group]??=clone(db[group]);for(const agent of old.agents)agent.skills??=clone(db.agents.find(a=>a.id===agent.id)?.skills||db.agents[0].skills);
     old.seasonReviewRules??=clone(db.seasonReviewRules);old.continentalRules??=clone(db.continentalRules);old.offerFitRules??=clone(db.offerFitRules);old.awardTypes??=clone(db.awardTypes);old.awardRules??=clone(db.awardRules);
     if(!old.growthRules){for(const [key,value] of Object.entries(db.growthRules.previousTrainingLimits))if(old.trainingRules?.[key]===value)old.trainingRules[key]=db.trainingRules[key];old.growthRules=clone(db.growthRules);}
     if(!old.continentalRules.revision){old.continentalRules=clone(db.continentalRules);for(const league of old.leagues.filter(l=>l.kind==='continental'))league.phaseRounds=db.leagues.find(l=>l.id===league.id)?.phaseRounds||league.phaseRounds;}
@@ -27789,7 +28314,7 @@ function simulateWorldFixture(db,f,s){
   }
 
 
-  return {rolePerformance,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
+  return {validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,rolePerformance,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
 })();
 </script>
 <script id="game-ui">
@@ -27913,7 +28438,7 @@ function validateDB(db,career=null){
       for(const key of keys){const owners=samples.filter(value=>Object.hasOwn(value,key));if(owners.length===samples.length||Object.hasOwn(current,key))checkShape(owners.map(value=>value[key]),current[key],`${path}.${key}`);}
     }
   };
-  checkShape([DEFAULT_DB],db,'DB');
+  checkShape([DEFAULT_DB],db,'DB');validateDevelopmentSystems(db);
   const cfgCheckpoint=db.storageRules;if(cfgCheckpoint.presentationSlot===cfgCheckpoint.slot||cfgCheckpoint.presentationSlot===cfgCheckpoint.backupSlot||[db.meta.storageKey,cfgCheckpoint.backupKey].includes(cfgCheckpoint.presentationKey)||cfgCheckpoint.presentationMaxBytes<=0)throw Error('storageRules.presentation');
   const interactions=db.ui.interactions,infoIds=interactions.glossary.map(entry=>entry.id);
   if(interactions.tooltipWidthPixels<=0||interactions.tooltipInsetPixels<0||interactions.tooltipInsetPixels*2>=interactions.tooltipWidthPixels||interactions.tooltipDelayMs<0||interactions.tooltipLeaveMs<0||new Set(infoIds).size!==infoIds.length||infoIds.some(id=>!/^[-a-zA-Z0-9_]+$/.test(id))||interactions.glossary.some(entry=>new Set(entry.labels).size!==entry.labels.length))throw Error('ui.interactions');
@@ -27989,6 +28514,26 @@ function validateDB(db,career=null){
   if(career){requireRef(career.player.club,refs.clubs,'player.club');if(career.player.dreamClub!==db.profile.unspecifiedId)requireRef(career.player.dreamClub,refs.clubs,'player.dreamClub');requireRef(career.player.position,refs.positions,'player.position');if(career.player.preferredLeague!==db.profile.unspecifiedId)requireRef(career.player.preferredLeague,refs.leagues,'player.preferredLeague');if(!db.countries.some(c=>c.id===career.player.country)||!db.training.some(x=>x.id===career.training))throw Error('player.references');for(const league of Object.keys(career.fixtures)){requireRef(league,refs.leagues,'fixtures.league');for(const f of career.fixtures[league]){requireRef(f.home,refs.clubs,'fixtures.home');requireRef(f.away,refs.clubs,'fixtures.away');if(!f.result&&!f.historical&&!['continental','postseason'].includes(refs.leagues[league].kind)&&((career.world?.clubs[f.home]?.league||refs.clubs[f.home].league)!==league||(career.world?.clubs[f.away]?.league||refs.clubs[f.away].league)!==league))throw Error('fixtures.club.league');}}for(const record of career.player.history){requireRef(record.club,refs.clubs,'history.club');requireRef(record.home,refs.clubs,'history.home');requireRef(record.away,refs.clubs,'history.away');}for(const entry of career.player.career)requireRef(entry.club,refs.clubs,'career.club');for(const offer of career.offers)requireRef(offer.club,refs.clubs,'offers.club');}
   return true;
 }
+function validateDevelopmentSystems(db){
+ const a=db.agentSystem,c=db.trainingProgramRules,unique=list=>list.every(item=>typeof item.id==='string'&&/^[-a-zA-Z0-9_]+$/.test(item.id))&&new Set(list.map(item=>item.id)).size===list.length,positiveInt=value=>Number.isInteger(value)&&value>0;
+ for(const list of [a.priorities,a.approaches,a.styles,a.reportBands,c.intensities,c.schedules,c.sessionTypes,c.secondaryOptions])if(!unique(list))throw Error('development.ids');
+ if(!a.priorities.some(p=>p.id===a.defaults.priority)||!a.approaches.some(p=>p.id===a.defaults.approach)||!a.styles.some(p=>p.id===a.defaults.style)||!c.intensities.some(p=>p.id===c.defaults.intensity)||!c.schedules.some(p=>p.id===c.defaults.schedule)||![...db.training,...c.secondaryOptions].some(p=>p.id===c.defaults.secondary))throw Error('development.defaults');if(!db.training.some(t=>t.id===c.restTraining&&t.growth===0&&t.load===0)||!db.training.some(t=>t.id===c.balancedTraining&&!t.attribute&&t.growth>0)||!c.intensities.some(t=>t.id===c.recoveryIntensity)||!c.schedules.some(t=>t.id===c.recoverySchedule)||db.training.some(t=>t.growth<0||t.load<0||t.growth*c.workGrowth*Math.max(...c.intensities.map(t=>t.growth))*c.consistencyMax>c.maximumExposure))throw Error('trainingProgram.references');
+ if(!positiveInt(a.changeCooldownDays)||!positiveInt(a.consultCooldownDays)||!positiveInt(a.reportLimit)||!positiveInt(a.recommendationLimit)||a.minimumChance<0||a.maximumChance>1||a.maximumChance<a.minimumChance||a.baseChance<0||a.baseChance>1||a.relationshipMinimum<0||a.relationshipMinimum>=a.relationshipStart||a.relationshipStart>db.rules.scale||a.relationshipCost<=0||a.firmTrustCost<0||a.leverageBase<0||a.leverageBase>1||db.agents.some(agent=>!agent.skills||agent.skills.network<0||agent.skills.network>1||agent.skills.negotiation<0||agent.skills.negotiation>1||!positiveInt(agent.skills.capacity)))throw Error('agentSystem.rules');
+ if(a.priorities.some(p=>p.wageBonus<0||p.wageBonus>1||!Number.isInteger(p.roleBonus)||p.roleBonus<0||p.roleBonus>1||p.yearsRiskFactor<0||p.yearsRiskFactor>1||p.releaseFactor<=0||p.releaseFactor>1||p.fitFloor<0||p.fitFloor>1)||a.approaches.some(p=>!Number.isInteger(p.delay)||p.chance<0||p.chance>1||p.coachCost<0||p.coachCost>db.rules.scale||p.trustCost<0||p.trustCost>db.rules.scale)||a.styles.some(p=>!Number.isInteger(p.delay)||p.leverage<0||p.relationshipFactor<=0)||a.reportBands.some((b,i)=>b.min<0||b.min>1||i&&b.min<=a.reportBands[i-1].min)||a.reportBands[0].min!==0)throw Error('agentSystem.options');
+ if(!positiveInt(c.blockDays)||!positiveInt(c.previewDays)||!positiveInt(c.historyLimit)||!positiveInt(c.sessionLimit)||c.minimumDays!==1||c.previewDays>c.sessionLimit||c.maximumExposure<=0||c.workGrowth<0||c.fatigueRecovery<0||c.restFatigueRecovery<c.fatigueRecovery||c.loadFatigue<0||c.matchFatigue<0||c.riskLoadFactor<0||c.fatigueGrowthPenalty<0||c.minimumGrowthReadiness<=0||c.minimumGrowthReadiness>1||c.fitnessGrowthFloor<0||c.fitnessGrowthFloor>1||c.consistencyWeeklyBonus<0||c.consistencyMax<1||c.heavyFatigue<0||c.veryHeavyFatigue<=c.heavyFatigue||c.veryHeavyFatigue>db.rules.scale||c.fitnessProtection<0||c.fitnessProtection>db.rules.scale||c.intensities.some(p=>p.growth<0||p.load<0)||c.schedules.some(p=>p.pattern.length!==db.calendarRules.trainingUnitDays||p.pattern.some(kind=>!['primary','secondary','team','recovery'].includes(kind))||p.eveGrowth<0||p.eveGrowth>1||p.eveLoad<0||p.eveLoad>1||!Number.isInteger(p.recoveryDays)||p.recoveryDays<0))throw Error('trainingProgram.rules');
+}
+function validateDevelopmentSave(db,s){
+ const cfg=db.trainingProgramRules,a=db.agentSystem,program=s.trainingProgram,finite=(v,min,max)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max,date=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v)),past=v=>date(v)&&v<=s.date,mandate=v=>v&&a.priorities.some(p=>p.id===v.priority)&&a.approaches.some(p=>p.id===v.approach),brief=v=>v&&a.priorities.some(p=>p.id===v.priority)&&a.styles.some(p=>p.id===v.style),club=id=>db.clubs.some(c=>c.id===id),agent=id=>db.agents.some(a=>a.id===id),pending=program?.pending;
+ if(!program||program.revision!==cfg.revision||!Core.validTrainingPlan(db,program.plan)||program.plan.primary!==s.training||!past(program.startedDate)||!date(program.reviewDate)||program.reviewDate<s.date||!finite(program.fatigue,0,db.rules.scale)||!pending||!Number.isInteger(pending.days)||pending.days<0||pending.days>=db.calendarRules.trainingUnitDays||pending.days!==s.calendar.trainingDays||!Number.isInteger(pending.workDays)||!Number.isInteger(pending.recoveryDays)||pending.workDays<0||pending.recoveryDays<0||pending.workDays+pending.recoveryDays!==pending.days||db.attributes.some(attr=>!finite(pending.exposure?.[attr.id],0,cfg.maximumExposure)||pending.days===0&&pending.exposure[attr.id]!==0)||!Array.isArray(program.sessions)||program.sessions.length>cfg.sessionLimit||!Array.isArray(program.history)||program.history.length>cfg.historyLimit)throw Error('trainingProgram.progress');
+ for(const row of program.sessions)if(!past(row.date)||!cfg.sessionTypes.some(t=>t.id===row.kind)||![...db.training,...cfg.secondaryOptions].some(t=>t.id===row.focus)||!finite(row.load,0,Number.MAX_SAFE_INTEGER)||!finite(row.fatigue,0,db.rules.scale))throw Error('trainingProgram.sessions');
+ for(const row of program.history)if(!past(row.date)||!Core.validTrainingPlan(db,row.plan)||!Number.isInteger(row.season)||row.season<1||row.season>s.season||!Number.isInteger(row.workDays)||!Number.isInteger(row.recoveryDays)||row.workDays<0||row.recoveryDays<0||row.workDays+row.recoveryDays!==db.calendarRules.trainingUnitDays||!finite(row.fatigue,0,db.rules.scale)||db.attributes.some(attr=>!finite(row.changes?.[attr.id],-db.rules.scale,db.rules.scale)))throw Error('trainingProgram.history');
+ if(!mandate(s.agent.mandate)||!past(s.agent.agreementDate)||!past(s.agent.changedDate)||!Array.isArray(s.agent.reports)||s.agent.reports.length>a.reportLimit)throw Error('agentSystem.save');
+ if(s.agent.consultation&&(!past(s.agent.consultation.date)||!a.priorities.some(p=>p.id===s.agent.consultation.priority)||!Array.isArray(s.agent.consultation.clubs)||s.agent.consultation.clubs.length>a.recommendationLimit||s.agent.consultation.clubs.some(id=>!club(id))))throw Error('agentSystem.consultation');
+ for(const q of s.agentInquiries)if(!mandate(q.mandate)||!agent(q.agentId)||q.resolvedDate!==undefined&&!past(q.resolvedDate)||q.result!==undefined&&!['offer','rejected','cancelled','legacy'].includes(q.result))throw Error('agentSystem.inquiry');
+ for(const row of s.agent.reports)if(!past(row.date)||!club(row.club)||!agent(row.agentId)||!mandate(row.mandate)||!['offer','rejected','cancelled'].includes(row.result))throw Error('agentSystem.reports');
+ for(const deal of s.deals)if(!brief(deal.brief)||!finite(deal.relationship,0,db.rules.scale))throw Error('agentSystem.deal');
+}
+
 function validateCareerContent(db){
   const c=db.careerDecisionRules,r=db.rolePerformanceRules,v=db.seasonReviewRules;
   if(!c||!r||!v||!Array.isArray(db.careerDecisions)||!db.careerDecisions.length||!Array.isArray(db.roleProfiles)||!c.defaultOption||c.firstDelayDays<1||c.intervalMinDays<1||c.intervalMaxDays<c.intervalMinDays||c.finalOffset>db.calendarRules.finalDay||c.focusDays<1||c.focusMultiplier<1||c.focusMultiplier>db.dynamics.skillFactorMax||c.historyLimit<1||r.minimumMinutes<1||r.scoreScale<=0||r.targetScore<0||r.targetScore>r.scoreScale||r.ratingBonusMax<0||r.trustReward<0||r.moraleReward<0||r.reputationReward<0||v.historyLimit<1||v.leaderLimit<1||v.bestMatchLimit<1||!Array.isArray(v.pages)||new Set(v.pages).size!==v.pages.length||v.pages.length!==DEFAULT_DB.seasonReviewRules.pages.length||v.pages.some(p=>!DEFAULT_DB.seasonReviewRules.pages.includes(p)))throw Error('careerContent');
@@ -28071,7 +28616,7 @@ function validateSave(envelope){
   if(!db.contractRoles.some(r=>r.id===p.contract.role)||!db.positions.some(pos=>pos.id===p.contract.position))throw Error(t('invalidSave'));
   for(const f of db.dealFields.filter(f=>f.type==='number'||f.type==='money'))if(f.id!=='fee'&&f.id!=='years'&&!(f.id==='weekly'&&p.freeAgent)&&!finite(p.contract[f.id],f.type==='money'?0:f.min,f.type==='money'?Number.MAX_SAFE_INTEGER:f.max))throw Error(t('invalidSave'));
   if(s.matchPresentation){const presentation=s.matchPresentation,record=p.history.find(r=>r.id===presentation.reportId);if(!record?.result.preMatch||!envelope.db.matchBroadcast.phaseIds.includes(presentation.phase)||!Number.isInteger(presentation.cursor)||presentation.cursor<0||presentation.cursor>record.result.events.length+envelope.db.matchBroadcast.systemEventCount||typeof presentation.paused!=='boolean'||(presentation.phase==='finished'&&presentation.cursor!==record.result.events.length+envelope.db.matchBroadcast.systemEventCount))throw Error('matchPresentation');for(const side of ['home','away'])if(record.result[side].players.filter(person=>person.starter).length!==envelope.db.matchBroadcast.teamSize)throw Error('startingXI');for(const side of ['home','away']){const team=record.result[side];if(!team.tactic||!envelope.db.tactics.some(t=>t.id===team.tactic.id)||team.players.some(person=>typeof person.starter!=='boolean'||!Number.isInteger(person.number)||person.number<envelope.db.profile.limits.numberMin||person.number>envelope.db.profile.limits.numberMax))throw Error('broadcastLineup');}if(!envelope.db.positions.some(pos=>pos.id===record.result.preMatch.position)||!record.result.preMatch.manager||!record.result.preMatch.tactic)throw Error('lockerRoom');}
-  validateDB(envelope.db,s);return true;
+  validateDevelopmentSave(db,s);validateDB(envelope.db,s);return true;
 }
 function toast(message){clearTimeout(toastTimer);document.getElementById('toast-root').innerHTML=`<div class="toast" role="status">${h(message)}</div>`;toastTimer=setTimeout(()=>document.getElementById('toast-root').replaceChildren(),DB.meta.toastMs);}
 const envelope=()=>({format:DB.storageRules.exportFormat,formatVersion:DB.storageRules.exportVersion,schema:DB.meta.schema,db:DB,state});
@@ -28155,6 +28700,10 @@ function upgradePresentationDatabase(database,previousDatabase=null){
   for(const club of database.clubs.filter(club=>!club.parent))patchColors(club);
   for(const club of database.clubs.filter(club=>club.parent))patchColors(club);
   database.ui.labels={...Core.clone(DEFAULT_DB.ui.labels),...database.ui.labels};
+  if(!database.ui.tabs.some(tab=>tab.id==='training'))database.ui.tabs.push(Core.clone(DEFAULT_DB.ui.tabs.find(tab=>tab.id==='training')));
+  const playerGroup=database.ui.navigationGroups.find(group=>group.id==='player');if(playerGroup&&!playerGroup.views.includes('training'))playerGroup.views.splice(1,0,'training');
+  database.ui.interactions??=Core.clone(DEFAULT_DB.ui.interactions);database.ui.interactions.actionHints={...Core.clone(DEFAULT_DB.ui.interactions.actionHints),...database.ui.interactions.actionHints};database.ui.interactions.tabHints={...Core.clone(DEFAULT_DB.ui.interactions.tabHints),...database.ui.interactions.tabHints};
+  database.ui.reworkLegacyLabels??=Core.clone(DEFAULT_DB.ui.reworkLegacyLabels);for(const [key,previous] of Object.entries(DEFAULT_DB.ui.reworkLegacyLabels))if(database.ui.labels[key]===previous)database.ui.labels[key]=DEFAULT_DB.ui.labels[key];
   database.ui.calendarView??=Core.clone(DEFAULT_DB.ui.calendarView);
   database.ui.interactions??=Core.clone(DEFAULT_DB.ui.interactions);
   database.matchBroadcast.eventTemplates.extraTimeEvent=DEFAULT_DB.matchBroadcast.eventTemplates.extraTimeEvent;database.matchBroadcast.eventSymbols.extraTimeEvent=DEFAULT_DB.matchBroadcast.eventSymbols.extraTimeEvent;
@@ -28255,7 +28804,7 @@ function competitionName(f){const league=idx().leagues[f.competition||f.league||
 
 function historyItems(records){if(!records.length)return `<div class="empty">${h(t('noMatches'))}</div>`;return records.slice().reverse().map(record=>{const result=matchOutcome(record),opponent=idx().clubs[record.home===record.club?record.away:record.home];return `<div class="history-item"><div class="result-badge ${result.class}">${h(result.label)} ${h(result.score)}</div><div><b>${clubLink(opponent.id)}</b><p>${h(record.date)} · ${h(competitionName(record))} · ${h(t(record.appearance))} · ${n(record.stats.minutes)}${h(t('minutesShort'))}</p></div><div class="row">${record.stats.minutes?`<span class="rating num">${n(record.stats.rating,1)}</span>`:badge(t('unused'))}${btn(t('matchDetails'),'report',`data-id="${h(record.id)}"`,'subtle small')}</div></div>`;}).join('');}
 function render(){hideInteractionTooltip();shellHeaderObserver?.disconnect();if(state){syncSeasonCalendar();Core.syncMarketState(DB,state);}applyTheme();if(calendarLoading){document.getElementById('app').innerHTML=`<main class="match-loading"><span class="match-loader" aria-hidden="true"></span><h1>${h(t('calendarAdvancing'))}</h1></main>`;return;}if(storageLoading){document.getElementById('app').innerHTML=`<main class="match-loading"><span class="match-loader" aria-hidden="true"></span><h1>${h(t('storageLoading'))}</h1></main>`;return;}if(state&&(matchLoading||state.matchPresentation)){renderMatchExperience();return;}if(!state){renderOnboard();return;}const p=state.player,club=currentClub(),league=idx().leagues[club.league],tab=screen==='settings'?{label:t('settings')}:DB.ui.tabs.find(x=>x.id===screen)||DB.ui.tabs[0],finished=Core.seasonReady(state),responses=Core.pendingResponses(DB,state),decision=state.careerStories.pending;document.title=`${DB.meta.title} — ${p.name}`;
-  document.getElementById('app').innerHTML=`<aside class="sidebar" id="sidebar"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(DB.meta.subtitle)}</small></div></div><div class="career-mini"><div class="row"><span class="avatar">${h(p.name.slice(0,1))}</span><div><b>${h(p.name)}</b><p>${h(p.position)} · ${n(p.age)}${h(t('ageUnit'))}</p></div></div><div class="divider"></div><p>${p.freeAgent?h(t('freeAgent')):clubLink(club.id)}</p></div><div class="nav-caption">${h(t('navigation'))}</div><nav class="nav" aria-label="${h(t('navigation'))}">${DB.ui.navigationGroups.map(x=>`<button type="button" data-action="tab" data-group="${h(x.id)}" data-tab="${h(x.views[0])}" class="${x.views.includes(screen)?'active':''}" ${x.views.includes(screen)?'aria-current="page"':''}><span class="nav-icon" aria-hidden="true">${h(x.icon)}</span><span class="nav-label">${h(x.label)}</span>${x.views.includes('inbox')&&unreadCount()?badge(n(unreadCount()),'green'):''}</button>`).join('')}</nav><footer class="sidebar-footer">${h(DB.meta.title)} / v${h(DB.meta.version)}${btn(t('settings'),'tab','data-tab="settings"','subtle')}${btn(t('newCareer'),'new','','subtle')}</footer></aside><main class="shell"><header class="topbar"><div class="row topbar-heading">${btn('☰','menu','','mobile-menu')}<div class="topbar-context"><p class="career-date"><span>${leagueLink(league.id)}</span><span>${h(t('season',{n:state.season}))}</span><time datetime="${h(state.date)}">${h(state.date)}</time></p><h2>${h(tab.label)}</h2></div></div><div class="top-actions"><details class="header-tools"><summary>${h(t('pageTools'))}</summary><div>${btn(t('export'),'export','','subtle')}${btn(t('import'),'import','','subtle')}</div></details><span id="save-indicator" class="save-indicator" role="status" data-status="${h(storageStatus)}">${h(t(storageStatus))}</span>${btn(t('save'),'save')}${btn(decision?t('chooseDecision'):responses.length?t('respondRequired',{n:responses.length}):t(finished?'nextSeason':'continue'),decision?'career-decision':responses.length?'respond-required':finished?'next-season':'advance','','primary')}</div></header><div class="content" data-screen="${h(screen)}">${sectionNavigation()}${!storageHealthy?`<div class="notice warning" style="margin-bottom:18px">${h(t('saveWarning'))}</div>`:''}${({settings:settings,dashboard:dashboard,calendar:calendar,inbox:inbox,fixtures:fixtures,statistics:statistics,team:team,market:market,career:career,world:world,news:news}[screen]||dashboard)()}</div></main>`;organizeView();
+  document.getElementById('app').innerHTML=`<aside class="sidebar" id="sidebar"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(DB.meta.subtitle)}</small></div></div><div class="career-mini"><div class="row"><span class="avatar">${h(p.name.slice(0,1))}</span><div><b>${h(p.name)}</b><p>${h(p.position)} · ${n(p.age)}${h(t('ageUnit'))}</p></div></div><div class="divider"></div><p>${p.freeAgent?h(t('freeAgent')):clubLink(club.id)}</p></div><div class="nav-caption">${h(t('navigation'))}</div><nav class="nav" aria-label="${h(t('navigation'))}">${DB.ui.navigationGroups.map(x=>`<button type="button" data-action="tab" data-group="${h(x.id)}" data-tab="${h(x.views[0])}" class="${x.views.includes(screen)?'active':''}" ${x.views.includes(screen)?'aria-current="page"':''}><span class="nav-icon" aria-hidden="true">${h(x.icon)}</span><span class="nav-label">${h(x.label)}</span>${x.views.includes('inbox')&&unreadCount()?badge(n(unreadCount()),'green'):''}</button>`).join('')}</nav><footer class="sidebar-footer">${h(DB.meta.title)} / v${h(DB.meta.version)}${btn(t('settings'),'tab','data-tab="settings"','subtle')}${btn(t('newCareer'),'new','','subtle')}</footer></aside><main class="shell"><header class="topbar"><div class="row topbar-heading">${btn('☰','menu','','mobile-menu')}<div class="topbar-context"><p class="career-date"><span>${leagueLink(league.id)}</span><span>${h(t('season',{n:state.season}))}</span><time datetime="${h(state.date)}">${h(state.date)}</time></p><h2>${h(tab.label)}</h2></div></div><div class="top-actions"><details class="header-tools"><summary>${h(t('pageTools'))}</summary><div>${btn(t('export'),'export','','subtle')}${btn(t('import'),'import','','subtle')}</div></details><span id="save-indicator" class="save-indicator" role="status" data-status="${h(storageStatus)}">${h(t(storageStatus))}</span>${btn(t('save'),'save')}${btn(decision?t('chooseDecision'):responses.length?t('respondRequired',{n:responses.length}):t(finished?'nextSeason':'continue'),decision?'career-decision':responses.length?'respond-required':finished?'next-season':'advance','','primary')}</div></header><div class="content" data-screen="${h(screen)}">${sectionNavigation()}${!storageHealthy?`<div class="notice warning" style="margin-bottom:18px">${h(t('saveWarning'))}</div>`:''}${({settings:settings,dashboard:dashboard,calendar:calendar,inbox:inbox,fixtures:fixtures,statistics:statistics,team:team,market:market,training:trainingCenter,career:career,world:world,news:news}[screen]||dashboard)()}</div></main>`;organizeView();if(screen==='market'&&!activeDeal)refreshAgentTargets();
   fitShirtNames();maybeShowCareerMoment();
 }
 function baseDashboard(){const p=state.player,club=currentClub(),tot=Core.totals(DB,myHistory()),fixture=nextFixture(),chance=Core.selection(DB,state)*DB.rules.scale,comp=Core.competition(DB,p,p.club,state),dream=idx().clubs[p.dreamClub]||{name:t('undecided'),color:DB.profile.unspecifiedColor,quality:DB.rules.scale},fit=Core.suitability(DB,p),route=DB.routes.find(x=>x.id===p.route);return `<div class="welcome"><div class="eyebrow">${h(t('currentClub'))} / ${h(club.name)}</div><h1>${h(t('welcome',{name:p.name}))}</h1><p>${h(t('welcomeSub'))}</p></div><div class="cols"><div class="stack"><section class="card hero"><div class="hero-profile">${shirt(p.number,p.displayName||p.name)}<div>${badge(p.position)}<h2>${h(p.name)}</h2><p>${h(DB.countries.find(c=>c.id===p.country).name)} · ${n(p.age)}${h(t('ageUnit'))} · ${n(p.height)} cm</p><div style="margin-top:12px">${badge(club.parent?route.name:t('currentClub'),'pink')}</div></div></div><div class="hero-score"><span>${h(t('overall'))}</span><strong class="num">${abilityLabel(Core.overall(DB,p.stats))}</strong><p>${h(t('roleOverall'))} ${abilityLabel(fit)}</p></div></section><div class="kpi-grid">${kpi(t('apps'),`${tot.apps}`,`${t('starts')} ${tot.starts} · ${tot.minutes}${t('minutesShort')}`)}${kpi(t('goal'),n(tot.goals),`${t('xg')} ${n(tot.xg,2)}`)}${kpi(t('assist'),n(tot.assists),`${t('xa')} ${n(tot.xa,2)}`)}${kpi(t('avgRating'),tot.apps?n(tot.rating,2):t('noRating'),t('seasonStats'))}</div><section class="card"><div class="section-head"><h2>${h(t('coachReport'))}</h2>${badge(p.injury?t('injured',{n:p.injury}):p.suspension?t('suspended',{n:p.suspension}):t(chance>=DB.competitionRules.roleStarterChance?'roleStarter':chance>=DB.competitionRules.roleRotationChance?'roleRotation':'roleBackup'),p.injury||p.suspension?'red':'green')}</div><p class="small muted">${h(t('coachReportText',{competition:n(comp,1),chance:n(chance)}))}</p><div class="form-grid" style="margin-top:20px">${['trust','fitness','morale','reputation'].map(key=>`<div><div class="row between small" style="margin-bottom:7px"><span class="muted">${h(t(key))}</span><b class="num">${n(p[key])}/${DB.rules.scale}</b></div>${progress(p[key])}</div>`).join('')}</div>${p.fitness<DB.rules.minimumFitnessForSelection?`<div class="notice warning" style="margin-top:20px">${h(t('lowFitness'))}</div>`:''}</section><section class="card"><div class="section-head"><h2>${h(t('recentMatches'))}</h2>${btn(t('viewAll'),'tab','data-tab="fixtures"','subtle')}</div>${historyItems(myHistory().slice(-DB.rules.recentFormMatches))}</section></div><div class="stack"><section class="card"><div class="section-head"><h2>${h(t('nextFixture'))}</h2>${fixture?badge(t('round',{n:fixture.round+1})):badge(t('endSeason'),'pink')}</div>${fixture?`<p class="small muted">${h(competitionName(fixture))}</p>${fixtureCard(fixture)}<div class="divider"></div>${detail(t('selection'),`${n(chance)}% ${t('starter')}`)}${detail(t('fitness'),`${n(p.fitness)}/${DB.rules.scale}`)}`:`<div class="notice">${h(t('noFixture'))}</div>`}</section><section class="card"><div class="section-head"><h2>${h(t('training'))}</h2>${badge(abilityLabel(Core.suitability(DB,p)))}</div><div class="training-list">${DB.training.map(tr=>btn(tr.name,'training',`data-id="${h(tr.id)}" aria-pressed="${tr.id===state.training}"`,tr.id===state.training?'selected':'')).join('')}</div><p class="small muted" style="margin-top:12px">${h(DB.training.find(tr=>tr.id===state.training).description)}</p><div class="divider"></div><p class="small muted">${h(t('trainingHint'))}</p>${trainingProgress()}${quickAbilities()}</section><section class="card"><div class="section-head"><h2>${h(t('dream'))}</h2>${crest(dream)}</div><h3>${h(dream.name)}</h3><p class="small muted" style="margin:7px 0 15px">${h(t(p.dreamClub===DB.profile.unspecifiedId?'undecidedDream':'dreamHint'))}</p>${p.dreamClub===DB.profile.unspecifiedId?'':progress(fit,dream.quality)+`<div class="row between small" style="margin-top:10px"><span class="muted">${h(t('abilityGap'))}</span><b class="num">${n(Math.max(0,dream.quality-fit),1)}</b></div>`}</section></div></div>`;}
@@ -28307,7 +28856,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
   case 'calendar-day':seasonCalendarDate=button.dataset.date;render();document.querySelector('.season-day[aria-pressed="true"]')?.focus({preventScroll:true});break;
   case 'calendar-current':seasonCalendarMonth=state.date.slice(0,7);seasonCalendarDate=state.date;render();break;
   case 'calendar-fixtures':fixtureScope=button.dataset.scope;screen='fixtures';reportId=null;render();window.scrollTo({top:0});break;
-  case 'training':state.training=button.dataset.id;persist();render();break;
+  case 'training':if(Core.setTrainingPlan(DB,state,{...state.trainingProgram.plan,primary:button.dataset.id})){persist();render();}break;
   case 'respond-required':openRequiredResponse();break;
   case 'career-decision':openCareerDecision();break;
   case 'career-choice':if(Core.resolveCareerDecision(DB,state,button.dataset.id)){closeModal();persist();render();}break;
@@ -28368,7 +28917,7 @@ function tacticsCard(){const p=state.player,club=currentClub(),manager=state.wor
 function sectionNavigation(){const group=DB.ui.navigationGroups.find(g=>g.views.includes(screen));return group&&group.views.length>1?'<nav class="group-tabs" aria-label="'+h(t('secondaryNavigation'))+'">'+group.views.map(id=>{const view=DB.ui.tabs.find(v=>v.id===id);return btn(view.label,'tab','data-tab="'+h(id)+'" aria-current="'+(screen===id?'page':'false')+'"',screen===id?'selected':'');}).join('')+'</nav>':'';}
 function organizeView(){const content=document.querySelector('.content');if(!content)return;const pane=el=>{if(el)el.classList.add('list-pane');};for(const table of content.querySelectorAll('.table-wrap'))pane(table);for(const list of content.querySelectorAll('.calendar-list,.deal-list'))pane(list);
   if(screen==='world'){const players=content.querySelector('.world-player-list')?.closest('section'),managers=content.querySelector('.world-manager-list')?.closest('section'),news=content.querySelector('.world-news');if(players&&managers){const grid=document.createElement('div');grid.className='world-panels';content.insertBefore(grid,news||players);grid.append(players,managers);if(news)content.append(news);}}
-  if(screen==='team'){const settings=content.firstElementChild,standings=content.querySelector('#team-competition')?.closest('section'),leaders=content.querySelector('.leaderboard')?.parentElement;if(standings&&leaders){const grid=document.createElement('div'),aside=document.createElement('div');grid.className='league-primary';aside.className='leaderboard-area';content.insertBefore(grid,standings);grid.append(standings,aside);aside.append(leaders);}if(settings?.classList.contains('cols')){const details=document.createElement('details'),summary=document.createElement('summary');details.className='card helper-details compact-details';summary.textContent=t('clubDetails');details.append(summary,settings);content.append(details);}}
+  if(screen==='team'){const settings=content.querySelector(':scope > .cols'),standings=content.querySelector('#team-competition')?.closest('section'),leaders=content.querySelector('.leaderboard')?.parentElement;if(standings&&leaders){const grid=document.createElement('div'),aside=document.createElement('div');grid.className='league-primary';aside.className='leaderboard-area';content.insertBefore(grid,standings);grid.append(standings,aside);aside.append(leaders);}if(settings?.classList.contains('cols')){const details=document.createElement('details'),summary=document.createElement('summary');details.className='card helper-details compact-details';summary.textContent=t('clubDetails');details.append(summary,settings);content.append(details);}}
   if(screen==='inbox'){const body=content.querySelector('.mail-body');if(body?.nextElementSibling)body.before(body.nextElementSibling);}
   if(screen==='fixtures'&&!reportId){const card=content.querySelector('section.card');if(card){const list=document.createElement('div');list.className='list-pane fixture-records';for(const el of [...card.children])if(!el.classList.contains('section-head'))list.append(el);card.append(list);}}
   if(screen==='market'){const form=content.querySelector('#deal-form');if(form){const actions=form.nextElementSibling,welcome=content.querySelector('.welcome');if(actions&&welcome){actions.classList.add('deal-primary-actions');welcome.after(actions);const old=form.querySelector('button[type="submit"]');if(old&&!form.querySelector('fieldset').disabled){const button=document.createElement('button');button.type='submit';button.setAttribute('form','deal-form');button.className='primary';button.textContent=t('negotiationSubmit');actions.prepend(button);old.remove();}}}else{const tools=content.querySelector('#agent-select')?.closest('.cols.equal');if(tools){const contract=tools.firstElementChild,details=document.createElement('details'),summary=document.createElement('summary');details.className='card helper-details compact-details';summary.textContent=t('contractDetails');details.append(summary,contract);tools.append(details);tools.classList.add('market-tools');const board=document.createElement('div'),main=document.createElement('div');board.className='market-board';main.className='market-offers';for(const el of [...content.children].slice([...content.children].indexOf(tools)+1))main.append(el);content.insertBefore(board,tools);board.append(main,tools);}for(const card of content.querySelectorAll('.offer-card')){const actions=card.querySelector('.offer-actions');if(actions)card.firstElementChild.after(actions);}}}
@@ -28377,7 +28926,7 @@ function organizeView(){const content=document.querySelector('.content');if(!con
 function updateShellMetrics(){
   document.documentElement.style.setProperty('--shell-bar-height',(document.querySelector('.topbar')?.offsetHeight||0)+'px');document.documentElement.style.setProperty('--section-tabs-height',(document.querySelector('.content .group-tabs')?.offsetHeight||0)+'px');
 }
-function dashboard(){const p=state.player,club=currentClub(),stats=Core.totals(DB,myHistory()),fixture=nextFixture(),chance=Core.selection(DB,state)*DB.rules.scale,training=DB.training.find(x=>x.id===state.training);return calendarSummary()+careerPreparationCard()+pendingArrival()+(p.freeAgent?`<div class="notice warning">${h(t('freeAgent'))}</div>`:'')+`<section class="card dashboard-profile"><div class="row">${shirt(p.number,p.displayName||p.name)}<div><h1>${h(p.name)}</h1><p class="small muted">${h(club.name)} · ${h(p.position)} · ${n(p.age)}${h(t('ageUnit'))}</p></div></div><div class="row wrap">${badge(t('overall')+' '+abilityLabel(Core.overall(DB,p.stats)),'green')}${badge(t('roleOverall')+' '+abilityLabel(Core.suitability(DB,p)))}${btn(t('personalProfile'),'tab','data-tab="career"','small')}</div></section><div class="kpi-grid dashboard-kpis">${kpi(t('apps'),n(stats.apps),t('starts')+' '+stats.starts)}${kpi(t('goal'),n(stats.goals),t('xg')+' '+n(stats.xg,2))}${kpi(t('assist'),n(stats.assists),t('xa')+' '+n(stats.xa,2))}${kpi(t('avgRating'),stats.apps?n(stats.rating,2):t('noRating'),t('seasonStats'))}</div><div class="dashboard-primary"><section class="card next-match"><div class="section-head"><h2>${h(t('nextFixture'))}</h2>${btn(t('schedule'),'tab','data-tab="fixtures"','subtle small')}</div>${fixture?`<p class="small muted">${h(competitionName(fixture))}</p>${fixtureCard(fixture)}<div class="row between small"><span>${h(t('selection'))}</span><b>${n(chance)}% · ${h(t('fitness'))} ${n(p.fitness)}</b></div>`:`<div class="empty">${h(t('noFixture'))}</div>`}<div class="divider"></div><div class="profile-facts match-status">${['trust','fitness','morale','reputation'].map(key=>detail(t(key),n(p[key])+'/'+DB.rules.scale)).join('')}</div></section><section class="card training-card"><div class="section-head"><h2>${h(t('training'))}</h2>${p.injury?badge(t('injured',{n:p.injury}),'red'):''}</div><div class="training-list">${DB.training.map(tr=>btn(tr.name,'training',`data-id="${h(tr.id)}" aria-pressed="${tr.id===state.training}"`,tr.id===state.training?'selected':'')).join('')}</div><p class="small muted">${h(training.description)}</p>${trainingProgress()}<details class="helper-details"><summary>${h(t('trainingGuide'))}</summary><p class="small muted">${h(t('trainingHint'))}</p><div class="compact-advice">${quickAbilities()}</div></details></section></div><div class="dashboard-secondary">${tacticsCard()}<section class="card recent-fixtures"><div class="section-head"><h2>${h(t('recentMatches'))}</h2>${btn(t('viewAll'),'tab','data-tab="fixtures"','subtle small')}</div><div class="list-pane">${historyItems(myHistory().slice(-DB.ui.dashboardRecentGames))}</div></section></div>`;}
+function dashboard(){const p=state.player,club=currentClub(),stats=Core.totals(DB,myHistory()),fixture=nextFixture(),chance=Core.selection(DB,state)*DB.rules.scale,training=DB.training.find(x=>x.id===state.training);return calendarSummary()+pendingArrival()+(p.freeAgent?`<div class="notice warning">${h(t('freeAgent'))}</div>`:'')+`<section class="card dashboard-profile"><div class="row">${shirt(p.number,p.displayName||p.name)}<div><h1>${h(p.name)}</h1><p class="small muted">${h(club.name)} · ${h(p.position)} · ${n(p.age)}${h(t('ageUnit'))}</p></div></div><div class="row wrap">${badge(t('overall')+' '+abilityLabel(Core.overall(DB,p.stats)),'green')}${badge(t('roleOverall')+' '+abilityLabel(Core.suitability(DB,p)))}${btn(t('personalProfile'),'tab','data-tab="career"','small')}</div></section><div class="kpi-grid dashboard-kpis">${kpi(t('apps'),n(stats.apps),t('starts')+' '+stats.starts)}${kpi(t('goal'),n(stats.goals),t('xg')+' '+n(stats.xg,2))}${kpi(t('assist'),n(stats.assists),t('xa')+' '+n(stats.xa,2))}${kpi(t('avgRating'),stats.apps?n(stats.rating,2):t('noRating'),t('seasonStats'))}</div><div class="dashboard-primary"><section class="card next-match"><div class="section-head"><h2>${h(t('nextFixture'))}</h2>${btn(t('schedule'),'tab','data-tab="fixtures"','subtle small')}</div>${fixture?`<p class="small muted">${h(competitionName(fixture))}</p>${fixtureCard(fixture)}<div class="row between small"><span>${h(t('selection'))}</span><b>${n(chance)}% · ${h(t('fitness'))} ${n(p.fitness)}</b></div>`:`<div class="empty">${h(t('noFixture'))}</div>`}<div class="divider"></div><div class="profile-facts match-status">${['trust','fitness','morale','reputation'].map(key=>detail(t(key),n(p[key])+'/'+DB.rules.scale)).join('')}</div></section><section class="card training-card">${trainingSummary()}</section></div>${careerPreparationCard()}<div class="dashboard-secondary">${tacticsCard()}<section class="card recent-fixtures"><div class="section-head"><h2>${h(t('recentMatches'))}</h2>${btn(t('viewAll'),'tab','data-tab="fixtures"','subtle small')}</div><div class="list-pane">${historyItems(myHistory().slice(-DB.ui.dashboardRecentGames))}</div></section></div>`;}
 function team(){if(idx().leagues[teamCompetition]?.kind==='continental')return baseTeam();return postseasonCard(teamCompetition||currentClub().league)+`<div class="cols equal" style="margin-bottom:20px">${tacticsCard()}<section class="card"><h2>${h(t('environment'))}</h2><div class="detail-list">${detail(t('clubPrestige'),clubTier(currentClub()))}${detail(t('prestigeValue'),n(currentClub().prestige,1))}${detail(t('finance'),money(state.world.clubs[state.player.club].finance))}${detail(t('environment'),n(state.world.clubs[state.player.club].environment,1))}${detail(t('trend'),DB.dynamics.trends.find(x=>x.id===state.world.trend).name)}</div><p class="small muted" style="margin-top:15px">${h(t('clubStandingHint'))}</p>${currentClub().scenarioNote?`<p class="notice small" style="margin-top:12px">${h(currentClub().scenarioNote)}</p>`:''}</section></div>`+baseTeam();}
 function honourRows(records){return records.length?records.slice().reverse().map(r=>'<article class="honour-row" data-honour="'+h(r.type)+'"><div><b>'+h(DB.awardTypes.find(t=>t.id===r.type)?.name||r.type)+'</b><p class="small muted">'+h(seasonLabel(r.season))+' · '+h(r.date)+'</p></div><div><b>'+h(r.name)+'</b><p class="small muted">'+h(idx().leagues[r.competition]?.name||t('honoursWorld'))+' · '+h(idx().clubs[r.club]?.name||'')+'</p>'+(r.goal?'<p class="small muted">'+h(t('honoursGoal',{date:r.goal.date,minute:r.goal.minute,club:idx().clubs[r.goal.club].name,xg:n(r.goal.xg,2)}))+'</p>':'')+'</div></article>').join(''):'<p class="notice">'+h(t('honoursEmpty'))+'</p>';}
 function honoursHero(){const records=state.player.honours||[],trophies=records.filter(r=>DB.awardTypes.find(t=>t.id===r.type)?.kind==='trophy').length;return '<section class="card honours-hero"><div class="section-head"><h2>'+h(t('honours'))+'</h2>'+badge(state.player.name)+'</div><div class="honours-counts"><div><span class="small muted">'+h(t('honoursAwards'))+'</span> <strong class="num">'+n(records.length-trophies)+'</strong></div><div><span class="small muted">'+h(t('honoursTrophies'))+'</span> <strong class="num">'+n(trophies)+'</strong></div></div>'+'<div class="honours-preview list-pane">'+honourRows(records.slice(-DB.awardRules.profilePreview))+'</div><details class="helper-details"><summary>'+h(t('honoursAll'))+'</summary><div class="list-pane">'+honourRows(records)+'</div></details><details class="helper-details"><summary>'+h(t('honoursWorld'))+'</summary><div class="list-pane">'+honourRows(state.awards?.records||[])+'</div></details><p class="small muted">'+h(t('honoursSince',{date:state.awards?.since||state.date}))+' '+h(t('honoursModel'))+'</p></section>';}
@@ -28457,11 +29006,51 @@ function mailActionable(m){return Core.pendingResponses(DB,state).some(item=>ite
 function openRequiredResponse(){const pending=Core.pendingResponses(DB,state);if(!pending.length)return;screen='inbox';mailScope='action';activeMail=pending[0].id;pending[0].read=true;reportId=null;activeDeal=null;persist();render();window.scrollTo({top:0});}
 function inbox(){const selected=state.inbox.find(m=>m.id===activeMail),list=state.inbox.filter(m=>mailScope==='all'||mailScope==='unread'&&!m.read||mailScope==='action'&&mailActionable(m)).slice().reverse();return `<div class="welcome row between wrap"><div><h1>${h(t('inbox'))}</h1><p>${h(t('mailUnread'))} ${n(unreadCount())}</p></div>${btn(t('mailMarkAll'),'mail-all')}</div><div class="tabs-inline">${DB.mailFilters.map(x=>btn(x.name,'mail-filter',`data-id="${h(x.id)}"`,mailScope===x.id?'selected':'')).join('')}</div><div class="cols equal"><section class="card mail-list">${list.length?list.map(m=>`<button type="button" class="mail-item ${m.read?'':'unread'} ${activeMail===m.id?'selected':''}" data-action="mail-open" data-id="${h(m.id)}"><span class="row between wrap"><span>${h(mailSender(m))}</span><time>${h(m.date)}</time></span><strong>${h(m.subject)}</strong><span class="row wrap">${!m.read?badge(t('mailUnread'),'green'):''}${mailActionable(m)?badge(t('mailAction'),'pink'):''}${mailMarketStatus(m)}</span></button>`).join(''):`<div class="empty">${h(t('mailEmpty'))}</div>`}</section><section class="card mail-detail">${selected?`<div class="eyebrow">${h(mailSender(selected))} · ${h(selected.date)}</div><h2>${h(selected.subject)}</h2>${mailMarketStatus(selected)}<p class="mail-body">${h(selected.body).replace(/\n/g,'<br>')}</p><div class="row wrap">${selected.action==='offer'&&state.offers.some(o=>o.id===selected.offer&&o.status==='open'&&o.expiresDate>=state.date)&&!mailMarketDeal(selected)?btn(t('negotiationOpen'),'mail-offer',`data-id="${h(selected.offer)}"`,'primary'):''}${mailMarketDeal(selected)?btn(t('marketContinue'),'deal-open',`data-id="${h(mailMarketDeal(selected).id)}"`,'primary'):''}${selected.action==='renewal'&&mailActionable(selected)?`${btn(t('contractRenew'),'renewal-response',`data-id="${h(selected.id)}" data-choice="renew"`,'primary')}${btn(t('renewalDecline'),'renewal-response',`data-id="${h(selected.id)}" data-choice="decline"`)}`:''}${selected.action==='offer'&&state.offers.some(o=>o.id===selected.offer&&o.status==='open')&&!mailMarketDeal(selected)?`${btn(t('offerDecline'),'offer-decline',`data-id="${h(selected.offer)}"`)}${btn(t('offerDefer'),'offer-defer',`data-id="${h(selected.offer)}"`)}`:''}${selected.reply==='coach'&&mailActionable(selected)?DB.inboxReplies.map(r=>btn(r.name,'coach-reply',`data-id="${h(selected.id)}" data-reply="${h(r.id)}"`)).join(''):''}</div>`:`<div class="empty">${h(t('mailOpen'))}</div>`}</section></div>`;}
 function contractDetails(){const p=state.player,c=p.contract;return `<section class="card"><div class="section-head"><h2>${h(t('contractDetails'))}</h2>${badge(p.freeAgent?t('freeAgent'):currentClub().name,'green')}</div><div class="form-grid">${detail(t('weeklyWage'),money(c.weekly))}${detail(t('remaining'),t('contractYearsEnd',{n:c.expiresSeason}))}${detail(t('contractPromise'),roleName(c.role))}${detail(t('contractPosition'),c.position)}${DB.dealFields.filter(f=>!['fee','weekly','years','role','position','upfrontPercent','installmentMonths','sellOnPercent','agentCommissionPercent','arrival'].includes(f.id)).map(f=>detail(f.name,f.type==='money'?money(c[f.id]):n(c[f.id]))).join('')}</div><p class="small muted" style="margin-top:16px">${h(t('dealBudgetNote'))}</p>${p.freeAgent?'':`<div class="creation-actions">${btn(t('contractRenew'),'renew','','primary')}</div>`}</section>`;}
-function agentCard(){const a=DB.agents.find(a=>a.id===state.agent.id);return `<section class="card"><div class="section-head"><h2>${h(t('agent'))}</h2>${badge(t('agentTrust')+' '+n(state.agent.trust))}</div><label>${h(t('agentSelect'))}<select id="agent-select">${options(DB.agents,state.agent.id)}</select></label><p class="small muted" style="margin:12px 0">${h(a.description)}</p><div class="row wrap">${btn(t('agentConsult'),'agent-consult')}</div><div class="divider"></div><label>${h(t('agentTarget'))}<select id="agent-target">${options(Object.values(idx().clubs).filter(c=>!c.parent&&(state.player.freeAgent||c.id!==state.player.club)).sort((a,b)=>a.quality-b.quality),state.player.dreamClub)}</select></label><div style="margin-top:15px">${btn(t('agentSeek'),'agent-seek','','primary')}</div><p class="small muted" style="margin-top:15px">${h(t('contactCooldown',{n:DB.dealRules.requestCooldownDays}))}</p></section>`;}
-function negotiation(d){const c=idx().clubs[d.club],source=idx().clubs[d.sourceClub],live=['negotiating','ready'].includes(d.status),locked=!live||d.awaiting||d.status==='ready';return `<div class="welcome row between wrap"><div><div class="eyebrow">${h(t(d.kind==='renewal'?'contractRenew':d.kind==='callup'?'callupTitle':'negotiations'))}</div><h1>${h(c.name)}</h1><p>${h(t('negotiationRound',{n:d.round,max:DB.dealRules.maxRounds}))} · ${h(t('deadline'))} ${h(d.deadline)}</p></div>${btn(t('marketBack'),'deal-close')}</div><div class="row wrap" style="margin-bottom:20px">${badge(t(d.status),d.status==='ready'?'green':'')}${d.awaiting?badge(t(d.medicalWaiting?'medicalReviewDate':'responseDate')+' '+d.responseDate,'pink'):''}</div>${d.medicalWaiting?`<p class="notice medical-waiting" role="status">${h(t('medicalWaiting'))} · ${h(t(d.medicalDeferred?'medicalDeferredHint':'medicalWaitingHint',{date:d.responseDate,deadline:d.deadline}))}</p>`:''}<div class="kpi-grid" style="margin-bottom:20px">${kpi(t('seller'),source.name,t(d.seller.status))}${kpi(t('buyer'),c.name,t(d.buyer.status))}${kpi(t('agent'),DB.agents.find(a=>a.id===d.agent.id).name,t(d.agent.status))}${kpi(t('medical'),t(d.medical),state.player.injury?t('injured',{n:state.player.injury}):n(state.player.fitness)+' / '+DB.rules.scale)}</div><div class="cols equal" style="margin-bottom:20px"><section class="card"><h2>${h(t('seller'))}</h2><p class="small muted" style="margin:12px 0">${h(t(d.seller.minimum?d.seller.importance>=DB.dealRules.importanceThreshold?'sellerKeep':'sellerSell':'sellerFree'))}</p><div class="detail-list">${detail(t('askingFee'),money(d.seller.ask))}${detail(t('minimumFee'),money(d.seller.minimum))}${detail(t('replacement'),d.seller.replacementDate)}${detail(t('transferFeeBudget'),n(d.seller.upfront)+'%')}</div><div class="row wrap" style="margin-top:20px">${d.seller.minimum&&live&&!d.awaiting?`${!d.seller.permission?btn(t('askPermission'),'deal-interact',`data-id="${h(d.id)}" data-kind="permission"`):''}${!d.seller.requested?btn(t('requestTransfer'),'deal-interact',`data-id="${h(d.id)}" data-kind="request"`):''}${!d.seller.mediated?btn(t('agentMediation'),'deal-interact',`data-id="${h(d.id)}" data-kind="mediate"`):''}`:''}</div></section><section class="card"><h2>${h(t('buyer'))}</h2><div class="detail-list" style="margin-top:16px">${detail(t('maximumBudget'),money(d.buyer.budget))}${detail(t('maximumWeekly'),money(d.buyer.maxWeekly))}${detail(t('maximumRole'),roleName(d.buyer.role))}${detail(t('tacticalFit'),n(d.buyer.fit*DB.rules.scale)+'%')}${detail(t('contractPosition'),d.buyer.position)}</div><p class="small muted" style="margin-top:16px">${h(t('dealBudgetNote'))}</p></section></div>${arrivalPreview(d)}<form id="deal-form" data-id="${h(d.id)}"><fieldset ${locked?'disabled':''} class="card"><div class="section-head"><h2>${h(t('personal'))}</h2>${d.counter&&live&&!locked?btn(t('termsCounter'),'deal-counter',`data-id="${h(d.id)}"`):''}</div><div class="form-grid">${DB.dealFields.map(f=>`<label>${h(f.name)}${f.type==='money'?' · '+h(preferences.currency):''}${f.type==='role'?`<select name="${h(f.id)}">${options(DB.contractRoles,d.terms[f.id])}</select>`:f.type==='position'?`<select name="${h(f.id)}">${options(DB.positions,d.terms[f.id])}</select>`:f.type==='arrival'?d.kind==='transfer'?`<select name="${h(f.id)}">${options(DB.arrivalOptions,d.terms[f.id])}</select>`:`<input value="${h(t('contractImmediate'))}" disabled>`:`<input name="${h(f.id)}" type="number" value="${h(f.type==='money'?Number((d.terms[f.id]*currencyRate()).toFixed(DB.settings.moneyInputDigits)):d.terms[f.id])}" min="${f.type==='money'?f.min*currencyRate():f.min}" max="${f.type==='money'?f.max*currencyRate():f.max}" step="${f.type==='number'?f.step:'any'}" inputmode="decimal" required>`}</label>`).join('')}</div><div class="creation-actions"><p class="small muted">${h(t('transferRequestRisk'))}</p><button class="primary" type="submit">${h(t('negotiationSubmit'))}</button></div></fieldset></form><div class="row wrap" style="margin:20px 0">${live&&!d.awaiting?`${d.status==='negotiating'&&d.round>0&&d.medical==='pending'?btn(t('medicalWaitButton'),'deal-medical-wait',`data-id="${h(d.id)}"`,'primary'):''}${d.status==='ready'?`${btn(d.kind==='transfer'&&Core.arrivalPlan(DB,state,d.terms.arrival).date>state.date?t('arrivalSign',{date:Core.arrivalPlan(DB,state,d.terms.arrival).date}):t('negotiationComplete'),'deal-sign',`data-id="${h(d.id)}"`,'primary')}${btn(t('dealEdit'),'deal-edit',`data-id="${h(d.id)}"`)}`:''}${btn(t('negotiationWithdraw'),'deal-withdraw',`data-id="${h(d.id)}"`)}`:''}${live&&d.awaiting?btn(t('negotiationWithdraw'),'deal-withdraw',`data-id="${h(d.id)}"`):''}</div><section class="card"><h2>${h(t('negotiationHistory'))}</h2><div class="events">${d.log.slice().reverse().map(entry=>`<div class="event"><time>${h(entry.date)}</time><div>${h(entry.text)}</div></div>`).join('')}</div></section>`;}
+let agentPane='strategy',agentClubQuery='',agentLeagueFilter='all',agentTarget=null;
+function trainingPlanText(plan){return t('trainingCycleSummary',{primary:DB.training.find(t=>t.id===plan.primary).name,secondary:[...DB.training,...DB.trainingProgramRules.secondaryOptions].find(t=>t.id===plan.secondary).name,intensity:DB.trainingProgramRules.intensities.find(t=>t.id===plan.intensity).name,schedule:DB.trainingProgramRules.schedules.find(t=>t.id===plan.schedule).name});}
+function trainingFatigueText(){const fatigue=state.trainingProgram.fatigue,cfg=DB.trainingProgramRules;return t(fatigue>=cfg.veryHeavyFatigue?'trainingFatigueHeavy':fatigue>=cfg.heavyFatigue?'trainingFatigueHigh':'trainingFatigueLow');}
+function trainingSummary(){const program=state.trainingProgram;return `<div class="section-head"><h2>${h(t('trainingCenter'))}</h2>${btn(t('trainingOpen'),'tab','data-tab="training"','small primary')}</div><p class="training-plan-label">${h(trainingPlanText(program.plan))}</p><div class="profile-facts">${detail(t('trainingNextReview'),program.reviewDate)}${detail(t('trainingFatigue'),n(program.fatigue)+' / '+DB.rules.scale)}</div><p class="small muted">${h(trainingFatigueText())}</p>${trainingProgress()}`;}
+function trainingPreviewMarkup(sample=state){return `<div class="training-preview-grid">${Core.trainingPreview(DB,sample).map(day=>`<article class="training-day ${day.work?'':'is-recovery'}"><time class="small num" datetime="${h(day.date)}">${h(day.date.slice(-5))}</time><b>${h(DB.trainingProgramRules.sessionTypes.find(t=>t.id===day.kind).name)}</b><span class="small muted">${h(day.work?[...DB.training,...DB.trainingProgramRules.secondaryOptions].find(t=>t.id===day.focus)?.name||t('trainingRoleGoal'):t('trainingFocusNone'))}</span></article>`).join('')}</div>`;}
+function trainingCenter(){
+ const program=state.trainingProgram,cfg=DB.trainingProgramRules,plan=program.plan;return `<div class="welcome"><h1>${h(t('trainingCenter'))}</h1><p>${h(t('trainingPlanHint'))}</p></div><div class="rework-grid"><section class="card"><form id="training-plan-form"><div class="section-head"><h2>${h(t('trainingPlan'))}</h2><button class="primary" type="submit">${h(t('trainingApply'))}</button></div><div class="form-grid"><label>${h(t('trainingPrimary'))}<select name="primary">${options(DB.training,plan.primary)}</select></label><label>${h(t('trainingSecondary'))}<select name="secondary">${options([...cfg.secondaryOptions,...DB.training],plan.secondary)}</select></label><label>${h(t('trainingIntensity'))}<select name="intensity">${options(cfg.intensities,plan.intensity)}</select></label><label>${h(t('trainingSchedule'))}<select name="schedule">${options(cfg.schedules,plan.schedule)}</select></label></div><div id="training-plan-notes" class="plan-notes">${trainingPlanNotes(plan)}</div><div class="row wrap">${btn(t('trainingRecommended'),'training-recommend')}</div></form><div class="divider"></div><div class="section-head"><h3>${h(t('trainingNextSeven'))}</h3></div><div id="training-preview">${trainingPreviewMarkup()}</div><p class="small muted">${h(t('trainingPreviewHint'))}</p></section><section class="card"><div class="section-head"><h2>${h(t('trainingActive'))}</h2>${badge(trainingFatigueText(),program.fatigue>=cfg.heavyFatigue?'red':'green')}</div><p class="training-plan-label">${h(trainingPlanText(plan))}</p><div class="detail-list">${detail(t('trainingPlanStart'),program.startedDate)}${detail(t('trainingNextReview'),program.reviewDate)}${detail(t('trainingFatigue'),n(program.fatigue)+' / '+DB.rules.scale)}${detail(t('trainingPendingDays'),t('trainingPendingDaysValue',{days:DB.calendarRules.trainingUnitDays-program.pending.days}))}</div>${trainingProgress()}<details class="helper-details"><summary>${h(t('trainingGuide'))}</summary><p class="small muted">${h(t('trainingHint'))}</p><p class="small muted">${h(t('trainingRealisticNote'))}</p></details></section></div><div class="rework-grid"><section class="card"><div class="section-head"><h2>${h(t('trainingWeeklyReview'))}</h2></div><div class="rework-list">${program.history.length?program.history.slice().reverse().map(review=>`<article class="coach-review"><div class="row between wrap"><time class="small num">${h(review.date)}</time>${badge(t('trainingDays')+' '+n(review.workDays)+' · '+t('trainingRecoveryDays')+' '+n(review.recoveryDays))}</div><p class="small muted">${h(t('trainingReviewPlan'))} · ${h(trainingPlanText(review.plan))}</p><p>${h(t(review.fatigue>=cfg.heavyFatigue?'trainingReviewTired':review.workDays<=review.recoveryDays?'trainingReviewRecover':'trainingReviewGood'))}</p><div class="review-markers">${DB.attributes.map(a=>`<span>${h(a.name)} <strong class="${review.changes[a.id]>0?'positive':review.changes[a.id]<0?'negative':'muted'}">${review.changes[a.id]>0?'+':review.changes[a.id]<0?'−':'—'}</strong></span>`).join('')}</div></article>`).join(''):`<p class="empty">${h(t('trainingNoReviews'))}</p>`}</div></section><section class="card"><div class="section-head"><h2>${h(t('trainingSessionHistory'))}</h2></div><div class="rework-list">${program.sessions.length?program.sessions.slice().reverse().map(day=>`<div class="training-history-row"><time class="small num">${h(day.date)}</time><b>${h(cfg.sessionTypes.find(t=>t.id===day.kind).name)}</b><span class="small muted">${h([...DB.training,...cfg.secondaryOptions].find(t=>t.id===day.focus)?.name||t('trainingFocusNone'))}</span></div>`).join(''):`<p class="empty">${h(t('trainingNoSessions'))}</p>`}</div></section></div>`;
+}
+function trainingPlanNotes(plan){return `<p class="small muted">${h(DB.trainingProgramRules.intensities.find(t=>t.id===plan.intensity)?.description)}</p><p class="small muted">${h(DB.trainingProgramRules.schedules.find(t=>t.id===plan.schedule)?.description)}</p>`;}
+function agentCard(){
+ const a=DB.agents.find(a=>a.id===state.agent.id),cfg=DB.agentSystem,mandate=state.agent.mandate;return `<section class="card agent-system"><div class="section-head"><h2>${h(t('agent'))}</h2>${badge(t('agentTrust')+' '+n(state.agent.trust))}</div><h3>${h(a.name)}</h3><p class="small muted">${h(a.description)}</p><div class="profile-facts">${detail(t('agentCommission'),n(a.commission)+'%')}${detail(t('agentCapacity'),n(state.agentInquiries.filter(q=>!q.resolved).length)+' / '+a.skills.capacity)}</div><div class="tabs-inline" role="tablist" aria-label="${h(t('agent'))}">${btn(t('agentStrategy'),'agent-pane','data-pane="strategy" role="tab" aria-selected="'+(agentPane==='strategy')+'"',agentPane==='strategy'?'selected':'')}${btn(t('agentContactTab'),'agent-pane','data-pane="contact" role="tab" aria-selected="'+(agentPane==='contact')+'"',agentPane==='contact'?'selected':'')}</div><div ${agentPane==='strategy'?'':'hidden'}><form id="agent-mandate-form"><div class="form-grid"><label>${h(t('agentMandate'))}<select name="priority">${options(cfg.priorities,mandate.priority)}</select></label><label>${h(t('agentApproach'))}<select name="approach">${options(cfg.approaches,mandate.approach)}</select></label></div><div id="agent-mandate-notes" class="plan-notes">${agentMandateNotes(mandate)}</div><button type="submit" class="primary">${h(t('agentMandateSave'))}</button></form><div class="divider"></div><div class="row wrap">${btn(t('agentConsult'),'agent-consult')}</div>${agentConsultation()}<details class="helper-details"><summary>${h(t('agentSelect'))}</summary><label>${h(t('agentSelect'))}<select id="agent-select">${options(DB.agents,state.agent.id)}</select></label><div id="agent-candidate-notes" class="plan-notes">${h(a.description)}</div>${btn(t('agentChange'),'agent-change','disabled')}<p class="small muted">${h(t('agentChangeCooldown',{date:Core.dateAdd(state.agent.changedDate,cfg.changeCooldownDays)}))}</p></details></div><div ${agentPane==='contact'?'':'hidden'}><div class="section-head"><h3>${h(t('agentTarget'))}</h3><button type="button" data-action="agent-seek" class="primary" ${agentTarget?'':'disabled'}>${h(t('agentSeek'))}</button></div><div class="form-grid agent-search-tools"><label>${h(t('agentSearch'))}<input id="agent-club-search" type="search" value="${h(agentClubQuery)}" placeholder="${h(t('agentSearchPlaceholder'))}"></label><label>${h(t('agentLeagueFilter'))}<select id="agent-league-filter"><option value="all">${h(t('agentAllLeagues'))}</option>${options(DB.leagues.filter(l=>l.kind==='domestic'),agentLeagueFilter)}</select></label></div><label>${h(t('agentTarget'))} · ${h(t('agentAlphabetical'))}<select id="agent-target" size="6" aria-describedby="agent-target-status">${agentTargetOptions()}</select></label><p id="agent-target-status" class="small muted" role="status"></p><div id="agent-target-report">${agentTargetReport()}</div><p class="small muted">${h(t('contactCooldown',{n:DB.dealRules.requestCooldownDays}))}</p><div class="divider"></div><h3>${h(t('agentRecentReports'))}</h3><div class="rework-list agent-inquiries">${state.agentInquiries.slice().reverse().slice(0,cfg.reportLimit).map(q=>`<article class="coach-review"><div class="row between wrap">${clubLink(q.club)}${badge(t(!q.resolved?'agentInquiryOpen':q.result==='offer'?'agentInquiryOffer':q.result==='cancelled'?'agentInquiryCancelled':q.result==='legacy'?'agentInquiryLegacy':'agentInquiryRejected'),q.result==='offer'?'green':'')}</div><p class="small muted">${h(q.resolvedDate||q.date)} · ${h(t('agentInquirySnapshot',{priority:cfg.priorities.find(p=>p.id===q.mandate.priority).name,approach:cfg.approaches.find(p=>p.id===q.mandate.approach).name}))}</p>${!q.resolved?btn(t('agentCancelInquiry'),'agent-cancel-inquiry',`data-id="${h(q.id)}"`,'small'):''}</article>`).join('')}</div></div></section>`;
+}
+function agentMandateNotes(mandate){return `<p class="small muted">${h(DB.agentSystem.priorities.find(p=>p.id===mandate.priority).description)}</p><p class="small muted">${h(DB.agentSystem.approaches.find(p=>p.id===mandate.approach).description)}</p>`;}
+function agentConsultation(){const report=state.agent.consultation;return report?`<div class="plan-notes"><h3>${h(t('agentConsultResult'))} · ${h(report.date)}</h3><p class="small muted">${h(t('agentConsultHint'))}</p><div class="rework-list">${report.clubs.length?report.clubs.map(id=>`<div class="row between wrap">${clubLink(id)}${btn(t('agentSelected'),'agent-target-pick',`data-club="${h(id)}"`,'small')}</div>`).join(''):`<p>${h(t('agentConsultEmpty'))}</p>`}</div></div>`:'';}
+function agentTargetClubs(){const query=agentClubQuery.trim().normalize('NFKC').toLocaleLowerCase(DB.meta.locale),i=idx(),compare=new Intl.Collator(DB.meta.locale,{numeric:true,sensitivity:'base'});return Object.values(i.clubs).filter(c=>!c.parent&&!c.historical&&(state.player.freeAgent||c.id!==state.player.club)&&(agentLeagueFilter==='all'||c.league===agentLeagueFilter)&&(!query||[c.name,i.leagues[c.league]?.name,DB.countries.find(country=>country.id===i.leagues[c.league]?.country)?.name].filter(Boolean).join(' ').normalize('NFKC').toLocaleLowerCase(DB.meta.locale).includes(query))).sort((a,b)=>compare.compare(a.name,b.name)||a.id.localeCompare(b.id));}
+function agentTargetOptions(){const clubs=agentTargetClubs();if(!clubs.some(c=>c.id===agentTarget))agentTarget=clubs.some(c=>c.id===state.player.dreamClub)?state.player.dreamClub:clubs[0]?.id||null;return clubs.map(c=>`<option value="${h(c.id)}" ${c.id===agentTarget?'selected':''}>${h(c.name)} · ${h(idx().leagues[c.league].name)}</option>`).join('');}
+function agentTargetReport(){if(!agentTarget)return `<p class="empty">${h(t('agentNoClubs'))}</p>`;const report=Core.contactAssessment(DB,state,agentTarget),issue=Core.agentContactIssue(DB,state,agentTarget);return `<div class="plan-notes"><h3>${h(t('agentSelected'))} · ${clubLink(agentTarget)}</h3><div class="detail-list">${detail(t('agentChance'),report.blocked?t(report.blocked):DB.agentSystem.reportBands.find(b=>b.id===report.band).name)}${detail(t('agentSquadLevel'),abilityLabel(report.level))}${detail(t('agentRoleForecast'),roleName(report.role))}${detail(t('weeklyWage'),money(report.weekly))}${detail(t('tacticalFit'),n(report.fit*DB.rules.scale)+'%')}${detail(t('agentEnvironment'),n(report.environment)+' / '+DB.rules.scale)}</div><p class="small muted">${h(t('agentReportHint'))}</p>${issue?`<p class="small negative">${h(t(issue))}</p>`:''}</div>`;}
+function refreshAgentTargets(){const select=document.getElementById('agent-target');if(!select)return;select.innerHTML=agentTargetOptions();select.disabled=!agentTarget;document.getElementById('agent-target-status').textContent=agentTarget?'':t('agentNoClubs');document.getElementById('agent-target-report').innerHTML=agentTargetReport();const seek=document.querySelector('[data-action="agent-seek"]');if(seek)seek.disabled=!agentTarget||Boolean(Core.agentContactIssue(DB,state,agentTarget));}
+function agentBriefCard(d){const locked=d.awaiting||d.status!=='negotiating',cfg=DB.agentSystem;return `<section class="card agent-brief-card"><form id="agent-brief-form" data-id="${h(d.id)}"><div class="section-head"><h2>${h(t('agentBrief'))}</h2>${badge(t('agentRelationship')+' '+n(d.relationship),'green')}</div><p class="small muted">${h(t('agentBriefHint'))}</p><fieldset ${locked?'disabled':''}><div class="form-grid"><label>${h(t('agentMandate'))}<select name="priority">${options(cfg.priorities,d.brief.priority)}</select></label><label>${h(t('agentStyle'))}<select name="style">${options(cfg.styles,d.brief.style)}</select></label></div><div id="agent-brief-notes" class="plan-notes">${agentBriefNotes(d.brief)}</div><div class="row wrap"><button type="submit">${h(t('agentBriefSave'))}</button>${btn(t('agentTermsDraft'),'agent-terms-draft',`data-id="${h(d.id)}"`)}</div></fieldset><p class="small muted">${h(t('agentTermsHint'))} ${h(t('agentRelationshipHint'))}</p></form></section>`;}
+function agentBriefNotes(brief){return `<p class="small muted">${h(DB.agentSystem.priorities.find(p=>p.id===brief.priority).description)}</p><p class="small muted">${h(DB.agentSystem.styles.find(p=>p.id===brief.style).description)}</p>`;}
+document.addEventListener('input',event=>{if(event.target.id==='agent-club-search'&&!event.isComposing){agentClubQuery=event.target.value;refreshAgentTargets();}});
+document.addEventListener('compositionend',event=>{if(event.target.id==='agent-club-search'){agentClubQuery=event.target.value;refreshAgentTargets();}});
+document.addEventListener('change',event=>{
+ if(!state)return;const form=event.target.closest('form');
+ if(event.target.id==='agent-league-filter'){agentLeagueFilter=event.target.value;refreshAgentTargets();}
+ if(event.target.id==='agent-target'){agentTarget=event.target.value;refreshAgentTargets();}
+ if(event.target.id==='agent-select'){const agent=DB.agents.find(a=>a.id===event.target.value);document.querySelector('[data-action="agent-change"]').disabled=agent.id===state.agent.id;document.getElementById('agent-candidate-notes').textContent=agent.description+' · '+t('agentCommission')+' '+n(agent.commission)+'% · '+t('agentCapacity')+' '+agent.skills.capacity;}
+ if(form?.id==='agent-mandate-form'){const mandate=Object.fromEntries(new FormData(form));document.getElementById('agent-mandate-notes').innerHTML=agentMandateNotes(mandate);}
+ if(form?.id==='agent-brief-form')document.getElementById('agent-brief-notes').innerHTML=agentBriefNotes(Object.fromEntries(new FormData(form)));
+ if(form?.id==='training-plan-form'){const plan=Object.fromEntries(new FormData(form));document.getElementById('training-plan-notes').innerHTML=trainingPlanNotes(plan);if(Core.validTrainingPlan(DB,plan))document.getElementById('training-preview').innerHTML=trainingPreviewMarkup({...state,trainingProgram:{...state.trainingProgram,plan,startedDate:state.date}});}
+});
+document.addEventListener('submit',event=>{if(!state)return;const form=event.target;if(!['training-plan-form','agent-mandate-form','agent-brief-form'].includes(form.id))return;event.preventDefault();const value=Object.fromEntries(new FormData(form)),ok=form.id==='training-plan-form'?Core.setTrainingPlan(DB,state,value):form.id==='agent-mandate-form'?Core.setAgentMandate(DB,state,value):Core.setDealBrief(DB,state,form.dataset.id,value);if(ok){persist();render();toast(t(form.id==='training-plan-form'?'trainingSaved':form.id==='agent-mandate-form'?'agentMandateSaved':'agentBriefSaved'));}else toast(t(form.id==='training-plan-form'?'trainingInvalidPlan':'agentBriefFrozen'));});
+document.addEventListener('click',event=>{const button=event.target.closest('[data-action]');if(!button||button.disabled||!state)return;switch(button.dataset.action){
+ case 'agent-cancel-inquiry':if(Core.cancelAgentInquiry(DB,state,button.dataset.id)){persist();render();}break;
+ case 'agent-focus':{const card=document.querySelector('.agent-system'),bar=document.querySelector('.topbar');if(card&&bar)window.scrollBy(0,card.getBoundingClientRect().top-bar.getBoundingClientRect().bottom);break;}
+ case 'agent-pane':agentPane=button.dataset.pane;render();break;
+ case 'agent-target-pick':agentPane='contact';agentClubQuery='';agentLeagueFilter='all';agentTarget=button.dataset.club;render();break;
+ case 'agent-change':{const ok=Core.changeAgent(DB,state,document.getElementById('agent-select').value);if(ok){persist();render();toast(t('agentChanged'));}else toast(t(state.pendingTransfer||state.deals.some(d=>['negotiating','ready'].includes(d.status))||state.agentInquiries.some(q=>!q.resolved)?'agentChangeQueued':'agentChangeCooldown',{date:Core.dateAdd(state.agent.changedDate,DB.agentSystem.changeCooldownDays)}));break;}
+ case 'agent-terms-draft':{const terms=Core.recommendedDealTerms(DB,state,button.dataset.id);if(terms){state.deals.find(d=>d.id===button.dataset.id).terms=terms;persist();render();}break;}
+ case 'training-recommend':{const form=document.getElementById('training-plan-form'),plan=Core.recommendedTrainingPlan(DB,state);for(const [key,value] of Object.entries(plan))form.elements[key].value=value;document.getElementById('training-plan-notes').innerHTML=trainingPlanNotes(plan);document.getElementById('training-preview').innerHTML=trainingPreviewMarkup({...state,trainingProgram:{...state.trainingProgram,plan,startedDate:state.date}});break;}
+ }});
+function negotiation(d){const c=idx().clubs[d.club],source=idx().clubs[d.sourceClub],live=['negotiating','ready'].includes(d.status),locked=!live||d.awaiting||d.status==='ready';return `<div class="welcome row between wrap"><div><div class="eyebrow">${h(t(d.kind==='renewal'?'contractRenew':d.kind==='callup'?'callupTitle':'negotiations'))}</div><h1>${h(c.name)}</h1><p>${h(t('negotiationRound',{n:d.round,max:DB.dealRules.maxRounds}))} · ${h(t('deadline'))} ${h(d.deadline)}</p></div>${btn(t('marketBack'),'deal-close')}</div><div class="row wrap" style="margin-bottom:20px">${badge(t(d.status),d.status==='ready'?'green':'')}${d.awaiting?badge(t(d.medicalWaiting?'medicalReviewDate':'responseDate')+' '+d.responseDate,'pink'):''}</div>${d.medicalWaiting?`<p class="notice medical-waiting" role="status">${h(t('medicalWaiting'))} · ${h(t(d.medicalDeferred?'medicalDeferredHint':'medicalWaitingHint',{date:d.responseDate,deadline:d.deadline}))}</p>`:''}<div class="kpi-grid" style="margin-bottom:20px">${kpi(t('seller'),source.name,t(d.seller.status))}${kpi(t('buyer'),c.name,t(d.buyer.status))}${kpi(t('agent'),DB.agents.find(a=>a.id===d.agent.id).name,t(d.agent.status))}${kpi(t('medical'),t(d.medical),state.player.injury?t('injured',{n:state.player.injury}):n(state.player.fitness)+' / '+DB.rules.scale)}</div><div class="cols equal" style="margin-bottom:20px"><section class="card"><h2>${h(t('seller'))}</h2><p class="small muted" style="margin:12px 0">${h(t(d.seller.minimum?d.seller.importance>=DB.dealRules.importanceThreshold?'sellerKeep':'sellerSell':'sellerFree'))}</p><div class="detail-list">${detail(t('askingFee'),money(d.seller.ask))}${detail(t('minimumFee'),money(d.seller.minimum))}${detail(t('replacement'),d.seller.replacementDate)}${detail(t('transferFeeBudget'),n(d.seller.upfront)+'%')}</div><div class="row wrap" style="margin-top:20px">${d.seller.minimum&&live&&!d.awaiting?`${!d.seller.permission?btn(t('askPermission'),'deal-interact',`data-id="${h(d.id)}" data-kind="permission"`):''}${!d.seller.requested?btn(t('requestTransfer'),'deal-interact',`data-id="${h(d.id)}" data-kind="request"`):''}${!d.seller.mediated?btn(t('agentMediation'),'deal-interact',`data-id="${h(d.id)}" data-kind="mediate"`):''}`:''}</div></section><section class="card"><h2>${h(t('buyer'))}</h2><div class="detail-list" style="margin-top:16px">${detail(t('maximumBudget'),money(d.buyer.budget))}${detail(t('maximumWeekly'),money(d.buyer.maxWeekly))}${detail(t('maximumRole'),roleName(d.buyer.role))}${detail(t('tacticalFit'),n(d.buyer.fit*DB.rules.scale)+'%')}${detail(t('contractPosition'),d.buyer.position)}</div><p class="small muted" style="margin-top:16px">${h(t('dealBudgetNote'))}</p></section></div>${agentBriefCard(d)}${arrivalPreview(d)}<form id="deal-form" data-id="${h(d.id)}"><fieldset ${locked?'disabled':''} class="card"><div class="section-head"><h2>${h(t('personal'))}</h2>${d.counter&&live&&!locked?btn(t('termsCounter'),'deal-counter',`data-id="${h(d.id)}"`):''}</div><div class="form-grid">${DB.dealFields.map(f=>`<label>${h(f.name)}${f.type==='money'?' · '+h(preferences.currency):''}${f.type==='role'?`<select name="${h(f.id)}">${options(DB.contractRoles,d.terms[f.id])}</select>`:f.type==='position'?`<select name="${h(f.id)}">${options(DB.positions,d.terms[f.id])}</select>`:f.type==='arrival'?d.kind==='transfer'?`<select name="${h(f.id)}">${options(DB.arrivalOptions,d.terms[f.id])}</select>`:`<input value="${h(t('contractImmediate'))}" disabled>`:`<input name="${h(f.id)}" type="number" value="${h(f.type==='money'?Number((d.terms[f.id]*currencyRate()).toFixed(DB.settings.moneyInputDigits)):d.terms[f.id])}" min="${f.type==='money'?f.min*currencyRate():f.min}" max="${f.type==='money'?f.max*currencyRate():f.max}" step="${f.type==='number'?f.step:'any'}" inputmode="decimal" required>`}</label>`).join('')}</div><div class="creation-actions"><p class="small muted">${h(t('transferRequestRisk'))}</p><button class="primary" type="submit">${h(t('negotiationSubmit'))}</button></div></fieldset></form><div class="row wrap" style="margin:20px 0">${live&&!d.awaiting?`${d.status==='negotiating'&&d.round>0&&d.medical==='pending'?btn(t('medicalWaitButton'),'deal-medical-wait',`data-id="${h(d.id)}"`,'primary'):''}${d.status==='ready'?`${btn(d.kind==='transfer'&&Core.arrivalPlan(DB,state,d.terms.arrival).date>state.date?t('arrivalSign',{date:Core.arrivalPlan(DB,state,d.terms.arrival).date}):t('negotiationComplete'),'deal-sign',`data-id="${h(d.id)}"`,'primary')}${btn(t('dealEdit'),'deal-edit',`data-id="${h(d.id)}"`)}`:''}${btn(t('negotiationWithdraw'),'deal-withdraw',`data-id="${h(d.id)}"`)}`:''}${live&&d.awaiting?btn(t('negotiationWithdraw'),'deal-withdraw',`data-id="${h(d.id)}"`):''}</div><section class="card"><h2>${h(t('negotiationHistory'))}</h2><div class="events">${d.log.slice().reverse().map(entry=>`<div class="event"><time>${h(entry.date)}</time><div>${h(entry.text)}</div></div>`).join('')}</div></section>`;}
 function openDeal(club,kind='transfer'){const deal=Core.startDeal(DB,state,club,kind);if(!deal){toast(t(state.pendingTransfer?'arrivalBinding':'dealCapacity'));return;}activeDeal=deal.id;screen='market';reportId=null;persist();render();window.scrollTo({top:0});}
 document.addEventListener('submit',event=>{if(event.target.id!=='deal-form')return;event.preventDefault();if(!event.target.reportValidity())return;const form=new FormData(event.target),terms=Object.fromEntries(DB.dealFields.map(f=>[f.id,f.type==='role'||f.type==='position'||f.type==='arrival'?String(form.get(f.id)||DB.dealDefaults.arrival):Number(form.get(f.id))/(f.type==='money'?currencyRate():1)]));const id=event.target.dataset.id,deal=state.deals.find(d=>d.id===id),before=deal?.status,issue=Core.dealSubmissionIssue(DB,state,id,terms);if(Core.submitDeal(DB,state,id,terms)){persist();render();toast(t('negotiationWait'));}else{if(deal?.status!==before){persist();render();}toast(t(issue?.key||'negotiationInvalid',issue||{}));}});
-document.addEventListener('change',event=>{if(event.target.id==='agent-select'){const a=DB.agents.find(a=>a.id===event.target.value);if((state.pendingTransfer||state.deals.some(d=>['negotiating','ready'].includes(d.status)))){event.target.value=state.agent.id;toast(t('agentChangeBlocked'));return;}state.agent={id:a.id,trust:a.trust};persist();render();}});
+
 document.addEventListener('click',event=>{const b=event.target.closest('[data-action]');if(!b||b.disabled||!state)return;const id=b.dataset.id,deal=state.deals.find(d=>d.id===id);switch(b.dataset.action){
  case 'mail-filter':mailScope=id;render();break;
  case 'mail-all':state.inbox.forEach(m=>m.read=true);persist();render();break;
@@ -28477,8 +29066,8 @@ document.addEventListener('click',event=>{const b=event.target.closest('[data-ac
  case 'deal-medical-wait':{const ok=Core.waitForMedical(DB,state,id);persist();render();if(!ok)toast(t(deal?.status==='failed'?'negotiationDeadline':'negotiationNotReady'));break;}
  case 'deal-withdraw':if(deal){deal.status='withdrawn';deal.awaiting=false;deal.medicalWaiting=false;deal.medicalDeferred=false;persist();render();}break;
  case 'deal-sign':if(Core.signDeal(DB,state,id)){persist();render();toast(t(state.pendingTransfer?'arrivalPending':'contractSigned'));}else{persist();render();toast(deal?.medicalWaiting?t('medicalWaitingHint',{date:deal.responseDate,deadline:deal.deadline}):t('negotiationNotReady'));}break;
- case 'agent-seek':{const club=document.getElementById('agent-target').value;const ok=Core.seekClub(DB,state,club);persist();render();toast(t(ok?'agentInterest':'contactUnavailable',{club:idx().clubs[club].name}));break;}
- case 'agent-consult':if(!state.agent.lastConsult||Core.dateAdd(state.agent.lastConsult,DB.dealRules.requestCooldownDays)<=state.date){state.agent.lastConsult=state.date;state.agent.trust=Core.clamp(state.agent.trust+DB.dealRules.agentReassurance,0,DB.rules.scale);Core.mail(DB,state,{subject:t('mailAgentSubject'),body:t('agentConsultBody'),from:DB.agents.find(a=>a.id===state.agent.id).name,fromRole:'agent'});persist();render();}else toast(t('contactCooldown',{n:DB.dealRules.requestCooldownDays}));break;
+ case 'agent-seek':{const club=document.getElementById('agent-target')?.value;if(!club)break;const issue=Core.agentContactIssue(DB,state,club),ok=Core.seekClub(DB,state,club);persist();render();toast(t(ok?'agentInterest':issue||'contactUnavailable',{club:idx().clubs[club]?.name||t('undecided')}));break;}
+ case 'agent-consult':if(Core.consultAgent(DB,state)){persist();render();}else toast(t('contactCooldown',{n:DB.agentSystem.consultCooldownDays}));break;
 }});
 
 let preferences={...DB.settings.defaults},selectedStatsSeason=null,worldSort={key:DB.settings.worldSortKey,direction:DB.settings.worldSortDirection};
@@ -28515,7 +29104,7 @@ function offerRolePlan(o){return t(o.context.urgent?'offerUrgent':o.terms.role==
 function offerActions(o){const deal=state.deals.find(d=>d.club===o.club&&d.sourceClub===state.player.club&&['negotiating','ready'].includes(d.status));return `<div class="offer-actions">${deal?btn(t('marketContinue'),'deal-open',`data-id="${h(deal.id)}"`,'primary'):btn(t('negotiationOpen'),'transfer',`data-club="${h(o.club)}"`,'primary')}${btn(t(o.shortlisted?'offerUnshortlist':'offerShortlist'),'offer-shortlist',`data-id="${h(o.id)}"`,o.shortlisted?'selected':'')}${btn(t('offerDecline'),'offer-decline',`data-id="${h(o.id)}"`)}${btn(t('offerDefer'),'offer-defer',`data-id="${h(o.id)}"`)}${o.extensions<DB.offerRules.maxExtensions?btn(t('offerExtend'),'offer-extend',`data-id="${h(o.id)}"`):''}</div>`;}
 function compareOffers(offers){return `<section class="card" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('offerCompare'))}</h2>${badge(offers.length)}</div><p class="small muted" style="margin-bottom:16px">${h(t('offerCompareHint'))}</p><div class="table-wrap"><table><thead><tr>${DB.offerCompareColumns.map(c=>`<th>${h(t(c.label))}</th>`).join('')}<th>${h(t('negotiationOpen'))}</th></tr></thead><tbody>${offers.map(o=>`<tr class="${o.shortlisted?'highlight':''}">${DB.offerCompareColumns.map(c=>{const terms=o.terms,value=c.id==='club'?idx().clubs[o.club].name:c.id==='role'?roleName(terms.role):c.id==='arrival'?Core.arrivalPlan(DB,state,terms.arrival).date:c.id==='plan'?offerRolePlan(o):c.id==='expiresDate'?o.expiresDate:terms[c.id];return `<td>${c.type==='money'?money(value):c.type==='number'?n(value):h(value)}</td>`;}).join('')}<td>${btn(t('negotiationOpen'),'transfer',`data-club="${h(o.club)}"`,'small')}</td></tr>`).join('')}</tbody></table></div></section>`;}
 function offerCard(o){const c=idx().clubs[o.club],terms=o.terms;return `<article class="card offer-card"><div class="row between wrap"><div class="row">${crest(c)}<div><h3>${clubLink(c.id)}</h3><p>${h(idx().leagues[c.league].name)}</p></div></div>${badge(offerRolePlan(o),o.context.urgent?'pink':'green')}</div><div class="form-grid" style="margin-top:18px">${detail(t('weeklyWage'),money(terms.weekly))}${detail(t('contractLength'),t('years',{n:terms.years}))}${detail(t('contractPromise'),roleName(terms.role))}${detail(t('contractPosition'),terms.position)}${detail(t('fee'),money(terms.fee))}${detail(t('arrivalDate'),Core.arrivalPlan(DB,state,terms.arrival).date)}${DB.offerCardFields.map(id=>{const f=DB.dealFields.find(f=>f.id===id);return detail(f.name,f.type==='money'?money(terms[id]):n(terms[id]));}).join('')}</div><details style="margin-top:18px"><summary>${h(t('offerReasons'))}</summary><div class="detail-list" style="margin-top:14px">${detail(t('offerValuation'),money(o.context.valuation))}${detail(t('tacticalFit'),n(o.context.fit*DB.rules.scale)+'%')}${detail(t('offerCash'),money(o.context.finance))}${detail(t('offerEnvironment'),n(o.context.environment))}${detail(t('coaching'),n(o.context.coaching))}${detail(t('deadline'),o.expiresDate)}</div><p class="small muted" style="margin-top:12px">${h(t('offerTermsHint'))}</p></details>${offerActions(o)}</article>`;}
-function market(){if(activeDeal){const d=state.deals.find(d=>d.id===activeDeal);if(d)return negotiation(d);activeDeal=null;}const p=state.player,club=currentClub(),open=Core.windowOpen(DB,state),all=state.offers.filter(o=>o.status==='open'&&o.expiresDate>=state.date),offers=all.filter(o=>offerScope==='all'||o.shortlisted).sort((a,b)=>Number(b.shortlisted)-Number(a.shortlisted)||b.terms.weekly-a.terms.weekly);return `<div class="welcome row between wrap"><div><h1>${h(t('negotiations'))}</h1><p>${h(t('offerCompareHint'))}</p></div>${badge(p.freeAgent?t('freeAgent'):t(open?'windowOpen':'windowClosed'),open?'green':'pink')}</div>${pendingArrival()}${Core.newClubGrace(DB,state)?`<div class="notice" style="margin-bottom:20px">${h(t('newClubGrace',{date:Core.newClubGrace(DB,state)}))}</div>`:''}<div class="kpi-grid" style="margin-bottom:20px">${kpi(t('marketValue'),money(Core.marketValue(DB,p,state)),p.freeAgent?t('freeAgent'):club.name)}${kpi(t('weeklyWage'),money(p.contract.weekly))}${kpi(t('reputation'),n(p.reputation,1))}${kpi(t('roleOverall'),abilityLabel(Core.suitability(DB,p)),p.position)}</div><div class="notice" style="margin-bottom:20px">${h(t(state.pendingTransfer?'arrivalBinding':'windowHint'))}</div><div class="cols equal" style="margin-bottom:20px">${contractDetails()}${agentCard()}</div><div class="tabs-inline">${btn(t('offerAll')+' · '+n(all.length),'offer-scope','data-scope="all"',offerScope==='all'?'selected':'')}${btn(t('offerShortlisted'),'offer-scope','data-scope="shortlist"',offerScope==='shortlist'?'selected':'')}</div>${offers.length?compareOffers(offers)+`<div class="offer-grid">${offers.map(offerCard).join('')}</div>`:`<section class="card empty">${h(t(offerScope==='shortlist'?'noShortlisted':'noOffers'))}</section>`}${club.parent&&!p.freeAgent&&!state.pendingTransfer?`<section class="card" style="margin:20px 0"><h2>${h(t('callupTitle'))}</h2><p class="small muted">${h(t('callupHint',{apps:DB.rules.callupApps,overall:DB.rules.callupOverall,trust:DB.rules.callupTrust}))}</p>${Core.canCallup(DB,state)?btn(t('callup'),'callup',`data-club="${h(club.parent)}"`,'primary'):''}</section>`:''}<section class="card" style="margin-top:20px"><h2>${h(t('negotiationHistory'))}</h2>${state.deals.length?`<div class="deal-list">${state.deals.slice().reverse().map(d=>`<article class="row between wrap"><div><b>${h(idx().clubs[d.club].name)}</b><p class="small muted">${h(d.createdDate)} · ${h(t(d.status))} · ${n(d.round)} / ${DB.dealRules.maxRounds}${d.status==='scheduled'?' · '+h(d.plannedArrival):''}</p></div>${btn(t('readMessage'),'deal-open',`data-id="${h(d.id)}"`)}</article>`).join('')}</div>`:`<div class="empty">${h(t('noNegotiations'))}</div>`}</section>`;}
+function market(){if(activeDeal){const d=state.deals.find(d=>d.id===activeDeal);if(d)return negotiation(d);activeDeal=null;}const p=state.player,club=currentClub(),open=Core.windowOpen(DB,state),all=state.offers.filter(o=>o.status==='open'&&o.expiresDate>=state.date),offers=all.filter(o=>offerScope==='all'||o.shortlisted).sort((a,b)=>Number(b.shortlisted)-Number(a.shortlisted)||b.terms.weekly-a.terms.weekly);return `<div class="welcome row between wrap"><div><h1>${h(t('negotiations'))}</h1><p>${h(t('offerCompareHint'))}</p></div><div class="row wrap">${btn(t('agentCenter'),'agent-focus')}${badge(p.freeAgent?t('freeAgent'):t(open?'windowOpen':'windowClosed'),open?'green':'pink')}</div></div>${pendingArrival()}${Core.newClubGrace(DB,state)?`<div class="notice" style="margin-bottom:20px">${h(t('newClubGrace',{date:Core.newClubGrace(DB,state)}))}</div>`:''}<div class="kpi-grid" style="margin-bottom:20px">${kpi(t('marketValue'),money(Core.marketValue(DB,p,state)),p.freeAgent?t('freeAgent'):club.name)}${kpi(t('weeklyWage'),money(p.contract.weekly))}${kpi(t('reputation'),n(p.reputation,1))}${kpi(t('roleOverall'),abilityLabel(Core.suitability(DB,p)),p.position)}</div><div class="notice" style="margin-bottom:20px">${h(t(state.pendingTransfer?'arrivalBinding':'windowHint'))}</div><div class="cols equal" style="margin-bottom:20px">${contractDetails()}${agentCard()}</div><div class="tabs-inline">${btn(t('offerAll')+' · '+n(all.length),'offer-scope','data-scope="all"',offerScope==='all'?'selected':'')}${btn(t('offerShortlisted'),'offer-scope','data-scope="shortlist"',offerScope==='shortlist'?'selected':'')}</div>${offers.length?compareOffers(offers)+`<div class="offer-grid">${offers.map(offerCard).join('')}</div>`:`<section class="card empty">${h(t(offerScope==='shortlist'?'noShortlisted':'noOffers'))}</section>`}${club.parent&&!p.freeAgent&&!state.pendingTransfer?`<section class="card" style="margin:20px 0"><h2>${h(t('callupTitle'))}</h2><p class="small muted">${h(t('callupHint',{apps:DB.rules.callupApps,overall:DB.rules.callupOverall,trust:DB.rules.callupTrust}))}</p>${Core.canCallup(DB,state)?btn(t('callup'),'callup',`data-club="${h(club.parent)}"`,'primary'):''}</section>`:''}<section class="card" style="margin-top:20px"><h2>${h(t('negotiationHistory'))}</h2>${state.deals.length?`<div class="deal-list">${state.deals.slice().reverse().map(d=>`<article class="row between wrap"><div><b>${h(idx().clubs[d.club].name)}</b><p class="small muted">${h(d.createdDate)} · ${h(t(d.status))} · ${n(d.round)} / ${DB.dealRules.maxRounds}${d.status==='scheduled'?' · '+h(d.plannedArrival):''}</p></div>${btn(t('readMessage'),'deal-open',`data-id="${h(d.id)}"`)}</article>`).join('')}</div>`:`<div class="empty">${h(t('noNegotiations'))}</div>`}</section>`;}
 function arrivalPreview(d){const date=['completed','scheduled','failed','withdrawn'].includes(d.status)?d.plannedArrival:d.kind==='transfer'?Core.arrivalPlan(DB,state,d.terms.arrival).date:state.date;return `<div class="notice" style="margin-bottom:20px"><b>${h(t('arrivalDate'))} · ${h(date)}</b><p class="small muted">${h(t(d.kind==='transfer'?'arrivalHint':'contractImmediate'))}</p><p class="small muted">${d.kind==='transfer'?h(t('deferredOffer')):''}</p>${d.seller.freeAtArrival?`<p class="small muted">${h(t('arrivalNoSellerFee'))}</p>`:''}</div>`;}
 document.addEventListener('click',event=>{const b=event.target.closest('[data-action]');if(!b||b.disabled||!state)return;const action=b.dataset.action;if(action==='offer-scope'){offerScope=b.dataset.scope;render();return;}const actions={'offer-shortlist':'shortlist','offer-decline':'decline','offer-extend':'extend','offer-defer':'defer'};if(!actions[action])return;const ok=Core.offerAction(DB,state,b.dataset.id,actions[action]);persist();render();if(action==='offer-decline'&&ok)toast(t('offerDeclined'));if(action==='offer-extend'){const o=state.offers.find(o=>o.id===b.dataset.id);toast(t(ok?'offerExtended':'offerExtensionLimit',{date:o?.expiresDate}));}});
 
