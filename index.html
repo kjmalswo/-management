@@ -67,6 +67,9 @@ button.info-link:active:enabled{background:var(--soft);color:var(--accent);trans
 .info-dialog{container-type:inline-size}@container(max-width:260px){.dialog.info-dialog .info-kpis{grid-template-columns:1fr}.dialog.info-dialog .info-kpis>.card{padding:12px}}
 @media(prefers-reduced-motion:reduce){button,button:hover:enabled,button.primary:hover:enabled,button:active:enabled,button.primary:active:enabled{transition:none;transform:none}.press-wave,.interaction-tooltip,.dialog,.dialog-backdrop{animation:none}}
 
+.live-events{contain:paint;scrollbar-gutter:stable;overflow-anchor:auto}
+.content[data-screen="fixtures"] .table-wrap,.content[data-screen="fixtures"] .events{overscroll-behavior:auto}
+.dialog{overscroll-behavior:contain}
 </style>
 </head>
 <body>
@@ -79,7 +82,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "17.1.0",
+    "version": "17.1.1",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -23156,7 +23159,11 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "openTimeoutMs": 3500,
     "compression": "gzip",
     "base64Chunk": 32768,
-    "urlRevokeMs": 60000
+    "urlRevokeMs": 60000,
+    "presentationSlot": "presentation",
+    "presentationKey": "firstxi-presentation-v1",
+    "presentationFormat": "firstxi-presentation-checkpoint",
+    "presentationMaxBytes": 2048
   },
   "marketFlow": {
     "responseMinDays": 1,
@@ -27825,6 +27832,7 @@ function tooltipText(el){
   return cfg.actionHints[action]||'';
 }
 function hideInteractionTooltip(){
+  if(!tooltipOwner&&!tooltipTimer&&!tooltipHideTimer)return;
   clearTimeout(tooltipTimer);clearTimeout(tooltipHideTimer);tooltipTimer=tooltipHideTimer=null;
   if(tooltipOwner){const ids=(tooltipOwner.getAttribute('aria-describedby')||'').split(/\s+/).filter(id=>id&&id!=='interaction-tooltip');if(ids.length)tooltipOwner.setAttribute('aria-describedby',ids.join(' '));else tooltipOwner.removeAttribute('aria-describedby');}
   tooltipOwner=null;const root=document.getElementById('interaction-tooltip');root.hidden=true;root.textContent='';
@@ -27907,6 +27915,7 @@ function validateDB(db,career=null){
     }
   };
   checkShape([DEFAULT_DB],db,'DB');
+  const cfgCheckpoint=db.storageRules;if(cfgCheckpoint.presentationSlot===cfgCheckpoint.slot||cfgCheckpoint.presentationSlot===cfgCheckpoint.backupSlot||[db.meta.storageKey,cfgCheckpoint.backupKey].includes(cfgCheckpoint.presentationKey)||cfgCheckpoint.presentationMaxBytes<=0)throw Error('storageRules.presentation');
   const interactions=db.ui.interactions,infoIds=interactions.glossary.map(entry=>entry.id);
   if(interactions.tooltipWidthPixels<=0||interactions.tooltipInsetPixels<0||interactions.tooltipInsetPixels*2>=interactions.tooltipWidthPixels||interactions.tooltipDelayMs<0||interactions.tooltipLeaveMs<0||new Set(infoIds).size!==infoIds.length||infoIds.some(id=>!/^[-a-zA-Z0-9_]+$/.test(id))||interactions.glossary.some(entry=>new Set(entry.labels).size!==entry.labels.length))throw Error('ui.interactions');
   const contrast=db.uniformRules.contrastRules;if(contrast.weights.length!==3||contrast.weights.some(weight=>weight<0)||contrast.channelMax<=0||contrast.linearCutoff<0||contrast.linearCutoff>1||contrast.linearDivisor<=0||contrast.gammaDivisor<=0||contrast.gammaExponent<=0||contrast.contrastOffset<=0||[db.uniformRules.defaultMain,db.uniformRules.defaultTrim,db.uniformRules.darkContrast,db.uniformRules.lightContrast,...Object.values(db.teamColorRules.legacyMain),...Object.values(db.teamColorRules.legacyContrast)].some(color=>!/^#[0-9a-f]{6}$/i.test(color)))throw Error('uniformRules.colors');
@@ -28105,6 +28114,23 @@ function persist(manual=false){
   storageQueue={text:JSON.stringify(envelope()),savedAt:Date.now(),epoch:storageEpoch,manual:manual||storageQueue?.manual||false};storageStatus='savePending';updateSaveIndicator();
   if(!storageWriter)storageWriter=drainCareerStorage().catch(()=>{storageHealthy=false;storageStatus='saveFailed';updateSaveIndicator();toast(t('storageFail'));return false;}).finally(()=>{storageWriter=null;});return storageWriter;
 }
+function validPresentationCheckpoint(checkpoint,loaded,savedAt){
+  const s=loaded.state,p=checkpoint?.presentation,record=s.player.history.find(record=>record.id===p?.reportId);
+  return checkpoint?.format===DEFAULT_DB.storageRules.presentationFormat&&Number.isFinite(checkpoint.savedAt)&&checkpoint.savedAt>savedAt&&checkpoint.seed===s.seed&&checkpoint.date===s.date&&s.matchPresentation?.reportId===p?.reportId&&s.matchPresentation.phase!=='finished'&&record&&p.phase==='live'&&typeof p.paused==='boolean'&&Number.isInteger(p.cursor)&&p.cursor>=0&&p.cursor<broadcastTimeline(record,loaded.db).length;
+}
+function restorePresentationCheckpoint(loaded,savedAt,checkpoints){
+  const candidates=checkpoints.filter(checkpoint=>validPresentationCheckpoint(checkpoint,loaded,savedAt)).sort((a,b)=>b.savedAt-a.savedAt);if(candidates.length)loaded.state.matchPresentation=Core.clone(candidates[0].presentation);
+}
+async function checkpointPresentation(){
+  if(!state||storageLoading||!DB.meta.autosave)return false;
+  if(!storageHealthy||state.matchPresentation?.phase!=='live')return persist();
+  const cfg=DEFAULT_DB.storageRules,epoch=storageEpoch,checkpoint={format:cfg.presentationFormat,savedAt:Date.now(),seed:state.seed,date:state.date,presentation:Core.clone(state.matchPresentation)},text=JSON.stringify(checkpoint);
+  if(text.length>cfg.presentationMaxBytes)return persist();
+  const results=await Promise.allSettled([careerStorageOperation('put',checkpoint,cfg.presentationSlot),Promise.resolve().then(()=>{if(epoch!==storageEpoch)throw Error('storageCancelled');localStorage.setItem(cfg.presentationKey,text);})]);
+  if(epoch!==storageEpoch)return false;const success=results.some(result=>result.status==='fulfilled');
+  if(!success)return persist();return true;
+}
+
 function importReason(error){const code=error?.message;if(DB.ui.labels[code])return t(code);return t(/contract|terms|arrival/i.test(code||'')?'saveImportContract':/record|history|match|lineup|locker/i.test(code||'')?'saveImportRecords':/world|npc/i.test(code||'')?'saveImportWorld':'saveImportGeneral');}
 function prepareImportedCareer(value){
   if(!value||typeof value!=='object'||!value.db||!value.state?.player)throw Error('saveImportFormat');
@@ -28120,6 +28146,7 @@ function upgradePresentationDatabase(database,previousDatabase=null){
   database.teamColorRules={...Core.clone(colorRules),...database.teamColorRules,legacyMain:{...Core.clone(colorRules.legacyMain),...database.teamColorRules?.legacyMain},legacyContrast:{...Core.clone(colorRules.legacyContrast),...database.teamColorRules?.legacyContrast}};
   database.uniformRules={...Core.clone(DEFAULT_DB.uniformRules),...database.uniformRules};
   database.storageRules.backupSlot??=DEFAULT_DB.storageRules.backupSlot;
+  for(const key of ['presentationSlot','presentationKey','presentationFormat','presentationMaxBytes'])database.storageRules[key]??=DEFAULT_DB.storageRules[key];
   for(const [key,legacy] of [['darkContrast',colorRules.legacyContrast.dark],['lightContrast',colorRules.legacyContrast.light]])if(database.uniformRules[key].toLowerCase()===legacy.toLowerCase())database.uniformRules[key]=DEFAULT_DB.uniformRules[key];
   const patchColors=club=>{
     const original=stock.get(club.id),legacy=colorRules.legacyMain[club.id];
@@ -28138,17 +28165,19 @@ function upgradePresentationDatabase(database,previousDatabase=null){
 }
 function parseCareerText(text){try{return JSON.parse(text.replace(/^\uFEFF/,''));}catch{throw Error('saveImportDamaged');}}
 async function restoreCareer(){
+  const checkpoints=[],cfgPresentation=DEFAULT_DB.storageRules;const checkpointReads=await Promise.allSettled([careerStorageOperation('get',null,cfgPresentation.presentationSlot),Promise.resolve().then(()=>localStorage.getItem(cfgPresentation.presentationKey))]);
+  for(const read of checkpointReads)if(read.status==='fulfilled'&&read.value){try{if(typeof read.value!=='string')checkpoints.push(read.value);else if(read.value.length<=cfgPresentation.presentationMaxBytes)checkpoints.push(JSON.parse(read.value));}catch{}}
   const candidates=[],cfg=DEFAULT_DB.storageRules;let failed=false;
   const reads=await Promise.allSettled([careerStorageOperation('get'),careerStorageOperation('get',null,cfg.backupSlot),Promise.resolve().then(()=>localStorage.getItem(DEFAULT_DB.meta.storageKey)),Promise.resolve().then(()=>localStorage.getItem(cfg.backupKey))]);
   for(const r of reads)if(r.status==='fulfilled'&&r.value){let value=r.value;if(typeof value==='string'){try{const parsed=parseCareerText(value);value=parsed.format===cfg.backupFormat?parsed:{encoding:'legacy',payload:value,savedAt:0};}catch{failed=true;continue;}}candidates.push(value);}
   candidates.sort((a,b)=>(b.savedAt||0)-(a.savedAt||0));
-  for(const record of candidates){try{const raw=record.encoding==='legacy'?record.payload:await decodeCareer(record),loaded=prepareImportedCareer(parseCareerText(raw));DB=loaded.db;state=loaded.state;storageHealthy=true;return;}catch{failed=true;}}
+  for(const record of candidates){try{const raw=record.encoding==='legacy'?record.payload:await decodeCareer(record),loaded=prepareImportedCareer(parseCareerText(raw));restorePresentationCheckpoint(loaded,record.savedAt||0,checkpoints);DB=loaded.db;state=loaded.state;storageHealthy=true;return;}catch{failed=true;}}
   if(failed){storageHealthy=false;toast(t('loadError'));}
 }
 async function bootGame(){
   render();try{try{const custom=localStorage.getItem(DEFAULT_DB.meta.dbStorageKey);if(custom){const previous=parseCareerText(custom),configured=upgradePresentationDatabase(Core.upgradeDatabase(DEFAULT_DB,previous),previous);validateDB(configured);DB=configured;}}catch{}await restoreCareer();}finally{storageLoading=false;render();if(state)persist();}
 }
-async function clearCareerStorage(){storageEpoch++;storageQueue=null;if(storageWriter)await storageWriter;await Promise.allSettled([careerStorageOperation('delete'),careerStorageOperation('delete',null,DEFAULT_DB.storageRules.backupSlot),Promise.resolve().then(()=>{localStorage.removeItem(DEFAULT_DB.meta.storageKey);localStorage.removeItem(DEFAULT_DB.storageRules.backupKey);})]);storageHealthy=true;storageStatus='saveReady';}
+async function clearCareerStorage(){storageEpoch++;storageQueue=null;if(storageWriter)await storageWriter;await Promise.allSettled([careerStorageOperation('delete'),careerStorageOperation('delete',null,DEFAULT_DB.storageRules.backupSlot),careerStorageOperation('delete',null,DEFAULT_DB.storageRules.presentationSlot),Promise.resolve().then(()=>{localStorage.removeItem(DEFAULT_DB.meta.storageKey);localStorage.removeItem(DEFAULT_DB.storageRules.backupKey);localStorage.removeItem(DEFAULT_DB.storageRules.presentationKey);})]);storageHealthy=true;storageStatus='saveReady';}
 window.addEventListener('pagehide',()=>{if(state&&!storageLoading)persist();});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&state&&!storageLoading)persist();});
 
@@ -28210,6 +28239,10 @@ function postseasonCard(league=currentClub().league,review=null){
 function download(value,filename){const blob=new Blob([JSON.stringify(value)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;link.click();setTimeout(()=>URL.revokeObjectURL(url),DB.storageRules.urlRevokeMs);}
 function closeModal(){document.getElementById('modal-root').replaceChildren();infoTrail=[];document.body.style.overflow='';lastFocused?.focus({preventScroll:true});hideInteractionTooltip();}
 function openModal(markup,kind=''){hideInteractionTooltip();if(!document.querySelector('.dialog'))lastFocused=document.activeElement;document.getElementById('modal-root').innerHTML=`<div class="dialog-backdrop"><section class="dialog ${kind==='info'?'info-dialog':''}" role="dialog" aria-modal="true" aria-labelledby="dialog-title">${markup}</section></div>`;document.body.style.overflow='hidden';positionDialog();document.querySelector('.dialog button,.dialog textarea')?.focus();}
+let modalBackdropPointer=null;
+document.addEventListener('pointerdown',event=>{modalBackdropPointer=event.button===0&&event.target.matches('.dialog-backdrop')?event.target:null;},true);
+document.addEventListener('pointercancel',()=>{modalBackdropPointer=null;},true);
+document.addEventListener('click',event=>{if(event.target===modalBackdropPointer&&event.target===document.querySelector('.dialog-backdrop')&&!document.getElementById('modal-root').inert)closeModal();modalBackdropPointer=null;});
 function defaultDraft(){return {...Core.clone(DB.profile.defaults),startingSeed:crypto.getRandomValues(new Uint32Array(1))[0],traits:Object.fromEntries(DB.traits.map(t=>[t.id,t.initial])),stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial]))};}
 const options=(items,current)=>items.map(x=>`<option value="${h(x.id)}" ${x.id===current?'selected':''}>${h(x.name)}</option>`).join('');
 function showContracts(){const offers=Core.startingOffers(DB,draft);openModal(`${creationSteps("contract")}<h2 id="dialog-title">${h(t('chooseContract'))}</h2><p>${h(t('chooseContractDescription'))}</p><div class="club-cards">${offers.map(({route,club})=>`<article class="card club-card"><div class="row between"><div class="eyebrow">${h(route.name)}</div>${badge(t('difficulty')+' '+route.difficulty,route.tag)}</div><div class="row">${crest(club)}<div><h3>${h(club.name)}</h3><p>${h(idx().leagues[club.league].name)}</p></div></div><p>${h(route.description)}</p><div class="detail-list">${detail(t('weeklyWage'),money(Core.wage(DB,club.id,draft,route.salaryFactor)))}${detail(t('contractLength'),t('years',{n:DB.rules.contractYears}))}${detail(t('trust'),`${route.trust}/${DB.rules.scale}`)}${detail(t('clubPrestige'),clubTier(club))}</div><div class="notice">${h(route.promise)}</div>${btn(t('sign'),'sign',`data-route="${h(route.id)}" data-club="${h(club.id)}"`,'primary')}</article>`).join('')}</div><div class="dialog-actions">${btn(t('personalityBack'),'personality-back')}</div>`);}
@@ -28500,8 +28533,8 @@ function broadcastSpeed(){return DB.matchBroadcast.speedOptions.find(option=>opt
 function broadcastDelay(){return DB.matchBroadcast.eventIntervalMs/broadcastSpeed();}
 function broadcastSpeedControl(){const options=DB.matchBroadcast.speedOptions;return `<label class="broadcast-speed" for="broadcast-speed"><span class="row between"><span>${h(t('broadcastSpeed'))}</span><output id="broadcast-speed-value">${h(t('broadcastSpeedValue',{speed:broadcastSpeed(),seconds:broadcastDelay()/1000}))}</output></span><input id="broadcast-speed" type="range" min="0" max="${options.length-1}" step="1" value="${options.findIndex(option=>option.rate===broadcastSpeed())}" aria-valuetext="${h(t('broadcastSpeedValue',{speed:broadcastSpeed(),seconds:broadcastDelay()/1000}))}"><span class="row between small muted">${options.map(option=>`<span>${h(option.label)}</span>`).join('')}</span></label>`;}
 function presentationRecord(){return state?.player.history.find(r=>r.id===state.matchPresentation?.reportId)||null;}
-function broadcastTimeline(record){
-  const cfg=DB.matchBroadcast,half=Math.min(cfg.halfMinute,record.result.duration),items=[{minute:0,type:'kickoff',order:0}];
+function broadcastTimeline(record,database=DB){
+  const cfg=database.matchBroadcast,half=Math.min(cfg.halfMinute,record.result.duration),items=[{minute:0,type:'kickoff',order:0}];
   for(const [order,event] of record.result.events.entries())items.push({...event,order:order/Math.max(1,record.result.events.length)});
   if(record.result.duration>half){items.push({minute:half,type:'halftime',order:cfg.halftimeOrder});items.push({minute:half+1,type:'secondHalf',order:cfg.secondHalfOrder});}
   items.push({minute:record.result.duration,type:'fulltime',order:cfg.halftimeOrder});return items.sort((a,b)=>a.minute-b.minute||a.order-b.order);
@@ -28529,45 +28562,46 @@ document.addEventListener('input',event=>{
 });
 function scheduleBroadcast(){
   clearMatchTimer();const p=state?.matchPresentation;if(!p||p.phase!=='live'||p.paused||document.visibilityState==='hidden')return;
-  matchTimer=setTimeout(()=>{matchTimer=null;const current=state?.matchPresentation,record=presentationRecord();if(!current||current!==p||current.phase!=='live'||current.paused||!record)return;const timeline=broadcastTimeline(record);current.cursor=Math.min(current.cursor+1,timeline.length);if(current.cursor===timeline.length)current.phase='finished';persist();render();},broadcastDelay());
+  matchTimer=setTimeout(()=>{matchTimer=null;const current=state?.matchPresentation,record=presentationRecord();if(!current||current!==p||current.phase!=='live'||current.paused||!record)return;const timeline=broadcastTimeline(record);current.cursor=Math.min(current.cursor+1,timeline.length);if(current.cursor===timeline.length)current.phase='finished';checkpointPresentation();renderMatchExperience();},broadcastDelay());
 }
-function updateLiveBroadcast(body,record,p){
+function broadcastEventMarkup(event,index,timeline,record){
+  const isPlayer=event.playerId==='player'||event.assisterId==='player'||event.inId==='player'||event.outId==='player';
+  return `<article data-event-index="${index}" class="live-event ${isPlayer?'is-player':''} ${event.type==='goalEvent'?'is-goal':''}"><time class="num">${h(broadcastClock(event.minute))}</time><span class="event-symbol" aria-hidden="true">${h(DB.matchBroadcast.eventSymbols[event.type])}</span><div><p>${h(broadcastText(event,record,broadcastScore(record,timeline.slice(0,index+1))))}</p>${isPlayer?badge(t('myPlayer'),'green'):''}</div></article>`;
+}
+function updateLiveBroadcast(record,p,timeline){
   const live=document.querySelector('.broadcast-live');if(!live||live.dataset.reportId!==record.id)return false;
-  const template=document.createElement('template');template.innerHTML=body;const next=template.content,feed=live.querySelector('.live-events'),nextFeed=next.querySelector('.live-events');
-  // Keep the log and its scroll position alive; a new event must not remount the page.
-  const follow=Math.ceil(feed.scrollTop+feed.clientHeight)>=feed.scrollHeight,changed=Number(feed.dataset.cursor)!==p.cursor;
+  const feed=live.querySelector('.live-events'),follow=Math.ceil(feed.scrollTop+feed.clientHeight)>=feed.scrollHeight&&feed.dataset.follow!=='false',changed=Number(feed.dataset.cursor)!==p.cursor;
   if(changed){
-    const first=Math.max(0,p.cursor-DB.matchBroadcast.feedKeep);
+    const top=feed.getBoundingClientRect().top,anchor=!follow?[...feed.children].find(event=>event.getBoundingClientRect().bottom>top):null,offset=anchor?.getBoundingClientRect().top,first=Math.max(0,p.cursor-DB.matchBroadcast.feedKeep);
     for(const event of [...feed.children])if(Number(event.dataset.eventIndex)<first||Number(event.dataset.eventIndex)>=p.cursor)event.remove();
-    const present=new Set([...feed.children].map(event=>event.dataset.eventIndex));
-    feed.querySelector('.latest')?.classList.remove('latest');
-    for(const event of [...nextFeed.children])if(!present.has(event.dataset.eventIndex))feed.append(event);
+    const present=new Set([...feed.children].map(event=>Number(event.dataset.eventIndex)));feed.querySelector('.latest')?.classList.remove('latest');
+    for(let index=first;index<p.cursor;index++)if(!present.has(index))feed.insertAdjacentHTML('beforeend',broadcastEventMarkup(timeline[index],index,timeline,record));
     feed.lastElementChild?.classList.add('latest');feed.dataset.cursor=String(p.cursor);
-    if(follow)feed.scrollTop=feed.scrollHeight;
+    if(follow)feed.scrollTop=feed.scrollHeight;else if(anchor?.isConnected)feed.scrollTop+=anchor.getBoundingClientRect().top-offset;
   }
-  const scoreboard=document.querySelector('.match-score-center');scoreboard.innerHTML=next.querySelector('.match-score-center').innerHTML;
-  document.getElementById('broadcast-cadence').textContent=next.querySelector('#broadcast-cadence').textContent;
-  const pause=live.querySelector('[data-action="match-pause"]');if(pause){pause.textContent=t(p.phase==='finished'?'broadcastFinished':p.paused?'broadcastResume':'broadcastPause');pause.disabled=p.phase==='finished';}
-  const speed=live.querySelector('#broadcast-speed');if(speed)speed.disabled=p.phase==='finished';
-  live.querySelector('.broadcast-progress span').style.width=next.querySelector('.broadcast-progress span').style.width;
-  live.querySelector('.match-footer p').textContent=next.querySelector('.match-footer p').textContent;
-  live.querySelector('[data-action="match-results"]').disabled=p.phase!=='finished';
-  const skip=live.querySelector('[data-action="match-skip"]');if(skip)skip.disabled=p.phase==='finished';
-  document.getElementById('broadcast-announcement').textContent=next.querySelector('#broadcast-announcement').textContent;
-  const shell=live.closest('.match-shell'),warning=shell.querySelector('.notice.warning');
-  if(storageHealthy)warning?.remove();else if(!warning)shell.insertAdjacentHTML('beforeend',`<div class="notice warning">${h(t('saveWarning'))}</div>`);
-  return true;
+  const shown=timeline.slice(0,p.cursor),score=broadcastScore(record,shown),last=shown.at(-1),finished=p.phase==='finished',scoreboard=document.querySelector('.match-score-center');
+  scoreboard.querySelector('.eyebrow').textContent=t(finished?'broadcastFinished':'broadcastLive');scoreboard.querySelector('strong').innerHTML=n(score.home)+' <span>:</span> '+n(score.away);scoreboard.querySelector('p').textContent=last?broadcastClock(last.minute):record.date;
+  document.getElementById('broadcast-cadence').textContent=t(p.paused?'broadcastPaused':'broadcastCadence',{seconds:broadcastDelay()/1000});
+  const pause=live.querySelector('[data-action="match-pause"]');if(pause){pause.textContent=t(finished?'broadcastFinished':p.paused?'broadcastResume':'broadcastPause');pause.disabled=finished;}
+  const speed=live.querySelector('#broadcast-speed');if(speed)speed.disabled=finished;
+  live.querySelector('.broadcast-progress span').style.width=p.cursor/timeline.length*DB.rules.scale+'%';live.querySelector('.match-footer p').textContent=t(finished?'broadcastFinished':'broadcastWait');live.querySelector('[data-action="match-results"]').disabled=!finished;
+  const skip=live.querySelector('[data-action="match-skip"]');if(skip)skip.disabled=finished;
+  document.getElementById('broadcast-announcement').textContent=last?broadcastText(last,record,score):'';
+  const shell=live.closest('.match-shell'),warning=shell.querySelector('.notice.warning');if(storageHealthy)warning?.remove();else if(!warning)shell.insertAdjacentHTML('beforeend',`<div class="notice warning">${h(t('saveWarning'))}</div>`);return true;
 }
+document.addEventListener('wheel',event=>{const feed=event.target.closest('.live-events');if(feed&&event.deltaY<0&&feed.scrollHeight>feed.clientHeight)feed.dataset.follow='false';},{passive:true});
+document.addEventListener('scroll',event=>{const feed=event.target;if(feed.matches?.('.live-events'))feed.dataset.follow=String(Math.ceil(feed.scrollTop+feed.clientHeight)>=feed.scrollHeight);},{capture:true,passive:true});
+
 function renderMatchExperience(){
   clearMatchTimer();document.title=`${DB.meta.title} — ${t('broadcastTitle')}`;
   if(matchLoading){document.getElementById('app').innerHTML=`<main class="match-loading"><span class="match-loader" aria-hidden="true"></span><h1>${h(t('broadcastLoading'))}</h1><p class="muted">${h(t('broadcastLoadingHint'))}</p></main>`;return;}
   const p=state.matchPresentation,record=presentationRecord();if(!record){state.matchPresentation=null;persist();render();return;}
   const phase=p.phase,pre=record.result.preMatch,timeline=broadcastTimeline(record),shown=timeline.slice(0,p.cursor),isLive=phase==='live'||phase==='finished',score=broadcastScore(record,shown),status=!pre.available?'broadcastUnavailable':pre.starter?'broadcastStarter':'broadcastBenchStatus';
+  if(isLive&&updateLiveBroadcast(record,p,timeline)){scheduleBroadcast();return;}
   let body;
   if(phase==='lineup')body=`${matchScoreboard(record)}<div class="section-head"><div><h1>${h(t('broadcastLineups'))}</h1><p class="small muted">${h(t('broadcastLineupHint'))}</p></div>${badge(t(status),pre.starter?'green':'pink')}</div><div class="formation-grid">${broadcastLineup(record,'home')}${broadcastLineup(record,'away')}</div><div class="match-footer">${btn(t('broadcastToLocker'),'match-locker','','primary')}</div>`;
   else if(phase==='locker')body=`${matchScoreboard(record,[],'broadcastLocker')}<section class="card locker-room"><div class="eyebrow">${h(t('broadcastCoach'))}</div><h1>${h(pre.manager.name||t('manager'))}</h1><p class="muted">${h(pre.tactic.name)} · ${h(t(status))}</p><div class="locker-instructions">${lockerInstructions(record).map((line,i)=>`<blockquote><span class="num">${n(i+1)}</span><p>${h(line)}</p></blockquote>`).join('')}</div><div class="match-footer">${btn(t('broadcastStart'),'match-start','','primary')}</div></section>`;
   else body=`${matchScoreboard(record,shown,phase==='finished'?'broadcastFinished':'broadcastLive')}<section class="card broadcast-live" data-report-id="${h(record.id)}"><div class="section-head"><div><h1>${h(t('broadcastLive'))}</h1><p id="broadcast-cadence" class="small muted">${h(p.paused?t('broadcastPaused'):t('broadcastCadence',{seconds:broadcastDelay()/1000}))}</p></div>${phase==='live'?btn(t(p.paused?'broadcastResume':'broadcastPause'),'match-pause'):badge(t('broadcastFinished'),'green')}</div>${phase==='live'?broadcastSpeedControl():''}<div class="live-events" data-cursor="${p.cursor}" role="log" aria-label="${h(t('broadcastLive'))}">${shown.slice(-DB.matchBroadcast.feedKeep).map((event,i)=>{const isPlayer=event.playerId==='player'||event.assisterId==='player'||event.inId==='player'||event.outId==='player';return `<article data-event-index="${Math.max(0,shown.length-DB.matchBroadcast.feedKeep)+i}" class="live-event ${isPlayer?'is-player':''} ${event.type==='goalEvent'?'is-goal':''} ${i===Math.min(shown.length,DB.matchBroadcast.feedKeep)-1?'latest':''}"><time class="num">${h(broadcastClock(event.minute))}</time><span class="event-symbol" aria-hidden="true">${h(DB.matchBroadcast.eventSymbols[event.type])}</span><div><p>${h(broadcastText(event,record,broadcastScore(record,shown.slice(0,shown.indexOf(event)+1))))}</p>${isPlayer?badge(t('myPlayer'),'green'):''}</div></article>`;}).join('')}</div><div id="broadcast-announcement" class="sr-only" aria-live="polite">${h(shown.length?broadcastText(shown.at(-1),record,score):'')}</div><div class="broadcast-progress">${progress(p.cursor,timeline.length)}</div><div class="match-footer"><p class="small muted">${h(t(phase==='finished'?'broadcastFinished':'broadcastWait'))}</p><div class="row wrap">${phase==='live'?btn(t('broadcastSkip'),'match-skip'): ''}<button type="button" data-action="match-results" class="primary" ${phase==='finished'?'':'disabled'}>${h(t('broadcastContinue'))}</button></div></div></section>`;
-  if(isLive&&updateLiveBroadcast(body,record,p)){scheduleBroadcast();return;}
   document.getElementById('app').innerHTML=`<main class="match-shell"><header class="match-header"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(t('broadcastTitle'))}</small></div></div><div class="small muted">${h(idx().leagues[record.league].name)} · ${h(record.date)}</div></header>${body}<p class="small muted match-save-hint">${h(t('broadcastSaving'))}</p>${!storageHealthy?`<div class="notice warning">${h(t('saveWarning'))}</div>`:''}</main>`;
   if(isLive){const feed=document.querySelector('.live-events');feed.scrollTop=feed.scrollHeight;}scheduleBroadcast();
 }
