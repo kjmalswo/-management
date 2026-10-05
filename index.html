@@ -27854,8 +27854,10 @@ const FootballCore = (() => {
 
     const add = (side,person,key,n=1) => { person.match[key]+=n; if(Object.hasOwn(teams[side].stats,key))teams[side].stats[key]+=n; };
     const choose = (side,minute,type,omit=null) => { let list=active(side,minute).filter(p=>p.id!==omit);return weighted(rng,list,p=>(idx.positions[p.position][type]||0)*Math.pow(statSkill(p,db.dynamics.actionAttributes[type])/db.rules.scale,db.dynamics.actorSkillPower)*(traitEffects(db,p.id==='player'?state.player:p).opportunity??1)); };
-    const statSkill = (person,key) => {const team=teams.find(t=>t.club===person.club),captain=team?.players.find(p=>p.id===team.captainId),subject=captain?.id==='player'?state.player:captain;return effective(db,person,key,state,person.match.minutes,fixture).skill*(subject?traitEffects(db,subject).teamwork??1:1);};
+    let minuteSkills=new WeakMap();
+    const statSkill = (person,key) => {let cached=minuteSkills.get(person);if(!cached){cached=new Map();minuteSkills.set(person,cached);}if(cached.has(key))return cached.get(key);const team=teams.find(t=>t.club===person.club),captain=team?.players.find(p=>p.id===team.captainId),subject=captain?.id==='player'?state.player:captain,value=effective(db,person,key,state,person.match.minutes,fixture).skill*(subject?traitEffects(db,subject).teamwork??1:1);cached.set(key,value);return value;};
     for(let minute=1;minute<=duration;minute++){
+      minuteSkills=new WeakMap();
       for(const plan of plans.filter(p=>p.minute===minute))substitute(plan.side,plan.out,plan.in,minute);
       for(const team of teams){const previous=team.captainId;matchCaptain(db,state,team,minute);if(previous&&team.captainId&&previous!==team.captainId){const person=team.players.find(p=>p.id===team.captainId);events.push({minute,type:'captainEvent',club:team.club,player:person.name,playerId:person.id});}}
       for(let side=0;side<teams.length;side++)for(const person of active(side,minute)){person.match.minutes++;add(side,person,'distance',idx.positions[person.position].distance*range(rng,1-e.distanceVariation,1+e.distanceVariation));if(idx.positions[person.position].group!=='keeper'&&rng()<e.sprintChance*Math.pow(statSkill(person,'speed')/clubs[side].quality,db.dynamics.sprintSkillPower))add(side,person,'sprints');}
