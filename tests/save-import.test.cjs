@@ -3,6 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const vm=require('node:vm');
+const cp=require('node:child_process');
 const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
 const section=(source,id)=>source.match(new RegExp(`<script id="${id}"[^>]*>([\\s\\S]*?)<\\/script>`))[1];
 const DB=JSON.parse(section(html,'game-db'));
@@ -19,6 +20,25 @@ const create=()=>{
   return {schema:DB.meta.schema,db:C.clone(DB),state:C.createCareer(DB,profile,offer.route.id,offer.club.id)};
 };
 const reload=value=>context.importSave.prepareImportedCareer(context.importSave.parseCareerText(JSON.stringify(value)));
+
+test('a real v20.4 database with revision 1 balance metadata restores in the same schema',()=>{
+  const historical=cp.execFileSync(process.env.GIT_PATH||'git',['show','9d4b1ee:index.html'],{cwd:path.join(__dirname,'..'),encoding:'utf8',maxBuffer:10000000});
+  const saved=create();saved.db=JSON.parse(section(historical,'game-db'));
+  assert.equal(saved.db.balanceRules.revision,1);
+  assert.equal(saved.db.balanceRules.previous.rules.initialOverallMax,undefined);
+  assert.equal(saved.db.balanceRules.previous.nationalRules,undefined);
+  saved.db.scoutingRules.minRating=6.42;saved.db.balanceRules.previous.rules.valueBase=1777;
+  const snapshot=s=>JSON.stringify({date:s.date,player:s.player,fixtures:s.fixtures}),before=snapshot(saved.state),original=JSON.stringify(saved.db),loaded=reload(saved);
+  assert.equal(snapshot(loaded.state),before);
+  assert.equal(JSON.stringify(saved.db),original,'the input save is not modified');
+  assert.equal(loaded.db.scoutingRules.minRating,6.42);
+  assert.equal(loaded.db.balanceRules.previous.rules.valueBase,1777,'custom migration markers remain intact');
+  assert.equal(loaded.db.balanceRules.previous.rules.initialOverallMax,DB.balanceRules.previous.rules.initialOverallMax);
+  assert.deepEqual(JSON.parse(JSON.stringify(loaded.db.balanceRules.previous.nationalRules)),DB.balanceRules.previous.nationalRules);
+  assert.equal(loaded.db.balanceRules.revision,DB.balanceRules.revision);
+  assert.equal(JSON.stringify(reload(loaded)),JSON.stringify(loaded),'migration remains stable on the next load');
+  loaded.db.balanceRules.previous.rules.initialOverallMax='bad';assert.throws(()=>reload(loaded),/DB.balanceRules.previous.rules.initialOverallMax/);
+});
 
 test('a schema 13 save with the pre-expansion color registry restores without changing its career',()=>{
   const saved=create();saved.db.meta.version='15.0.2';
