@@ -95,6 +95,8 @@ button.info-link:active:enabled{background:var(--soft);color:var(--accent);trans
 .topbar-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}.section-history{display:flex;gap:4px}.section-history button{width:36px;min-width:36px;height:36px;padding:0;font-size:22px;line-height:1;display:grid;place-items:center;border:1px solid var(--line);background:var(--paper);border-radius:7px}.section-history button:disabled{opacity:.35;cursor:default}.topbar .topbar-heading{flex-wrap:wrap}.topbar .topbar-context{flex:1 1 250px}.overview-shortcuts{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 9px}.overview-shortcuts button{flex:1;min-width:150px}.overview-hint{margin:0 0 14px}.content[data-screen="dashboard"]>.next-match{margin:12px 0}.content[data-screen="dashboard"] .dashboard-profile{margin-bottom:12px}.performance-status .profile-facts{margin:16px 0}.content[data-screen="performance"]>.career-preparation,.content[data-screen="performance"]>.recent-fixtures,.content[data-screen="legacy"]>.honours-hero{margin:14px 0}.content[data-screen="interviews"]>.card{margin-bottom:14px}.content[data-screen="statistics"]>.cols .stack{gap:0}.content[data-screen="clubroom"]>.rework-grid{margin-bottom:14px}.sidebar .nav{flex-shrink:0}.sidebar-footer{flex-shrink:0}
 @media(max-width:760px){html:not([data-layout="desktop"]) .section-history button{width:40px;min-width:40px;height:40px}html:not([data-layout="desktop"]) .topbar .topbar-heading{gap:7px}html:not([data-layout="desktop"]) .topbar .topbar-context{flex-basis:100%}html:not([data-layout="desktop"]) .overview-shortcuts{display:grid;grid-template-columns:1fr}html:not([data-layout="desktop"]) .overview-shortcuts button{min-height:44px}.performance-status .profile-facts{gap:12px}}
 
+
+.form-gauge progress{width:100%;height:10px;accent-color:var(--accent);margin:10px 0}.form-gauge p{margin-top:8px}.market-parts{padding:16px 0 26px}.market-parts h3{margin-bottom:18px}.market-assessment{border-top:1px solid var(--line);padding-top:28px;margin-top:8px}.market-assessment h3{margin-bottom:22px}.market-assessment>p{margin-top:16px}.review-achievements{margin:22px 0}.review-achievements>h2{margin-bottom:16px}.review-achievement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.review-achievement-grid .card{border-color:var(--accent)}.review-achievement-grid h3{font-size:21px;margin-bottom:18px}.review-memories{margin:20px 0}.review-numbers{border-top:1px solid var(--line);margin-top:28px;padding-top:20px}.review-numbers>summary{cursor:pointer;font-weight:700;margin-bottom:18px}.season-club-records>p{margin-bottom:18px}@media(max-width:650px){.review-achievement-grid{grid-template-columns:1fr}.market-parts{padding-bottom:22px}.market-assessment{padding-top:24px}}
 </style>
 </head>
 <body>
@@ -107,7 +109,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.4.0",
+    "version": "20.5.0",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -123,7 +125,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "rules": {
     "scale": 100,
     "initialOverallMin": 40,
-    "initialOverallMax": 70,
+    "initialOverallMax": 60,
     "abilityMin": 1,
     "abilityMax": 99,
     "weekDays": 7,
@@ -2615,37 +2617,37 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "id": "speed",
       "name": "스피드",
       "short": "PAC",
-      "initial": 68
+      "initial": 64
     },
     {
       "id": "shooting",
       "name": "슈팅",
       "short": "SHO",
-      "initial": 67
+      "initial": 63
     },
     {
       "id": "passing",
       "name": "패스",
       "short": "PAS",
-      "initial": 62
+      "initial": 58
     },
     {
       "id": "physical",
       "name": "피지컬",
       "short": "PHY",
-      "initial": 66
+      "initial": 62
     },
     {
       "id": "defending",
       "name": "수비",
       "short": "DEF",
-      "initial": 53
+      "initial": 49
     },
     {
       "id": "dribbling",
       "name": "드리블",
       "short": "DRI",
-      "initial": 68
+      "initial": 64
     }
   ],
   "competitionRules": {
@@ -21169,7 +21171,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "reviewGrowth": "시즌 성장",
       "reviewNoChoices": "아직 기록된 선택이 없습니다.",
       "reviewNoMatches": "출전 기록이 없습니다.",
-      "reviewNotReady": "리그가 끝나면 시즌 결산이 열립니다.",
+      "reviewNotReady": "전체 시즌 일정이 끝나면 최종 결산이 열립니다.",
       "reviewPage": "{page} / {total}",
       "negotiationNextWindow": "협상은 계속됩니다. 합의 시 다음 등록 가능일은 {date}입니다.",
       "reviewBaseline": "기록 시작 {date}",
@@ -21529,7 +21531,21 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "legacyHint": "입단과 계약 이력, 수상·우승과 커리어에서 얻은 특징을 확인하세요.",
       "clubroomHint": "감독의 전술, 구단 환경과 문화, 등록 시점에 선임한 주장단을 확인하세요.",
       "interviewsHint": "지난 답변과 감독·구단·언론과의 관계, 구단 문화에 따른 평가를 확인하세요.",
-      "overviewHint": "선수 상태와 다음 일정을 확인하고, 자세한 관리는 왼쪽 메뉴에서 이어가세요."
+      "overviewHint": "선수 상태와 다음 일정을 확인하고, 자세한 관리는 왼쪽 메뉴에서 이어가세요.",
+      "matchFormPercent": "최근 경기력",
+      "formNoEvidence": "최근 출전 기록 없음",
+      "marketAbilityParts": "스타성을 구성하는 요소",
+      "marketAssessmentDetails": "종합 시장 평가",
+      "reviewAchievements": "이번 시즌에 남긴 기록",
+      "reviewNoTrophy": "이번 시즌에는 우승 트로피를 얻지 못했습니다.",
+      "reviewNoAward": "이번 시즌에는 개인 수상 기록이 없습니다.",
+      "reviewNumbers": "출전·득점과 세부 수치 펼치기",
+      "reviewSeasonMemories": "기억에 남는 경기",
+      "reviewNationalTrophy": "국가대표 우승",
+      "nationalSelectionHint": "충분한 출전 근거와 대표팀 수준의 실력, 같은 포지션 경쟁자의 평가를 함께 충족해야 합니다. 잠깐의 좋은 경기력만으로 선발되지는 않습니다.",
+      "reviewTrophies": "시즌 트로피",
+      "reviewAwards": "개인 수상",
+      "seasonClubBreakdown": "같은 시즌에 여러 팀을 거쳤다면 소속팀별 출전 기록을 나누어 표시합니다. 상단은 시즌 전체 합계입니다."
     },
     "statFields": [
       {
@@ -22200,7 +22216,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
           "labels": [
             "경기력"
           ],
-          "description": "최근 출전한 경기의 평균 평점으로 보는 활약입니다. 실제 경기 기록은 그대로 유지하며, 체력의 소모·회복 수치와 구분합니다. 국가대표와 시장의 외부 평가는 리그·상대 수준도 함께 고려합니다."
+          "description": "최근 출전 평점을 10점 만점 기준으로 백분율로 표시합니다. 체력·출전 확률과는 별개입니다. 국가대표와 시장의 외부 평가는 리그·상대 수준도 함께 고려합니다."
         }
       ],
       "tabHints": {
@@ -22265,7 +22281,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "agentDeclined": "{club}: 현재 선수 수준·포지션 경쟁·예산에서 영입 관심이 부족합니다.",
       "agentContactQueued": "{club}에 접촉을 요청했습니다. {date} 이후 답변을 확인하세요.",
       "deferred": "스폰서·광고 계약과 실제 국가대표 경기는 다음 업데이트 범위입니다.",
-      "captainHint": "주전 입지·나이와 실력·소속 기간·명성·이전 주장 경력·감독 신뢰를 평가합니다. 선발에 없는 주장을 부주장과 3주장이 대신하며, 모두 결장하면 선발 중 적합한 선수가 맡습니다."
+      "captainHint": "주전 입지·나이와 실력·소속 기간·명성·이전 주장 경력·감독 신뢰를 평가합니다. 선발에 없는 주장을 부주장과 3주장이 대신하며, 모두 결장하면 선발 중 적합한 선수가 맡습니다.",
+      "reviewNotReady": "리그가 끝나면 시즌 결산이 열립니다."
     },
     "locationBrowser": {
       "countryNames": {
@@ -22353,7 +22370,16 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "trust",
       "morale",
       "reputation"
-    ]
+    ],
+    "formGauge": {
+      "max": 10,
+      "description": "최근 출전 평점을 10점 만점 기준으로 백분율로 표시합니다. 체력·출전 확률과는 별개입니다."
+    },
+    "reviewPresentation": {
+      "bestPreview": 2,
+      "trophyIcon": "🏆",
+      "awardIcon": "★"
+    }
   },
   "traits": [
     {
@@ -27671,10 +27697,10 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "bestMatchLimit": 6,
     "pages": [
       "overview",
-      "leagues",
-      "records",
+      "honours",
       "journey",
-      "honours"
+      "leagues",
+      "records"
     ]
   },
   "teamColorRules": {
@@ -30571,7 +30597,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "registrationRevision": 2
   },
   "balanceRules": {
-    "revision": 1,
+    "revision": 2,
     "previous": {
       "scoutingRules": {
         "recentDays": 180,
@@ -30597,7 +30623,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "buyerWageBudgetShare": 0.32
       },
       "rules": {
-        "valueBase": 1800
+        "valueBase": 1800,
+        "initialOverallMax": 70
       },
       "dynamics": {
         "psychologyPower": 1.5
@@ -30613,6 +30640,18 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "growthRules": {
         "trainingMultiplier": 1.8,
         "matchMultiplier": 1.5
+      },
+      "nationalRules": {
+        "minimumApps": 3,
+        "minimumMinutes": 180,
+        "formTarget": 6.65,
+        "abilityGap": 12,
+        "formGap": 9,
+        "needGap": 14,
+        "needMinutes": 90,
+        "coachWeight": 0.12,
+        "reputationWeight": 0.05,
+        "potentialHeadroom": 8
       }
     }
   },
@@ -32892,20 +32931,20 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     ],
     "minimumAge": 16,
     "recentDays": 180,
-    "minimumMinutes": 180,
-    "minimumApps": 3,
-    "formTarget": 6.65,
+    "minimumMinutes": 540,
+    "minimumApps": 6,
+    "formTarget": 7.05,
     "formCenter": 6.5,
     "abilityWeight": 1,
-    "coachWeight": 0.12,
+    "coachWeight": 0.06,
     "coachAbilityGap": 2,
-    "reputationWeight": 0.05,
+    "reputationWeight": 0.03,
     "potentialAgeMax": 24,
-    "potentialHeadroom": 8,
-    "abilityGap": 12,
-    "formGap": 9,
-    "needGap": 14,
-    "needMinutes": 90,
+    "potentialHeadroom": 4,
+    "abilityGap": 4,
+    "formGap": 3,
+    "needGap": 5,
+    "needMinutes": 360,
     "needBonus": 4,
     "trustGain": 3,
     "trustRatingWeight": 2,
@@ -33056,6 +33095,16 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "gold-cup",
         "ofc-cup"
       ]
+    },
+    "selection": {
+      "teamAbilityGap": 7,
+      "formBonusMax": 4,
+      "coachBonusMax": 3,
+      "exceptionalGap": 6,
+      "exceptionalApps": 2,
+      "exceptionalMinutes": 180,
+      "minimumNeedApps": 4,
+      "positionCover": 2
     }
   },
   "matchIntentRules": {
@@ -33346,7 +33395,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     ]
   },
   "interviewRules": {
-    "revision": 1,
+    "revision": 2,
     "cooldownDays": 12,
     "effectDays": 14,
     "historyLimit": 120,
@@ -33384,7 +33433,43 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "id": "negative",
         "name": "비판적"
       }
-    ]
+    ],
+    "legacyQuestions": {
+      "pre-important": "{opponent}와의 중요한 경기를 앞두고 있습니다. 어떻게 준비했나요?",
+      "pre-counter": "상대가 최근 활약이 좋은 당신을 집중 견제하겠다고 합니다. 대응 계획은요?",
+      "post-win": "{opponent}전 승리에서 팀의 성과와 본인의 활약을 어떻게 평가하나요?",
+      "post-loss": "{opponent}전에서 원하는 결과가 나오지 않았습니다. 무엇을 바꿔야 할까요?",
+      "post-performance": "최근 당신의 경기력이 화제입니다. 다음 목표는 무엇인가요?",
+      "national-callup": "{national} 대표팀에 소집됐습니다. 소속팀과 대표팀의 기대를 어떻게 받아들이나요?",
+      "national-missed": "이번 대표팀 명단에 들지 못했습니다. 선발 결정에 대한 생각은요?",
+      "coach-plan": "{quote} 이 계획과 감독의 선택을 어떻게 받아들이나요?",
+      "rival-comment": "{quote} 상대 감독의 발언에 대해 어떻게 답하겠습니까?",
+      "recent-issue": "최근 팀에서 나온 소식입니다: {issue} 선수의 입장에서 어떻게 보나요?",
+      "derby-pride": "{opponent}과의 라이벌전입니다. 팬들은 강한 승부욕을 원하지만 과열도 걱정합니다. 어떤 마음으로 뛰겠습니까?"
+    },
+    "questionCooldownDays": 120,
+    "topicCooldownDays": 32,
+    "recentTopics": 3,
+    "selectionMinimumTeamGames": 6,
+    "missedReputation": 30,
+    "missedRankHeadroom": 2,
+    "careerMinimumApps": 6,
+    "careerChance": 0.18,
+    "issueTemplates": {
+      "eventSelectionIssue": "selection-competition",
+      "eventTrainingIssue": "recent-issue",
+      "eventManager": "coach-plan",
+      "eventStyle": "injury-comeback"
+    },
+    "postTemplates": {
+      "win": "post-win",
+      "draw": "post-draw",
+      "loss": "post-loss",
+      "goal": "post-goal",
+      "assist": "post-link",
+      "good": "post-performance",
+      "poor": "post-struggle"
+    }
   },
   "interviewQuestions": [
     {
@@ -33433,6 +33518,153 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "media": 2,
             "confidence": 0.015
           }
+        }
+      ],
+      "topic": "big-match",
+      "variants": [
+        {
+          "id": "pre-important-1",
+          "question": "{opponent}전을 앞두고 있습니다. 큰 경기에서 평소의 플레이를 유지하는 데 가장 중요한 것은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "동료들과 역할을 맞추고 첫 장면부터 집중하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "경기 흐름을 보며 준비한 플레이를 하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "이런 경기에서 제 가치를 확실하게 보여 주겠습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "pre-important-2",
+          "question": "{opponent}전은 순위 경쟁에도 중요한 경기입니다. 승부처에서 어떤 역할을 하겠습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "팀이 필요한 순간에 한 번 더 뛰겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "감독이 맡긴 역할에 집중하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "동료들이 제 결정을 더 믿어 줘야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "pre-important-3",
+          "question": "{opponent}의 강점을 어떻게 평가합니까? 준비 과정에서 특히 신경 쓴 부분은요?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "상대를 존중하면서 동료들과 움직임을 맞췄습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "구체적인 준비는 경기장에서 보여 드리겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "상대보다 우리의 장점이 더 크다고 생각합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
         }
       ]
     },
@@ -33483,6 +33715,153 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "confidence": 0.015
           }
         }
+      ],
+      "topic": "opposition",
+      "variants": [
+        {
+          "id": "pre-counter-1",
+          "question": "최근 상대의 집중 견제가 강해졌습니다. 압박을 받으면 직접 돌파와 동료 활용 중 무엇을 우선하겠습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "열린 동료를 먼저 보고 필요한 순간에는 직접 시도하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "상대의 간격과 경기 흐름에 따라 판단하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "견제를 피해 다니기보다 제 플레이로 이기겠습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "pre-counter-2",
+          "question": "상대가 당신 쪽 공격 경로를 좁히면 동료에게 공간이 생깁니다. 그 상황을 어떻게 활용할 생각입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "공 없이 움직이며 동료의 기회를 만들겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "우리가 훈련한 연결을 경기에서 확인하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "동료들이 열린 공간을 확실히 활용해야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "pre-counter-3",
+          "question": "거친 마킹에도 판단 속도를 유지하는 것이 과제입니다. 오늘은 어떤 점에 집중하겠습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "감정을 조절하고 동료와 빠르게 연결하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "심판의 판정과 경기 흐름에 맞춰 대응하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "상대가 강하게 나오면 저도 물러서지 않겠습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
       ]
     },
     {
@@ -33531,6 +33910,153 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "media": 2,
             "confidence": 0.015
           }
+        }
+      ],
+      "topic": "match-result",
+      "variants": [
+        {
+          "id": "post-win-1",
+          "question": "{opponent}전 승리의 가장 큰 원동력은 무엇이었다고 봅니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "모두가 맡은 역할을 해낸 결과입니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "공수 간격과 중요한 장면의 집중력이 좋았습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "제가 만든 흐름이 승부를 바꿨다고 생각합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-win-2",
+          "question": "{opponent}전에서 계획대로 된 부분과 다음 경기에서 보완할 부분을 하나씩 꼽는다면요?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "동료와의 연결은 좋았고 전환 때의 움직임은 더 맞추겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "영상을 보면서 구체적인 장면을 확인하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "제 장점을 더 살렸다면 더 편하게 이겼을 겁니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-win-3",
+          "question": "{opponent}전 이후 팀 분위기가 좋습니다. 다음 경기까지 긴장을 유지하려면 무엇이 필요합니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "서로를 격려하면서 훈련의 기준을 지키겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "한 경기의 결과와 다음 준비를 구분하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "지금 흐름에서는 더 공격적인 선택을 해야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
         }
       ]
     },
@@ -33581,6 +34107,153 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "confidence": 0.015
           }
         }
+      ],
+      "topic": "match-result",
+      "variants": [
+        {
+          "id": "post-loss-1",
+          "question": "{opponent}전에서 흐름을 되찾지 못했습니다. 선수로서 가장 아쉬운 장면은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "제 판단부터 돌아보고 동료들과 함께 보완하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "전환 장면을 분석해 다음 경기 준비에 반영하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "우리의 전술과 동료들의 지원도 돌아봐야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-loss-2",
+          "question": "{opponent}전 패배 뒤 다음 경기까지 시간이 많지 않습니다. 가장 먼저 바꿔야 할 부분은요?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "팀의 간격과 의사소통을 다시 맞추겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "회복과 영상 분석부터 차근차근 진행하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "감독이 제 장점을 살리는 방향으로 바꿔야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-loss-3",
+          "question": "{opponent}전 결과에 실망한 팬들에게 어떤 말을 전하고 싶습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "우리의 책임입니다. 다음 경기의 플레이로 답하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "결과를 받아들이고 다음 준비에 집중하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "비판은 이해하지만 선수들에게도 믿음이 필요합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
       ]
     },
     {
@@ -33629,6 +34302,153 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "media": 2,
             "confidence": 0.015
           }
+        }
+      ],
+      "topic": "form",
+      "variants": [
+        {
+          "id": "post-performance-1",
+          "question": "최근 경기에서 꾸준히 좋은 장면을 만들고 있습니다. 이전과 달라진 준비가 있습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "동료들과 움직임을 더 자주 맞추고 있습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "회복과 평소의 훈련 루틴을 지키고 있습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "더 중요한 역할을 맡으면 제 장점이 더 살아날 겁니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-performance-2",
+          "question": "좋은 경기력을 이어가는 중입니다. 기록보다 지금 더 개선하고 싶은 부분은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "팀의 흐름을 읽고 동료에게 더 좋은 선택지를 주고 싶습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "한 가지보다 매 장면의 판단을 안정시키고 싶습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "제 기여에 맞는 역할과 대우도 필요합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-performance-3",
+          "question": "상대의 분석이 더 세밀해질 텐데, 지금의 좋은 흐름을 어떻게 유지하겠습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "동료와 새로운 움직임을 만들며 대응하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "한 경기씩 분석하고 준비하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "상대가 분석해도 제 장점을 막기는 어려울 겁니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
         }
       ]
     },
@@ -33679,6 +34499,153 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "confidence": 0.015
           }
         }
+      ],
+      "topic": "national",
+      "variants": [
+        {
+          "id": "national-callup-1",
+          "question": "{national} 대표팀에 소집됐습니다. 치열한 포지션 경쟁에서 어떤 장점을 보여 주고 싶습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "팀이 필요한 역할과 동료와의 연결을 보여 주겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "훈련부터 제 장점을 차분하게 증명하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "소집에 그치지 않고 중심 역할을 맡아야 한다고 봅니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "national-callup-2",
+          "question": "{national} 유니폼을 입게 됐습니다. 대표팀의 경기 속도와 요구에 어떻게 적응하겠습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "선배들과 대화하며 훈련의 기준을 빠르게 익히겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "감독이 요구하는 역할부터 정확히 확인하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "제 플레이가 대표팀에도 새로운 자극이 될 겁니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "national-callup-3",
+          "question": "{national} 소집은 소속팀에서의 경쟁을 이겨낸 결과이기도 합니다. 가장 고마운 사람은 누구입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "기회를 준 감독과 함께 뛰어 준 동료들에게 감사드립니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "주변의 도움을 기억하며 제 준비에 집중하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "스스로 증명해 온 과정이 가장 큰 이유라고 생각합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
       ]
     },
     {
@@ -33727,6 +34694,153 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "media": 2,
             "confidence": 0.015
           }
+        }
+      ],
+      "topic": "national",
+      "variants": [
+        {
+          "id": "national-missed-1",
+          "question": "이번 {national} 명단에서는 기회를 얻지 못했습니다. 다시 경쟁하기 위해 어떤 부분을 보완하겠습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "소속팀에서 꾸준히 출전하며 팀에 필요한 장점을 키우겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 0.4,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "선발 판단을 존중하고 훈련과 경기에 집중하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "최근 제 기여를 더 제대로 평가해 줬으면 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "national-missed-2",
+          "question": "{national}의 포지션 경쟁이 치열합니다. 다음 소집까지 어떤 모습을 보여 주고 싶습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "좋은 경기력을 오래 유지하고 동료와의 연결도 증명하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 0.4,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "한 경기씩 제 역할을 잘 수행하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "기회만 주어진다면 경쟁에서 밀릴 이유가 없습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "national-missed-3",
+          "question": "대표팀 명단 발표 이후에도 클럽의 중요한 일정이 이어집니다. 마음을 어떻게 정리하겠습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "클럽의 결과에 기여하면서 다시 기회를 만들겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 0.4,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "지금 맡은 역할과 다음 경기에 집중하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "선발 과정에 대한 설명이 더 있었으면 좋겠습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
         }
       ]
     },
@@ -33777,6 +34891,153 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "confidence": 0.015
           }
         }
+      ],
+      "topic": "tactics",
+      "variants": [
+        {
+          "id": "coach-plan-1",
+          "question": "{quote} 감독의 주문에서 본인이 가장 신경 쓰는 부분은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "동료와 움직임의 타이밍을 맞추는 데 집중하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "훈련에서 확인한 역할을 경기에서 수행하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "제 장점을 더 살릴 수 있는 주문이 필요합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "coach-plan-2",
+          "question": "{quote} 역할이 달라질 때 적응을 돕는 것은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "감독과 동료에게 먼저 질문하며 맞춰 갑니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "훈련과 영상 분석으로 필요한 움직임을 확인합니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "저에게 맞는 역할을 꾸준히 맡기는 편이 낫습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "coach-plan-3",
+          "question": "{quote} 새로운 전술이 자리 잡기까지 선수들에게 필요한 태도는 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "서로 돕고 실수가 나와도 다시 연결하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "충분히 반복하고 결과를 지켜보겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "실험보다 이미 증명한 방식이 더 필요합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
       ]
     },
     {
@@ -33825,6 +35086,105 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "media": 2,
             "confidence": 0.015
           }
+        }
+      ],
+      "topic": "opposition",
+      "variants": [
+        {
+          "id": "rival-comment-1",
+          "question": "{quote} 상대 감독의 평가를 들었습니다. 선수로서 어떻게 받아들이나요?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "상대의 준비를 존중하고 팀의 대응을 믿습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "발언보다 경기장에서의 판단에 집중하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "상대가 저를 의식한다는 뜻이라고 생각합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": 0,
+                "teammates": 0,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "rival-comment-2",
+          "question": "{quote} 이런 발언이 경기 준비나 동기부여에 영향을 줍니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "동료들과 준비한 플레이를 보여 줄 동기로 삼겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "평소처럼 준비하려고 합니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "그 평가가 틀렸다는 것을 보여 주겠습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": 0,
+                "teammates": 0,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
         }
       ]
     },
@@ -33875,6 +35235,105 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "confidence": 0.005
           }
         }
+      ],
+      "topic": "team-life",
+      "variants": [
+        {
+          "id": "recent-issue-1",
+          "question": "최근 팀 내부의 준비 과정이 보도됐습니다. 선수들끼리 의견을 맞출 때 중요하게 보는 기준은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "서로의 역할을 존중하고 직접 대화하는 것입니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "확인된 사실을 바탕으로 훈련에 집중하는 것입니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "불편한 문제도 공개적으로 짚어야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 0.5,
+                "reputation": 0.6,
+                "coach": -3,
+                "teammates": -2,
+                "media": 4,
+                "confidence": 0.005
+              }
+            }
+          ]
+        },
+        {
+          "id": "recent-issue-2",
+          "question": "팀을 둘러싼 여러 이야기가 나오고 있습니다. 선수단이 경기 준비에 집중하려면 무엇이 필요합니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "팀 안에서 충분히 대화하고 서로를 돕겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "외부의 이야기에 휘둘리지 않고 제 역할을 하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "구단과 감독이 더 분명한 방향을 제시해야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 0.5,
+                "reputation": 0.6,
+                "coach": -3,
+                "teammates": -2,
+                "media": 4,
+                "confidence": 0.005
+              }
+            }
+          ]
+        }
       ]
     },
     {
@@ -33923,6 +35382,1189 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
             "media": 0.1,
             "confidence": 0
           }
+        }
+      ],
+      "topic": "big-match",
+      "variants": [
+        {
+          "id": "derby-pride-1",
+          "question": "{opponent}과의 라이벌전입니다. 팬들의 기대 속에서 투지와 냉정함의 균형을 어떻게 잡겠습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "끝까지 싸우면서 동료와 팀의 약속을 지키겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1,
+                "morale": 0.6,
+                "reputation": 0.04,
+                "coach": 1,
+                "teammates": 1,
+                "media": 0.3,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "승점과 제 역할에 집중하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0.2,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0.2,
+                "teammates": 0.2,
+                "media": 0.1,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "상대와의 수준 차이를 확실히 보여 주겠습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -0.5,
+                "morale": 0.4,
+                "reputation": 0.06,
+                "coach": -0.8,
+                "teammates": -0.2,
+                "media": -0.5,
+                "confidence": 0.012
+              }
+            }
+          ]
+        },
+        {
+          "id": "derby-pride-2",
+          "question": "{opponent}전에서 팬들이 가장 보고 싶어 하는 플레이는 무엇이라고 생각합니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "끝까지 포기하지 않고 팀을 위해 움직이는 모습입니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1,
+                "morale": 0.6,
+                "reputation": 0.04,
+                "coach": 1,
+                "teammates": 1,
+                "media": 0.3,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "준비한 플레이와 좋은 결과라고 생각합니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0.2,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0.2,
+                "teammates": 0.2,
+                "media": 0.1,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "상대를 압도하는 강한 모습이라고 봅니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -0.5,
+                "morale": 0.4,
+                "reputation": 0.06,
+                "coach": -0.8,
+                "teammates": -0.2,
+                "media": -0.5,
+                "confidence": 0.012
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-draw",
+      "name": "무승부 뒤 인터뷰",
+      "topic": "match-result",
+      "question": "{opponent}전에서 승점을 나눴습니다. 승리에 가까워지려면 어떤 장면을 더 잘 처리해야 했습니까?",
+      "options": [
+        {
+          "id": "positive",
+          "answer": "제 마지막 판단부터 돌아보고 동료들과 더 맞추겠습니다.",
+          "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+          "effects": {
+            "trust": 1.5,
+            "morale": 0.6,
+            "reputation": 0.15,
+            "coach": 3,
+            "teammates": 3,
+            "media": 1,
+            "confidence": 0.008
+          }
+        },
+        {
+          "id": "neutral",
+          "answer": "좋았던 부분과 아쉬운 장면을 함께 분석하겠습니다.",
+          "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+          "effects": {
+            "trust": 0,
+            "morale": 0.2,
+            "reputation": 0,
+            "coach": 0,
+            "teammates": 0,
+            "media": 0,
+            "confidence": 0
+          }
+        },
+        {
+          "id": "negative",
+          "answer": "우리의 공격을 더 과감하게 운영했어야 합니다.",
+          "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+          "effects": {
+            "trust": -1,
+            "morale": 1.5,
+            "reputation": 0.4,
+            "coach": -3,
+            "teammates": -2,
+            "media": 2,
+            "confidence": 0.015
+          }
+        }
+      ],
+      "variants": [
+        {
+          "id": "post-draw-1",
+          "question": "{opponent}전에서 승점을 나눴습니다. 승리에 가까워지려면 어떤 장면을 더 잘 처리해야 했습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "제 마지막 판단부터 돌아보고 동료들과 더 맞추겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "좋았던 부분과 아쉬운 장면을 함께 분석하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "우리의 공격을 더 과감하게 운영했어야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-draw-2",
+          "question": "{opponent}전 무승부를 어떻게 받아들입니까? 다음 경기로 가져갈 긍정적인 부분도 있었나요?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "팀이 다시 연결한 장면을 바탕으로 보완하겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "결과를 받아들이고 다음 준비를 하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "오늘은 승점 두 점을 놓친 경기라고 생각합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-goal",
+      "name": "득점 후 인터뷰",
+      "topic": "match-result",
+      "question": "{opponent}전 득점 장면에서 어떤 움직임을 읽고 선택했습니까?",
+      "options": [
+        {
+          "id": "positive",
+          "answer": "동료의 움직임과 패스 타이밍이 기회를 만들었습니다.",
+          "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+          "effects": {
+            "trust": 1.5,
+            "morale": 0.6,
+            "reputation": 0.15,
+            "coach": 3,
+            "teammates": 3,
+            "media": 1,
+            "confidence": 0.008
+          }
+        },
+        {
+          "id": "neutral",
+          "answer": "골키퍼와 수비 위치를 보고 판단했습니다.",
+          "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+          "effects": {
+            "trust": 0,
+            "morale": 0.2,
+            "reputation": 0,
+            "coach": 0,
+            "teammates": 0,
+            "media": 0,
+            "confidence": 0
+          }
+        },
+        {
+          "id": "negative",
+          "answer": "그 장면은 제가 가장 자신 있는 플레이였습니다.",
+          "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+          "effects": {
+            "trust": -1,
+            "morale": 1.5,
+            "reputation": 0.4,
+            "coach": -3,
+            "teammates": -2,
+            "media": 2,
+            "confidence": 0.015
+          }
+        }
+      ],
+      "variants": [
+        {
+          "id": "post-goal-1",
+          "question": "{opponent}전 득점 장면에서 어떤 움직임을 읽고 선택했습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "동료의 움직임과 패스 타이밍이 기회를 만들었습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "골키퍼와 수비 위치를 보고 판단했습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "그 장면은 제가 가장 자신 있는 플레이였습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-goal-2",
+          "question": "{opponent}전에서 골을 넣었습니다. 득점 이후에도 팀의 흐름을 유지하려고 신경 쓴 부분은요?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "공 없이도 계속 움직이며 동료를 돕고 싶었습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "다음 장면의 판단을 평소처럼 하려 했습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "제 쪽으로 기회를 더 만들었다면 더 득점할 수 있었습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-link",
+      "name": "연계 활약 인터뷰",
+      "topic": "match-result",
+      "question": "{opponent}전에서 동료의 득점 기회를 만들었습니다. 평소 어떤 대화를 통해 호흡을 맞춥니까?",
+      "options": [
+        {
+          "id": "positive",
+          "answer": "서로 원하는 패스와 움직임을 훈련 뒤에도 이야기합니다.",
+          "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+          "effects": {
+            "trust": 1.5,
+            "morale": 0.6,
+            "reputation": 0.15,
+            "coach": 3,
+            "teammates": 3,
+            "media": 1,
+            "confidence": 0.008
+          }
+        },
+        {
+          "id": "neutral",
+          "answer": "경기 장면을 같이 보며 타이밍을 확인합니다.",
+          "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+          "effects": {
+            "trust": 0,
+            "morale": 0.2,
+            "reputation": 0,
+            "coach": 0,
+            "teammates": 0,
+            "media": 0,
+            "confidence": 0
+          }
+        },
+        {
+          "id": "negative",
+          "answer": "동료들이 제 판단을 믿고 더 적극적으로 움직이면 좋겠습니다.",
+          "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+          "effects": {
+            "trust": -1,
+            "morale": 1.5,
+            "reputation": 0.4,
+            "coach": -3,
+            "teammates": -2,
+            "media": 2,
+            "confidence": 0.015
+          }
+        }
+      ],
+      "variants": [
+        {
+          "id": "post-link-1",
+          "question": "{opponent}전에서 동료의 득점 기회를 만들었습니다. 평소 어떤 대화를 통해 호흡을 맞춥니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "서로 원하는 패스와 움직임을 훈련 뒤에도 이야기합니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "경기 장면을 같이 보며 타이밍을 확인합니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "동료들이 제 판단을 믿고 더 적극적으로 움직이면 좋겠습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-link-2",
+          "question": "{opponent}전에서 직접 슈팅보다 동료를 선택한 장면이 돋보였습니다. 판단의 기준은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "팀에 가장 좋은 기회가 되는 선택을 하려 합니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "수비와 골키퍼 위치를 보고 그 순간 결정합니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "제가 만드는 기회가 더 많이 득점으로 이어져야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-struggle",
+      "name": "개인 경기력 질문",
+      "topic": "form",
+      "question": "{opponent}전에서 평소보다 플레이가 잘 풀리지 않았습니다. 다음 경기에서 무엇부터 회복하고 싶습니까?",
+      "options": [
+        {
+          "id": "positive",
+          "answer": "제 판단과 동료와의 연결부터 다시 맞추겠습니다.",
+          "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+          "effects": {
+            "trust": 1.5,
+            "morale": 0.6,
+            "reputation": 0.15,
+            "coach": 3,
+            "teammates": 3,
+            "media": 1,
+            "confidence": 0.008
+          }
+        },
+        {
+          "id": "neutral",
+          "answer": "회복하고 영상을 보며 원인을 확인하겠습니다.",
+          "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+          "effects": {
+            "trust": 0,
+            "morale": 0.2,
+            "reputation": 0,
+            "coach": 0,
+            "teammates": 0,
+            "media": 0,
+            "confidence": 0
+          }
+        },
+        {
+          "id": "negative",
+          "answer": "제 역할과 전술적인 지원도 함께 돌아봐야 합니다.",
+          "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+          "effects": {
+            "trust": -1,
+            "morale": 1.5,
+            "reputation": 0.4,
+            "coach": -3,
+            "teammates": -2,
+            "media": 2,
+            "confidence": 0.015
+          }
+        }
+      ],
+      "variants": [
+        {
+          "id": "post-struggle-1",
+          "question": "{opponent}전에서 평소보다 플레이가 잘 풀리지 않았습니다. 다음 경기에서 무엇부터 회복하고 싶습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "제 판단과 동료와의 연결부터 다시 맞추겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "회복하고 영상을 보며 원인을 확인하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "제 역할과 전술적인 지원도 함께 돌아봐야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "post-struggle-2",
+          "question": "최근 경기에서 어려운 장면이 있었습니다. 부진한 흐름을 끊기 위한 준비는 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "기본적인 플레이와 훈련의 기준을 다시 지키겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "한 경기씩 차분하게 준비하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "기회를 꾸준히 받아야 경기력을 되찾을 수 있습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection-competition",
+      "name": "출전 경쟁과 동료",
+      "topic": "team-life",
+      "question": "{teammate} 선수가 최근 충분한 출전 기회를 얻지 못하고 있습니다. 주전 경쟁 속에서 동료를 어떻게 돕고 있습니까?",
+      "options": [
+        {
+          "id": "positive",
+          "answer": "훈련에서 함께 준비하고 기회가 왔을 때 서로 돕겠습니다.",
+          "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+          "effects": {
+            "trust": 1.5,
+            "morale": 0.6,
+            "reputation": 0.15,
+            "coach": 3,
+            "teammates": 3,
+            "media": 1,
+            "confidence": 0.008
+          }
+        },
+        {
+          "id": "neutral",
+          "answer": "선발은 감독의 판단이고 저는 제 역할에 집중하겠습니다.",
+          "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+          "effects": {
+            "trust": 0,
+            "morale": 0.2,
+            "reputation": 0,
+            "coach": 0,
+            "teammates": 0,
+            "media": 0,
+            "confidence": 0
+          }
+        },
+        {
+          "id": "negative",
+          "answer": "출전 기회와 역할에 대해 더 분명한 설명이 필요합니다.",
+          "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+          "effects": {
+            "trust": -1,
+            "morale": 1.5,
+            "reputation": 0.4,
+            "coach": -3,
+            "teammates": -2,
+            "media": 2,
+            "confidence": 0.015
+          }
+        }
+      ],
+      "variants": [
+        {
+          "id": "selection-competition-1",
+          "question": "{teammate} 선수가 최근 충분한 출전 기회를 얻지 못하고 있습니다. 주전 경쟁 속에서 동료를 어떻게 돕고 있습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "훈련에서 함께 준비하고 기회가 왔을 때 서로 돕겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "선발은 감독의 판단이고 저는 제 역할에 집중하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "출전 기회와 역할에 대해 더 분명한 설명이 필요합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "selection-competition-2",
+          "question": "팀의 포지션 경쟁이 이어지고 있습니다. {teammate} 선수와는 훈련에서 어떤 이야기를 나눕니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "서로의 장점과 필요한 움직임을 공유하고 있습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "훈련에서 맡은 역할을 맞추는 이야기를 합니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "지금보다 공정한 기회가 필요하다는 생각입니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "injury-comeback",
+      "name": "회복과 변화",
+      "topic": "development",
+      "question": "부상과 회복을 거치며 플레이 방식을 조정하고 있습니다. 지금 가장 중요하게 보는 부분은 무엇입니까?",
+      "options": [
+        {
+          "id": "positive",
+          "answer": "팀에 기여할 수 있는 움직임과 몸 상태를 함께 보겠습니다.",
+          "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+          "effects": {
+            "trust": 1.5,
+            "morale": 0.6,
+            "reputation": 0.15,
+            "coach": 3,
+            "teammates": 3,
+            "media": 1,
+            "confidence": 0.008
+          }
+        },
+        {
+          "id": "neutral",
+          "answer": "의료진과 코치의 계획을 따라 차근차근 준비하겠습니다.",
+          "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+          "effects": {
+            "trust": 0,
+            "morale": 0.2,
+            "reputation": 0,
+            "coach": 0,
+            "teammates": 0,
+            "media": 0,
+            "confidence": 0
+          }
+        },
+        {
+          "id": "negative",
+          "answer": "이제는 제 능력을 다시 보여 줄 기회가 더 필요합니다.",
+          "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+          "effects": {
+            "trust": -1,
+            "morale": 1.5,
+            "reputation": 0.4,
+            "coach": -3,
+            "teammates": -2,
+            "media": 2,
+            "confidence": 0.015
+          }
+        }
+      ],
+      "variants": [
+        {
+          "id": "injury-comeback-1",
+          "question": "부상과 회복을 거치며 플레이 방식을 조정하고 있습니다. 지금 가장 중요하게 보는 부분은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "팀에 기여할 수 있는 움직임과 몸 상태를 함께 보겠습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "의료진과 코치의 계획을 따라 차근차근 준비하겠습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "이제는 제 능력을 다시 보여 줄 기회가 더 필요합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "injury-comeback-2",
+          "question": "몸 상태에 맞춰 플레이를 바꾸는 과정이 쉽지 않을 텐데, 동료들의 도움이 있습니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "훈련에서 서로 움직임을 맞추는 것이 큰 도움이 됩니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "새로운 역할에 조금씩 적응하고 있습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "팀도 제가 편하게 뛸 수 있는 방식을 더 고민해야 합니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "season-target",
+      "name": "시즌 목표와 역할",
+      "topic": "development",
+      "question": "시즌을 치르며 출전 경험이 쌓이고 있습니다. 남은 기간에 꼭 발전시키고 싶은 부분은 무엇입니까?",
+      "options": [
+        {
+          "id": "positive",
+          "answer": "팀의 흐름을 읽고 동료와 더 좋은 선택을 만들고 싶습니다.",
+          "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+          "effects": {
+            "trust": 1.5,
+            "morale": 0.6,
+            "reputation": 0.15,
+            "coach": 3,
+            "teammates": 3,
+            "media": 1,
+            "confidence": 0.008
+          }
+        },
+        {
+          "id": "neutral",
+          "answer": "매 경기 맡은 역할을 꾸준히 수행하고 싶습니다.",
+          "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+          "effects": {
+            "trust": 0,
+            "morale": 0.2,
+            "reputation": 0,
+            "coach": 0,
+            "teammates": 0,
+            "media": 0,
+            "confidence": 0
+          }
+        },
+        {
+          "id": "negative",
+          "answer": "더 중요한 경기에 나가 제 가치를 보여 주고 싶습니다.",
+          "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+          "effects": {
+            "trust": -1,
+            "morale": 1.5,
+            "reputation": 0.4,
+            "coach": -3,
+            "teammates": -2,
+            "media": 2,
+            "confidence": 0.015
+          }
+        }
+      ],
+      "variants": [
+        {
+          "id": "season-target-1",
+          "question": "시즌을 치르며 출전 경험이 쌓이고 있습니다. 남은 기간에 꼭 발전시키고 싶은 부분은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "팀의 흐름을 읽고 동료와 더 좋은 선택을 만들고 싶습니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "매 경기 맡은 역할을 꾸준히 수행하고 싶습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "더 중요한 경기에 나가 제 가치를 보여 주고 싶습니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "season-target-2",
+          "question": "경기와 훈련이 이어지는 일정에서 본인의 성장을 어떻게 확인합니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "코치와 동료의 피드백을 받아 경기 장면과 비교합니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "영상을 보며 이전보다 나아진 판단을 찾습니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "기록과 출전 역할이 제 발전을 보여 준다고 봅니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
+        },
+        {
+          "id": "season-target-3",
+          "question": "팬들이 이번 시즌의 성장을 기대하고 있습니다. 지금 본인이 팀에 줄 수 있는 가장 큰 장점은 무엇입니까?",
+          "options": [
+            {
+              "id": "positive",
+              "answer": "맡은 역할을 성실히 수행하고 동료와 연결하는 것입니다.",
+              "followUp": "책임감 있는 답변으로 감독과 동료의 신뢰를 얻었습니다.",
+              "effects": {
+                "trust": 1.5,
+                "morale": 0.6,
+                "reputation": 0.15,
+                "coach": 3,
+                "teammates": 3,
+                "media": 1,
+                "confidence": 0.008
+              }
+            },
+            {
+              "id": "neutral",
+              "answer": "경기 흐름에 맞게 제 장점을 보여 주는 것입니다.",
+              "followUp": "차분한 답변으로 논란 없이 다음 준비를 이어갑니다.",
+              "effects": {
+                "trust": 0,
+                "morale": 0.2,
+                "reputation": 0,
+                "coach": 0,
+                "teammates": 0,
+                "media": 0,
+                "confidence": 0
+              }
+            },
+            {
+              "id": "negative",
+              "answer": "팀이 저를 중심으로 활용하면 결과가 더 좋아질 겁니다.",
+              "followUp": "강한 발언이 주목받았지만 팀 내부의 신뢰에는 부담이 생겼습니다.",
+              "effects": {
+                "trust": -1,
+                "morale": 1.5,
+                "reputation": 0.4,
+                "coach": -3,
+                "teammates": -2,
+                "media": 2,
+                "confidence": 0.015
+              }
+            }
+          ]
         }
       ]
     }
@@ -35917,6 +38559,35 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "nationalUnavailable": "부상·컨디션으로 소집 불가",
       "trainingReviewRecover": "이번 기간은 회복·재활 비중이 높았습니다. 컨디션을 먼저 관리하세요."
     }
+  },
+  "careerPolishRules": {
+    "revision": 1,
+    "previousInitialAttributes": {
+      "speed": 68,
+      "shooting": 67,
+      "passing": 62,
+      "physical": 66,
+      "defending": 53,
+      "dribbling": 68
+    },
+    "previousReviewPages": [
+      "overview",
+      "leagues",
+      "records",
+      "journey",
+      "honours"
+    ]
+  },
+  "calendarAdvanceRules": {
+    "revision": 1,
+    "batchDays": 3,
+    "maxEvents": 16,
+    "passiveTypes": [
+      "market",
+      "match",
+      "national-match"
+    ],
+    "stopOnNewMail": true
   }
 }
 </script>
@@ -36645,13 +39316,11 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const result={...pending,option:option.id,name:template.name,choice:option.name,description:option.description,effects:clone(option.effects),culture:cultureDecision(db,s,option.effects,'career-decision'),focus:clone(story.focus),automatic};story.history.push(result);story.history=story.history.slice(-db.careerDecisionRules.historyLimit);story.lastDate=s.date;story.pending=null;
     mail(db,s,{key:pending.id,subject:text(db,'decisionResult',{name:template.name,choice:option.name}),body:option.description});queueCareerDecision(db,s);return result;
   }
-  function seasonReviewReady(db,s){
-    const league=indexes(db,s).clubs[s.player.club]?.league,fixtures=s.fixtures[league];return seasonReady(s)||Boolean(fixtures?.length&&fixtures.every(f=>f.result));
-  }
+  function seasonReviewReady(db,s){return seasonReady(s);}
   function captureSeasonReview(db,s,final=false){
     initializeCareerStories(db,s);if(!final&&!seasonReviewReady(db,s))return null;settleAwards(db,s);const p=s.player,idx=indexes(db,s),records=p.history.filter(r=>r.season===s.season),stats=totals(db,records),baseline=s.seasonBaseline;
     const leagues=db.leagues.filter(l=>!['continental','postseason'].includes(l.kind)).map(l=>({id:l.id,name:l.name,table:standings(db,s,l.id).map((row,i)=>({...clone(row),rank:i+1,name:idx.clubs[row.club]?.name||row.club})),goals:clone(leaders(db,s,l.id,'goals').slice(0,db.seasonReviewRules.leaderLimit)),assists:clone(leaders(db,s,l.id,'assists').slice(0,db.seasonReviewRules.leaderLimit))}));
-    const review={season:s.season,date:s.date,start:s.seasonStart,final:final||seasonReady(s),player:p.name,position:p.position,club:p.club,clubName:idx.clubs[p.club].name,league:idx.clubs[p.club].league,stats:clone(stats),role:rolePerformance(db,stats,p.position),leagues,honours:clone(s.player.honours.filter(r=>r.season===s.season)),worldAwards:clone(s.awards.records.filter(r=>r.season===s.season)),awardsPartial:s.competitionStats.partial||s.awards.since>s.seasonStart,postseason:clone(s.postseason),baselineDate:baseline.date,growth:Object.fromEntries(db.attributes.map(a=>[a.id,p.stats[a.id]-baseline.stats[a.id]])),earned:Math.max(0,p.earned-baseline.earned),choices:clone(s.careerStories.history.filter(e=>e.season===s.season)),best:clone(records.filter(r=>r.stats.minutes>0).sort((a,b)=>b.stats.rating-a.stats.rating||a.date.localeCompare(b.date)).slice(0,db.seasonReviewRules.bestMatchLimit).map(r=>({id:r.id,date:r.date,league:r.league,opponent:idx.clubs[r.home===r.club?r.away:r.home]?.name||'',score:r.result.home.stats.goals+' : '+r.result.away.stats.goals,stats:r.stats,position:r.result.context?.position||p.position})))};
+    const review={season:s.season,date:s.date,start:s.seasonStart,final:final||seasonReady(s),player:p.name,position:p.position,club:p.club,clubName:idx.clubs[p.club].name,league:idx.clubs[p.club].league,stats:clone(stats),role:rolePerformance(db,stats,p.position),leagues,honours:clone(s.player.honours.filter(r=>r.season===s.season)),nationalHonours:clone((s.nations?.honours||[]).filter(r=>r.date>=s.seasonStart&&r.date<=s.date)),worldAwards:clone(s.awards.records.filter(r=>r.season===s.season)),awardsPartial:s.competitionStats.partial||s.awards.since>s.seasonStart,postseason:clone(s.postseason),baselineDate:baseline.date,growth:Object.fromEntries(db.attributes.map(a=>[a.id,p.stats[a.id]-baseline.stats[a.id]])),earned:Math.max(0,p.earned-baseline.earned),choices:clone(s.careerStories.history.filter(e=>e.season===s.season)),best:clone(records.filter(r=>r.stats.minutes>0).sort((a,b)=>b.stats.rating-a.stats.rating||a.date.localeCompare(b.date)).slice(0,db.seasonReviewRules.bestMatchLimit).map(r=>({id:r.id,date:r.date,league:r.league,opponent:idx.clubs[r.home===r.club?r.away:r.home]?.name||'',score:r.result.home.stats.goals+' : '+r.result.away.stats.goals,stats:r.stats,position:r.result.context?.position||p.position})))};
     s.seasonRecaps=s.seasonRecaps.filter(r=>r.season!==s.season);s.seasonRecaps.push(review);s.seasonRecaps=s.seasonRecaps.slice(-db.seasonReviewRules.historyLimit);return review;
   }
 
@@ -37262,7 +39931,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     for(const [path,values] of Object.entries(db.balanceRules.previous)){const keys=path.split('.'),source=keys.reduce((p,key)=>p?.[key],db),target=keys.reduce((p,key)=>p?.[key],old);for(const [key,value] of Object.entries(values))if(target?.[key]===value)target[key]=source[key];}old.balanceRules??=clone(db.balanceRules);
     for(const group of ['clubNegotiationRules','matchImportanceRules','careerTraitRules','captainRules'])old[group]??=clone(db[group]);for(const group of ['eventTemplates','eventSymbols'])for(const [key,value] of Object.entries(db.matchBroadcast[group]))old.matchBroadcast[group][key]??=clone(value);for(const field of ['careerTraits'])if(!old.dynamics.matchIdentityFields.includes(field))old.dynamics.matchIdentityFields.push(field);
     for(const group of ['agentSystem','trainingProgramRules'])old[group]??=clone(db[group]);for(const agent of old.agents)agent.skills??=clone(db.agents.find(a=>a.id===agent.id)?.skills||db.agents[0].skills);
-    old.seasonReviewRules??=clone(db.seasonReviewRules);old.continentalRules??=clone(db.continentalRules);old.offerFitRules??=clone(db.offerFitRules);old.awardTypes??=clone(db.awardTypes);old.awardRules??=clone(db.awardRules);
+    old.seasonReviewRules??=clone(db.seasonReviewRules);upgradeCareerPolishDatabase(db,old);old.continentalRules??=clone(db.continentalRules);old.offerFitRules??=clone(db.offerFitRules);old.awardTypes??=clone(db.awardTypes);old.awardRules??=clone(db.awardRules);
     if(!old.growthRules){for(const [key,value] of Object.entries(db.growthRules.previousTrainingLimits))if(old.trainingRules?.[key]===value)old.trainingRules[key]=db.trainingRules[key];old.growthRules=clone(db.growthRules);}
     if(!old.continentalRules.revision){old.continentalRules=clone(db.continentalRules);for(const league of old.leagues.filter(l=>l.kind==='continental'))league.phaseRounds=db.leagues.find(l=>l.id===league.id)?.phaseRounds||league.phaseRounds;}
     if(!old.seasonReviewRules.pages.includes('honours'))old.seasonReviewRules.pages.push('honours');
@@ -37310,13 +39979,11 @@ function simulateWorldFixture(db,f,s,continuation=null){
     return [...Object.values(s.world.rosters).flat().filter(p=>p.country===team.country&&!indexes(db,s).clubs[p.club]?.parent),...(s.nations.reserves[team.id]||[])];
   }
   function nationalAssessment(db,s,team=nationalTeam(db,s.player.country)){
-    const p=s.player,r=db.nationalRules;if(!team)return {eligible:false,reason:'nationalAbility',score:0,rank:0,cutoff:0,minutes:0,apps:0,rating:0};
-    const recent=p.history.filter(h=>h.date>=dateAdd(s.date,-r.recentDays)&&h.stats.minutes>0),stats=totals(db,recent),assessment=performanceContext(db,s,p,recent,team.id),group=indexes(db).positions[p.position].group,pool=nationalPool(db,s,team).filter(n=>!n.injury&&indexes(db).positions[n.position].group===group),quota=r.positionQuotas[group];
-    const potential=player=>player.age<=r.potentialAgeMax?Math.min(r.potentialHeadroom,Math.max(0,(player.traits?.potential||0)-overall(db,player.stats)))*team.coachPotentialWeight:0;
-    const score=player=>suitability(db,player)*r.abilityWeight+(performanceContext(db,s,player,null,team.id).rating?performanceContext(db,s,player,null,team.id).rating-r.formCenter:0)*team.coachFormWeight+potential(player)+(player.reputation||0)*r.reputationWeight;
-    const ranked=pool.map(n=>({id:n.id,ability:suitability(db,n),score:score(n)})).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id)),cut=ranked[Math.min(quota-1,ranked.length-1)],ability=suitability(db,p),coach=s.nations.trust*r.coachWeight+potential(p),playerScore=ability+(assessment.rating?assessment.rating-r.formCenter:0)*team.coachFormWeight+coach+p.reputation*r.reputationWeight,rank=ranked.filter(n=>n.score>playerScore).length+1;
-    const unavailable=p.age<r.minimumAge||p.injury>0||p.injuryDays>0||p.fitness<r.minimumFitness,proven=assessment.effectiveApps>=r.minimumApps&&assessment.effectiveMinutes>=r.minimumMinutes,goodForm=proven&&assessment.rating>=r.formTarget&&ability>=(cut?.ability||team.quality)-r.formGap,coachLikes=(proven||ability>=(cut?.ability||team.quality)+r.coachAbilityGap)&&ability>=(cut?.ability||team.quality)-r.abilityGap&&playerScore>=(cut?.score||team.quality),needed=pool.filter(n=>n.position===p.position).length<quota&&stats.minutes>=r.needMinutes&&ability>=(cut?.ability||team.quality)-r.needGap;
-    return {eligible:!unavailable&&(goodForm||coachLikes||needed)&&rank<=quota+(needed?1:0),reason:unavailable?'nationalUnavailable':!proven&&!needed&&!coachLikes?'nationalUnproven':goodForm?'nationalForm':coachLikes?'nationalCoach':needed?'nationalNeed':'nationalAbility',score:playerScore,coach,rank,cutoff:cut?.score||team.quality,minutes:stats.minutes,apps:stats.apps,rating:stats.rating,context:assessment};
+    const p=s.player,r=db.nationalRules,c=r.selection;if(!team)return {eligible:false,reason:'nationalAbility',score:0,rank:0,cutoff:0,minutes:0,apps:0,rating:0};
+    const recent=p.history.filter(h=>h.date>=dateAdd(s.date,-r.recentDays)&&h.stats.minutes>0),stats=totals(db,recent),view=nationalCandidateScore(db,s,team,p,recent),assessment=view.context,group=indexes(db).positions[p.position].group,pool=nationalPool(db,s,team).filter(n=>!n.injury&&!n.injuryDays&&indexes(db).positions[n.position].group===group),quota=r.positionQuotas[group];
+    const ranked=pool.map(n=>({id:n.id,...nationalCandidateScore(db,s,team,n)})).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id)),cut=ranked[Math.min(quota-1,ranked.length-1)],cutAbility=cut?.ability||team.quality,cutoff=cut?.score||team.quality,abilityMinimum=Math.max(team.quality-c.teamAbilityGap,cutAbility-r.abilityGap),rank=ranked.filter(n=>n.score>view.score).length+1;
+    const unavailable=p.age<r.minimumAge||p.injury>0||p.injuryDays>0||p.fitness<r.minimumFitness,proven=assessment.effectiveApps>=r.minimumApps&&assessment.effectiveMinutes>=r.minimumMinutes,exceptional=view.ability>=cutAbility+c.exceptionalGap&&assessment.effectiveApps>=c.exceptionalApps&&assessment.effectiveMinutes>=c.exceptionalMinutes,competitive=view.ability>=abilityMinimum&&view.score>=cutoff&&rank<=quota,goodForm=proven&&assessment.rating>=r.formTarget&&view.ability>=cutAbility-r.formGap,coachLikes=(proven||exceptional)&&competitive,needed=pool.filter(n=>n.position===p.position).length<c.positionCover&&assessment.effectiveApps>=c.minimumNeedApps&&assessment.effectiveMinutes>=r.needMinutes&&view.ability>=cutAbility-r.needGap;
+    return {eligible:!unavailable&&competitive&&(goodForm||coachLikes||needed),reason:unavailable?'nationalUnavailable':!proven&&!exceptional&&!needed?'nationalUnproven':!competitive?'nationalAbility':goodForm?'nationalForm':coachLikes?'nationalCoach':needed?'nationalNeed':'nationalAbility',score:view.score,coach:view.coach,rank,cutoff,abilityMinimum,proven,minutes:stats.minutes,apps:stats.apps,rating:stats.rating,context:assessment};
   }
   function nationalOnDuty(s,date=s.date){return Boolean(s.nations?.camp&&s.nations.camp.from<=date&&date<=s.nations.camp.until);}
   function nationalFixtures(s){return Object.values(s.nations?.tournaments||{}).flatMap(t=>t.fixtures);}
@@ -37348,10 +40015,10 @@ function simulateWorldFixture(db,f,s,continuation=null){
     // Existing club fixtures and completed reports are preserved during migration.
   }
   function selectNationalSquad(db,s,team,from,until,key){
-    const r=db.nationalRules,pool=nationalPool(db,s,team).filter(p=>!p.injury),baseAssessment=team.id===s.nations.team?nationalAssessment(db,s,team):null,refusal=baseAssessment?.eligible?nationalReleaseDecision(db,s,from,until,key):null,assessment=refusal?{...baseAssessment,eligible:false,reason:refusal.reason}:baseAssessment,selected=[];
+    const r=db.nationalRules,pool=nationalPool(db,s,team).filter(p=>!p.injury&&!p.injuryDays),baseAssessment=team.id===s.nations.team?nationalAssessment(db,s,team):null,refusal=baseAssessment?.eligible?nationalReleaseDecision(db,s,from,until,key):null,assessment=refusal?{...baseAssessment,eligible:false,reason:refusal.reason}:baseAssessment,selected=[];
     if(refusal&&!s.nations.releaseRefusals.some(row=>row.key===key))s.nations.releaseRefusals.push(refusal);
     for(const [group,quota] of Object.entries(r.positionQuotas)){
-      const candidates=pool.filter(p=>indexes(db).positions[p.position].group===group).sort((a,b)=>(suitability(db,b)+(b.lastRating?b.lastRating-r.formCenter:0)*team.coachFormWeight)-(suitability(db,a)+(a.lastRating?a.lastRating-r.formCenter:0)*team.coachFormWeight)||a.id.localeCompare(b.id));
+      const candidates=pool.filter(p=>indexes(db).positions[p.position].group===group).map(p=>({id:p.id,score:nationalCandidateScore(db,s,team,p).score})).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id));
       const include=assessment?.eligible&&indexes(db).positions[s.player.position].group===group;selected.push(...candidates.slice(0,quota-(include?1:0)).map(p=>p.id));if(include)selected.push('player');
     }
     s.nations.squads[team.id]={ids:selected,from,until,key};delete s.nations.teams[team.id].captaincy;
@@ -37495,6 +40162,8 @@ function simulateWorldFixture(db,f,s,continuation=null){
     for(const id of Object.keys(s.world.clubs))coachStrategy(db,s,id);
     for(const id of Object.keys(s.nations?.teams||{}))coachStrategy(db,s,id);
     s.interviews??={serial:0,pending:null,history:[],quotes:[],seen:[],lastDate:null,relations:{coaches:{},teams:{},media:0},effect:null};
+    const i=s.interviews;if((i.contentRevision||1)<db.interviewRules.revision){for(const row of i.history){if(row.template!=='recent-issue')continue;const event=s.world.events.find(e=>e.club===row.club&&e.text===row.vars?.issue);if(event){const key=interviewStoryKey(s,event);if(!i.seen.includes(key))i.seen.push(key);}}if(i.pending?.template==='recent-issue'&&i.history.some(h=>h.vars?.issue&&h.vars.issue===i.pending.vars?.issue))i.pending=null;i.seen=i.seen.slice(-db.interviewRules.historyLimit);i.contentRevision=db.interviewRules.revision;}
+    i.contentRevision??=db.interviewRules.revision;
   }
   function strategicMatchState(db,s,f){
     if(!s)return s;const r=db.strategyRules,idx=indexes(db,s),teams={};
@@ -37554,12 +40223,15 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function textTemplate(template,vars){return template.replace(/\{(\w+)\}/g,(_,key)=>vars[key]??'');}
   function queueInterview(db,s,templateId,key,vars={},context={}){
     initializeStrategy(db,s);const i=s.interviews,r=db.interviewRules,definition=db.interviewQuestions.find(q=>q.id===templateId);if(!definition||i.pending||i.seen.includes(key)||i.lastDate&&daysBetween(db,i.lastDate,s.date)<r.cooldownDays)return null;
+    const topic=definition.topic||definition.id,recent=i.history.slice(-r.recentTopics);if(recent.some(row=>(db.interviewQuestions.find(q=>q.id===row.template)?.topic||row.template)===topic&&daysBetween(db,row.date,s.date)<r.topicCooldownDays))return null;
+    const compatible=q=>[...q.question.matchAll(/\{(\w+)\}/g)].every(m=>vars[m[1]]!==undefined),available=(definition.variants||[{id:null,question:definition.question,options:definition.options}]).filter(q=>compatible(q)&&!i.history.some(row=>row.template===templateId&&(q.id?row.variant===q.id:row.question===textTemplate(q.question,vars))&&daysBetween(db,row.date,s.date)<r.questionCooldownDays));
+    if(!available.length)return null;const variant=pick(random(hash(s.seed+':'+key+':interview-question')),available);
     const manager=context.manager||s.world.clubs[s.player.club]?.manager?.id||s.nations.teams[s.nations.team]?.manager?.id,club=context.club||s.player.club;
-    i.seen.push(key);i.seen=i.seen.slice(-r.historyLimit);i.pending={id:'interview:'+s.seed+':'+(++i.serial),key,template:templateId,date:s.date,season:s.season,question:textTemplate(definition.question,vars),vars:clone(vars),club,manager,national:!!context.national};i.lastDate=s.date;
+    i.seen.push(key);i.seen=i.seen.slice(-r.historyLimit);i.pending={id:'interview:'+s.seed+':'+(++i.serial),key,template:templateId,variant:variant.id,date:s.date,season:s.season,question:textTemplate(variant.question,vars),vars:clone(vars),club,manager,national:!!context.national};i.lastDate=s.date;
     mail(db,s,{key:i.pending.id,subject:definition.name,body:i.pending.question,from:'mailSystem'});return i.pending;
   }
   function resolveInterview(db,s,optionId,automatic=false){
-    const i=s.interviews,pending=i?.pending,template=db.interviewQuestions.find(q=>q.id===pending?.template),option=template?.options.find(o=>o.id===optionId);if(!option)return false;
+    const i=s.interviews,pending=i?.pending,option=interviewOption(db,pending,optionId);if(!option)return false;
     const r=db.interviewRules,e=option.effects,manager=pending.national?s.nations.teams[pending.club]?.manager:s.world.clubs[pending.club]?.manager,sameManager=manager?.id===pending.manager,sameClub=pending.national?s.nations.team===pending.club:s.player.club===pending.club;
     if(sameClub&&sameManager){if(pending.national)s.nations.trust=clamp(s.nations.trust+e.trust,0,db.rules.scale);else s.player.trust=clamp(s.player.trust+e.trust,0,db.rules.scale);}
     for(const key of ['morale','reputation'])s.player[key]=clamp(s.player[key]+e[key],0,db.rules.scale);
@@ -37576,16 +40248,21 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const result=queueInterview(db,s,template,'pre:'+f.id,vars,{club,manager:ms.world.clubs[club].manager.id,national:!!f.national});if(result){s.interviews.quotes.push({id:'quotes:'+f.id,date:s.date,fixture:f.id,coach:quote,rival:rivalQuote});s.interviews.quotes=s.interviews.quotes.slice(-db.interviewRules.quoteLimit);}return result;
   }
   function interviewAfterAdvance(db,s,event,report){
-    if(s._previewMatch)return;const r=db.interviewRules,rng=random(hash(s.seed+':'+event.id+':interview-after'));
+    if(s._previewMatch)return;const r=db.interviewRules,rng=random(hash(s.seed+':'+event.id+':interview-after'));initializeStrategy(db,s);
     if(['national-camp','national-tournament'].includes(event.type)){
       const callup=s.nations.callups.at(-1);if(callup?.date!==s.date)return;
+      if(!callup.selected&&!s.nations.callups.some(c=>c.selected)&&s.player.reputation<r.missedReputation&&!(callup.assessment?.context?.effectiveApps>=db.nationalRules.minimumApps&&callup.assessment.rank<=db.nationalRules.positionQuotas[indexes(db).positions[s.player.position].group]+r.missedRankHeadroom))return;
       queueInterview(db,s,callup.selected?'national-callup':'national-missed','callup:'+callup.id+':'+event.id,{national:nationalTeam(db,s.player.country).name},{club:s.nations.team,manager:s.nations.teams[s.nations.team].manager.id,national:true});return;
     }
     if(report){const opponent=report.home===report.club?report.away:report.home,own=report.result[report.home===report.club?'home':'away'].stats.goals,other=report.result[report.home===report.club?'away':'home'].stats.goals,important=fixtureImportance(db,s,report).level>=r.importantLevel,notable=report.stats.minutes>0&&(report.stats.rating>=r.goodRating||report.stats.rating<=r.poorRating);
-      if((important||notable)&&rng()<r.postChance)queueInterview(db,s,important?(own>other?'post-win':'post-loss'):'post-performance','post:'+report.id,{opponent:indexes(db,s).clubs[opponent].name},{club:report.club,manager:report.result.preMatch.manager.id,national:!!report.national});return;
+      const type=report.stats.goals>0&&own>other?r.postTemplates.goal:report.stats.assists>0&&own>=other?r.postTemplates.assist:important?r.postTemplates[own>other?'win':own===other?'draw':'loss']:report.stats.rating<=r.poorRating?r.postTemplates.poor:r.postTemplates.good;
+      if((important||notable)&&rng()<r.postChance)queueInterview(db,s,type,'post:'+report.id,{opponent:indexes(db,s).clubs[opponent].name},{club:report.club,manager:report.result.preMatch.manager.id,national:!!report.national});return;
     }
-    const issue=s.world.events.slice().reverse().find(e=>e.club===s.player.club&&r.issueTypes.includes(e.type)&&daysBetween(db,e.date,s.date)<=r.issueAgeDays);if(issue&&rng()<r.issueChance){queueInterview(db,s,'recent-issue','issue:'+issue.date+':'+issue.type,{issue:issue.text});return;}
-    const recent=s.player.history.slice(-db.opponentResponseRules.recentMatches);if(recent.length>=db.opponentResponseRules.minimumApps&&mean(recent.map(row=>row.stats.rating))>=r.goodRating&&rng()<r.formChance)queueInterview(db,s,'post-performance','form:'+s.season+':'+recent.at(-1).id);
+    const issue=s.world.events.slice().reverse().find(e=>e.club===s.player.club&&r.issueTypes.includes(e.type)&&daysBetween(db,e.date,s.date)<=r.issueAgeDays&&interviewIssueEligible(db,s,e)&&!s.interviews.seen.includes(interviewStoryKey(s,e)));
+    if(issue&&rng()<r.issueChance){queueInterview(db,s,r.issueTemplates[issue.type]||'recent-issue',interviewStoryKey(s,issue),{issue:issue.text,teammate:issue.personName,quote:issue.text});return;}
+    const recent=s.player.history.filter(row=>row.stats.minutes>0&&row.date>=dateAdd(s.date,-db.opponentResponseRules.maximumAgeDays)).slice(-db.opponentResponseRules.recentMatches),stats=totals(db,recent);
+    if(recent.length>=db.opponentResponseRules.minimumApps&&(stats.rating>=r.goodRating||stats.rating<=r.poorRating)&&rng()<r.formChance){queueInterview(db,s,stats.rating>=r.goodRating?r.postTemplates.good:r.postTemplates.poor,'form:'+s.season+':'+recent.at(-1).id,{opponent:indexes(db,s).clubs[recent.at(-1).home===s.player.club?recent.at(-1).away:recent.at(-1).home]?.name||indexes(db,s).clubs[s.player.club].name});return;}
+    if(s.player.history.filter(row=>row.season===s.season&&row.stats.minutes>0).length>=r.careerMinimumApps&&rng()<r.careerChance)queueInterview(db,s,'season-target','career:'+s.season+':'+event.id);
   }
 
     function initializeWorldContext(db,s){
@@ -37656,7 +40333,40 @@ function simulateWorldFixture(db,f,s,continuation=null){
     if(from===to)return;const pair=db.rivalryRules.pairs.find(p=>p.clubs.includes(from)&&p.clubs.includes(to));if(!pair)return;initializeWorldContext(db,s);const old=s.world.context.cultures[from]??={rapport:0,pressure:0};old.rapport=clamp(old.rapport+db.rivalryRules.transferRapport,-db.clubCultureRules.rapportLimit,db.clubCultureRules.rapportLimit);cultureReaction(db,s,{loyalty:db.clubCultureRules.transferLoyalty,star:db.clubCultureRules.transferAmbition,fight:db.clubCultureRules.transferAmbition},to,'rival-transfer');emitNews(db,s,'eventRivalTransfer',{name:s.player.name,from:indexes(db,s).clubs[from].name,to:indexes(db,s).clubs[to].name},to);
   }
 
-  return {mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
+    function interviewStoryKey(s,event){return ['issue',event.season||s.season,event.club,event.type,event.type==='eventManager'?s.world.clubs[event.club]?.manager?.id:event.personName||'team'].join(':');}
+  function interviewOption(db,pending,optionId){const q=db.interviewQuestions.find(q=>q.id===pending?.template),variant=q?.variants?.find(v=>v.id===pending.variant);return (variant?.options||q?.options)?.find(o=>o.id===optionId);}
+  function interviewIssueEligible(db,s,event){
+    if(event.type==='eventSelectionIssue'){const games=Object.values(s.fixtures).flat().filter(f=>f.result&&[f.home,f.away].includes(s.player.club)&&f.date<=s.date);return games.length>=db.interviewRules.selectionMinimumTeamGames&&event.personName&&event.personName!==s.player.name;}
+    return event.type!=='eventStyle'||event.relatedPlayer;
+  }
+  function nationalCandidateScore(db,s,team,player,records=null){
+    const r=db.nationalRules,c=r.selection,ability=suitability(db,player),context=performanceContext(db,s,player,records,team.id),potential=player.age<=r.potentialAgeMax?Math.min(r.potentialHeadroom,Math.max(0,(player.traits?.potential||0)-overall(db,player.stats)))*team.coachPotentialWeight:0,form=clamp((context.rating?context.rating-r.formCenter:0)*team.coachFormWeight,-c.formBonusMax,c.formBonusMax),coach=player===s.player?clamp((s.nations.trust-team.coachTrust)*r.coachWeight,-c.coachBonusMax,c.coachBonusMax):0;
+    return {ability,score:ability*r.abilityWeight+form+potential+coach+(player.reputation||0)*r.reputationWeight,coach,context};
+  }
+  function advanceIdleCalendar(db,s){
+    if(s.matchPreparation||s.matchPresentation||s.interviews?.pending||s.careerStories?.pending||pendingResponses(db,s).length)return false;
+    queueCareerDecision(db,s);const cfg=db.calendarAdvanceRules,start=s.date,processed=[];let result=null,horizon=null;
+    const playerDay=e=>['match','national-match'].includes(e.type)&&myFixtures(s).some(f=>!f.result&&f.date===e.date);
+    while(processed.length<cfg.maxEvents){const event=nextCalendar(s);if(!event||playerDay(event))break;if(processed.length&&(!cfg.passiveTypes.includes(event.type)||event.date>horizon))break;
+      const mailCount=s.inbox.length;result=advance(db,s);if(!result)break;processed.push(clone(result.event));horizon??=dateAdd(result.event.date,cfg.batchDays-1);
+      if(result.report||!cfg.passiveTypes.includes(result.event.type)||s.interviews.pending||s.careerStories.pending||pendingResponses(db,s).length||cfg.stopOnNewMail&&s.inbox.length>mailCount)break;
+    }
+    return result?{...result,processed,skippedDays:daysBetween(db,start,s.date)}:false;
+  }
+  function upgradeCareerPolishDatabase(db,old){
+    old.careerPolishRules??=clone(db.careerPolishRules);old.calendarAdvanceRules??=clone(db.calendarAdvanceRules);old.nationalRules.selection={...clone(db.nationalRules.selection),...old.nationalRules.selection};
+    for(const [key,value] of Object.entries(db.interviewRules))old.interviewRules[key]??=clone(value);
+    for(const original of db.interviewQuestions){const current=old.interviewQuestions.find(q=>q.id===original.id);if(!current){old.interviewQuestions.push(clone(original));continue;}current.topic??=original.topic;if(!current.variants&&(!db.interviewRules.legacyQuestions[current.id]||current.question===db.interviewRules.legacyQuestions[current.id])){current.variants=clone(original.variants);for(const variant of current.variants||[])for(const option of variant.options)option.effects=clone(current.options.find(o=>o.id===option.id)?.effects||option.effects);}}
+    for(const a of old.attributes)if(a.initial===db.careerPolishRules.previousInitialAttributes[a.id])a.initial=db.attributes.find(x=>x.id===a.id).initial;
+    if(JSON.stringify(old.seasonReviewRules.pages)===JSON.stringify(db.careerPolishRules.previousReviewPages))old.seasonReviewRules.pages=clone(db.seasonReviewRules.pages);
+    old.ui.formGauge??=clone(db.ui.formGauge);old.ui.reviewPresentation??=clone(db.ui.reviewPresentation);old.interviewRules.revision=db.interviewRules.revision;
+  }
+  function seasonClubRecords(db,s,season){
+    const records=s.player.history.filter(r=>r.season===season),start=dateAdd(db.meta.initialDate,(season-1)*db.calendarRules.seasonDays),end=dateAdd(start,db.calendarRules.seasonDays-1),moves=s.player.career.filter(e=>e.date<=end).sort((a,b)=>a.date.localeCompare(b.date)),before=moves.filter(e=>e.date<start).at(-1),clubs=[...(before?[before.club]:[]),...moves.filter(e=>e.date>=start).map(e=>e.club),...records.map(r=>r.club)];
+    if(season===s.season&&!s.player.freeAgent)clubs.push(s.player.club);
+    return [...new Set(clubs)].map(club=>({season,club,stats:totals(db,records.filter(r=>r.club===club))}));
+  }
+  return {seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
 })();
 </script>
 <script id="game-ui">
@@ -37947,7 +40657,7 @@ function validateSave(envelope){
   if(!s.seasonBaseline||s.seasonBaseline.season!==s.season||!validDate(s.seasonBaseline.date)||s.seasonBaseline.date>s.date||db.attributes.some(a=>!finite(s.seasonBaseline.stats?.[a.id],db.rules.abilityMin,db.rules.abilityMax))||!finite(s.seasonBaseline.earned,0,Number.MAX_SAFE_INTEGER))throw Error('seasonBaseline');
   if(!Array.isArray(s.reviewSeen)||s.reviewSeen.some(n=>!Number.isInteger(n)||n<1||n>s.season)||!Array.isArray(s.seasonRecaps)||s.seasonRecaps.length>db.seasonReviewRules.historyLimit||new Set(s.seasonRecaps.map(r=>r.season)).size!==s.seasonRecaps.length)throw Error('seasonRecaps');
   const validReviewRole=r=>r&&db.positions.some(p=>p.id===r.position)&&typeof r.name==='string'&&typeof r.achieved==='boolean'&&finite(r.score,0,db.rolePerformanceRules.scoreScale)&&Array.isArray(r.metrics)&&r.metrics.length&&r.metrics.every(m=>db.ui.statFields.some(f=>f.id===m.field)&&Number.isFinite(m.target)&&m.target>0&&Number.isFinite(m.value)&&m.value>=0&&typeof m.per90==='boolean');
-  for(const r of s.seasonRecaps){if(!Number.isInteger(r.season)||r.season<1||r.season>s.season||!validDate(r.date)||!validDate(r.start)||!validDate(r.baselineDate)||typeof r.final!=='boolean'||typeof r.player!=='string'||typeof r.clubName!=='string'||!db.clubs.some(c=>c.id===r.club)||!db.positions.some(p=>p.id===r.position)||!db.leagues.some(l=>l.id===r.league)||!r.stats||db.ui.statFields.filter(f=>!f.derived).some(f=>!finite(r.stats[f.id],0,Number.MAX_SAFE_INTEGER))||!validReviewRole(r.role)||db.attributes.some(a=>!Number.isFinite(r.growth?.[a.id]))||!Array.isArray(r.choices)||r.choices.some(e=>!decisionValid(e))||!Array.isArray(r.best)||r.best.length>db.seasonReviewRules.bestMatchLimit||r.best.some(m=>!validDate(m.date)||typeof m.opponent!=='string'||typeof m.score!=='string'||!m.stats||!finite(m.stats.rating,0,db.engine.rating.max))||!Array.isArray(r.leagues)||!r.leagues.length||new Set(r.leagues.map(l=>l.id)).size!==r.leagues.length||r.leagues.some(l=>!db.leagues.some(k=>k.id===l.id)||typeof l.name!=='string'||!Array.isArray(l.table)||l.table.some(row=>!db.clubs.some(c=>c.id===row.club)||typeof row.name!=='string'||['rank','played','wins','draws','losses','points'].some(key=>!Number.isInteger(row[key])||row[key]<0))||['goals','assists'].some(key=>!Array.isArray(l[key])||l[key].length>db.seasonReviewRules.leaderLimit||l[key].some(row=>typeof row.id!=='string'||typeof row.name!=='string'||!Array.isArray(row.clubs)||row.clubs.some(id=>!db.clubs.some(c=>c.id===id))||!Number.isInteger(row[key])||row[key]<0))))throw Error('seasonRecaps.entry');}
+  for(const r of s.seasonRecaps){if(r.nationalHonours!==undefined&&(!Array.isArray(r.nationalHonours)||r.nationalHonours.some(h=>!db.nationalTeams.some(t=>t.id===h.team)||!db.nationalCompetitions.some(c=>c.id===h.competition)||!validDate(h.date))))throw Error('seasonRecaps.nationalHonours');if(!Number.isInteger(r.season)||r.season<1||r.season>s.season||!validDate(r.date)||!validDate(r.start)||!validDate(r.baselineDate)||typeof r.final!=='boolean'||typeof r.player!=='string'||typeof r.clubName!=='string'||!db.clubs.some(c=>c.id===r.club)||!db.positions.some(p=>p.id===r.position)||!db.leagues.some(l=>l.id===r.league)||!r.stats||db.ui.statFields.filter(f=>!f.derived).some(f=>!finite(r.stats[f.id],0,Number.MAX_SAFE_INTEGER))||!validReviewRole(r.role)||db.attributes.some(a=>!Number.isFinite(r.growth?.[a.id]))||!Array.isArray(r.choices)||r.choices.some(e=>!decisionValid(e))||!Array.isArray(r.best)||r.best.length>db.seasonReviewRules.bestMatchLimit||r.best.some(m=>!validDate(m.date)||typeof m.opponent!=='string'||typeof m.score!=='string'||!m.stats||!finite(m.stats.rating,0,db.engine.rating.max))||!Array.isArray(r.leagues)||!r.leagues.length||new Set(r.leagues.map(l=>l.id)).size!==r.leagues.length||r.leagues.some(l=>!db.leagues.some(k=>k.id===l.id)||typeof l.name!=='string'||!Array.isArray(l.table)||l.table.some(row=>!db.clubs.some(c=>c.id===row.club)||typeof row.name!=='string'||['rank','played','wins','draws','losses','points'].some(key=>!Number.isInteger(row[key])||row[key]<0))||['goals','assists'].some(key=>!Array.isArray(l[key])||l[key].length>db.seasonReviewRules.leaderLimit||l[key].some(row=>typeof row.id!=='string'||typeof row.name!=='string'||!Array.isArray(row.clubs)||row.clubs.some(id=>!db.clubs.some(c=>c.id===id))||!Number.isInteger(row[key])||row[key]<0))))throw Error('seasonRecaps.entry');}
   const practice=p.development.practice;if(!practice||!validDate(practice.since)||practice.since>s.date||!practice.last||Array.isArray(practice.last)||Object.entries(practice.last).some(([id,date])=>!db.attributes.some(a=>a.id===id)||!validDate(date)||date<practice.since||date>s.date))throw Error('training.practice');
   const awards=s.awards;if(!awards||awards.season!==s.season||!validDate(awards.since)||!Array.isArray(awards.records)||!Array.isArray(awards.completed)||new Set(awards.completed).size!==awards.completed.length||awards.completed.some(id=>id!=='world'&&!db.leagues.some(l=>l.id===id))||!Array.isArray(awards.bestGoals)||awards.bestGoals.length>db.awardRules.goalShortlist||!Array.isArray(p.honours))throw Error('awards');
   const honourValid=r=>r&&typeof r.id==='string'&&db.awardTypes.some(t=>t.id===r.type)&&Number.isInteger(r.season)&&r.season>0&&r.season<=s.season&&validDate(r.date)&&typeof r.name==='string'&&db.clubs.some(c=>c.id===r.club)&&(!r.competition||db.leagues.some(l=>l.id===r.competition))&&(r.playerId===null||typeof r.playerId==='string');
@@ -38035,7 +40745,16 @@ function validateGameplaySave(db,s){
  for(const info of Object.values(s.world.clubs)){const c=info.captaincy;if(c?.registration!==undefined&&!db.transferWindows.some(window=>c.registration==='captain-registration:'+c.season+':'+window.id))throw Error('captain.registration');}
 }
 
+function validateCareerPolishContent(db){
+ const i=db.interviewRules,c=db.nationalRules.selection,r=db.calendarAdvanceRules;
+ if(!c||Object.values(c).some(n=>!Number.isFinite(n)||n<0)||['exceptionalApps','exceptionalMinutes','minimumNeedApps','positionCover'].some(k=>!Number.isInteger(c[k])||c[k]<=0)||c.formBonusMax<=0||c.coachBonusMax<=0)throw Error('national.selection');
+ if(!r||!Number.isInteger(r.batchDays)||r.batchDays<=0||!Number.isInteger(r.maxEvents)||r.maxEvents<=0||typeof r.stopOnNewMail!=='boolean'||!Array.isArray(r.passiveTypes)||!r.passiveTypes.length||new Set(r.passiveTypes).size!==r.passiveTypes.length||r.passiveTypes.some(type=>!DEFAULT_DB.calendarAdvanceRules.passiveTypes.includes(type)))throw Error('calendarAdvanceRules');
+ if(['revision','questionCooldownDays','topicCooldownDays','recentTopics','selectionMinimumTeamGames','careerMinimumApps'].some(k=>!Number.isInteger(i[k])||i[k]<=0)||['missedReputation','missedRankHeadroom','careerChance'].some(k=>!Number.isFinite(i[k])||i[k]<0)||i.careerChance>1||[...Object.values(i.issueTemplates||{}),...Object.values(i.postTemplates||{})].some(id=>!db.interviewQuestions.some(q=>q.id===id)))throw Error('interview.variety');
+ for(const q of db.interviewQuestions){if(typeof q.topic!=='string'||!q.topic)throw Error('interview.topic');if(!q.variants)continue;if(!Array.isArray(q.variants)||!q.variants.length||new Set(q.variants.map(v=>v.id)).size!==q.variants.length)throw Error('interview.variants');for(const v of q.variants){if(!v.id||typeof v.question!=='string'||!v.question||!Array.isArray(v.options)||v.options.length!==i.tones.length||new Set(v.options.map(o=>o.id)).size!==v.options.length||v.options.some(o=>!i.tones.some(t=>t.id===o.id)||typeof o.answer!=='string'||!o.answer||typeof o.followUp!=='string'||!o.followUp||['trust','morale','reputation','coach','teammates','media','confidence'].some(k=>!Number.isFinite(o.effects?.[k])||Math.abs(o.effects[k])>db.rules.scale)))throw Error('interview.variant');}}
+ if(!db.ui.formGauge||!Number.isFinite(db.ui.formGauge.max)||db.ui.formGauge.max<=0||typeof db.ui.formGauge.description!=='string'||!Number.isInteger(db.ui.reviewPresentation?.bestPreview)||db.ui.reviewPresentation.bestPreview<=0)throw Error('careerPolish.ui');
+}
 function validateStrategyContent(db){
+ validateCareerPolishContent(db);
  const r=db.strategyRules,c=db.opponentResponseRules,i=db.interviewRules,tactics=new Set(db.tactics.map(t=>t.id)),styles=new Set(db.tactics.map(t=>t.style)),unique=list=>Array.isArray(list)&&list.length&&new Set(list.map(x=>x.id)).size===list.length;
  if(!r||!c||!i||!unique(r.personalities)||!unique(r.reasons)||!unique(c.types)||!unique(db.interviewQuestions))throw Error('strategy.content');
  for(const t of db.tactics){if(!Array.isArray(r.alternatives[t.id])||!r.alternatives[t.id].length||r.alternatives[t.id].some(id=>!tactics.has(id)||id===t.id)||!r.matchups[t.style]||[...styles].some(style=>!Number.isFinite(r.matchups[t.style][style])||Math.abs(r.matchups[t.style][style])>=1))throw Error('strategy.plan');}
@@ -38047,12 +40766,12 @@ function validateStrategyContent(db){
  if(['identity','opponent','underdog','experiment','chasing','red-card','response'].some(id=>!r.reasons.some(x=>x.id===id))||['identity','opponent','underdog','experiment'].some(id=>typeof r.quotes[id]!=='string')||!unique(i.tones)||['preChance','postChance','issueChance','formChance'].some(key=>i[key]>1)||['recentMatches','minimumApps','minimumMinutes'].some(key=>!Number.isInteger(c[key])||c[key]<=0)||c.ratingRange<=0||c.involvementRange<=0||c.roleRange<=0||['historyLimit','quoteLimit','cooldownDays','effectDays'].some(key=>!Number.isInteger(i[key])||i[key]<=0))throw Error('strategy.references');
 }
 function validateStrategySave(db,s){
- if(s._strategy)throw Error('strategy.transient');const r=db.strategyRules,c=db.opponentResponseRules,i=db.interviewRules,tactics=new Set(db.tactics.map(t=>t.id));
+ if(s._strategy)throw Error('strategy.transient');if(s.interviews?.contentRevision!=null&&(!Number.isInteger(s.interviews.contentRevision)||s.interviews.contentRevision<1||s.interviews.contentRevision>db.interviewRules.revision))throw Error('interview.revision');const r=db.strategyRules,c=db.opponentResponseRules,i=db.interviewRules,tactics=new Set(db.tactics.map(t=>t.id));
  for(const club of [...Object.values(s.world.clubs),...Object.values(s.nations.teams)]){const m=club.manager,p=m.strategy;if(p&&((m.id||club.id+':'+m.name)!==p.identity||!r.personalities.some(x=>x.id===p.personality)||!tactics.has(p.planA)||!r.alternatives[p.planA].includes(p.planB)))throw Error('strategy.manager');}
  const v=s.interviews;if(!v||!Number.isInteger(v.serial)||v.serial<0||!Array.isArray(v.history)||v.history.length>i.historyLimit||!Array.isArray(v.seen)||v.seen.length>i.historyLimit||new Set(v.seen).size!==v.seen.length||!Array.isArray(v.quotes)||v.quotes.length>i.quoteLimit||!v.relations?.coaches||!v.relations?.teams||!Number.isFinite(v.relations.media)||Math.abs(v.relations.media)>i.relationshipLimit)throw Error('interview.state');
  const clubs=new Set([...Object.keys(s.world.clubs),...Object.keys(s.nations.teams)]),date=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&Number.isFinite(Date.parse(value)),bounded=value=>Number.isFinite(value)&&Math.abs(value)<=i.relationshipLimit;
  if(Object.values(v.relations.coaches).some(x=>!bounded(x))||Object.entries(v.relations.teams).some(([id,x])=>!clubs.has(id)||!bounded(x))||v.lastDate!==null&&!date(v.lastDate)||v.effect&&(!date(v.effect.until)||!Number.isFinite(v.effect.confidence)||Math.abs(v.effect.confidence)>i.executionMax-1))throw Error('interview.effects');
- const check=row=>{const q=db.interviewQuestions.find(q=>q.id===row.template);if(!q||!row.id||!row.key||!date(row.date)||typeof row.question!=='string'||!row.question||!clubs.has(row.club)||typeof row.manager!=='string'||typeof row.national!=='boolean')throw Error('interview.record');return q;};
+ const check=row=>{const q=db.interviewQuestions.find(q=>q.id===row.template);if(!q||row.variant!=null&&!q.variants?.some(v=>v.id===row.variant)||!row.id||!row.key||!date(row.date)||typeof row.question!=='string'||!row.question||!clubs.has(row.club)||typeof row.manager!=='string'||typeof row.national!=='boolean')throw Error('interview.record');return q;};
  if(v.pending){check(v.pending);if(!v.seen.includes(v.pending.key)||v.pending.date>s.date||v.pending.season!==s.season)throw Error('interview.pending');}
  if(new Set(v.history.map(row=>row.id)).size!==v.history.length)throw Error('interview.duplicate');for(const row of v.history){const q=check(row);if(!q.options.some(o=>o.id===row.option)||!date(row.answered)||typeof row.answer!=='string'||typeof row.followUp!=='string'||typeof row.automatic!=='boolean'||!row.effects||Object.values(row.effects).some(x=>!Number.isFinite(x)))throw Error('interview.history');}
  for(const q of v.quotes)if(!q.id||!q.fixture||!date(q.date)||typeof q.coach!=='string'||typeof q.rival!=='string')throw Error('interview.quote');
@@ -38485,7 +41204,6 @@ function openCareerDecision(){
 function maybeShowCareerMoment(){
   if(!state||state.matchPresentation||matchLoading||calendarLoading||storageLoading)return;
   if(state.interviews.pending){if(lastInterviewOpened!==state.interviews.pending.id)openInterview();return;}const pending=state.careerStories.pending;if(pending){if(lastDecisionOpened!==state.seed+':'+pending.id)openCareerDecision();return;}
-  if(Core.seasonReviewReady(DB,state)&&!state.reviewSeen.includes(state.season)){Core.captureSeasonReview(DB,state);state.reviewSeen.push(state.season);persist();openSeasonReview(state.season);}
 }
 function careerPreparationCard(){
   const p=state.player,role=DB.roleProfiles.find(r=>r.position===p.position),stats=Core.totals(DB,p.history.filter(r=>r.season===state.season)),performance=Core.rolePerformance(DB,stats,p.position),focus=state.careerStories.focus,active=focus&&focus.from<=state.date&&focus.until>=state.date;
@@ -38502,16 +41220,26 @@ function seasonGrowthItem(attribute,growth){
   const direction=growth>0?'Up':growth<0?'Down':'Same',style=growth>0?'positive':growth<0?'negative':'muted',label='reviewGrowth'+direction;
   return '<div class="row between"><span>'+h(attribute.name)+'</span><b class="num"><span class="'+style+'" data-growth-attribute="'+h(attribute.id)+'" aria-label="'+h(t(label))+'">'+h(t(label+'Symbol'))+'</span></b></div>';
 }
+function seasonAchievementCards(r){
+ const trophies=(r.honours||[]).filter(h=>DB.awardTypes.find(a=>a.id===h.type)?.kind==='trophy'),awards=(r.honours||[]).filter(h=>DB.awardTypes.find(a=>a.id===h.type)?.kind==='individual'),national=r.nationalHonours||[];
+ return '<section class="review-achievements"><h2>'+h(t('reviewAchievements'))+'</h2><div class="review-achievement-grid"><section class="card review-trophies"><h3>'+h(DB.ui.reviewPresentation.trophyIcon)+' '+h(t('reviewTrophies'))+'</h3>'+(trophies.length?honourRows(trophies):'')+national.map(row=>'<article class="honour-row national-season-trophy"><div><b>'+h(t('reviewNationalTrophy'))+'</b><p class="small muted">'+h(row.date)+'</p></div><div><b>'+h(DB.nationalCompetitions.find(c=>c.id===row.competition)?.name||row.competition)+'</b><p class="small muted">'+h(DB.nationalTeams.find(t=>t.id===row.team)?.name||row.team)+'</p></div></article>').join('')+(!trophies.length&&!national.length?'<p class="notice">'+h(t('reviewNoTrophy'))+'</p>':'')+'</section><section class="card review-awards"><h3>'+h(DB.ui.reviewPresentation.awardIcon)+' '+h(t('reviewAwards'))+'</h3>'+(awards.length?honourRows(awards):'<p class="notice">'+h(t('reviewNoAward'))+'</p>')+'</section></div></section>';
+}
+function seasonMemories(r){
+ return '<section class="card review-memories"><h3>'+h(t('reviewSeasonMemories'))+'</h3><div class="review-list">'+(r.best.length?r.best.slice(0,DB.ui.reviewPresentation.bestPreview).map(m=>'<article class="review-story"><b>'+h(m.date)+' · '+h(m.opponent)+'</b><p>'+h(m.score)+' · '+h(m.position)+'</p><p class="small muted">'+h(t('goal'))+' '+n(m.stats.goals)+' · '+h(t('assist'))+' '+n(m.stats.assists)+'</p></article>').join(''):'<p class="notice">'+h(t('reviewNoMatches'))+'</p>')+'</div></section>';
+}
+function reviewOverview(r,finish,stats){
+ return '<div class="review-hero"><p class="eyebrow">'+h(t(r.final?'reviewFinal':'reviewLive'))+'</p><h3>'+h(r.player)+' · '+h(r.position)+'</h3><p>'+h(t('reviewClubFinish',{club:r.clubName,league:r.leagues.find(l=>l.id===r.league)?.name,rank:finish?.rank||t('undecided')}))+'</p></div>'+seasonAchievementCards(r)+seasonMemories(r)+'<details class="review-numbers"><summary>'+h(t('reviewNumbers'))+'</summary><div class="kpi-grid">'+kpi(t('apps'),n(stats.apps),t('minutes')+' '+n(stats.minutes))+kpi(t('avgRating'),n(stats.rating,2),t('allCompetitions'))+kpi(t('goal'),n(stats.goals),t('assist')+' '+n(stats.assists))+kpi(t('rolePerformance'),n(r.role.score),r.role.name)+'</div><section class="card"><h3>'+h(r.role.name)+'</h3><div class="role-metrics">'+r.role.metrics.map(m=>{const f=DB.ui.statFields.find(f=>f.id===m.field);return kpi(f.label,n(m.value,1),t('roleMetricTarget',{n:m.target}));}).join('')+'</div><p class="small muted">'+h(t('roleHint'))+'</p></section></details>';
+}
 function drawSeasonReview(){
   const r=state.seasonRecaps.find(r=>r.season===reviewSeason);if(!r)return;const pages=DB.seasonReviewRules.pages;reviewPage=Core.clamp(reviewPage,0,pages.length-1);const page=pages[reviewPage],league=r.leagues.find(l=>l.id===reviewLeague)||r.leagues[0],finish=r.leagues.find(l=>l.id===r.league)?.table.find(row=>row.club===r.club),stats=r.stats;
   let content='';
-  if(page==='overview')content='<div class="review-hero"><p class="eyebrow">'+h(t(r.final?'reviewFinal':'reviewLive'))+'</p><h3>'+h(r.player)+' · '+h(r.position)+'</h3><p>'+h(t('reviewClubFinish',{club:r.clubName,league:r.leagues.find(l=>l.id===r.league)?.name,rank:finish?.rank||t('undecided')}))+'</p></div><div class="kpi-grid">'+kpi(t('apps'),n(stats.apps),t('minutes')+' '+n(stats.minutes))+kpi(t('avgRating'),n(stats.rating,2),t('allCompetitions'))+kpi(t('goal'),n(stats.goals),t('assist')+' '+n(stats.assists))+kpi(t('rolePerformance'),n(r.role.score),r.role.name)+'</div><section class="card"><h3>'+h(r.role.name)+'</h3><div class="role-metrics">'+r.role.metrics.map(m=>{const f=DB.ui.statFields.find(f=>f.id===m.field);return kpi(f.label,n(m.value,1),t('roleMetricTarget',{n:m.target}));}).join('')+'</div><p class="small muted">'+h(t('roleHint'))+'</p></section>';
+  if(page==='overview')content=reviewOverview(r,finish,stats);
   if(page==='leagues'){
     const leader=(rows,key)=>'<section class="card"><h3>'+h(t(key==='goals'?'goal':'assist'))+'</h3><p class="small muted">'+h(t('reviewLeaders',{n:DB.seasonReviewRules.leaderLimit}))+'</p><div class="review-list table-wrap"><table><thead><tr>'+['rank','player','club',key==='goals'?'goal':'assist'].map(k=>'<th>'+h(t(k))+'</th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr class="'+(row.id==='player'?'highlight':'')+'"><td>'+n(row.rank)+'</td><td>'+h(row.name)+'</td><td>'+h(row.clubs.map(id=>idx().clubs[id]?.name||id).join(' / '))+'</td><td>'+n(row[key])+'</td></tr>').join('')+'</tbody></table>'+(!rows.length?'<p class="notice">'+h(t('reviewNoGoals'))+'</p>':'')+'</div></section>';
     content='<div class="location-filters two-step"><label>'+h(t('browseCountry'))+'<select id="review-country" autocomplete="off" data-browse-country="'+h(idx().leagues[league.id].country)+'">'+browseCountryOptions(r.leagues.map(l=>idx().leagues[l.id]),idx().leagues[league.id].country)+'</select></label><label>'+h(t('competition'))+'<select id="review-league">'+browseLeagueOptions(r.leagues.map(l=>idx().leagues[l.id]),idx().leagues[league.id].country,league.id)+'</select></label></div><section class="card"><h3>'+h(league.name)+'</h3><div class="review-list table-wrap"><table><thead><tr>'+['rank','club','reviewPlayed','wins','draws','losses','goalDiff','points'].map(k=>'<th>'+h(t(k))+'</th>').join('')+'</tr></thead><tbody>'+league.table.map(row=>'<tr class="'+(row.club===r.club?'highlight':'')+'"><td>'+n(row.rank)+'</td><td>'+h(row.name)+'</td>'+['played','wins','draws','losses','goalDiff','points'].map(k=>'<td>'+n(row[k])+'</td>').join('')+'</tr>').join('')+'</tbody></table></div></section><div class="review-leaders">'+leader(league.goals,'goals')+leader(league.assists,'assists')+'</div>';
   }
   if(page==='leagues')content+=postseasonCard(league.id,r);
-  if(page==='honours')content='<section class="card"><h2>'+h(t('honours'))+'</h2>'+honourRows(r.honours||[])+'<p class="small muted">'+h(t('honoursModel'))+(r.awardsPartial?' '+h(t('honoursPartial')):'')+'</p></section><section class="card"><h2>'+h(t('honoursWorld'))+'</h2><div class="review-list">'+honourRows(r.worldAwards||[])+'</div></section>';
+  if(page==='honours')content=seasonAchievementCards(r)+'<section class="card"><h2>'+h(t('honours'))+'</h2>'+honourRows(r.honours||[])+'<p class="small muted">'+h(t('honoursModel'))+(r.awardsPartial?' '+h(t('honoursPartial')):'')+'</p></section><section class="card"><h2>'+h(t('honoursWorld'))+'</h2><div class="review-list">'+honourRows(r.worldAwards||[])+'</div></section>';
   if(page==='records')content='<div class="review-stat-groups">'+DB.ui.statGroups.map(group=>'<section class="card"><h3>'+h(group.name)+'</h3><table><tbody>'+group.fields.map(key=>{const f=DB.ui.statFields.find(f=>f.id===key);return '<tr><td>'+h(f.label)+'</td><td class="right num">'+n(Core.metric(DB,stats,key),f.digits)+' '+h(f.unit||'')+'</td></tr>';}).join('')+'</tbody></table></section>').join('')+'</div>';
   if(page==='journey')content='<section class="card"><h3>'+h(t('reviewGrowth'))+'</h3><p class="small muted">'+h(t('reviewGrowthHint'))+'</p><p class="small muted">'+h(t('reviewBaseline',{date:r.baselineDate}))+(r.baselineDate!==r.start?' · '+h(t('reviewPartial')):'')+'</p><div class="role-metrics">'+DB.attributes.map(a=>seasonGrowthItem(a,r.growth[a.id])).join('')+'</div></section><section class="card"><h3>'+h(t('reviewBestMatches'))+'</h3><div class="review-list">'+(r.best.length?r.best.map(m=>'<article class="review-story"><div class="row between wrap"><b>'+h(m.date)+' · '+h(m.opponent)+'</b>'+badge(n(m.stats.rating,1),'green')+'</div><p class="small">'+h(m.score)+' · '+h(m.position)+' · '+h(t('goal'))+' '+n(m.stats.goals)+' · '+h(t('assist'))+' '+n(m.stats.assists)+'</p></article>').join(''):'<p class="notice">'+h(t('reviewNoMatches'))+'</p>')+'</div></section><section class="card"><h3>'+h(t('decisionHistory'))+'</h3><div class="review-list">'+(r.choices.length?r.choices.map(e=>'<article class="review-story"><p class="small muted">'+h(e.date)+(e.automatic?' · '+h(t('decisionAutomatic')):'')+'</p><b>'+h(e.name)+' · '+h(e.choice)+'</b><p class="small">'+h(e.description)+'</p></article>').join(''):'<p class="notice">'+h(t('reviewNoChoices'))+'</p>')+'</div></section>';
   openModal('<div class="season-review" data-review-season="'+r.season+'"><header class="section-head"><div><p class="eyebrow">'+h(seasonLabel(r.season))+' · '+h(r.start)+' — '+h(r.date)+'</p><h2 id="dialog-title">'+h(t('seasonReview'))+' · '+h(t('review'+page[0].toUpperCase()+page.slice(1)))+'</h2></div>'+btn(t('reviewClose'),'close')+'</header><nav class="tabs-inline review-tabs">'+pages.map((id,i)=>btn(t('review'+id[0].toUpperCase()+id.slice(1)),'review-page','data-page="'+i+'"',reviewPage===i?'selected':'')).join('')+'</nav><div class="review-content">'+content+'</div><footer class="review-footer"><button type="button" data-action="review-page" data-page="'+(reviewPage-1)+'" '+(reviewPage===0?'disabled':'')+'>'+h(t('reviewPrevious'))+'</button><span class="small muted">'+h(t('reviewPage',{page:reviewPage+1,total:pages.length}))+'</span>'+(reviewPage===pages.length-1&&r.season===state.season&&Core.seasonReady(state)?btn(t('reviewStart'),'review-start','','primary'):'<button type="button" data-action="review-page" data-page="'+(reviewPage+1)+'" '+(reviewPage===pages.length-1?'disabled':'')+'>'+h(t('reviewNext'))+'</button>')+'</footer></div>');
@@ -38616,7 +41344,10 @@ const worldNewsRelevant=item=>!DB.settings.noiseEvents.includes(item.type||item.
 function settings(){return `<div class="welcome"><h1>${h(t('settings'))}</h1><p>${h(t('settingsHint'))}</p></div><section class="card settings-card"><label>${h(t('screenLayout'))}<select id="setting-layout">${options(DB.settings.layoutOptions,preferences.layout)}</select></label><p class="small muted" style="margin-top:10px">${h(t('screenLayoutHint'))}</p><div class="divider"></div><label>${h(t('uiSize'))}<div class="row"><input id="setting-scale" type="range" min="${DB.settings.scale.min}" max="${DB.settings.scale.max}" step="${DB.settings.scale.step}" value="${preferences.scale}"><output id="setting-scale-value">${n(preferences.scale)}%</output></div></label><p class="small muted">${h(t('uiSizeHint'))}</p><div class="divider"></div><label>${h(t('moneyUnit'))}<select id="setting-currency">${options(DB.settings.currencies,preferences.currency)}</select></label><p class="small muted" style="margin:15px 0">${h(t('moneyUnitHint'))}</p><div class="notice">${h(t('moneyPreview'))} · ${money(DB.settings.moneyPreview)}</div><div class="divider"></div>${btn(t('settingsReset'),'settings-reset')}</section>`;}
 function savePreferences(){try{localStorage.setItem(DEFAULT_DB.settings.storageKey,JSON.stringify(preferences));}catch{toast(t('storageFail'));}}
 function loadPreferences(){try{const saved=JSON.parse(localStorage.getItem(DEFAULT_DB.settings.storageKey)||'null');if(saved&&DB.settings.currencies.some(c=>c.id===saved.currency)&&Number.isFinite(saved.scale)&&saved.scale>=DB.settings.scale.min&&saved.scale<=DB.settings.scale.max)preferences={...DB.settings.defaults,currency:saved.currency,scale:saved.scale,layout:DB.settings.layoutOptions.some(o=>o.id===saved.layout)?saved.layout:DB.settings.defaults.layout,broadcastSpeed:DB.matchBroadcast.speedOptions.some(o=>o.rate===saved.broadcastSpeed)?saved.broadcastSpeed:DB.settings.defaults.broadcastSpeed};}catch{}}
-function seasonStatsSummary(){const seasons=Array.from({length:state.season},(_,i)=>i+1);return `<section class="card" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('seasonRecords'))}</h2>${badge(t('allCareer'))}</div><div class="table-wrap"><table><thead><tr>${DB.settings.seasonStatColumns.map(c=>`<th>${h(t(c.label))}</th>`).join('')}</tr></thead><tbody>${seasons.slice().reverse().map(season=>{const stats=Core.totals(DB,state.player.history.filter(r=>r.season===season)),clubs=[...new Set(state.player.history.filter(r=>r.season===season).map(r=>idx().clubs[r.club].name))];return `<tr class="${season===(selectedStatsSeason??state.season)?'highlight':''}">${DB.settings.seasonStatColumns.map(c=>`<td>${c.id==='season'?btn(seasonLabel(season),'stats-season',`data-season="${season}"`,'subtle'):c.id==='club'?h(clubs.join(' · ')||(season===state.season?state.player.freeAgent?t('freeAgent'):currentClub().name:t('noStats'))):c.id==='rating'?stats.apps?n(stats.rating,2):h(t('noRating')):n(stats[c.id])}</td>`).join('')}</tr>`;}).join('')}</tbody></table></div></section>`;}
+function seasonStatsSummary(){
+ const seasons=Array.from({length:state.season},(_,i)=>i+1);
+ return '<section class="card season-club-records" style="margin-bottom:20px"><div class="section-head"><h2>'+h(t('seasonRecords'))+'</h2>'+badge(t('allCareer'))+'</div><p class="small muted">'+h(t('seasonClubBreakdown'))+'</p><div class="table-wrap"><table><thead><tr>'+DB.settings.seasonStatColumns.map(c=>'<th>'+h(t(c.label))+'</th>').join('')+'</tr></thead><tbody>'+seasons.reverse().map(season=>Core.seasonClubRecords(DB,state,season).map(row=>'<tr data-record-season="'+season+'" data-record-club="'+h(row.club||'')+'" class="'+(season===(selectedStatsSeason??state.season)?'highlight':'')+'">'+DB.settings.seasonStatColumns.map(c=>'<td>'+(c.id==='season'?btn(seasonLabel(season),'stats-season','data-season="'+season+'"','subtle'):c.id==='club'?row.club?clubLink(row.club):h(t('freeAgent')):c.id==='rating'?row.stats.apps?n(row.stats.rating,2):h(t('noRating')):n(row.stats[c.id]))+'</td>').join('')+'</tr>').join('')).join('')+'</tbody></table></div></section>';
+}
 function worldSortValue(p,key){if(key==='club')return idx().clubs[p.club].name;if(key==='overall')return p.stats?Core.overall(DB,p.stats):null;if(key==='potential')return p.traits?.potential??null;if(key==='minutes')return p.seasonMinutes??p.minutes??0;if(key==='style')return DB.identityStyles.find(x=>x.id===p.identityStyle)?.name||'';return p[key]??null;}
 function world(){const browsing=worldBrowse(),w=state.world,i=idx(),all=Object.entries(w.rosters).flatMap(([club,list])=>list.map(p=>({...p,club}))),pool=worldScope==='retired'?w.retired:worldScope==='prospects'?all.filter(p=>p.age<=DB.dynamics.worldProspectAge):all,rows=pool.filter(p=>browsing.playerClubs.some(c=>c.id===p.club)&&(worldPlayerClubFilter==='all'||p.club===worldPlayerClubFilter)).filter(p=>!worldQuery||worldSearchMatches(worldQuery,[p.name,i.clubs[p.club].name,p.position,browseCountryName(p.country),browseCountryName(i.leagues[i.clubs[p.club].league].country),i.leagues[i.clubs[p.club].league].name])).slice().sort((a,b)=>{const av=worldSortValue(a,worldSort.key),bv=worldSortValue(b,worldSort.key);if(av===null&&bv!==null)return 1;if(bv===null&&av!==null)return -1;const result=typeof av==='number'&&typeof bv==='number'?av-bv:String(av||'').localeCompare(String(bv||''),DB.meta.locale);return result*worldSort.direction||a.id.localeCompare(b.id);}),clubs=browsing.clubs.filter(c=>worldClubFilter==='all'||c.id===worldClubFilter).filter(c=>!worldClubQuery.trim()||worldSearchMatches(worldClubQuery,[c.name,i.leagues[c.league].name,c.manager.name,browseCountryName(i.leagues[c.league].country)])),events=w.events.filter(worldNewsRelevant).slice(-DB.settings.worldNewsCount).reverse();return `<div class="welcome"><h1>${h(t('worldTitle'))}</h1><p>${h(t('worldHint'))}</p></div><div class="kpi-grid" style="margin-bottom:20px">${kpi(t('trend'),DB.dynamics.trends.find(x=>x.id===w.trend).name)}${kpi(t('player'),n(all.length))}${kpi(t('club'),n(Object.keys(w.clubs).length))}${kpi(t('retired'),n(w.retired.length))}</div><section class="card world-news" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('worldEvents'))}</h2>${badge(events.length)}</div><div class="events">${events.map(e=>`<div class="event"><time>${h(e.date)}</time><div>${h(e.text)}</div></div>`).join('')}</div><p class="small muted" style="margin-top:12px">${h(t('worldNewsHint'))}</p></section><section class="card" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('worldPlayerDatabase'))}</h2>${badge(n(rows.length))}${btn(t('worldIntegratedSearch'),'world-integrated-search','data-kind="player"','small')}</div><p class="small muted">${h(t('worldIntegratedHint'))}</p><div class="tabs-inline">${DB.worldViews.map(v=>btn(v.name,'world-scope',`data-scope="${h(v.id)}"`,worldScope===v.id?'selected':'')).join('')}</div>${browseLocationControls('world-player',clubBrowseLeagues(),worldPlayerCountryFilter,worldPlayerLeagueFilter,browsing.playerClubs,worldPlayerClubFilter)}<label>${h(t('worldSearch'))}<input id="world-search" value="${h(worldQuery)}" placeholder="${h(t('worldSearchHint'))}"></label><div class="table-wrap world-player-list" role="region" tabindex="0" aria-label="${h(t('worldPlayerDatabase'))}" style="margin-top:16px"><table><thead><tr>${DB.settings.worldPlayerColumns.map(c=>`<th aria-sort="${worldSort.key===c.id?worldSort.direction<0?'descending':'ascending':'none'}">${btn(t(c.label)+(worldSort.key===c.id?worldSort.direction<0?' ↓':' ↑':''),'world-sort',`data-key="${h(c.id)}"`,'sort-heading')}</th>`).join('')}<th>${h(t('playerDetails'))}</th></tr></thead><tbody>${rows.slice(0,DB.dynamics.worldTableLimit).map(p=>`<tr>${DB.settings.worldPlayerColumns.map(c=>{const val=worldSortValue(p,c.id);return `<td>${val===null?'—':c.type==='number'?c.id==='overall'?abilityLabel(val):n(val):c.id==='name'&&p.stats?playerLink(p.id,val):c.id==='club'?clubLink(p.club):h(val)}</td>`;}).join('')}<td>${p.stats?btn(t('playerDetails'),'npc-detail',`data-id="${h(p.id)}"`,'subtle small'):'—'}</td></tr>`).join('')}</tbody></table></div><p class="small muted" style="margin-top:15px">${h(t('worldSortHint',{n:DB.dynamics.worldTableLimit}))}</p></section><section class="card" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('worldClubs'))}</h2><span class="small muted" role="status">${h(t('worldClubResults',{n:clubs.length}))}</span>${btn(t('worldIntegratedSearch'),'world-integrated-search','data-kind="club"','small')}</div>${browseLocationControls('world-browse',clubBrowseLeagues(),worldCountryFilter,worldLeagueFilter,browsing.clubs,worldClubFilter)}<label>${h(t('worldClubSearch'))}<input type="search" id="world-club-search" value="${h(worldClubQuery)}" placeholder="${h(t('worldClubSearchHint'))}"></label><div class="table-wrap world-manager-list" role="region" tabindex="0" aria-label="${h(t('worldClubs'))}"><table><thead><tr>${['club','competition','clubPrestige','quality','manager','tacticalFit','finance','environment'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody>${clubs.map(c=>`<tr class="${c.id===state.player.club?'highlight':''}"><td>${clubLink(c.id)}</td><td>${leagueLink(c.league)}</td><td>${h(clubTier(c))}</td><td>${n(c.quality,1)}</td><td>${entityLink('manager',c.id,c.manager.name)}</td><td>${h(Core.managerTactic(DB,state,c.id).name)}</td><td>${money(c.finance)}</td><td>${n(c.environment,1)}</td></tr>`).join('')}${!clubs.length?`<tr><td colspan="8" class="muted">${h(t('worldClubNoResults'))}</td></tr>`:''}</tbody></table></div></section><section class="card"><h2>${h(t('seasonSnapshot'))}</h2>${w.snapshots.length?w.snapshots.slice().reverse().map(x=>`<div class="history-item"><b>${h(t('season',{n:x.season}))}</b><span>${h(DB.dynamics.trends.find(t=>t.id===x.trend).name)}</span><span>${h(x.leaders[0]?.name||'')} · ${n(x.leaders[0]?.goals||0)} ${h(t('goal'))}</span></div>`).join(''):`<p class="small muted">${h(t('noStats'))}</p>`}</section>`;}
 document.addEventListener('input',event=>{if(event.target.id==='setting-scale'){preferences.scale=Core.clamp(Number(event.target.value),DB.settings.scale.min,DB.settings.scale.max);document.body.style.zoom=String(preferences.scale/DB.rules.scale);document.getElementById('setting-scale-value').textContent=n(preferences.scale)+'%';savePreferences();}});
@@ -38649,7 +41380,7 @@ document.addEventListener('click',event=>{const b=event.target.closest('[data-ac
 let calendarLoading=false,calendarLoadingTimer=null,matchLoading=false,matchTimer=null,matchLoadingTimer=null;
 function startCalendarExperience(){
   if(calendarLoading||matchLoading||state.matchPresentation)return;if(state.interviews.pending){openInterview();return;}if(state.careerStories.pending){openCareerDecision();return;}if(Core.pendingResponses(DB,state).length){openRequiredResponse();return;}calendarLoading=true;closeModal();render();
-  calendarLoadingTimer=setTimeout(()=>{calendarLoadingTimer=null;const before=Core.clone(state);try{const result=Core.advance(DB,state);screen=result?.report?'fixtures':result?.event?.type==='reply'||result?.event?.type==='contact'?'inbox':'calendar';reportId=result?.report?.id||null;activeMail=null;calendarLoading=false;persist();render();window.scrollTo({top:0});}catch(error){state=before;calendarLoading=false;render();toast(t('calendarProgressFailure'));}},DB.progressRules.delayMs);
+  calendarLoadingTimer=setTimeout(()=>{calendarLoadingTimer=null;const before=Core.clone(state);try{const result=Core.advanceIdleCalendar(DB,state);screen=result?.report?'fixtures':result?.event?.type==='reply'||result?.event?.type==='contact'?'inbox':'calendar';reportId=result?.report?.id||null;activeMail=null;calendarLoading=false;persist();render();window.scrollTo({top:0});}catch(error){state=before;calendarLoading=false;render();toast(t('calendarProgressFailure'));}},DB.progressRules.delayMs);
 }
 function isPlayerMatchDay(){
   Core.queueCareerDecision(DB,state);const event=Core.nextCalendar(state);if(!['match','national-match'].includes(event?.type)||state.player.freeAgent&&event?.type!=='national-match')return false;
@@ -38803,7 +41534,8 @@ function strategyManagerDetails(id){
 let lastInterviewOpened=null;
 function openInterview(){
  const pending=state?.interviews?.pending,q=DB.interviewQuestions.find(q=>q.id===pending?.template);if(!q||state.matchPresentation||matchLoading||calendarLoading)return;
- lastInterviewOpened=pending.id;openModal(`<div class="interview-dialog" data-interview="${h(pending.id)}"><div class="section-head"><div><p class="eyebrow">${h(pending.date)} · ${h(t('interviewTitle'))}</p><h2 id="dialog-title">${h(q.name)}</h2></div>${btn(t('close'),'close')}</div><p class="interview-question">${h(pending.question)}</p><div class="decision-options">${q.options.map(o=>`<button type="button" data-action="interview-choice" data-id="${h(o.id)}"><b>${h(DB.interviewRules.tones.find(t=>t.id===o.id).name)}</b><span>${h(o.answer)}</span></button>`).join('')}</div><p class="small muted">${h(t('interviewHint'))}</p></div>`);
+ const options=q.variants?.find(v=>v.id===pending.variant)?.options||q.options;
+ lastInterviewOpened=pending.id;openModal(`<div class="interview-dialog" data-interview="${h(pending.id)}"><div class="section-head"><div><p class="eyebrow">${h(pending.date)} · ${h(t('interviewTitle'))}</p><h2 id="dialog-title">${h(q.name)}</h2></div>${btn(t('close'),'close')}</div><p class="interview-question">${h(pending.question)}</p><div class="decision-options">${options.map(o=>`<button type="button" data-action="interview-choice" data-id="${h(o.id)}"><b>${h(DB.interviewRules.tones.find(t=>t.id===o.id).name)}</b><span>${h(o.answer)}</span></button>`).join('')}</div><p class="small muted">${h(t('interviewHint'))}</p></div>`);
 }
 function interviewJournal(){
  const i=state.interviews,m=state.world.clubs[state.player.club].manager.id;return `<section class="card interview-journal"><div class="section-head"><h2>${h(t('interviewHistory'))}</h2>${i.pending?btn(t('interviewAnswer'),'interview-open','','primary'):''}</div><div class="profile-facts">${detail(t('interviewCoach'),n(i.relations.coaches[m]||0))}${detail(t('interviewTeam'),n(i.relations.teams[state.player.club]||0))}${detail(t('interviewMedia'),n(i.relations.media))}</div>${i.history.length?`<div class="list-pane">${i.history.slice().reverse().map(row=>`<article class="interview-record"><p class="eyebrow">${h(row.date)} · ${h(DB.interviewQuestions.find(q=>q.id===row.template).name)}</p><h3>${h(row.question)}</h3><p>${h(row.answer)}</p><p class="small muted">${h(row.followUp)}</p><div class="row wrap small muted">${['trust','morale','reputation'].map(key=>`<span>${h(t(key))} ${row.effects[key]>0?'+':''}${n(row.effects[key],2)}</span>`).join('')}</div></article>`).join('')}</div>`:`<p class="small muted">${h(t('interviewNone'))}</p>`}${i.quotes.length?`<details class="helper-details"><summary>${h(t('interviewQuote'))}</summary>${i.quotes.slice().reverse().map(q=>`<p>${h(q.date)} · ${h(q.coach)}</p><p class="small muted">${h(q.rival)}</p>`).join('')}</details>`:''}</section>`;
@@ -38811,7 +41543,8 @@ function interviewJournal(){
 document.addEventListener('click',event=>{const button=event.target.closest('button[data-action]');if(!button)return;if(button.dataset.action==='interview-open')openInterview();if(button.dataset.action==='interview-choice'&&Core.resolveInterview(DB,state,button.dataset.id)){closeModal();persist();render();}});
 
 function marketContextCard(){
- const p=state.player,v=Core.valuation(DB,p,state),profile=v.star;return `<section class="card world-context-card market-context"><div class="section-head"><h2>${h(t('abilityIndependent'))}</h2>${badge(t('marketValue')+' '+money(v.value))}</div><div class="market-components">${Object.entries(profile.components).map(([key,value])=>`<div><span class="small muted">${h(t('star'+key[0].toUpperCase()+key.slice(1)))}</span><p><b>${n(value,1)}</b></p>${progress(value)}</div>`).join('')}</div><div class="profile-facts">${detail(t('starPower'),n(profile.value,1))}${detail(t('marketNationality'),n(v.nationality,2)+'×')}${detail(t('marketStarFactor'),n(v.starFactor,2)+'×')}${detail(t('contextRating'),v.context.rating?n(v.context.rating,2):t('noRating'))}${detail(t('rawRating'),v.context.rawRating?n(v.context.rawRating,2):t('noRating'))}</div><p class="small muted">${h(t('marketContextHint'))}</p><p class="small muted">${h(t('worldContextHint'))}</p></section>`;
+ const p=state.player,v=Core.valuation(DB,p,state),profile=v.star;
+ return '<section class="card world-context-card market-context"><div class="section-head"><h2>'+h(t('abilityIndependent'))+'</h2>'+badge(t('marketValue')+' '+money(v.value))+'</div><section class="market-parts"><h3>'+h(t('marketAbilityParts'))+'</h3><div class="market-components">'+Object.entries(profile.components).map(([key,value])=>'<div><span class="small muted">'+h(t('star'+key[0].toUpperCase()+key.slice(1)))+'</span><p><b>'+n(value,1)+'</b></p>'+progress(value)+'</div>').join('')+'</div></section><section class="market-assessment"><h3>'+h(t('marketAssessmentDetails'))+'</h3><div class="profile-facts">'+detail(t('starPower'),n(profile.value,1))+detail(t('marketNationality'),n(v.nationality,2)+'×')+detail(t('marketStarFactor'),n(v.starFactor,2)+'×')+detail(t('contextRating'),v.context.rating?n(v.context.rating,2):t('noRating'))+detail(t('rawRating'),v.context.rawRating?n(v.context.rawRating,2):t('noRating'))+'</div><p class="small muted">'+h(t('marketContextHint'))+'</p><p class="small muted">'+h(t('worldContextHint'))+'</p></section></section>';
 }
 function cultureCard(id){
  if(idx().clubs[id]?.national)return '';const profile=Core.clubCulture(DB,state,id),values=DB.clubCultureRules.dimensions.slice().sort((a,b)=>profile.weights[b.id]-profile.weights[a.id]),pairs=DB.rivalryRules.pairs.filter(p=>p.clubs.includes(id));return `<section class="card world-context-card culture-card"><div class="section-head"><h2>${h(t('cultureTitle'))}</h2>${badge(profile.name)}</div><p>${h(profile.description)}</p><div class="culture-values">${values.map(d=>badge(d.name+' '+n(profile.weights[d.id]*DB.rules.scale)+'%')).join('')}</div>${detail(t('cultureRapport'),n(profile.rapport,1))}<details class="helper-details"><summary>${h(t('rivalryTitle'))}</summary>${pairs.length?pairs.map(pair=>{const rival=pair.clubs.find(c=>c!==id),memory=state.world.context.rivalries[pair.id];return `<p>${clubLink(rival)} · ${h(pair.name)} · ${h(t('rivalryHeat'))} ${n((memory?.heat||DB.rivalryRules.heatBase)*DB.rules.scale)}%</p>`;}).join(''):`<p>${h(t('rivalryNone'))}</p>`}</details><p class="small muted">${h(t('cultureHint'))}</p></section>`;
@@ -38825,7 +41558,10 @@ function fitnessGauge(size='compact'){const percent=Core.clamp(state.player.fitn
 function worldSearchMatches(query,values){const normalized=value=>String(value||'').normalize('NFKC').toLocaleLowerCase(DB.meta.locale),haystack=normalized(values.join(' '));return normalized(query).trim().split(/\s+/).every(term=>haystack.includes(term));}
 document.addEventListener('click',event=>{const button=event.target.closest('[data-action="world-integrated-search"]');if(!button)return;worldScope=DB.worldViews.find(v=>v.id!=='prospects'&&v.id!=='retired').id;worldCountryFilter=worldPlayerCountryFilter=worldLeagueFilter=worldPlayerLeagueFilter=worldClubFilter=worldPlayerClubFilter='all';render();document.getElementById(button.dataset.kind==='club'?'world-club-search':'world-search')?.focus({preventScroll:true});});
 
-function recentFormStatus(){const recent=state.player.history.filter(h=>h.stats.minutes>0).slice(-DB.rules.recentFormMatches),totals=Core.totals(DB,recent);return '<div class="status-gauge"><div class="row between small"><span>'+h(t('matchForm'))+'</span><b>'+(recent.length?n(totals.rating,2)+' / '+DB.engine.rating.max:h(t('noRating')))+'</b></div></div>';}
+function recentFormStatus(){
+ const recent=state.player.history.filter(r=>r.stats.minutes>0).slice(-DB.rules.recentFormMatches),stats=Core.totals(DB,recent),percent=Core.clamp(stats.rating/DB.ui.formGauge.max*DB.rules.scale,0,DB.rules.scale);
+ return '<div class="status-gauge form-gauge"><div class="row between small"><span>'+h(t('matchFormPercent'))+'</span><b>'+(recent.length?n(percent)+'%':h(t('noRating')))+'</b></div><progress max="'+DB.rules.scale+'" value="'+(recent.length?percent:0)+'" aria-label="'+h(t('matchFormPercent'))+'"></progress><p class="small muted">'+h(recent.length?DB.ui.formGauge.description:t('formNoEvidence'))+'</p></div>';
+}
 
 function performanceView(){const p=state.player,recent=p.history.filter(r=>r.stats.minutes>0).slice(-DB.rules.recentFormMatches);return '<div class="welcome"><h1>'+h(t('performanceTitle'))+'</h1><p>'+h(t('performanceHint'))+'</p></div><div class="rework-grid"><section class="card performance-status">'+fitnessGauge('overview')+'<div class="divider"></div><div class="profile-facts">'+DB.ui.performanceStatusFields.map(key=>statusGauge(key,p[key])).join('')+recentFormStatus()+'</div><p class="small muted">'+h(t('coachReportText',{competition:abilityLabel(Core.competition(DB,p,p.club,state)),chance:n(Core.selection(DB,state)*DB.rules.scale)}))+'</p></section>'+careerPreparationCard()+'</div><section class="card recent-fixtures"><div class="section-head"><h2>'+h(t('recentMatches'))+'</h2>'+btn(t('viewAll'),'tab','data-tab="fixtures"','subtle small')+'</div>'+(recent.length?'<div class="rework-grid"><div><div class="sparkline" role="img" aria-label="'+h(recent.map(r=>r.date+': '+n(r.stats.rating,1)).join(', '))+'">'+recent.map(r=>'<div class="sparkbar" style="height:'+r.stats.rating/DB.engine.rating.max*DB.rules.scale+'%"><span>'+n(r.stats.rating,1)+'</span></div>').join('')+'</div><p class="small muted">'+h(t('ratingNote'))+'</p></div><div class="list-pane">'+historyItems(myHistory().slice(-DB.ui.dashboardRecentGames))+'</div></div>':'<p class="empty">'+h(t('noStats'))+'</p>')+'</section>';}
 function trainingHistoryView(){const program=state.trainingProgram,cfg=DB.trainingProgramRules;return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='training-history').label)+'</h1><p>'+h(t('trainingHistoryHint'))+'</p></div>'+`<div class="rework-grid"><section class="card"><div class="section-head"><h2>${h(t('trainingWeeklyReview'))}</h2></div><div class="rework-list">${program.history.length?program.history.slice().reverse().map(review=>`<article class="coach-review"><div class="row between wrap"><time class="small num">${h(review.date)}</time>${badge(t('trainingDays')+' '+n(review.workDays)+' · '+t('trainingRecoveryDays')+' '+n(review.recoveryDays))}</div><p class="small muted">${h(t('trainingReviewPlan'))} · ${h(trainingPlanText(review.plan))}</p><p>${h(t(review.fatigue>=cfg.heavyFatigue?'trainingReviewTired':review.workDays<=review.recoveryDays?'trainingReviewRecover':'trainingReviewGood'))}</p><div class="review-markers">${DB.attributes.map(a=>`<span>${h(a.name)} <strong class="${review.changes[a.id]>0?'positive':review.changes[a.id]<0?'negative':'muted'}">${review.changes[a.id]>0?'+':review.changes[a.id]<0?'−':'—'}</strong></span>`).join('')}</div></article>`).join(''):`<p class="empty">${h(t('trainingNoReviews'))}</p>`}</div></section><section class="card"><div class="section-head"><h2>${h(t('trainingSessionHistory'))}</h2></div><div class="rework-list">${program.sessions.length?program.sessions.slice().reverse().map(day=>`<div class="training-history-row"><time class="small num">${h(day.date)}</time><b>${h(cfg.sessionTypes.find(t=>t.id===day.kind).name)}</b><span class="small muted">${h([...DB.training,...cfg.secondaryOptions].find(t=>t.id===day.focus)?.name||t('trainingFocusNone'))}</span></div>`).join(''):`<p class="empty">${h(t('trainingNoSessions'))}</p>`}</div></section></div>`;}
