@@ -109,7 +109,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.6.0",
+    "version": "20.6.1",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -40132,7 +40132,10 @@ function simulateWorldFixture(db,f,s,continuation=null){
     old.matchIntentRules??=clone(db.matchIntentRules);old.nationalRules??=clone(db.nationalRules);old.nationalRules.release??=clone(db.nationalRules.release);old.captainRules??=clone(db.captainRules);for(const key of ['registrationDelayDays','registrationRevision'])old.captainRules[key]??=db.captainRules[key];old.careerDecisionRules??=clone(db.careerDecisionRules);for(const key of ['personalityWeight','recentTemplateCount'])old.careerDecisionRules[key]??=db.careerDecisionRules[key];old.careerDecisions??=clone(db.careerDecisions);for(const template of db.careerDecisions)if(template.personality&&!old.careerDecisions.some(t=>t.id===template.id))old.careerDecisions.push(clone(template));
     for(const group of ['nationalTeams','nationalCompetitions','nationalRules'])old[group]??=clone(db[group]);
     // Apply changed bundled coefficients to saved databases; retain custom values.
-    for(const [path,values] of Object.entries(db.balanceRules.previous)){const keys=path.split('.'),source=keys.reduce((p,key)=>p?.[key],db),target=keys.reduce((p,key)=>p?.[key],old);for(const [key,value] of Object.entries(values))if(target?.[key]===value)target[key]=source[key];}old.balanceRules??=clone(db.balanceRules);
+    for(const [path,values] of Object.entries(db.balanceRules.previous)){const keys=path.split('.'),source=keys.reduce((p,key)=>p?.[key],db),target=keys.reduce((p,key)=>p?.[key],old);for(const [key,value] of Object.entries(values))if(target?.[key]===value)target[key]=source[key];}
+    // Migration metadata also gains fields between releases of the same save schema.
+    // Fill those fields before validation, preserving edited coefficients and markers.
+    old.balanceRules=mergeDatabase(db.balanceRules,old.balanceRules);old.balanceRules.revision=Math.max(db.balanceRules.revision,old.balanceRules.revision);
     for(const group of ['clubNegotiationRules','matchImportanceRules','careerTraitRules','captainRules'])old[group]??=clone(db[group]);for(const group of ['eventTemplates','eventSymbols'])for(const [key,value] of Object.entries(db.matchBroadcast[group]))old.matchBroadcast[group][key]??=clone(value);for(const field of ['careerTraits'])if(!old.dynamics.matchIdentityFields.includes(field))old.dynamics.matchIdentityFields.push(field);
     for(const group of ['agentSystem','trainingProgramRules'])old[group]??=clone(db[group]);for(const agent of old.agents)agent.skills??=clone(db.agents.find(a=>a.id===agent.id)?.skills||db.agents[0].skills);
     old.seasonReviewRules??=clone(db.seasonReviewRules);upgradeCareerPolishDatabase(db,old);old.continentalRules??=clone(db.continentalRules);old.offerFitRules??=clone(db.offerFitRules);old.awardTypes??=clone(db.awardTypes);old.awardRules??=clone(db.awardRules);
