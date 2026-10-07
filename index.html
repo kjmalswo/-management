@@ -386,6 +386,37 @@ button.info-link:active:enabled{background:var(--selection);box-shadow:none;tran
   input[type=range]{appearance:auto;-webkit-appearance:auto}
   select:not([multiple]):not([size]){appearance:auto;-webkit-appearance:auto;background-image:none}
 }
+/* Player-only style build: native radio groups retain keyboard and screen-reader behavior. */
+.play-style-builder{margin-bottom:18px}
+.play-style-equipped{display:grid;gap:8px;margin:16px 0}
+.play-style-summary{gap:7px}
+.play-style-editor{background:var(--surface-well)}
+.play-style-editor>summary{color:var(--accent-ink)}
+.play-style-slots{display:grid;gap:20px;margin:18px 0}
+.play-style-slot{padding:0;margin:0;border:0;min-width:0}
+.play-style-slot legend{font-size:14px;font-weight:600;color:var(--ink)}
+.play-style-slot>p{margin:5px 0 12px}
+.play-style-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:8px}
+.play-style-option{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--line);border-radius:var(--radius-group);background:var(--surface-group);color:var(--muted);cursor:pointer;transition:background-color .14s ease,border-color .14s ease}
+.play-style-option:hover{background:var(--surface-hover)}
+.play-style-option.selected{border-color:var(--accent);background:var(--selection);box-shadow:inset 0 0 0 1px var(--accent)}
+.play-style-option.unavailable{opacity:.5;cursor:not-allowed}
+.play-style-option:focus-within{outline:3px solid var(--focus-ring);outline-offset:2px}
+.play-style-option input[type=radio]{width:16px;height:16px;margin:2px 0 0;padding:0;appearance:auto;-webkit-appearance:auto;box-shadow:none;accent-color:var(--accent);flex-shrink:0;border:0;background:transparent}
+.play-style-option-body{display:grid;gap:7px;min-width:0;line-height:1.6;font-weight:400}
+.play-style-option-body strong{color:var(--ink);font-size:12px;font-weight:600}
+.play-style-option-body .interface-symbol{color:var(--accent-ink);width:16px;height:16px}
+.play-style-preview{margin:18px 0 12px;padding:14px;border:1px solid var(--line);border-radius:var(--radius-group);background:var(--surface-group)}
+.play-style-preview h3{margin-bottom:10px}
+.play-style-effects{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px 18px;font-size:11px}
+.play-style-effects>div{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.play-style-effects span{color:var(--muted)}
+.play-style-effects strong{color:var(--ink);font-weight:600}
+.play-style-editor form>p{margin:12px 0}
+.play-style-match{margin-bottom:16px}
+.match-intents .play-style-equipped{border-top:1px solid var(--line);padding-top:14px}
+@media(prefers-reduced-motion:reduce){.play-style-option{transition:none}}
+
 </style>
 </head>
 <body>
@@ -398,7 +429,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.8.9",
+    "version": "20.8.10",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -22052,7 +22083,34 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "trainingInjurySubject": "훈련 중 부상",
       "trainingInjuryBody": "{date} · {intensity} 강도 훈련 중 {injury}이 발생했습니다. 회복에 {days}일이 필요합니다. 재활 중에는 훈련 중 부상 추첨을 하지 않습니다.",
       "uiSizeApply": "적용하기",
-      "uiSizeApplied": "인터페이스 크기를 적용했습니다."
+      "uiSizeApplied": "인터페이스 크기를 적용했습니다.",
+      "buildTitle": "플레이 스타일 빌드",
+      "buildEyebrow": "나만의 경기 플레이",
+      "buildPlayerOnly": "플레이어 전용",
+      "buildHint": "주도 스타일과 두 가지 행동 습관을 조합하세요. 비용이나 잠금 없이 자유롭게 바꾸고 다음에 계산하는 경기부터 적용합니다.",
+      "buildEquipped": "현재 적용 중",
+      "buildEdit": "빌드 편집 · 세 슬롯 조합",
+      "buildPreview": "조합 효과 미리보기",
+      "buildApply": "빌드 적용",
+      "buildReset": "균형 빌드로 선택",
+      "buildNeutral": "평소 포지션과 전술에 따른 균형 플레이를 유지합니다.",
+      "buildRulesHint": "관여 수치는 포지션·팀 전술 안에서의 행동 우선순위이며 실제 기록 증가율을 뜻하지 않습니다. 경기 중 실행 효율과 체력 소모에만 적용하며, 기본 능력치·출전 자격·훈련 성장을 변경하지 않습니다. 라커룸의 플레이 방향과 함께 적용됩니다.",
+      "buildDraft": "선택한 조합을 적용하면 다음 경기부터 사용합니다.",
+      "buildInvalid": "각 슬롯에서 현재 포지션에 맞는 선택을 하나씩 고르세요. 진행 중인 경기는 빌드를 바꿀 수 없습니다.",
+      "buildSaved": "플레이 스타일 빌드를 적용했습니다.",
+      "buildPositionRequired": "{positions} 포지션 전용",
+      "buildExecution": "경기 중 {name} 효율",
+      "buildLoad": "경기 체력 소모",
+      "buildLongPass": "긴 패스 비중",
+      "buildPassAccuracy": "패스 정확도 보정",
+      "buildPercentagePoint": "%p",
+      "buildActionshotWeight": "슈팅 관여",
+      "buildActionpassWeight": "패스·찬스 연결 관여",
+      "buildActiondribbleWeight": "돌파 관여",
+      "buildActiondefenseWeight": "수비 관여",
+      "buildActioncrossWeight": "크로스 관여",
+      "buildMatchTitle": "이 경기의 플레이 스타일",
+      "buildRecordHint": "경기를 계산할 때 적용한 빌드입니다. 이후 빌드를 변경해도 이 경기의 결과와 선택 기록은 유지됩니다."
     },
     "statFields": [
       {
@@ -35753,7 +35811,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       },
       {
         "id": "bold",
-        "name": "과감한 판단을 시도한다",
+        "name": "과감한 플레이를 자주 시도한다",
         "description": "돌파와 도전적인 패스를 적극 시도합니다. 어려운 패스가 늘어 공을 잃을 가능성도 높아집니다.",
         "opportunity": {
           "shotWeight": 1.15,
@@ -42000,6 +42058,345 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "labelGap": 10,
       "pointRadius": 4
     }
+  },
+  "playStyleRules": {
+    "revision": 1,
+    "actions": [
+      "shotWeight",
+      "passWeight",
+      "dribbleWeight",
+      "defenseWeight",
+      "crossWeight"
+    ],
+    "limits": {
+      "opportunityMin": 0.6,
+      "opportunityMax": 1.7,
+      "executionMin": 0.94,
+      "executionMax": 1.06,
+      "loadMin": 0.95,
+      "loadMax": 1.15,
+      "longPassShareMin": -0.15,
+      "longPassShareMax": 0.2,
+      "passAccuracyDeltaMin": -0.045,
+      "passAccuracyDeltaMax": 0.025
+    },
+    "previousIntentNames": {
+      "bold": "과감한 판단을 시도한다"
+    },
+    "slots": [
+      {
+        "id": "identity",
+        "name": "주도 스타일",
+        "description": "내 플레이를 이끌 중심 성향을 하나 고릅니다.",
+        "default": "balanced",
+        "options": [
+          {
+            "id": "balanced",
+            "name": "균형 유지",
+            "description": "이 슬롯에서 별도의 행동 편향이나 체력 부담을 더하지 않습니다.",
+            "icon": "overview",
+            "positions": [],
+            "opportunity": {},
+            "execution": {},
+            "load": 1,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "finisher",
+            "name": "박스 피니셔",
+            "description": "슈팅 위치를 더 적극적으로 찾고 마무리에 집중합니다. 패스·수비 관여가 줄고 체력 부담이 늘어납니다.",
+            "icon": "football",
+            "positions": [],
+            "opportunity": {
+              "shotWeight": 1.3,
+              "passWeight": 0.9,
+              "defenseWeight": 0.85
+            },
+            "execution": {
+              "shooting": 1.02,
+              "passing": 0.99
+            },
+            "load": 1.03,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "creator",
+            "name": "찬스 메이커",
+            "description": "패스와 찬스 연결에 관여합니다. 직접 마무리 비중이 줄고 도전적인 패스의 실패 부담이 생깁니다.",
+            "icon": "communication",
+            "positions": [],
+            "opportunity": {
+              "passWeight": 1.3,
+              "shotWeight": 0.8
+            },
+            "execution": {
+              "passing": 1.02,
+              "shooting": 0.99
+            },
+            "load": 1.015,
+            "longPassShare": 0.04,
+            "passAccuracyDelta": -0.008
+          },
+          {
+            "id": "carrier",
+            "name": "볼 캐리어",
+            "description": "공을 운반하며 돌파를 자주 시도합니다. 연계·수비 비중이 줄고 체력 소모가 커집니다.",
+            "icon": "player",
+            "positions": [],
+            "opportunity": {
+              "dribbleWeight": 1.35,
+              "passWeight": 0.9,
+              "defenseWeight": 0.9
+            },
+            "execution": {
+              "dribbling": 1.02,
+              "physical": 0.99
+            },
+            "load": 1.04,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "winner",
+            "name": "볼 위너",
+            "description": "수비 경합과 차단에 더 많이 참여합니다. 슈팅·돌파 비중을 낮추고 수비에 체력을 씁니다.",
+            "icon": "club",
+            "positions": [],
+            "opportunity": {
+              "defenseWeight": 1.35,
+              "shotWeight": 0.8,
+              "dribbleWeight": 0.85
+            },
+            "execution": {
+              "defending": 1.025,
+              "passing": 0.99
+            },
+            "load": 1.035,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "controller",
+            "name": "템포 컨트롤러",
+            "description": "안전한 패스로 흐름을 이어갑니다. 패스 안정성과 체력 효율을 얻는 대신 슈팅·돌파·긴 패스를 줄입니다.",
+            "icon": "overview",
+            "positions": [],
+            "opportunity": {
+              "passWeight": 1.25,
+              "shotWeight": 0.85,
+              "dribbleWeight": 0.85
+            },
+            "execution": {
+              "passing": 1.01
+            },
+            "load": 0.98,
+            "longPassShare": -0.04,
+            "passAccuracyDelta": 0.012
+          },
+          {
+            "id": "sweeper",
+            "name": "스위퍼 키퍼",
+            "description": "골키퍼의 패스 연계와 기동성을 우선합니다. 선방에 사용하는 수비 실행 효율은 조금 낮아집니다.",
+            "icon": "training",
+            "positions": [
+              "GK"
+            ],
+            "opportunity": {
+              "passWeight": 1.2,
+              "defenseWeight": 1.1
+            },
+            "execution": {
+              "passing": 1.02,
+              "speed": 1.02,
+              "defending": 0.99
+            },
+            "load": 1.02,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          }
+        ]
+      },
+      {
+        "id": "onBall",
+        "name": "공을 가졌을 때",
+        "description": "볼을 소유했을 때 반복할 행동 습관을 하나 더합니다.",
+        "default": "balanced",
+        "options": [
+          {
+            "id": "balanced",
+            "name": "균형 유지",
+            "description": "이 슬롯에서 별도의 행동 편향이나 체력 부담을 더하지 않습니다.",
+            "icon": "overview",
+            "positions": [],
+            "opportunity": {},
+            "execution": {},
+            "load": 1,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "one-touch",
+            "name": "원터치 연결",
+            "description": "짧고 빠른 패스 연결을 선호합니다. 패스 안정성은 높이고 돌파와 긴 패스 비중은 낮춥니다.",
+            "icon": "communication",
+            "positions": [],
+            "opportunity": {
+              "passWeight": 1.15,
+              "dribbleWeight": 0.85
+            },
+            "execution": {
+              "passing": 1.015
+            },
+            "load": 1,
+            "longPassShare": -0.06,
+            "passAccuracyDelta": 0.008
+          },
+          {
+            "id": "vertical",
+            "name": "전진 패스",
+            "description": "긴 패스와 전진 연결을 더 자주 노립니다. 어려운 패스가 늘어 정확도는 낮아집니다.",
+            "icon": "performance",
+            "positions": [],
+            "opportunity": {
+              "passWeight": 1.1,
+              "shotWeight": 1.05
+            },
+            "execution": {},
+            "load": 1,
+            "longPassShare": 0.12,
+            "passAccuracyDelta": -0.02
+          },
+          {
+            "id": "carry-first",
+            "name": "돌파 우선",
+            "description": "패스보다 직접 돌파를 먼저 찾습니다. 드리블 실행 효율과 관여를 높이는 대신 연계와 체력을 소모합니다.",
+            "icon": "player",
+            "positions": [],
+            "opportunity": {
+              "dribbleWeight": 1.22,
+              "passWeight": 0.88
+            },
+            "execution": {
+              "dribbling": 1.015
+            },
+            "load": 1.025,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "wide",
+            "name": "측면 공급",
+            "description": "크로스와 측면 공급에 더 적극적으로 관여합니다. 직접 슈팅을 줄이고 체력 부담이 조금 늘어납니다.",
+            "icon": "football",
+            "positions": [],
+            "opportunity": {
+              "crossWeight": 1.4,
+              "shotWeight": 0.92
+            },
+            "execution": {
+              "passing": 1.012
+            },
+            "load": 1.015,
+            "longPassShare": 0.04,
+            "passAccuracyDelta": 0
+          }
+        ]
+      },
+      {
+        "id": "offBall",
+        "name": "공이 없을 때",
+        "description": "공이 없을 때 먼저 취할 움직임과 경합 습관을 고릅니다.",
+        "default": "balanced",
+        "options": [
+          {
+            "id": "balanced",
+            "name": "균형 유지",
+            "description": "이 슬롯에서 별도의 행동 편향이나 체력 부담을 더하지 않습니다.",
+            "icon": "overview",
+            "positions": [],
+            "opportunity": {},
+            "execution": {},
+            "load": 1,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "press",
+            "name": "압박 추격",
+            "description": "수비 상황에 자주 참여하고 적극적으로 압박합니다. 마무리 비중·기동 효율을 조금 낮추고 체력 소모가 커집니다.",
+            "icon": "training",
+            "positions": [],
+            "opportunity": {
+              "defenseWeight": 1.25,
+              "shotWeight": 0.94
+            },
+            "execution": {
+              "defending": 1.015,
+              "speed": 0.99
+            },
+            "load": 1.05,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "run",
+            "name": "공간 침투",
+            "description": "슈팅 위치와 돌파 연결을 위한 기동성을 우선합니다. 연계 비중·몸싸움 효율을 조금 줄이고 체력을 더 씁니다.",
+            "icon": "performance",
+            "positions": [],
+            "opportunity": {
+              "shotWeight": 1.18,
+              "dribbleWeight": 1.08,
+              "passWeight": 0.92
+            },
+            "execution": {
+              "speed": 1.015,
+              "physical": 0.99
+            },
+            "load": 1.04,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "cover",
+            "name": "수비 커버",
+            "description": "수비 경합과 차단에 집중합니다. 직접 슈팅과 돌파를 줄이고 수비 역할에 체력을 배분합니다.",
+            "icon": "club",
+            "positions": [],
+            "opportunity": {
+              "defenseWeight": 1.2,
+              "shotWeight": 0.86,
+              "dribbleWeight": 0.93
+            },
+            "execution": {
+              "defending": 1.02
+            },
+            "load": 1.015,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          },
+          {
+            "id": "duels",
+            "name": "경합 집중",
+            "description": "몸싸움과 수비 경합의 효율을 높입니다. 기동 효율은 조금 낮아지고 체력 부담이 늘어납니다.",
+            "icon": "player",
+            "positions": [],
+            "opportunity": {
+              "defenseWeight": 1.12
+            },
+            "execution": {
+              "physical": 1.02,
+              "speed": 0.99
+            },
+            "load": 1.025,
+            "longPassShare": 0,
+            "passAccuracyDelta": 0
+          }
+        ]
+      }
+    ]
   }
 }
 </script>
@@ -42551,7 +42948,7 @@ const FootballCore = (() => {
     state=strategicMatchState(db,state,fixture);
     const e=db.engine,r=db.rules,idx=indexes(db,state),rng=random(hash(`${state?.seed||db.meta.seed}:${fixture.id}`));
     let duration=r.matchMinutes+integer(rng,r.stoppageMin,r.stoppageMax);const regulationDuration=duration;
-    const own=state&&!state.player.freeAgent?[fixture.home,fixture.away].indexOf(state.player.club):-1;
+    const own=state&&!state.player.freeAgent?[fixture.home,fixture.away].indexOf(state.player.club):-1,style=own>=0?playStyleMatchEffects(db,state,fixture):null;
     let appearance='unused',entry=duration+1,exit=duration;
     if(own>=0&&selection(db,state)>0){if(rng()<selection(db,state)){appearance='starter';entry=1;exit=rng()<(state.player.position==='GK'?e.selection.goalkeeperFullMatchChance:e.selection.fullMatchChance)?duration:integer(rng,e.selection.offMin,e.selection.offMax);}else if(state.player.position!=='GK'&&rng()<e.selection.subChance){appearance='sub';entry=duration-integer(rng,e.selection.subMin,e.selection.subMax)+1;}}
     const setup=prepareMatch(db,fixture,state,rng,duration,own,appearance,entry,exit),{clubs,teams,plans,preMatch}=setup;
@@ -42582,9 +42979,9 @@ const FootballCore = (() => {
     };
 
     const add = (side,person,key,n=1) => { person.match[key]+=n; if(Object.hasOwn(teams[side].stats,key))teams[side].stats[key]+=n; };
-    const choose = (side,minute,type,omit=null) => { let list=active(side,minute).filter(p=>p.id!==omit);return weighted(rng,list,p=>(idx.positions[p.position][type]||0)*Math.pow(statSkill(p,db.dynamics.actionAttributes[type])/db.rules.scale,db.dynamics.actorSkillPower)*(traitEffects(db,p.id==='player'?state.player:p).opportunity??1)*matchIntentOpportunity(db,state,fixture,p,type)*strategyOpportunity(db,state,p,type)); };
+    const choose = (side,minute,type,omit=null,detail=null) => { let list=active(side,minute).filter(p=>p.id!==omit);return weighted(rng,list,p=>(idx.positions[p.position][type]||0)*Math.pow(statSkill(p,db.dynamics.actionAttributes[type])/db.rules.scale,db.dynamics.actorSkillPower)*(traitEffects(db,p.id==='player'?state.player:p).opportunity??1)*matchIntentOpportunity(db,state,fixture,p,type)*playStyleOpportunity(style,p,detail||type)*strategyOpportunity(db,state,p,type)); };
     let minuteSkills=new WeakMap();
-    const statSkill = (person,key) => {let cached=minuteSkills.get(person);if(!cached){cached=new Map();minuteSkills.set(person,cached);}if(cached.has(key))return cached.get(key);const team=teams.find(t=>t.club===person.club),captain=team?.players.find(p=>p.id===team.captainId),subject=captain?.id==='player'?state.player:captain,value=effective(db,person,key,state,person.match.minutes,fixture).skill*(subject?traitEffects(db,subject).teamwork??1:1);cached.set(key,value);return value;};
+    const statSkill = (person,key) => {let cached=minuteSkills.get(person);if(!cached){cached=new Map();minuteSkills.set(person,cached);}if(cached.has(key))return cached.get(key);const team=teams.find(t=>t.club===person.club),captain=team?.players.find(p=>p.id===team.captainId),subject=captain?.id==='player'?state.player:captain,value=effective(db,person,key,state,person.match.minutes,fixture,style).skill*(subject?traitEffects(db,subject).teamwork??1:1);cached.set(key,value);return value;};
     for(let minute=1;minute<=duration;minute++){
       minuteSkills=new WeakMap();
       strategyLive(db,state,teams,minute,events);
@@ -42597,11 +42994,11 @@ const FootballCore = (() => {
       teams[attack].stats.possessionMinutes++;
       const attempts=Math.max(1,Math.round(e.passing.attemptsPerMinute*range(rng,1-e.passing.paceVariation,1+e.passing.paceVariation)*managerTactic(db,state,clubs[attack].id).pace));
       for(let pass=0;pass<attempts;pass++){
-        const passer=choose(attack,minute,'passWeight'),intent=passer.id==='player'?matchIntent(db,state,fixture):null,isLong=rng()<clamp(e.passing.longShare+(intent?.longPassShare||0),0,1);
-        const accuracy=clamp(e.passing.baseAccuracy+(statSkill(passer,'passing')-clubs[attack].quality)*e.passing.qualityWeight+(clubs[attack].quality-clubs[defense].quality)*e.passing.pressureWeight-(isLong?e.passing.longAccuracyPenalty:0)+(intent?.passAccuracyDelta||0),e.passing.minimum,e.passing.maximum);
+        const passer=choose(attack,minute,'passWeight'),intent=passer.id==='player'?matchIntent(db,state,fixture):null,isLong=rng()<clamp(e.passing.longShare+(intent?.longPassShare||0)+(passer.id==='player'?(style?.longPassShare||0):0),0,1);
+        const accuracy=clamp(e.passing.baseAccuracy+(statSkill(passer,'passing')-clubs[attack].quality)*e.passing.qualityWeight+(clubs[attack].quality-clubs[defense].quality)*e.passing.pressureWeight-(isLong?e.passing.longAccuracyPenalty:0)+(intent?.passAccuracyDelta||0)+(passer.id==='player'?(style?.passAccuracyDelta||0):0),e.passing.minimum,e.passing.maximum);
         add(attack,passer,'passes');add(attack,passer,'touches');if(isLong)add(attack,passer,'longPasses');if(rng()<accuracy){add(attack,passer,'completed');if(isLong)add(attack,passer,'longCompleted');}
       }
-      if(rng()<e.passing.crossChance){const crosser=choose(attack,minute,'dribbleWeight');add(attack,crosser,'crosses');add(attack,crosser,'touches');if(rng()<clamp(e.passing.crossAccuracy*Math.pow(statSkill(crosser,'passing')/clubs[attack].quality,db.dynamics.crossPower),0,1))add(attack,crosser,'crossCompleted');}
+      if(rng()<e.passing.crossChance){const crosser=choose(attack,minute,'dribbleWeight',null,'crossWeight');add(attack,crosser,'crosses');add(attack,crosser,'touches');if(rng()<clamp(e.passing.crossAccuracy*Math.pow(statSkill(crosser,'passing')/clubs[attack].quality,db.dynamics.crossPower),0,1))add(attack,crosser,'crossCompleted');}
       if(rng()<e.defense.dribbleChance){const dribbler=choose(attack,minute,'dribbleWeight');add(attack,dribbler,'dribbles');add(attack,dribbler,'touches');const speedPenalty=Math.max(0,dribbler.height-idx.positions[dribbler.position].preferredHeight)*e.shot.speedPenaltyHeight;const chance=clamp(e.defense.dribbleBase+(statSkill(dribbler,'dribbling')+statSkill(dribbler,'speed')-clubs[defense].quality*2)*e.defense.dribbleSkillWeight-speedPenalty,e.defense.successMin,e.defense.successMax);if(rng()<chance)add(attack,dribbler,'dribblesWon');}
       if(rng()<e.defense.duelChance){const defender=choose(defense,minute,'defenseWeight'),attacker=choose(attack,minute,'shotWeight');const aerial=rng()<e.defense.aerialShare;const chance=clamp(e.defense.duelBase+(statSkill(defender,'physical')-statSkill(attacker,'physical'))*e.defense.duelSkillWeight+(aerial?(defender.height-attacker.height)*e.shot.bodyAerialWeight:(defender.weight-attacker.weight)*e.shot.physicalWeightDelta),e.defense.successMin,e.defense.successMax);add(defense,defender,'duels');add(attack,attacker,'duels');if(aerial){add(defense,defender,'aerials');add(attack,attacker,'aerials');}const winner=rng()<chance?defense:attack,person=winner===defense?defender:attacker;add(winner,person,'duelsWon');if(aerial)add(winner,person,'aerialsWon');}
       for(const [key,baseChance] of [['tackles',e.defense.tackleChance],['interceptions',e.defense.interceptionChance],['clearances',e.defense.clearanceChance]]){const defender=choose(defense,minute,'defenseWeight');const chance=clamp(baseChance*Math.pow(statSkill(defender,'defending')/clubs[defense].quality,db.dynamics.defenseEventPower),0,1);if(rng()<chance){add(defense,defender,key);if(key==='tackles'){const success=clamp(e.defense.tackleBase+(statSkill(defender,'defending')-clubs[attack].quality)*e.defense.tackleSkillWeight,e.defense.successMin,e.defense.successMax);if(rng()<success)add(defense,defender,'tacklesWon');}}}
@@ -42639,7 +43036,7 @@ const FootballCore = (() => {
     }
     const context=own>=0?matchContext(db,state,fixture,teams[own].players.find(p=>p.id==='player'),duration):null;
     if(own>=0){const person=teams[own].players.find(p=>p.id==='player');appearance=person.match.minutes?(person.starter?'starter':'sub'):'unused';}
-    return {context,preMatch,strategy:strategySummary(state),intent:matchIntent(db,state,fixture).id,duration,...(duration>regulationDuration?{extraTime:true,regulationDuration}:{}),home:teams[0],away:teams[1],events,appearance,player:own>=0?clone(teams[own].players.find(p=>p.id==='player').match):null};
+    return {context,preMatch,strategy:strategySummary(state),intent:matchIntent(db,state,fixture).id,...(style?{playStyle:clone(style)}:{}),duration,...(duration>regulationDuration?{extraTime:true,regulationDuration}:{}),home:teams[0],away:teams[1],events,appearance,player:own>=0?clone(teams[own].players.find(p=>p.id==='player').match):null};
   }
   const totalRounds = state => Math.max(...Object.values(state.fixtures).flat().map(f=>f.round))+1;
   const windowOpen = (db,state) => Boolean(activeWindow(db,state));
@@ -42695,7 +43092,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     }
     const training=db.training.find(t=>t.id===state.training),minutes=personal?.stats.minutes||0;
     if(minutes)grow(db,state,minutes,{...training,growth:0});adapt(db,state);
-    p.fitness=clamp(p.fitness-minutes*r.loadPerMinute*(db.matchIntentRules.options.find(option=>option.id===personal?.result.intent)?.load||1),0,r.scale);
+    p.fitness=clamp(p.fitness-minutes*r.loadPerMinute*(db.matchIntentRules.options.find(option=>option.id===personal?.result.intent)?.load||1)*(personal?.result.playStyle?.load??1),0,r.scale);
     for(const f of Object.values(state.fixtures).flat().filter(f=>f.date===state.date&&f.result))for(const clubId of [f.home,f.away])state.world.clubs[clubId].finance=clamp(state.world.clubs[clubId].finance+d.financeMatchIncome,d.financeMin,d.financeMax);state.round++;
     
     advanceContinental(db,state);advancePostseason(db,state);settleAwards(db,state);indexCache.delete(state.world);return personal;
@@ -42919,7 +43316,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   }
 
   function initializeSystems(db,s,legacy=false){
-    initializeEconomy(db,s);initializeCareerStories(db,s);initializeCompetitionStats(db,s);initializeAwards(db,s);s.continentalBrackets??={};initializePostseason(db,s);s.automaticOfferHistory??=Object.fromEntries(Object.entries(s.offerHistory||{}).map(([club,date])=>[club,{date}]));s.marketReview??=null;s.inbox||=[];s.inboxSerial??=0;s.deals||=[];s.dealSerial??=0;s.offerSerial??=0;s.agent||={id:db.agents[0].id,trust:db.agents[0].trust};s.agentContacts||={};s.agentInquiries||=[];s.offerHistory||={};s.scoutingCycle??=0;s.worldTickSerial??=0;s.pendingTransfer??=null;
+    initializePlayStyle(db,s);initializeEconomy(db,s);initializeCareerStories(db,s);initializeCompetitionStats(db,s);initializeAwards(db,s);s.continentalBrackets??={};initializePostseason(db,s);s.automaticOfferHistory??=Object.fromEntries(Object.entries(s.offerHistory||{}).map(([club,date])=>[club,{date}]));s.marketReview??=null;s.inbox||=[];s.inboxSerial??=0;s.deals||=[];s.dealSerial??=0;s.offerSerial??=0;s.agent||={id:db.agents[0].id,trust:db.agents[0].trust};s.agentContacts||={};s.agentInquiries||=[];s.offerHistory||={};s.scoutingCycle??=0;s.worldTickSerial??=0;s.pendingTransfer??=null;
     const p=s.player;p.development.practice??={since:s.date,last:{}};p.displayName??=p.name;p.injuryDays??=p.injury*db.calendarRules.injuryDaysPerWeek;p.freeAgent??=false;p.contract={...clone(db.dealDefaults),role:db.contractRoles.at(-1).id,position:p.position,agentCommissionPercent:db.agents[0].commission,...p.contract};
     if(!s.calendar)buildCalendar(db,s,legacy);initializeTrainingProgram(db,s);initializeAgentSystem(db,s);initializeCareerIdentity(db,s);initializeNations(db,s);initializeCaptainRegistration(db,s);initializeNpcMarket(db,s);
     for(const o of s.offers){o.id||=`offer:${++s.offerSerial}`;o.expiresDate||=dateAdd(s.date,db.dealRules.interestDays);}
@@ -43263,7 +43660,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
       used.add(person.id);return {...matchIdentity(db,person),naturalPosition:person.position,position};
     });
   }
-  function effective(db,person,key,state,minutes=0,fixture=null){
+  function effective(db,person,key,state,minutes=0,fixture=null,style=null){
     const d=db.dynamics,p=person.id==='player'?state.player:person,t=traits(db,p),personality=persona(db,p),weights=d.execution[key];
     const psychology=Object.entries(weights).reduce((v,[trait,weight])=>v*Math.pow(clamp(1+(t[trait]-d.traitCenter)/d.traitUnit*d.traitEffect,d.skillFactorMin,d.skillFactorMax),weight*d.psychologyPower),1);
     const earnedEffects=traitEffects(db,p);
@@ -43276,7 +43673,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const language=key==='passing'&&p.country!==db.leagues.find(l=>l.id===indexes(db,state).clubs[p.club]?.league)?.country?d.languageFloor+t.language*d.languageWeight:1;
     const focus=person.id==='player'&&state.careerStories?.focus?.attribute===key&&state.careerStories.focus.from<=state.date&&state.careerStories.focus.until>=state.date?db.careerDecisionRules.focusMultiplier:1;
     const category=fixtureImportance(db,state,fixture),big=category.level>=db.matchImportanceRules.bigMatchLevel,importanceFactor=clamp(1-(1-category.multiplier)*(1-(big?clamp(earnedEffects.pressureShield||0,0,1):0))+(big?(earnedEffects.bigMatchBoost||0)-(earnedEffects.bigMatchPenalty||0):0),db.careerTraitRules.factorMin,db.careerTraitRules.factorMax),traitFactor=clamp((earnedEffects.execution??1)*(earnedEffects[key]??1),db.careerTraitRules.factorMin,db.careerTraitRules.factorMax);
-    const skill=clamp(person.stats[key]*psychology*fatigue*pressure*mental*adaptation*role*creativity*language*focus*importanceFactor*traitFactor*(person.id==='player'?matchIntent(db,state,fixture).execution[key]??1:1)*strategyExecution(db,state,person,key)*interviewExecution(db,state,person,key),db.rules.abilityMin,db.rules.abilityMax);
+    const skill=clamp(person.stats[key]*psychology*fatigue*pressure*mental*adaptation*role*creativity*language*focus*importanceFactor*traitFactor*(person.id==='player'?matchIntent(db,state,fixture).execution[key]??1:1)*(person.id==='player'&&fixture?((style||playStyleMatchEffects(db,state,fixture)).execution[key]??1):1)*strategyExecution(db,state,person,key)*interviewExecution(db,state,person,key),db.rules.abilityMin,db.rules.abilityMax);
     return {skill,psychology,fatigue,pressure,adaptation,role,focus,importance:category.id,importanceFactor,traitFactor};
   }
   function matchContext(db,state,fixture,person,duration){const role=roleAssignment(db,state.player,state.player.club,state);return {position:person.position,roleFit:role.fit,manager:clone(state.world?.clubs[state.player.club]?.manager||{}),traits:clone(state.player.traits),adaptation:state.player.adaptation,fitness:state.player.fitness,actions:Object.fromEntries(db.attributes.map(a=>[a.id,effective(db,person,a.id,state,person.match.minutes,fixture)]))};}
@@ -43586,7 +43983,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     old.npcMarketRules??=clone(db.npcMarketRules);old.storageRules.maxAutosaveBytes??=db.storageRules.maxAutosaveBytes;for(const award of old.awardTypes||[])award.description??=db.awardTypes.find(a=>a.id===award.id)?.description;
     for(const key of ['strategyRules','opponentResponseRules','interviewRules','interviewQuestions','assessmentRules','starRules','marketContextRules','clubCultureRules','rivalryRules','leagueMetaRules'])old[key]??=clone(db[key]);
     old.terminologyRules??=clone(db.terminologyRules);for(const q of db.interviewQuestions)if(!old.interviewQuestions.some(x=>x.id===q.id))old.interviewQuestions.push(clone(q));for(const row of db.newsRules)if(!old.newsRules.some(x=>x.event===row.event))old.newsRules.push(clone(row));for(const event of db.social.personalEvents)if(!old.social.personalEvents.includes(event))old.social.personalEvents.push(event);
-    old.matchIntentRules??=clone(db.matchIntentRules);old.nationalRules??=clone(db.nationalRules);old.nationalRules.release??=clone(db.nationalRules.release);old.captainRules??=clone(db.captainRules);for(const key of ['registrationDelayDays','registrationRevision','minimumProfessionalism','minimumMental','minimumTrust','minimumDiscipline','blockedTraits','initialJoiningAge','initialTenureMaxDays'])old.captainRules[key]??=clone(db.captainRules[key]);old.careerDecisionRules??=clone(db.careerDecisionRules);for(const key of ['personalityWeight','recentTemplateCount'])old.careerDecisionRules[key]??=db.careerDecisionRules[key];old.careerDecisions??=clone(db.careerDecisions);upgradeCareerEventsDatabase(db,old);for(const template of db.careerDecisions)if(template.personality&&!old.careerDecisions.some(t=>t.id===template.id))old.careerDecisions.push(clone(template));
+    old.playStyleRules??=clone(db.playStyleRules);old.matchIntentRules??=clone(db.matchIntentRules);for(const [id,previous] of Object.entries(db.playStyleRules.previousIntentNames)){const option=old.matchIntentRules.options.find(option=>option.id===id);if(option?.name===previous)option.name=db.matchIntentRules.options.find(option=>option.id===id).name;}old.nationalRules??=clone(db.nationalRules);old.nationalRules.release??=clone(db.nationalRules.release);old.captainRules??=clone(db.captainRules);for(const key of ['registrationDelayDays','registrationRevision','minimumProfessionalism','minimumMental','minimumTrust','minimumDiscipline','blockedTraits','initialJoiningAge','initialTenureMaxDays'])old.captainRules[key]??=clone(db.captainRules[key]);old.careerDecisionRules??=clone(db.careerDecisionRules);for(const key of ['personalityWeight','recentTemplateCount'])old.careerDecisionRules[key]??=db.careerDecisionRules[key];old.careerDecisions??=clone(db.careerDecisions);upgradeCareerEventsDatabase(db,old);for(const template of db.careerDecisions)if(template.personality&&!old.careerDecisions.some(t=>t.id===template.id))old.careerDecisions.push(clone(template));
     for(const group of ['nationalTeams','nationalCompetitions','nationalRules'])old[group]??=clone(db[group]);
     // Apply changed bundled coefficients to saved databases; retain custom values.
     for(const [path,values] of Object.entries(db.balanceRules.previous)){const keys=path.split('.'),source=keys.reduce((p,key)=>p?.[key],db),target=keys.reduce((p,key)=>p?.[key],old);for(const [key,value] of Object.entries(values))if(target?.[key]===value)target[key]=source[key];}
@@ -43758,7 +44155,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
       t.stats??={};for(const side of ['home','away'])for(const p of result[side].players){if(!p.match.minutes)continue;const row=t.stats[p.id]??={id:p.id,name:p.name,team:f[side],apps:0,goals:0,assists:0,minutes:0};row.apps++;for(const key of ['goals','assists','minutes'])row[key]+=p.match[key];}
       const people=nationalPlayerIndex(s);for(const side of ['home','away'])for(const incident of result[side].injuries||[]){if(incident.id==='player'){if(!s.player.injury)applyInjury(db,s,s.player,db.dynamics.injuries.find(i=>i.id===incident.injury),random(hash(s.seed+':'+f.id+':injury')));}else{const npc=people.get(incident.id),injury=db.dynamics.injuries.find(i=>i.id===incident.injury);if(npc&&injury)npc.injury=injury.weeks;}}
       if(own){const stats=clone(result.player);personal={...clone(f),season:s.season,league:f.competition,club:s.nations.team,stats,appearance:result.appearance,result:clone(result),reactions:mediaReaction(db,ms,{...f,club:s.nations.team,stats,result})};personal.rolePerformance=rolePerformance(db,stats,result.context?.position||s.player.position);s.nations.history.push(personal);if(s.nations.suspension>0)s.nations.suspension--;s.nations.yellows+=stats.yellow;if(stats.red){s.nations.suspension=db.rules.redBanMatches;s.nations.yellows=Math.max(0,s.nations.yellows-stats.yellow);}else if(s.nations.yellows>=db.rules.yellowBanCount){s.nations.suspension=db.rules.redBanMatches;s.nations.yellows-=db.rules.yellowBanCount;}
-        s.nations.trust=clamp(s.nations.trust+(stats.minutes?(stats.rating-db.engine.selection.formCenter)*db.nationalRules.trustRatingWeight+db.nationalRules.trustMinutesBonus:0),0,db.rules.scale);s.player.reputation=clamp(s.player.reputation+(stats.minutes?(db.rules.reputationAppearance+stats.goals*db.rules.reputationGoal+stats.assists*db.rules.reputationAssist)*(personal.reactions?.context.exposure||1)*(personal.reactions?.context.quality||1):0),0,db.rules.scale);s.player.fitness=clamp(s.player.fitness-stats.minutes*db.rules.loadPerMinute*matchIntent(db,s,f).load,0,db.rules.scale);s.trainingProgram.fatigue=clamp(s.trainingProgram.fatigue+stats.minutes/db.rules.matchMinutes*db.trainingProgramRules.matchFatigue,0,db.rules.scale);if(stats.minutes)grow(db,s,stats.minutes,{...db.training.find(t=>t.id===s.training),growth:0});}
+        s.nations.trust=clamp(s.nations.trust+(stats.minutes?(stats.rating-db.engine.selection.formCenter)*db.nationalRules.trustRatingWeight+db.nationalRules.trustMinutesBonus:0),0,db.rules.scale);s.player.reputation=clamp(s.player.reputation+(stats.minutes?(db.rules.reputationAppearance+stats.goals*db.rules.reputationGoal+stats.assists*db.rules.reputationAssist)*(personal.reactions?.context.exposure||1)*(personal.reactions?.context.quality||1):0),0,db.rules.scale);s.player.fitness=clamp(s.player.fitness-stats.minutes*db.rules.loadPerMinute*matchIntent(db,s,f).load*(personal.result.playStyle?.load??1),0,db.rules.scale);s.trainingProgram.fatigue=clamp(s.trainingProgram.fatigue+stats.minutes/db.rules.matchMinutes*db.trainingProgramRules.matchFatigue,0,db.rules.scale);if(stats.minutes)grow(db,s,stats.minutes,{...db.training.find(t=>t.id===s.training),growth:0});}
       const keys=[...db.ui.teamFields.filter(f=>!f.derived).map(f=>f.id),...db.leaderboardRules.metrics,'goals','completed'];f.result={duration:result.duration,strategy:fixtureStrategy(result,f),...Object.fromEntries(['winner','penalties','extraTime','regulationDuration'].filter(k=>result[k]!==undefined).map(k=>[k,result[k]])),...Object.fromEntries(['home','away'].map(side=>[side,{club:f[side],stats:Object.fromEntries(keys.map(k=>[k,result[side].stats[k]]))}]))};
     }
     for(const t of Object.values(s.nations.tournaments))advanceNationalTournament(db,s,t);return personal;
@@ -43768,6 +44165,24 @@ function simulateWorldFixture(db,f,s,continuation=null){
   }
 
     function matchIntent(db,s,fixture){return db.matchIntentRules.options.find(option=>option.id===(s?.matchPlan&&fixture&&s.matchPlan.fixture===fixture.id?s.matchPlan.intent:db.matchIntentRules.default))||db.matchIntentRules.options.find(option=>option.id===db.matchIntentRules.default);}
+  function playStyleDefaults(db){return Object.fromEntries(db.playStyleRules.slots.map(slot=>[slot.id,slot.default]));}
+  function validPlayStyleBuild(db,build,position=null){
+    const slots=db.playStyleRules.slots;
+    return Boolean(build&&typeof build==='object'&&!Array.isArray(build)&&Object.keys(build).length===slots.length&&slots.every(slot=>typeof build[slot.id]==='string'&&slot.options.some(option=>option.id===build[slot.id]&&(!position||!option.positions.length||option.positions.includes(position)))));
+  }
+  function playStyleEffects(db,build,position=null){
+    const cfg=db.playStyleRules,limits=cfg.limits,selected=build||playStyleDefaults(db),out={build:clone(selected),choices:[],opportunity:Object.fromEntries(cfg.actions.map(key=>[key,1])),execution:Object.fromEntries(db.attributes.map(a=>[a.id,1])),load:1,longPassShare:0,passAccuracyDelta:0};
+    for(const slot of cfg.slots){const requested=slot.options.find(option=>option.id===selected[slot.id])||slot.options.find(option=>option.id===slot.default),active=!position||!requested.positions.length||requested.positions.includes(position),option=active?requested:slot.options.find(option=>option.id===slot.default);out.choices.push({slot:slot.id,id:requested.id,name:requested.name,active});for(const [key,value] of Object.entries(option.opportunity))out.opportunity[key]*=value;for(const [key,value] of Object.entries(option.execution))out.execution[key]*=value;out.load*=option.load;out.longPassShare+=option.longPassShare;out.passAccuracyDelta+=option.passAccuracyDelta;}
+    for(const key of cfg.actions)out.opportunity[key]=clamp(out.opportunity[key],limits.opportunityMin,limits.opportunityMax);
+    for(const {id} of db.attributes)out.execution[id]=clamp(out.execution[id],limits.executionMin,limits.executionMax);
+    for(const key of ['load','longPassShare','passAccuracyDelta'])out[key]=clamp(out[key],limits[key+'Min'],limits[key+'Max']);
+    return out;
+  }
+  function initializePlayStyle(db,s){s.player.playStyleBuild??=playStyleDefaults(db);}
+  function setPlayStyleBuild(db,s,build){if(s.matchPresentation||!validPlayStyleBuild(db,build,s.player.position))return false;s.player.playStyleBuild=clone(build);return true;}
+  function playStyleMatchEffects(db,s,fixture){return s?.matchPlan?.playStyle&&s.matchPlan.fixture===fixture?.id?s.matchPlan.playStyle:playStyleEffects(db,s?.player.playStyleBuild,s?.player.position);}
+  function playStyleOpportunity(style,person,key){return person.id==='player'?(style?.opportunity[key]??1):1;}
+
   function matchIntentOpportunity(db,s,fixture,person,type){return person.id==='player'?matchIntent(db,s,fixture).opportunity[type]??1:1;}
   function prepareNextMatch(db,s){
     if(s.matchPreparation)return s.matchPreparation.preview;
@@ -43778,7 +44193,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   }
   function commitPreparedMatch(db,s,intentId){
     const prepared=s.matchPreparation,option=db.matchIntentRules.options.find(option=>option.id===intentId);if(!prepared||!option||prepared.event!==nextCalendar(s)?.id||prepared.beforeDate!==s.date)return null;
-    const backup=clone(s);delete s.matchPreparation;delete s.matchPresentation;s.matchPlan={fixture:prepared.preview.id,intent:option.id};
+    const backup=clone(s);delete s.matchPreparation;delete s.matchPresentation;s.matchPlan={fixture:prepared.preview.id,intent:option.id,playStyle:playStyleEffects(db,s.player.playStyleBuild,s.player.position)};
     try{const progress=advance(db,s);if(progress?.report?.id!==prepared.preview.id)throw Error('matchPreparation.fixture');return progress.report;}
     catch(error){for(const key of Object.keys(s))delete s[key];Object.assign(s,backup);throw error;}
     finally{delete s.matchPlan;}
@@ -44067,7 +44482,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     for(const [key,value] of Object.entries(db.careerEventRules.previousIntervals))if(old.careerDecisionRules[key]===value)old.careerDecisionRules[key]=db.careerDecisionRules[key];
     for(const t of db.careerDecisions){const current=old.careerDecisions.find(x=>x.id===t.id);if(!current)old.careerDecisions.push(clone(t));else for(const key of ['topic','kind','requirements','weight','episode','success'])if(t[key]!==undefined)current[key]??=clone(t[key]);}
   }
-  return {trainingInjuryChance,trainingInjury,careerTraitFacts,careerTraitQualification,playerValueCheckpoints,trainingGrowthFactors,initializePlayerValueHistory,recordPlayerValue,retentionProposal,initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
+  return {playStyleDefaults,validPlayStyleBuild,playStyleEffects,setPlayStyleBuild,playStyleOpportunity,playStyleMatchEffects,trainingInjuryChance,trainingInjury,careerTraitFacts,careerTraitQualification,playerValueCheckpoints,trainingGrowthFactors,initializePlayerValueHistory,recordPlayerValue,retentionProposal,initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
 })();
 </script>
 <script id="game-ui">
@@ -44177,7 +44592,7 @@ function validateDB(db,career=null){
   validateNpcMarketDatabase(db);
   validateWorldContent(db);
   validateStrategyContent(db);
-  validateGameplayContent(db);
+  validateGameplayContent(db);validatePlayStyleContent(db);
   validateNationalContent(db);
   validateCareerContent(db);validateIdentityContent(db);
   if(!db||typeof db!=='object'||Array.isArray(db))throw Error('DB');
@@ -44419,7 +44834,7 @@ function validateSave(envelope){
   if(!db.contractRoles.some(r=>r.id===p.contract.role)||!db.positions.some(pos=>pos.id===p.contract.position))throw Error(t('invalidSave'));
   for(const f of db.dealFields.filter(f=>f.type==='number'||f.type==='money'))if(f.id!=='fee'&&f.id!=='years'&&!(f.id==='weekly'&&p.freeAgent)&&!finite(p.contract[f.id],f.type==='money'?0:f.min,f.type==='money'?Number.MAX_SAFE_INTEGER:f.max))throw Error(t('invalidSave'));
   if(s.matchPresentation){const presentation=s.matchPresentation,record=s.matchPreparation?.preview||Core.nationalRecords(s).find(r=>r.id===presentation.reportId);if(!record?.result.preMatch||!envelope.db.matchBroadcast.phaseIds.includes(presentation.phase)||!Number.isInteger(presentation.cursor)||presentation.cursor<0||presentation.cursor>record.result.events.length+envelope.db.matchBroadcast.systemEventCount||typeof presentation.paused!=='boolean'||(presentation.phase==='finished'&&presentation.cursor!==record.result.events.length+envelope.db.matchBroadcast.systemEventCount))throw Error('matchPresentation');for(const side of ['home','away'])if(record.result[side].players.filter(person=>person.starter).length!==envelope.db.matchBroadcast.teamSize)throw Error('startingXI');for(const side of ['home','away']){const team=record.result[side];if(!team.tactic||!envelope.db.tactics.some(t=>t.id===team.tactic.id)||team.players.some(person=>typeof person.starter!=='boolean'||!Number.isInteger(person.number)||person.number<envelope.db.profile.limits.numberMin||person.number>envelope.db.profile.limits.numberMax))throw Error('broadcastLineup');}if(!envelope.db.positions.some(pos=>pos.id===record.result.preMatch.position)||!record.result.preMatch.manager||!record.result.preMatch.tactic)throw Error('lockerRoom');}
-  validateWorldContextSave(db,s);validateStrategySave(db,s);validateGameplaySave(db,s);validateNationalSave(db,s);validateDevelopmentSave(db,s);validateNpcMarketSave(db,s);validateEconomySave(db,s);validateDB(envelope.db,s);return true;
+  validateWorldContextSave(db,s);validateStrategySave(db,s);validateGameplaySave(db,s);validatePlayStyleSave(db,s);validateNationalSave(db,s);validateDevelopmentSave(db,s);validateNpcMarketSave(db,s);validateEconomySave(db,s);validateDB(envelope.db,s);return true;
 }
 function validateEconomyContent(db,career=null){
  const r=db?.economyRules,base=DEFAULT_DB.economyRules,number=(v,min=0,max=Number.MAX_SAFE_INTEGER)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max,string=v=>typeof v==='string'&&v.trim().length>0;
@@ -44480,6 +44895,25 @@ function validateNationalSave(db,s){
   }
   if(new Set(ns.history.map(h=>h.id)).size!==ns.history.length)throw Error('nations.history');for(const h of ns.history){const f=fixtures.get(h.id);if(!f?.result||h.club!==ns.team||h.league!==f.competition||h.date!==f.date||!date(h.date)||h.date>s.date||!h.stats||!h.result||h.result.player?.minutes!==h.stats.minutes||h.result.appearance!==h.appearance||!['starter','sub','unused'].includes(h.appearance)||!Array.isArray(h.result.events)||db.ui.statFields.filter(f=>!f.derived).some(f=>!Number.isFinite(h.stats[f.id])||h.stats[f.id]<0))throw Error('nations.history');for(const side of ['home','away']){const team=h.result[side];if(!Array.isArray(team?.players)||team.stats.goals!==f.result[side].stats.goals)throw Error('nations.historyResult');for(const p of team.players)if(!p.match||!db.positions.some(pos=>pos.id===p.position)||db.ui.statFields.filter(f=>!f.derived).some(f=>!Number.isFinite(p.match[f.id])||p.match[f.id]<0))throw Error('nations.historyPlayer');for(const field of db.ui.statFields.filter(f=>!f.derived&&!['minutes','rating'].includes(f.id)))if(Math.abs(Core.sum(team.players.map(p=>p.match[field.id]))-(team.stats[field.id]||0))>Number.EPSILON*db.rules.scale*db.rules.scale)throw Error('nations.historyTotals');}if(h.result.events.some(e=>!teams.has(e.club)||!Number.isFinite(e.minute)||e.minute<1||e.minute>h.result.duration||!Object.hasOwn(db.ui.labels,e.type)))throw Error('nations.events');}
   if(new Set(ns.honours.map(h=>h.id)).size!==ns.honours.length||ns.honours.some(h=>!competitions.has(h.competition)||h.team!==ns.team||!date(h.date)||!Object.values(ns.tournaments).some(t=>t.competition===h.competition&&t.champion===h.team&&t.completed===h.date)))throw Error('nations.honours');
+}
+
+function validatePlayStyleContent(db){
+ const cfg=db.playStyleRules,limits=cfg?.limits,finite=(value,min,max)=>Number.isFinite(value)&&value>=min&&value<=max;
+ if(!cfg||cfg.revision!==1||!Array.isArray(cfg.slots)||!cfg.slots.length||new Set(cfg.slots.map(slot=>slot.id)).size!==cfg.slots.length||!Array.isArray(cfg.actions)||new Set(cfg.actions).size!==cfg.actions.length||cfg.actions.some(key=>!['shotWeight','passWeight','dribbleWeight','defenseWeight','crossWeight'].includes(key)))throw Error('playStyle.content');
+ for(const key of ['opportunity','execution','load'])if(!finite(limits?.[key+'Min'],.5,1)||!finite(limits?.[key+'Max'],1,2))throw Error('playStyle.limits');
+ for(const key of ['longPassShare','passAccuracyDelta'])if(!finite(limits?.[key+'Min'],-1,0)||!finite(limits?.[key+'Max'],0,1))throw Error('playStyle.limits');
+ for(const slot of cfg.slots){
+  if(!/^[a-zA-Z][a-zA-Z0-9-]*$/.test(slot.id)||typeof slot.name!=='string'||typeof slot.description!=='string'||!Array.isArray(slot.options)||!slot.options.length||new Set(slot.options.map(option=>option.id)).size!==slot.options.length||!slot.options.some(option=>option.id===slot.default))throw Error('playStyle.slot');
+  for(const option of slot.options)if(!/^[a-zA-Z][a-zA-Z0-9-]*$/.test(option.id)||typeof option.name!=='string'||typeof option.description!=='string'||!Object.hasOwn(db.ui.symbols,option.icon)||!Array.isArray(option.positions)||option.positions.some(id=>!db.positions.some(position=>position.id===id))||!option.opportunity||Object.entries(option.opportunity).some(([key,value])=>!cfg.actions.includes(key)||!finite(value,.5,2))||!option.execution||Object.entries(option.execution).some(([key,value])=>!db.attributes.some(a=>a.id===key)||!finite(value,.9,1.1))||!finite(option.load,.9,1.2)||!finite(option.longPassShare,-.2,.2)||!finite(option.passAccuracyDelta,-.1,.1))throw Error('playStyle.option');
+  const neutral=slot.options.find(option=>option.id===slot.default);if(neutral.positions.length||Object.values(neutral.opportunity).some(value=>value!==1)||Object.values(neutral.execution).some(value=>value!==1)||neutral.load!==1||neutral.longPassShare!==0||neutral.passAccuracyDelta!==0)throw Error('playStyle.default');
+ }
+}
+function validatePlayStyleSave(db,s){
+ if(!Core.validPlayStyleBuild(db,s.player.playStyleBuild))throw Error('playStyle.build');
+ for(const record of [...s.player.history,...Core.nationalRecords(s)]){const style=record.result?.playStyle;if(!style)continue;
+  const factor=value=>Number.isFinite(value)&&value>=.25&&value<=4,delta=value=>Number.isFinite(value)&&Math.abs(value)<=1;
+  if(!style.build||typeof style.build!=='object'||Object.values(style.build).some(value=>typeof value!=='string')||!Array.isArray(style.choices)||style.choices.some(choice=>typeof choice.slot!=='string'||typeof choice.id!=='string'||typeof choice.name!=='string'||typeof choice.active!=='boolean')||!style.opportunity||db.playStyleRules.actions.some(key=>!factor(style.opportunity[key]))||!style.execution||db.attributes.some(a=>!factor(style.execution[a.id]))||!factor(style.load)||!delta(style.longPassShare)||!delta(style.passAccuracyDelta))throw Error('playStyle.record');
+ }
 }
 
 function validateGameplayContent(db){
@@ -44834,8 +45268,26 @@ function baseTeam(){const club=currentClub(),p=state.player,league=idx().leagues
 function baseCareer(){const p=state.player,remaining=p.contract.expiresSeason-state.season;return `<div class="cols equal"><section class="card"><h2 style="margin-bottom:20px">${h(t('personalProfile'))}</h2><div class="hero-profile" style="margin-bottom:24px">${shirt(p.number,p.displayName||p.name)}<div><h1>${h(p.name)}</h1>${badge(`${p.position} · ${idx().positions[p.position].name}`)}</div></div><div class="detail-list">${detail(t('displayName'),p.displayName||p.name)}${detail(t('nationality'),DB.countries.find(c=>c.id===p.country).name)}${detail(t('age'),n(p.age))}${detail(t('height'),`${n(p.height)} cm`)}${detail(t('weight'),`${n(p.weight)} kg`)}${detail(t('foot'),DB.profile.feet.find(f=>f.id===p.foot).name)}${detail(t('preferredLeague'),wishName('league',p.preferredLeague))}${detail(t('dream'),wishName('club',p.dreamClub))}</div><div class="divider"></div><h2 style="margin-bottom:18px">${h(t('development'))}</h2><div class="detail-list">${DB.attributes.map(a=>`<div><div class="row between"><span class="small muted">${infoLabel(a.name)}</span><b class="num">${n(p.stats[a.id],DB.trainingRules.displayDigits)} ${trainingMarker(a.id)}</b></div>${progress(p.stats[a.id])}</div>`).join('')}</div><p class="small muted" style="margin-top:18px">${h(t('growthHint'))}</p></section><div class="stack"><section class="card"><h2 style="margin-bottom:20px">${h(t('contractLength'))}</h2><div class="detail-list"><div class="row between"><span>${h(t('currentClub'))}</span><b>${clubLink(currentClub().id)}</b></div>${detail(t('weeklyWage'),money(p.contract.weekly))}${detail(t('salaryAnnual'),money(p.contract.weekly*DB.rules.annualSalaryWeeks))}${detail(t('remaining'),t('years',{n:remaining}))}${detail(t('earned'),money(p.earned))}${detail(t('marketValue'),money(Core.marketValue(DB,p,state)))}</div><div class="divider"></div><p class="small muted" style="margin-bottom:14px">${h(t('renewHint'))}</p><button type="button" data-action="renew" ${remaining<=1?'':'disabled'}>${h(t('renew'))}</button></section><section class="card"><h2 style="margin-bottom:16px">${h(t('careerHistory'))}</h2>${p.career.slice().reverse().map(entry=>`<div class="history-item"><div>${badge(t(entry.type))}</div><div><b>${clubLink(entry.club)}</b><p>${h(entry.date)}</p></div><span class="small muted">${h(t('season',{n:entry.season}))}</span></div>`).join('')}</section></div></div>`;}
 function dbEditor(){openModal(`<h2 id="dialog-title">${h(t('dbTitle'))}</h2><p>${h(t('dbDescription'))}</p><textarea id="db-json" aria-label="${h(t('dbTitle'))}" spellcheck="false"></textarea><div id="db-error" class="form-error" role="status"></div><div class="dialog-actions">${btn(t('dbExport'),'db-export')}${btn(t('dbReset'),'db-reset')}${btn(t('cancel'),'close')}${btn(t('dbApply'),'db-apply','','primary')}</div>`);document.getElementById('db-json').value=JSON.stringify(DB,null,2);}
 function applyDB(value){try{validateDB(value,state);if(state){const trial=Core.clone(state);Core.ensureWorld(value,trial);Core.initializeNations(value,trial);validateSave({schema:value.meta.schema,db:value,state:trial});state=trial;}DB=value;try{localStorage.setItem(DEFAULT_DB.meta.dbStorageKey,JSON.stringify(DB));}catch{storageHealthy=false;}if(state)persist();else draft=null;closeModal();render();toast(t('dbApplied'));}catch(error){document.getElementById('db-error').textContent=t('dbInvalid',{error:error.message});}}
-document.addEventListener('input',event=>{if(event.target.closest('#profile-form'))updateDraft(event);if(['world-search','world-club-search'].includes(event.target.id)){if(event.isComposing)return;const id=event.target.id,value=event.target.value,caret=event.target.selectionStart;if(id==='world-search')worldQuery=value;else worldClubQuery=value;const scroll=window.scrollY;render();const input=document.getElementById(id);input.focus({preventScroll:true});input.setSelectionRange(caret,caret);window.scrollTo(0,scroll);}});
-document.addEventListener('compositionend',event=>{if(['world-search','world-club-search'].includes(event.target.id))event.target.dispatchEvent(new Event('input',{bubbles:true}));});
+document.addEventListener('input',event=>{if(event.target.closest('#profile-form'))updateDraft(event);});
+// Preserve the native input node throughout IME composition; update result regions only.
+const searchCompositions=new WeakSet();
+function careerSearchInput(input){return ['world-search','world-club-search','agent-club-search'].includes(input?.id);}
+function commitCareerSearch(input){
+ if(!careerSearchInput(input)||!input.isConnected)return;
+ const value=input.value;
+ if(input.id==='world-search'){if(worldQuery===value)return;worldQuery=value;refreshWorldSearchResults();}
+ else if(input.id==='world-club-search'){if(worldClubQuery===value)return;worldClubQuery=value;refreshWorldSearchResults();}
+ else{if(agentClubQuery===value)return;agentClubQuery=value;refreshAgentTargets();}
+}
+document.addEventListener('compositionstart',event=>{if(careerSearchInput(event.target))searchCompositions.add(event.target);});
+document.addEventListener('compositionend',event=>{if(!careerSearchInput(event.target))return;searchCompositions.delete(event.target);commitCareerSearch(event.target);});
+document.addEventListener('input',event=>{if(careerSearchInput(event.target)&&!event.isComposing&&!searchCompositions.has(event.target))commitCareerSearch(event.target);});
+function refreshWorldSearchResults(){
+ const content=document.querySelector('.content[data-screen="world"]');if(!content)return;
+ const template=document.createElement('template');template.innerHTML=world();
+ for(const attribute of ['data-world-search-rows','data-world-search-count'])for(const next of template.content.querySelectorAll('['+attribute+']')){const current=content.querySelector('['+attribute+'="'+next.getAttribute(attribute)+'"]');if(current)current.innerHTML=next.innerHTML;}
+}
+
 document.addEventListener('change',event=>{if(event.target.closest('#profile-form'))updateDraft(event);const route=event.target.dataset.startingRoute;if(route&&draft){draft.startingClubSelections??={};draft.startingClubSelections[route]=event.target.value;showContracts();document.querySelector('[data-starting-route="'+route+'"]')?.focus();}});
 document.addEventListener('submit',event=>{if(event.target.id!=='profile-form')return;event.preventDefault();updateDraft();if(!event.target.reportValidity())return;const valid=Core.overall(DB,draft.stats)>=DB.rules.initialOverallMin&&Core.overall(DB,draft.stats)<=DB.rules.initialOverallMax;if(!valid)return;if(!draft.name.trim()){document.getElementById('profile-error').textContent=t('invalidProfile');return;}draft.name=draft.name.trim();draft.displayName=String(draft.displayName||'').trim();creationStep='personality';renderOnboard();window.scrollTo({top:0});});
 document.addEventListener('click',async event=>{const button=event.target.closest('[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;if(storageLoading)return;if((matchLoading||calendarLoading||state?.matchPresentation)&&!action.startsWith('match-'))return;switch(action){
@@ -45006,7 +45458,7 @@ function playerValueHistoryCard(){
 }
 
 function career(){const p=state.player,c=p.contract;return pendingArrival()+`<div class="profile-grid"><section class="card"><div class="section-head"><div class="row">${shirt(p.number,p.displayName||p.name)}<div><h1>${h(p.name)}</h1><p class="small muted">${h(p.position)} · ${h(currentClub().name)}</p></div></div>${btn(t('recordSummary'),'tab','data-tab="statistics"','small')}</div>${playerStrengthsCard()}<div class="profile-facts">${detail(t('nationality'),DB.countries.find(x=>x.id===p.country).name)}${detail(t('age'),n(p.age))}${detail(t('height'),n(p.height)+' cm')}${detail(t('weight'),n(p.weight)+' kg')}${detail(t('foot'),DB.profile.feet.find(x=>x.id===p.foot).name)}${detail(t('displayName'),p.displayName||p.name)}</div><div class="divider"></div><h2>${h(t('development'))}</h2><div class="ability-grid">${DB.attributes.map(a=>`<div><div class="row between small"><span>${h(a.name)}</span><b>${abilityLabel(p.stats[a.id])} ${trainingMarker(a.id)}</b></div>${progress(p.stats[a.id])}</div>`).join('')}</div><p class="small muted">${h(t('growthHint'))}</p><details class="helper-details"><summary>${h(t('dream'))}</summary><div class="detail-list">${detail(t('preferredLeague'),wishName('league',p.preferredLeague))}${detail(t('dream'),wishName('club',p.dreamClub))}</div></details></section><div class="stack"><section class="card contract-summary"><div class="section-head"><h2>${h(t('contractLength'))}</h2>${p.freeAgent?badge(t('freeAgent')):btn(t('contractRenew'),'renew','','primary small')}</div><div class="profile-facts">${detail(t('weeklyWage'),money(c.weekly))}${detail(t('salaryAnnual'),money(c.weekly*DB.rules.annualSalaryWeeks))}${detail(t('remaining'),t('years',{n:c.expiresSeason-state.season}))}${detail(t('marketValue'),money(Core.marketValue(DB,p,state)))}${detail(t('starPower'),n(Core.starPower(DB,p,state),1))}${detail(t('contractPromise'),roleName(c.role))}${detail(t('contractPosition'),c.position)}</div><details class="helper-details"><summary>${h(t('contractDetails'))}</summary><div class="detail-list">${DB.dealFields.filter(f=>!['fee','weekly','years','role','position','upfrontPercent','installmentMonths','sellOnPercent','agentCommissionPercent','arrival'].includes(f.id)).map(f=>detail(f.name,f.type==='money'?money(c[f.id]):n(c[f.id]))).join('')}${detail(t('earned'),money(p.earned))}</div></details></section>${playerValueHistoryCard()}</div></div>`;}
-function report(record){const c=record.result.context,reactions=record.reactions;return strategyMatchCard(record)+roleMatchCard(record)+baseReport(record)+`<div class="cols equal" style="margin-top:20px"><section class="card"><h2>${h(t('fans'))}</h2><p class="reaction">${h(reactions?.fans||t('legacyReport'))}</p><div class="divider"></div><h2>${h(t('press'))}</h2><p class="reaction">${h(reactions?.press||t('legacyReport'))}</p></section><section class="card"><div class="section-head"><h2>${h(t('contextTitle'))}</h2>${c?badge(c.position):''}</div>${c?`<div class="detail-list">${detail(t('manager'),c.manager.name)}${detail(t('roleFit'),n(c.roleFit*DB.rules.scale,1)+'%')}${detail(t('fitness'),n(c.fitness,1))}${detail(t('adaptation'),n(c.adaptation,1))}</div><div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>${h(t('initialStats'))}</th><th>${h(t('quality'))}</th><th>${h(t('factorPsychology'))}</th><th>${h(t('factorFatigue'))}</th><th>${h(t('factorPressure'))}</th></tr></thead><tbody>${DB.attributes.map(a=>{const f=c.actions[a.id];return `<tr><td>${h(a.name)}</td><td class="num">${n(f.skill,1)}</td><td class="num">×${n(f.psychology,2)}</td><td class="num">×${n(f.fatigue,2)}</td><td class="num">×${n(f.pressure,2)}</td></tr>`;}).join('')}</tbody></table></div><p class="small muted" style="margin-top:14px">${h(t('contextHint'))}</p>`:`<p class="small muted">${h(t('legacyReport'))}</p>`}</section></div>`;}
+function report(record){const c=record.result.context,reactions=record.reactions;return playStyleReport(record)+strategyMatchCard(record)+roleMatchCard(record)+baseReport(record)+`<div class="cols equal" style="margin-top:20px"><section class="card"><h2>${h(t('fans'))}</h2><p class="reaction">${h(reactions?.fans||t('legacyReport'))}</p><div class="divider"></div><h2>${h(t('press'))}</h2><p class="reaction">${h(reactions?.press||t('legacyReport'))}</p></section><section class="card"><div class="section-head"><h2>${h(t('contextTitle'))}</h2>${c?badge(c.position):''}</div>${c?`<div class="detail-list">${detail(t('manager'),c.manager.name)}${detail(t('roleFit'),n(c.roleFit*DB.rules.scale,1)+'%')}${detail(t('fitness'),n(c.fitness,1))}${detail(t('adaptation'),n(c.adaptation,1))}</div><div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>${h(t('initialStats'))}</th><th>${h(t('quality'))}</th><th>${h(t('factorPsychology'))}</th><th>${h(t('factorFatigue'))}</th><th>${h(t('factorPressure'))}</th></tr></thead><tbody>${DB.attributes.map(a=>{const f=c.actions[a.id];return `<tr><td>${h(a.name)}</td><td class="num">${n(f.skill,1)}</td><td class="num">×${n(f.psychology,2)}</td><td class="num">×${n(f.fatigue,2)}</td><td class="num">×${n(f.pressure,2)}</td></tr>`;}).join('')}</tbody></table></div><p class="small muted" style="margin-top:14px">${h(t('contextHint'))}</p>`:`<p class="small muted">${h(t('legacyReport'))}</p>`}</section></div>`;}
 
 function npcMarketCard(){const m=state.world.npcMarket,rows=(m?.history||[]).slice().reverse();return '<section class="card npc-market"><h2>'+h(t('npcMarketTitle'))+'</h2><p class="small muted">'+h(t('npcMarketHint'))+'</p><div class="list-pane">'+(rows.length?rows.map(r=>'<article class="honour-row"><div><b>'+h(r.name)+'</b><p class="small muted">'+h(r.date)+' · '+h(seasonLabel(r.season))+'</p></div><div>'+clubLink(r.from)+' → '+clubLink(r.to)+'<p class="small muted">'+h(t('npcTransferFee'))+' '+money(r.fee)+' · '+h(t(r.reason))+'</p></div></article>').join(''):'<p class="notice">'+h(t('npcNoTransfers'))+'</p>')+'</div></section>';}
 function legacyWorld(){const w=state.world,i=idx(),players=Object.entries(w.rosters).flatMap(([club,list])=>list.map(p=>({...p,club}))),sorted=players.filter(p=>p.age<=DB.dynamics.worldProspectAge).sort((a,b)=>b.traits.potential-a.traits.potential),stars=players.slice().sort((a,b)=>Core.overall(DB,b.stats)-Core.overall(DB,a.stats)),leaders=worldScope==='prospects'?sorted:worldScope==='retired'?w.retired.slice().reverse():stars;return `<div class="welcome"><h1>${h(t('worldTitle'))}</h1><p>${h(t('worldHint'))}</p></div><div class="kpi-grid" style="margin-bottom:20px">${kpi(t('trend'),DB.dynamics.trends.find(x=>x.id===w.trend).name)}${kpi(t('player'),n(players.length),t('worldSeason',{n:state.season,players:players.length,retired:w.retired.length}))}${kpi(t('club'),n(Object.keys(w.clubs).length))}${kpi(t('retired'),n(w.retired.length))}</div><div class="cols"><div class="stack"><section class="card"><div class="section-head"><h2>${h(t('prospects'))}</h2>${badge(t('databaseLabel'))}</div><div class="tabs-inline">${DB.worldViews.map(v=>btn(v.name,'world-scope',`data-scope="${h(v.id)}"`,worldScope===v.id?'selected':'')).join('')}</div><label>${h(t('worldSearch'))}<input id="world-search" value="${h(worldQuery)}" placeholder="${h(t('worldSearchHint'))}"></label><div class="table-wrap" style="margin-top:16px"><table><thead><tr>${['player','club','age','position','identityStyle','overall','npcCap','npcMinutes','playerDetails'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody>${leaders.filter(p=>!worldQuery||(p.name+' '+i.clubs[p.club].name+' '+(p.position||'')).toLowerCase().includes(worldQuery.toLowerCase())).slice(0,DB.dynamics.worldTableLimit).map(p=>`<tr><td>${h(p.name)}</td><td>${h(i.clubs[p.club].name)}</td><td>${n(p.age)}</td><td>${h(p.position||t('retired'))}</td><td>${h(DB.identityStyles.find(x=>x.id===p.identityStyle)?.name||'—')}</td><td>${p.stats?abilityLabel(Core.overall(DB,p.stats)):'—'}</td><td>${p.traits?n(p.traits.potential,1):'—'}</td><td>${n(p.seasonMinutes??p.minutes)}</td><td>${p.stats?btn(t('playerDetails'),'npc-detail',`data-id="${h(p.id)}"`,'subtle small'):'—'}</td></tr>`).join('')}</tbody></table></div></section><section class="card"><h2>${h(t('worldClubs'))}</h2><div class="table-wrap world-manager-list" role="region" tabindex="0" aria-label="${h(t('worldClubs'))}"><table><thead><tr>${['club','competition','clubPrestige','quality','manager','tacticalFit','finance','environment'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody>${Object.values(i.clubs).filter(c=>!c.national).map(c=>`<tr class="${c.id===state.player.club?'highlight':''}"><td>${h(c.name)}</td><td>${h(i.leagues[c.league].name)}</td><td>${h(clubTier(c))}</td><td>${n(c.quality,1)}</td><td>${h(c.manager.name)}</td><td>${h(Core.managerTactic(DB,state,c.id).name)}</td><td>${money(c.finance)}</td><td>${n(c.environment,1)}</td></tr>`).join('')}</tbody></table></div></section><section class="card"><h2>${h(t('seasonSnapshot'))}</h2>${w.snapshots.length?w.snapshots.slice().reverse().map(x=>`<div class="history-item"><b>${h(t('season',{n:x.season}))}</b><span>${h(DB.dynamics.trends.find(t=>t.id===x.trend).name)}</span><span>${h(x.leaders[0]?.name||'')} · ${n(x.leaders[0]?.goals||0)} ${h(t('goal'))}</span></div>`).join(''):`<p class="small muted">${h(t('noStats'))}</p>`}</section></div><section class="card"><div class="section-head"><h2>${h(t('worldEvents'))}</h2>${badge(w.events.length)}</div><div class="events">${w.events.slice(-DB.dynamics.worldVisibleEvents).reverse().map(e=>`<div class="event"><time>${h(e.date)}</time><div><b>${moneyText(e.text)}</b><p>${h(t('season',{n:e.season}))}</p></div></div>`).join('')}</div><p class="notice small" style="margin-top:18px">${h(t('deferred'))}</p></section></div>`;}
@@ -45106,8 +45558,34 @@ function trainingPlanText(plan){return t('trainingCycleSummary',{primary:DB.trai
 function trainingFatigueText(){const fatigue=state.trainingProgram.fatigue,cfg=DB.trainingProgramRules;return t(fatigue>=cfg.veryHeavyFatigue?'trainingFatigueHeavy':fatigue>=cfg.heavyFatigue?'trainingFatigueHigh':'trainingFatigueLow');}
 function trainingSummary(){const program=state.trainingProgram;return `<div class="section-head"><h2>${h(t('trainingCenter'))}</h2>${btn(t('trainingOpen'),'tab','data-tab="training"','small primary')}</div><p class="training-plan-label">${h(trainingPlanText(program.plan))}</p><div class="profile-facts">${detail(t('trainingNextReview'),program.reviewDate)}${detail(t('trainingFatigue'),n(program.fatigue)+' / '+DB.rules.scale)}</div><p class="small muted">${h(trainingFatigueText())}</p>${trainingProgress()}`;}
 function trainingPreviewMarkup(sample=state){return `<div class="training-preview-grid">${Core.trainingPreview(DB,sample).map(day=>`<article class="training-day ${day.work?'':'is-recovery'}"><time class="small num" datetime="${h(day.date)}">${h(day.date.slice(-5))}</time><b>${h(DB.trainingProgramRules.sessionTypes.find(t=>t.id===day.kind).name)}</b><span class="small muted">${h(day.work?[...DB.training,...DB.trainingProgramRules.secondaryOptions].find(t=>t.id===day.focus)?.name||t('trainingRoleGoal'):t('trainingFocusNone'))}</span></article>`).join('')}</div>`;}
+function playStyleSummary(style){return '<div class="row wrap play-style-summary">'+style.choices.map(choice=>badge(choice.name,choice.active?'pink':'warn')).join('')+'</div>';}
+function playStyleChanges(style){
+ const cfg=DB.playStyleRules,items=[];
+ for(const key of cfg.actions)if(Math.abs(style.opportunity[key]-1)>.0001)items.push({label:t('buildAction'+key),value:(style.opportunity[key]-1)*DB.rules.scale,unit:'%'});
+ for(const {id,name} of DB.attributes)if(Math.abs(style.execution[id]-1)>.0001)items.push({label:t('buildExecution',{name}),value:(style.execution[id]-1)*DB.rules.scale,unit:'%'});
+ if(Math.abs(style.longPassShare)>.0001)items.push({label:t('buildLongPass'),value:style.longPassShare*DB.rules.scale,unit:t('buildPercentagePoint')});
+ if(Math.abs(style.passAccuracyDelta)>.0001)items.push({label:t('buildPassAccuracy'),value:style.passAccuracyDelta*DB.rules.scale,unit:t('buildPercentagePoint')});
+ if(Math.abs(style.load-1)>.0001)items.push({label:t('buildLoad'),value:(style.load-1)*DB.rules.scale,unit:'%'});
+ return items.length?'<div class="play-style-effects">'+items.map(item=>'<div><span>'+h(item.label)+'</span><strong class="num">'+(item.value>0?'+':'')+n(item.value,1)+h(item.unit)+'</strong></div>').join('')+'</div>':'<p class="small muted">'+h(t('buildNeutral'))+'</p>';
+}
+function playStyleBuilder(){
+ const selected=state.player.playStyleBuild||Core.playStyleDefaults(DB),style=Core.playStyleEffects(DB,selected,state.player.position);
+ return '<section class="card play-style-builder"><div class="section-head"><div><p class="eyebrow">'+h(t('buildEyebrow'))+'</p><h2>'+h(t('buildTitle'))+'</h2></div>'+badge(t('buildPlayerOnly'),'pink')+'</div><p class="small muted">'+h(t('buildHint'))+'</p><div class="play-style-equipped"><span class="small muted">'+h(t('buildEquipped'))+'</span>'+playStyleSummary(style)+'</div><details class="play-style-editor"><summary>'+h(t('buildEdit'))+'</summary><form id="play-style-form"><div class="play-style-slots">'+DB.playStyleRules.slots.map(slot=>'<fieldset class="play-style-slot"><legend>'+h(slot.name)+'</legend><p class="small muted">'+h(slot.description)+'</p><div class="play-style-options">'+slot.options.map(option=>{const available=!option.positions.length||option.positions.includes(state.player.position);return '<label class="play-style-option '+(selected[slot.id]===option.id?'selected':'')+' '+(available?'':'unavailable')+'"><input type="radio" name="'+h(slot.id)+'" value="'+h(option.id)+'" '+(selected[slot.id]===option.id?'checked':'')+' '+(available?'':'disabled')+'><span class="play-style-option-body"><span class="row">'+interfaceSymbol(option.icon)+'<strong>'+h(option.name)+'</strong></span><span class="small">'+h(option.description)+'</span>'+(!available?'<span class="small">'+h(t('buildPositionRequired',{positions:option.positions.join(' / ')}))+'</span>':'')+'</span></label>';}).join('')+'</div></fieldset>').join('')+'</div><section class="play-style-preview" aria-live="polite"><h3>'+h(t('buildPreview'))+'</h3><div id="play-style-preview">'+playStyleChanges(style)+'</div></section><p class="small muted">'+h(t('buildRulesHint'))+'</p><div class="row wrap"><button type="submit" class="primary" id="play-style-apply" disabled>'+h(t('buildApply'))+'</button>'+btn(t('buildReset'),'play-style-reset')+'</div><p id="play-style-message" class="small muted" role="status"></p></form></details></section>';
+}
+function refreshPlayStyleDraft(form){
+ const build=Object.fromEntries(new FormData(form)),valid=Core.validPlayStyleBuild(DB,build,state.player.position);
+ for(const label of form.querySelectorAll('.play-style-option'))label.classList.toggle('selected',label.querySelector('input').checked);
+ document.getElementById('play-style-preview').innerHTML=playStyleChanges(Core.playStyleEffects(DB,build,state.player.position));
+ document.getElementById('play-style-apply').disabled=!valid||DB.playStyleRules.slots.every(slot=>build[slot.id]===state.player.playStyleBuild[slot.id]);
+ document.getElementById('play-style-message').textContent=valid?t('buildDraft'):t('buildInvalid');
+}
+document.addEventListener('change',event=>{const form=event.target.closest?.('#play-style-form');if(form&&state)refreshPlayStyleDraft(form);});
+document.addEventListener('submit',event=>{if(event.target.id!=='play-style-form'||!state)return;event.preventDefault();if(!Core.setPlayStyleBuild(DB,state,Object.fromEntries(new FormData(event.target)))){document.getElementById('play-style-message').textContent=t('buildInvalid');return;}persist();render();toast(t('buildSaved'));});
+document.addEventListener('click',event=>{if(!event.target.closest?.('[data-action="play-style-reset"]')||!state)return;const form=document.getElementById('play-style-form'),defaults=Core.playStyleDefaults(DB);for(const input of form.querySelectorAll('input[type="radio"]'))input.checked=input.value===defaults[input.name];refreshPlayStyleDraft(form);});
+function playStyleReport(record){const style=record.result?.playStyle;return style?'<section class="card play-style-match"><div class="section-head"><h2>'+h(t('buildMatchTitle'))+'</h2></div>'+playStyleSummary(style)+'<p class="small muted">'+h(t('buildRecordHint'))+'</p></section>':'';}
+
 function trainingCenter(){
- const program=state.trainingProgram,cfg=DB.trainingProgramRules,plan=program.plan;return `<div class="welcome"><h1>${h(t('trainingCenter'))}</h1><p>${h(t('trainingPlanHint'))}</p></div><div class="rework-grid"><section class="card"><form id="training-plan-form"><div class="section-head"><h2>${h(t('trainingPlan'))}</h2><button class="primary" type="submit">${h(t('trainingApply'))}</button></div><div class="form-grid"><label>${h(t('trainingPrimary'))}<select name="primary">${options(DB.training,plan.primary)}</select></label><label>${h(t('trainingSecondary'))}<select name="secondary">${options([...cfg.secondaryOptions,...DB.training],plan.secondary)}</select></label><label>${h(t('trainingIntensity'))}<select name="intensity">${options(cfg.intensities,plan.intensity)}</select></label><label>${h(t('trainingSchedule'))}<select name="schedule">${options(cfg.schedules,plan.schedule)}</select></label></div><div id="training-plan-notes" class="plan-notes">${trainingPlanNotes(plan)}</div><div class="row wrap">${btn(t('trainingRecommended'),'training-recommend')}</div></form><div class="divider"></div><div class="section-head"><h3>${h(t('trainingNextSeven'))}</h3></div><div id="training-preview">${trainingPreviewMarkup()}</div><p class="small muted">${h(t('trainingPreviewHint'))}</p></section><section class="card"><div class="section-head"><h2>${h(t('trainingActive'))}</h2>${badge(trainingFatigueText(),program.fatigue>=cfg.heavyFatigue?'red':'green')}</div><p class="training-plan-label">${h(trainingPlanText(plan))}</p><div class="detail-list">${detail(t('trainingPlanStart'),program.startedDate)}${detail(t('trainingNextReview'),program.reviewDate)}${detail(t('trainingFatigue'),n(program.fatigue)+' / '+DB.rules.scale)}${detail(t('trainingPendingDays'),t('trainingPendingDaysValue',{days:DB.calendarRules.trainingUnitDays-program.pending.days}))}</div>${trainingProgress()}<details class="helper-details"><summary>${h(t('trainingGuide'))}</summary><p class="small muted">${h(t('trainingHint'))}</p><p class="small muted">${h(t('trainingRealisticNote'))}</p></details></section></div>`;
+ const program=state.trainingProgram,cfg=DB.trainingProgramRules,plan=program.plan;return `<div class="welcome"><h1>${h(t('trainingCenter'))}</h1><p>${h(t('trainingPlanHint'))}</p></div>${playStyleBuilder()}<div class="rework-grid"><section class="card"><form id="training-plan-form"><div class="section-head"><h2>${h(t('trainingPlan'))}</h2><button class="primary" type="submit">${h(t('trainingApply'))}</button></div><div class="form-grid"><label>${h(t('trainingPrimary'))}<select name="primary">${options(DB.training,plan.primary)}</select></label><label>${h(t('trainingSecondary'))}<select name="secondary">${options([...cfg.secondaryOptions,...DB.training],plan.secondary)}</select></label><label>${h(t('trainingIntensity'))}<select name="intensity">${options(cfg.intensities,plan.intensity)}</select></label><label>${h(t('trainingSchedule'))}<select name="schedule">${options(cfg.schedules,plan.schedule)}</select></label></div><div id="training-plan-notes" class="plan-notes">${trainingPlanNotes(plan)}</div><div class="row wrap">${btn(t('trainingRecommended'),'training-recommend')}</div></form><div class="divider"></div><div class="section-head"><h3>${h(t('trainingNextSeven'))}</h3></div><div id="training-preview">${trainingPreviewMarkup()}</div><p class="small muted">${h(t('trainingPreviewHint'))}</p></section><section class="card"><div class="section-head"><h2>${h(t('trainingActive'))}</h2>${badge(trainingFatigueText(),program.fatigue>=cfg.heavyFatigue?'red':'green')}</div><p class="training-plan-label">${h(trainingPlanText(plan))}</p><div class="detail-list">${detail(t('trainingPlanStart'),program.startedDate)}${detail(t('trainingNextReview'),program.reviewDate)}${detail(t('trainingFatigue'),n(program.fatigue)+' / '+DB.rules.scale)}${detail(t('trainingPendingDays'),t('trainingPendingDaysValue',{days:DB.calendarRules.trainingUnitDays-program.pending.days}))}</div>${trainingProgress()}<details class="helper-details"><summary>${h(t('trainingGuide'))}</summary><p class="small muted">${h(t('trainingHint'))}</p><p class="small muted">${h(t('trainingRealisticNote'))}</p></details></section></div>`;
 }
 function trainingPlanNotes(plan){return `<p class="small muted">${h(DB.trainingProgramRules.intensities.find(t=>t.id===plan.intensity)?.description)}</p><p class="small muted">${h(DB.trainingProgramRules.schedules.find(t=>t.id===plan.schedule)?.description)}</p>`;}
 function agentCard(){
@@ -45121,8 +45599,6 @@ function agentTargetReport(){if(!agentTarget)return `<p class="empty">${h(t('age
 function refreshAgentTargets(){const select=document.getElementById('agent-target');if(!select)return;select.innerHTML=agentTargetOptions();select.disabled=!agentTarget;document.getElementById('agent-target-status').textContent=agentTarget?'':t('agentNoClubs');document.getElementById('agent-target-report').innerHTML=agentTargetReport();const seek=document.querySelector('[data-action="agent-seek"]');if(seek)seek.disabled=!agentTarget||Boolean(Core.agentContactIssue(DB,state,agentTarget));}
 function agentBriefCard(d){const locked=d.awaiting||d.status!=='negotiating',cfg=DB.agentSystem;return `<section class="card agent-brief-card"><form id="agent-brief-form" data-id="${h(d.id)}"><div class="section-head"><h2>${h(t('agentBrief'))}</h2>${badge(t('agentRelationship')+' '+n(d.relationship),'green')}</div><p class="small muted">${h(t('agentBriefHint'))}</p><fieldset ${locked?'disabled':''}><div class="form-grid"><label>${h(t('agentMandate'))}<select name="priority">${options(cfg.priorities,d.brief.priority)}</select></label><label>${h(t('agentStyle'))}<select name="style">${options(cfg.styles,d.brief.style)}</select></label></div><div id="agent-brief-notes" class="plan-notes">${agentBriefNotes(d.brief)}</div><div class="row wrap"><button type="submit">${h(t('agentBriefSave'))}</button>${btn(t('agentTermsDraft'),'agent-terms-draft',`data-id="${h(d.id)}"`)}</div></fieldset><p class="small muted">${h(t('agentTermsHint'))} ${h(t('agentRelationshipHint'))}</p></form></section>`;}
 function agentBriefNotes(brief){return `<p class="small muted">${h(DB.agentSystem.priorities.find(p=>p.id===brief.priority).description)}</p><p class="small muted">${h(DB.agentSystem.styles.find(p=>p.id===brief.style).description)}</p>`;}
-document.addEventListener('input',event=>{if(event.target.id==='agent-club-search'&&!event.isComposing){agentClubQuery=event.target.value;refreshAgentTargets();}});
-document.addEventListener('compositionend',event=>{if(event.target.id==='agent-club-search'){agentClubQuery=event.target.value;refreshAgentTargets();}});
 document.addEventListener('change',event=>{
  if(!state)return;const form=event.target.closest('form');
  if(event.target.id==='agent-select'){const agent=DB.agents.find(a=>a.id===event.target.value);document.querySelector('[data-action="agent-change"]').disabled=agent.id===state.agent.id;document.getElementById('agent-candidate-notes').textContent=agent.description+' · '+t('agentCommission')+' '+n(agent.commission)+'% · '+t('agentCapacity')+' '+agent.skills.capacity;}
@@ -45198,7 +45674,7 @@ function seasonStatsSummary(){
  return '<section class="card season-club-records" style="margin-bottom:20px"><div class="section-head"><h2>'+h(t('seasonRecords'))+'</h2>'+badge(t('allCareer'))+'</div><p class="small muted">'+h(t('seasonClubBreakdown'))+'</p><div class="table-wrap"><table><thead><tr>'+DB.settings.seasonStatColumns.map(c=>'<th>'+h(t(c.label))+'</th>').join('')+'</tr></thead><tbody>'+seasons.reverse().map(season=>Core.seasonClubRecords(DB,state,season).map(row=>'<tr data-record-season="'+season+'" data-record-club="'+h(row.club||'')+'" class="'+(season===(selectedStatsSeason??state.season)?'highlight':'')+'">'+DB.settings.seasonStatColumns.map(c=>'<td>'+(c.id==='season'?btn(seasonLabel(season),'stats-season','data-season="'+season+'"','subtle'):c.id==='club'?row.club?clubLink(row.club):h(t('freeAgent')):c.id==='rating'?row.stats.apps?n(row.stats.rating,2):h(t('noRating')):n(row.stats[c.id]))+'</td>').join('')+'</tr>').join('')).join('')+'</tbody></table></div></section>';
 }
 function worldSortValue(p,key){if(key==='club')return idx().clubs[p.club].name;if(key==='overall')return p.stats?Core.overall(DB,p.stats):null;if(key==='potential')return p.traits?.potential??null;if(key==='minutes')return p.seasonMinutes??p.minutes??0;if(key==='style')return DB.identityStyles.find(x=>x.id===p.identityStyle)?.name||'';return p[key]??null;}
-function world(){const browsing=worldBrowse(),w=state.world,i=idx(),all=Object.entries(w.rosters).flatMap(([club,list])=>list.map(p=>({...p,club}))),pool=worldScope==='retired'?w.retired:worldScope==='prospects'?all.filter(p=>p.age<=DB.dynamics.worldProspectAge):all,rows=pool.filter(p=>browsing.playerClubs.some(c=>c.id===p.club)&&(worldPlayerClubFilter==='all'||p.club===worldPlayerClubFilter)).filter(p=>!worldQuery||worldSearchMatches(worldQuery,[p.name,i.clubs[p.club].name,p.position,browseCountryName(p.country),browseCountryName(i.leagues[i.clubs[p.club].league].country),i.leagues[i.clubs[p.club].league].name])).slice().sort((a,b)=>{const av=worldSortValue(a,worldSort.key),bv=worldSortValue(b,worldSort.key);if(av===null&&bv!==null)return 1;if(bv===null&&av!==null)return -1;const result=typeof av==='number'&&typeof bv==='number'?av-bv:String(av||'').localeCompare(String(bv||''),DB.meta.locale);return result*worldSort.direction||a.id.localeCompare(b.id);}),clubs=browsing.clubs.filter(c=>worldClubFilter==='all'||c.id===worldClubFilter).filter(c=>!worldClubQuery.trim()||worldSearchMatches(worldClubQuery,[c.name,i.leagues[c.league].name,c.manager.name,browseCountryName(i.leagues[c.league].country)])),events=w.events.filter(worldNewsRelevant).slice(-DB.settings.worldNewsCount).reverse();return `<div class="welcome"><h1>${h(t('worldTitle'))}</h1><p>${h(t('worldHint'))}</p></div><div class="kpi-grid" style="margin-bottom:20px">${kpi(t('trend'),DB.dynamics.trends.find(x=>x.id===w.trend).name)}${kpi(t('player'),n(all.length))}${kpi(t('club'),n(Object.keys(w.clubs).length))}${kpi(t('retired'),n(w.retired.length))}</div><section class="card world-news" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('worldEvents'))}</h2>${badge(events.length)}</div><div class="events">${events.map(e=>`<div class="event"><time>${h(e.date)}</time><div>${moneyText(e.text)}</div></div>`).join('')}</div><p class="small muted" style="margin-top:12px">${h(t('worldNewsHint'))}</p></section><section class="card" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('worldPlayerDatabase'))}</h2>${badge(n(rows.length))}${btn(t('worldIntegratedSearch'),'world-integrated-search','data-kind="player"','small')}</div><p class="small muted">${h(t('worldIntegratedHint'))}</p><div class="tabs-inline">${DB.worldViews.map(v=>btn(v.name,'world-scope',`data-scope="${h(v.id)}"`,worldScope===v.id?'selected':'')).join('')}</div>${browseLocationControls('world-player',clubBrowseLeagues(),worldPlayerCountryFilter,worldPlayerLeagueFilter,browsing.playerClubs,worldPlayerClubFilter)}<label>${h(t('worldSearch'))}<input id="world-search" value="${h(worldQuery)}" placeholder="${h(t('worldSearchHint'))}"></label><div class="table-wrap world-player-list" role="region" tabindex="0" aria-label="${h(t('worldPlayerDatabase'))}" style="margin-top:16px"><table><thead><tr>${DB.settings.worldPlayerColumns.map(c=>`<th aria-sort="${worldSort.key===c.id?worldSort.direction<0?'descending':'ascending':'none'}">${btn(t(c.label)+(worldSort.key===c.id?worldSort.direction<0?' ↓':' ↑':''),'world-sort',`data-key="${h(c.id)}"`,'sort-heading')}</th>`).join('')}<th>${h(t('playerDetails'))}</th></tr></thead><tbody>${rows.slice(0,DB.dynamics.worldTableLimit).map(p=>`<tr>${DB.settings.worldPlayerColumns.map(c=>{const val=worldSortValue(p,c.id);return `<td>${val===null?'—':c.type==='number'?c.id==='overall'?abilityLabel(val):n(val):c.id==='name'&&p.stats?playerLink(p.id,val):c.id==='club'?clubLink(p.club):h(val)}</td>`;}).join('')}<td>${p.stats?btn(t('playerDetails'),'npc-detail',`data-id="${h(p.id)}"`,'subtle small'):'—'}</td></tr>`).join('')}</tbody></table></div><p class="small muted" style="margin-top:15px">${h(t('worldSortHint',{n:DB.dynamics.worldTableLimit}))}</p></section><section class="card" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('worldClubs'))}</h2><span class="small muted" role="status">${h(t('worldClubResults',{n:clubs.length}))}</span>${btn(t('worldIntegratedSearch'),'world-integrated-search','data-kind="club"','small')}</div>${browseLocationControls('world-browse',clubBrowseLeagues(),worldCountryFilter,worldLeagueFilter,browsing.clubs,worldClubFilter)}<label>${h(t('worldClubSearch'))}<input type="search" id="world-club-search" value="${h(worldClubQuery)}" placeholder="${h(t('worldClubSearchHint'))}"></label><div class="table-wrap world-manager-list" role="region" tabindex="0" aria-label="${h(t('worldClubs'))}"><table><thead><tr>${['club','competition','clubPrestige','quality','manager','tacticalFit','finance','environment'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody>${clubs.map(c=>`<tr class="${c.id===state.player.club?'highlight':''}"><td>${clubLink(c.id)}</td><td>${leagueLink(c.league)}</td><td>${h(clubTier(c))}</td><td>${n(c.quality,1)}</td><td>${entityLink('manager',c.id,c.manager.name)}</td><td>${h(Core.managerTactic(DB,state,c.id).name)}</td><td>${money(c.finance)}</td><td>${n(c.environment,1)}</td></tr>`).join('')}${!clubs.length?`<tr><td colspan="8" class="muted">${h(t('worldClubNoResults'))}</td></tr>`:''}</tbody></table></div></section><section class="card"><h2>${h(t('seasonSnapshot'))}</h2>${w.snapshots.length?w.snapshots.slice().reverse().map(x=>`<div class="history-item"><b>${h(t('season',{n:x.season}))}</b><span>${h(DB.dynamics.trends.find(t=>t.id===x.trend).name)}</span><span>${h(x.leaders[0]?.name||'')} · ${n(x.leaders[0]?.goals||0)} ${h(t('goal'))}</span></div>`).join(''):`<p class="small muted">${h(t('noStats'))}</p>`}</section>`;}
+function world(){const browsing=worldBrowse(),w=state.world,i=idx(),all=Object.entries(w.rosters).flatMap(([club,list])=>list.map(p=>({...p,club}))),pool=worldScope==='retired'?w.retired:worldScope==='prospects'?all.filter(p=>p.age<=DB.dynamics.worldProspectAge):all,rows=pool.filter(p=>browsing.playerClubs.some(c=>c.id===p.club)&&(worldPlayerClubFilter==='all'||p.club===worldPlayerClubFilter)).filter(p=>!worldQuery||worldSearchMatches(worldQuery,[p.name,i.clubs[p.club].name,p.position,browseCountryName(p.country),browseCountryName(i.leagues[i.clubs[p.club].league].country),i.leagues[i.clubs[p.club].league].name])).slice().sort((a,b)=>{const av=worldSortValue(a,worldSort.key),bv=worldSortValue(b,worldSort.key);if(av===null&&bv!==null)return 1;if(bv===null&&av!==null)return -1;const result=typeof av==='number'&&typeof bv==='number'?av-bv:String(av||'').localeCompare(String(bv||''),DB.meta.locale);return result*worldSort.direction||a.id.localeCompare(b.id);}),clubs=browsing.clubs.filter(c=>worldClubFilter==='all'||c.id===worldClubFilter).filter(c=>!worldClubQuery.trim()||worldSearchMatches(worldClubQuery,[c.name,i.leagues[c.league].name,c.manager.name,browseCountryName(i.leagues[c.league].country)])),events=w.events.filter(worldNewsRelevant).slice(-DB.settings.worldNewsCount).reverse();return `<div class="welcome"><h1>${h(t('worldTitle'))}</h1><p>${h(t('worldHint'))}</p></div><div class="kpi-grid" style="margin-bottom:20px">${kpi(t('trend'),DB.dynamics.trends.find(x=>x.id===w.trend).name)}${kpi(t('player'),n(all.length))}${kpi(t('club'),n(Object.keys(w.clubs).length))}${kpi(t('retired'),n(w.retired.length))}</div><section class="card world-news" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('worldEvents'))}</h2>${badge(events.length)}</div><div class="events">${events.map(e=>`<div class="event"><time>${h(e.date)}</time><div>${moneyText(e.text)}</div></div>`).join('')}</div><p class="small muted" style="margin-top:12px">${h(t('worldNewsHint'))}</p></section><section class="card" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('worldPlayerDatabase'))}</h2><span data-world-search-count="player">${badge(n(rows.length))}</span>${btn(t('worldIntegratedSearch'),'world-integrated-search','data-kind="player"','small')}</div><p class="small muted">${h(t('worldIntegratedHint'))}</p><div class="tabs-inline">${DB.worldViews.map(v=>btn(v.name,'world-scope',`data-scope="${h(v.id)}"`,worldScope===v.id?'selected':'')).join('')}</div>${browseLocationControls('world-player',clubBrowseLeagues(),worldPlayerCountryFilter,worldPlayerLeagueFilter,browsing.playerClubs,worldPlayerClubFilter)}<label>${h(t('worldSearch'))}<input id="world-search" value="${h(worldQuery)}" placeholder="${h(t('worldSearchHint'))}"></label><div class="table-wrap world-player-list" role="region" tabindex="0" aria-label="${h(t('worldPlayerDatabase'))}" style="margin-top:16px"><table><thead><tr>${DB.settings.worldPlayerColumns.map(c=>`<th aria-sort="${worldSort.key===c.id?worldSort.direction<0?'descending':'ascending':'none'}">${btn(t(c.label)+(worldSort.key===c.id?worldSort.direction<0?' ↓':' ↑':''),'world-sort',`data-key="${h(c.id)}"`,'sort-heading')}</th>`).join('')}<th>${h(t('playerDetails'))}</th></tr></thead><tbody data-world-search-rows="player">${rows.slice(0,DB.dynamics.worldTableLimit).map(p=>`<tr>${DB.settings.worldPlayerColumns.map(c=>{const val=worldSortValue(p,c.id);return `<td>${val===null?'—':c.type==='number'?c.id==='overall'?abilityLabel(val):n(val):c.id==='name'&&p.stats?playerLink(p.id,val):c.id==='club'?clubLink(p.club):h(val)}</td>`;}).join('')}<td>${p.stats?btn(t('playerDetails'),'npc-detail',`data-id="${h(p.id)}"`,'subtle small'):'—'}</td></tr>`).join('')}</tbody></table></div><p class="small muted" style="margin-top:15px">${h(t('worldSortHint',{n:DB.dynamics.worldTableLimit}))}</p></section><section class="card" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('worldClubs'))}</h2><span class="small muted" role="status" data-world-search-count="club">${h(t('worldClubResults',{n:clubs.length}))}</span>${btn(t('worldIntegratedSearch'),'world-integrated-search','data-kind="club"','small')}</div>${browseLocationControls('world-browse',clubBrowseLeagues(),worldCountryFilter,worldLeagueFilter,browsing.clubs,worldClubFilter)}<label>${h(t('worldClubSearch'))}<input type="search" id="world-club-search" value="${h(worldClubQuery)}" placeholder="${h(t('worldClubSearchHint'))}"></label><div class="table-wrap world-manager-list" role="region" tabindex="0" aria-label="${h(t('worldClubs'))}"><table><thead><tr>${['club','competition','clubPrestige','quality','manager','tacticalFit','finance','environment'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody data-world-search-rows="club">${clubs.map(c=>`<tr class="${c.id===state.player.club?'highlight':''}"><td>${clubLink(c.id)}</td><td>${leagueLink(c.league)}</td><td>${h(clubTier(c))}</td><td>${n(c.quality,1)}</td><td>${entityLink('manager',c.id,c.manager.name)}</td><td>${h(Core.managerTactic(DB,state,c.id).name)}</td><td>${money(c.finance)}</td><td>${n(c.environment,1)}</td></tr>`).join('')}${!clubs.length?`<tr><td colspan="8" class="muted">${h(t('worldClubNoResults'))}</td></tr>`:''}</tbody></table></div></section><section class="card"><h2>${h(t('seasonSnapshot'))}</h2>${w.snapshots.length?w.snapshots.slice().reverse().map(x=>`<div class="history-item"><b>${h(t('season',{n:x.season}))}</b><span>${h(DB.dynamics.trends.find(t=>t.id===x.trend).name)}</span><span>${h(x.leaders[0]?.name||'')} · ${n(x.leaders[0]?.goals||0)} ${h(t('goal'))}</span></div>`).join(''):`<p class="small muted">${h(t('noStats'))}</p>`}</section>`;}
 document.addEventListener('input',event=>{if(event.target.id==='setting-scale'){pendingUiScale=Core.clamp(Number(event.target.value),DB.settings.scale.min,DB.settings.scale.max);document.getElementById('setting-scale-value').textContent=n(pendingUiScale)+'%';document.getElementById('setting-scale-apply').disabled=pendingUiScale===preferences.scale;}});
 document.addEventListener('change',event=>{if(event.target.id==='setting-currency'&&DB.settings.currencies.some(c=>c.id===event.target.value)){preferences.currency=event.target.value;savePreferences();render();}});
 document.addEventListener('click',event=>{const b=event.target.closest('[data-action]');if(!b||b.disabled)return;switch(b.dataset.action){case 'world-sort':{const key=b.dataset.key;if(!DB.settings.worldPlayerColumns.some(c=>c.id===key))break;worldSort=worldSort.key===key?{key,direction:-worldSort.direction}:{key,direction:DB.settings.worldSortDirection};render();break;}case 'stats-season':selectedStatsSeason=Number(b.dataset.season);statsScope='season';render();break;case 'settings-scale-apply':if(pendingUiScale!==null){preferences.scale=pendingUiScale;pendingUiScale=null;savePreferences();render();toast(t('uiSizeApplied'));}break;case 'settings-reset':pendingUiScale=null;preferences={...DB.settings.defaults};savePreferences();render();break;}});
@@ -45365,7 +45841,7 @@ document.addEventListener('change',event=>{if(event.target.id==='national-team')
 
 function matchIntentChooser(record){
  const prepared=state.matchPreparation;if(!prepared)return `<p class="small muted">${h(t('matchIntentLegacy'))}</p>`;
- return `<section class="match-intents"><h2>${h(t('matchIntent'))}</h2><p class="small muted">${h(t('matchIntentHint'))}</p><div class="match-intent-grid">${DB.matchIntentRules.options.map(option=>`<button type="button" class="match-intent-choice" data-action="match-intent" data-intent="${h(option.id)}" aria-pressed="${prepared.intent===option.id}"><b>${h(option.name)}</b><small>${h(option.description)}</small></button>`).join('')}</div></section>`;
+ return `<section class="match-intents"><h2>${h(t('matchIntent'))}</h2><p class="small muted">${h(t('matchIntentHint'))}</p><div class="match-intent-grid">${DB.matchIntentRules.options.map(option=>`<button type="button" class="match-intent-choice" data-action="match-intent" data-intent="${h(option.id)}" aria-pressed="${prepared.intent===option.id}"><b>${h(option.name)}</b><small>${h(option.description)}</small></button>`).join('')}</div><div class="play-style-equipped"><span class="small muted">${h(t('buildMatchTitle'))}</span>${playStyleSummary(Core.playStyleEffects(DB,state.player.playStyleBuild,state.player.position))}</div></section>`;
 }
 function openNationalProfile(id){
  const team=idx().clubs[id];if(!team?.national)return;const view=Core.nationalSquadView(DB,state,team),manager=state.nations.teams[id].manager,tactic=DB.tactics.find(t=>t.id===manager.tactic);
