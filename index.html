@@ -429,7 +429,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.8.10",
+    "version": "20.8.11",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -524,8 +524,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "preferredLeague": "undecided",
       "dreamClub": "undecided",
       "number": 17,
-      "secondaryPosition": "LW",
-      "tertiaryPosition": "AM",
+      "secondaryPosition": "none",
+      "tertiaryPosition": "none",
       "personality": "disciplined",
       "characterTrait": "consistency",
       "displayName": ""
@@ -2930,7 +2930,18 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "id": "undecided",
         "name": "미정"
       }
-    ]
+    ],
+    "optionalPositionId": "none",
+    "positionUsage": {
+      "maximumCoverageGap": 8,
+      "competitionWeight": 0.65,
+      "adaptabilityFloor": 40,
+      "benchBonus": {
+        "conviction": 0.025,
+        "balanced": 0.045,
+        "flexible": 0.075
+      }
+    }
   },
   "attributes": [
     {
@@ -19501,7 +19512,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "name": "유럽 변방 클럽",
       "difficulty": "보통",
       "tag": "pink",
-      "description": "유럽 무대에 바로 도전하세요. 더 높은 경기 수준과 연봉, 치열한 포지션 경쟁이 기다립니다.",
+      "description": "유럽 무대에 신인 계약으로 도전하세요. 낮은 시작 급여에서 출발하며, 치열한 포지션 경쟁 속에서 실적으로 다음 계약을 준비합니다.",
       "trust": 43,
       "selectionBonus": 0,
       "league": "pt-1",
@@ -21019,7 +21030,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "ageUnit": "세",
       "traitTitle": "선수 DNA · 재능과 심리",
       "traitHint": "같은 오버롤이어도 다른 커리어가 됩니다. 높은 수치가 항상 유리한 것은 아닙니다. 향수병·부상 취약성은 높을수록 부담이 커집니다.",
-      "positionUnique": "주·부·가능 포지션을 서로 다르게 선택하세요.",
+      "positionUnique": "선택한 포지션은 서로 달라야 합니다. 2·3순위는 선택하지 않아도 됩니다.",
       "developmentTitle": "성장과 실현 가능한 잠재력",
       "developmentHint": "출전과 훈련 환경이 좋아야 잠재력을 펼칠 수 있습니다. 부상과 부진 뒤에도 회복과 재도약을 노릴 수 있습니다.",
       "birthCeiling": "타고난 상한",
@@ -21410,7 +21421,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "saveImportGeneral": "커리어 정보를 읽지 못했습니다.",
       "senderWithRole": "{role} · {name}",
       "senderWithClub": "{sender} · {club}",
-      "positionSwapHint": "이미 선택한 포지션을 고르면 두 칸의 포지션이 서로 바뀝니다.",
+      "positionSwapHint": "2·3순위는 선택하지 않아도 됩니다. 2순위가 없으면 3순위도 선택할 수 없습니다. 이미 고른 포지션을 선택하면 두 칸을 바꿉니다.",
       "broadcastSkip": "스킵하고 결과로 이동",
       "broadcastSpeed": "중계 속도",
       "broadcastSpeedValue": "{speed}배 · {seconds}초 간격",
@@ -22110,7 +22121,17 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "buildActiondefenseWeight": "수비 관여",
       "buildActioncrossWeight": "크로스 관여",
       "buildMatchTitle": "이 경기의 플레이 스타일",
-      "buildRecordHint": "경기를 계산할 때 적용한 빌드입니다. 이후 빌드를 변경해도 이 경기의 결과와 선택 기록은 유지됩니다."
+      "buildRecordHint": "경기를 계산할 때 적용한 빌드입니다. 이후 빌드를 변경해도 이 경기의 결과와 선택 기록은 유지됩니다.",
+      "positionNone": "선택 안함",
+      "positionUsageHint": "주 포지션만 선택하면 해당 자리에서만 출전 경쟁을 합니다. 추가 포지션은 숙련도와 자리별 경쟁에 따라 전술 배치·교체 활용 폭을 넓힙니다.",
+      "managerPositionView": "감독의 활용 판단",
+      "positionSpecialist": "단일 포지션 전문 선수",
+      "positionVersatile": "멀티 포지션 선수",
+      "managerSpecialistHint": "주 포지션에서 실력으로 경쟁합니다. 다른 자리의 대체 자원으로는 평가하지 않습니다.",
+      "managerVersatileHint": "등록한 포지션별 숙련도와 경쟁을 평가합니다. 소화 가능한 자리가 많고 적응력이 좋을수록 교체 활용 폭이 넓어지며 유연한 감독이 이를 더 높게 평가합니다.",
+      "positionCoverage": "현재 전술에서 경쟁 가능한 추가 포지션",
+      "positionNoSlot": "현재 전술에 등록 포지션이 없어 출전 배치 불가",
+      "startingSalaryHint": "첫 계약은 신인 급여 기준입니다. 구단을 바꾸면 해당 제안의 급여가 갱신되며, 표시된 금액으로 계약합니다."
     },
     "statFields": [
       {
@@ -26720,6 +26741,18 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "preferenceCap": 2,
       "maximumSquadGap": 18,
       "leagueWeight": 1
+    },
+    "initialContract": {
+      "europe": {
+        "baseWeekly": 350,
+        "minimumWeekly": 200,
+        "maximumWeekly": 500,
+        "leagueReference": 1500,
+        "leagueExponent": 0.12,
+        "abilityFloor": 0.8,
+        "abilityCeiling": 1.15,
+        "prestigeCap": 0.1
+      }
     }
   },
   "senderRoles": [
@@ -42463,6 +42496,7 @@ const FootballCore = (() => {
     if(p.freeAgent||p.injury>0||p.suspension>0||p.fitness<r.minimumFitnessForSelection)return 0;
     const recent=p.history.filter(x=>x.stats.minutes>0).slice(-r.recentFormMatches),form=recent.length?mean(recent.map(x=>x.stats.rating)):e.formCenter;
     const route=db.routes.find(x=>x.id===p.route),bonus=p.contract.initial?route.selectionBonus:0,role=roleAssignment(db,p,p.club,state);
+    if(role.available===false)return 0;
     const strength=(suitability(db,{...p,position:role.position})-competition(db,p,p.club,state)-e.positionCompetition)*e.overallWeight+(p.trust-e.trustCenter)*e.trustWeight+(p.fitness-e.fitnessCenter)*e.fitnessWeight+(form-e.formCenter)*e.formWeight+(p.morale-db.competitionRules.moraleSelectionCenter)*db.competitionRules.moraleSelectionWeight+bonus+(role.fit-1)*d.tacticalSelection;
     return clamp(1/(1+Math.exp(-strength)),e.minStart,e.maxStart);
   }
@@ -42879,11 +42913,17 @@ const FootballCore = (() => {
 
   function createCareer(db,profile,routeId,clubId) {
     const route=db.routes.find(x=>x.id===routeId),r=db.rules;
-    const p={...clone(profile),club:clubId,route:routeId,trust:route.trust,fitness:r.startingFitness,morale:r.startingMorale,reputation:r.startingReputation,injury:0,suspension:0,yellows:0,earned:0,history:[],growthBaseline:clone(profile.stats),career:[{season:1,date:db.meta.initialDate,club:clubId,type:'joined'}],contract:{weekly:wage(db,clubId,profile,route.salaryFactor),expiresSeason:1+r.contractYears,initial:true}};
+    const p={...clone(profile),club:clubId,route:routeId,trust:route.trust,fitness:r.startingFitness,morale:r.startingMorale,reputation:r.startingReputation,injury:0,suspension:0,yellows:0,earned:0,history:[],growthBaseline:clone(profile.stats),career:[{season:1,date:db.meta.initialDate,club:clubId,type:'joined'}],contract:{weekly:initialWage(db,clubId,profile,routeId),expiresSeason:1+r.contractYears,initial:true}};
     const state={schema:db.meta.schema,seed:hash(`${db.meta.seed}:${profile.startingSeed??0}:${p.name}:${p.country}:${p.position}`),season:1,round:0,date:db.meta.initialDate,seasonStart:db.meta.initialDate,player:p,training:db.training[0].id,fixtures:{},offers:[],archives:[]};
     p.displayName=String(p.displayName||p.name).trim()||p.name;initializePlayer(db,p,state);ensureWorld(db,state);state.fixtures=worldFixtures(db,1,state.date,state);initializeSystems(db,state);return state;
   }
   function wage(db,clubId,p,factor=1,state=null) { const idx=indexes(db,state),club=idx.clubs[clubId],league=idx.leagues[club.league]; return Math.max(db.rules.minimumSalary,Math.round(league.salaryBase*Math.pow(suitability(db,p)/club.quality,db.rules.wagePower)*factor*(1+(club.prestige||0)*db.social.prestigeSalaryWeight))); }
+  function initialWage(db,clubId,p,routeId){
+    const route=db.routes.find(r=>r.id===routeId),regular=wage(db,clubId,p,route.salaryFactor),rule=db.startingRouteRules.initialContract[routeId];
+    if(!rule)return regular;
+    const club=indexes(db).clubs[clubId],league=indexes(db).leagues[club.league],ability=clamp(Math.pow(suitability(db,p)/club.quality,db.rules.wagePower),rule.abilityFloor,rule.abilityCeiling),market=Math.pow(league.salaryBase/rule.leagueReference,rule.leagueExponent),prestige=1+Math.min(rule.prestigeCap,(club.prestige||0)*db.social.prestigeSalaryWeight);
+    return Math.max(db.rules.minimumSalary,Math.min(regular,Math.round(clamp(rule.baseWeekly*ability*market*prestige,rule.minimumWeekly,rule.maximumWeekly))));
+  }
   const squadMeanCache=new WeakMap();
   function squadOverall(db,clubId,s=null){
     if(s)return mean(roster(db,clubId,s).map(p=>overall(db,p.stats)));
@@ -42914,7 +42954,7 @@ const FootballCore = (() => {
     let playerSlot=-1;
     if(own>=0){
       const assignment=roleAssignment(db,state.player,state.player.club,state),team=teams[own];playerSlot=team.players.findIndex(p=>p.position===assignment.position);
-      if(playerSlot<0)playerSlot=team.players.findIndex(p=>idx.positions[p.position].group===idx.positions[state.player.position].group);
+      if(playerSlot<0)playerSlot=null;
       const person={...matchIdentity(db,state.player),id:'player',position:assignment.position,naturalPosition:state.player.position,slot:playerSlot,starter:appearance==='starter',entryMinute:appearance==='starter'?1:duration+1,exitMinute:duration,match:createStats(db)};
       if(person.starter)team.players.splice(playerSlot,1,person);else team.players.push(person);
     }
@@ -42950,7 +42990,7 @@ const FootballCore = (() => {
     let duration=r.matchMinutes+integer(rng,r.stoppageMin,r.stoppageMax);const regulationDuration=duration;
     const own=state&&!state.player.freeAgent?[fixture.home,fixture.away].indexOf(state.player.club):-1,style=own>=0?playStyleMatchEffects(db,state,fixture):null;
     let appearance='unused',entry=duration+1,exit=duration;
-    if(own>=0&&selection(db,state)>0){if(rng()<selection(db,state)){appearance='starter';entry=1;exit=rng()<(state.player.position==='GK'?e.selection.goalkeeperFullMatchChance:e.selection.fullMatchChance)?duration:integer(rng,e.selection.offMin,e.selection.offMax);}else if(state.player.position!=='GK'&&rng()<e.selection.subChance){appearance='sub';entry=duration-integer(rng,e.selection.subMin,e.selection.subMax)+1;}}
+    if(own>=0&&selection(db,state)>0){if(rng()<selection(db,state)){appearance='starter';entry=1;exit=rng()<(state.player.position==='GK'?e.selection.goalkeeperFullMatchChance:e.selection.fullMatchChance)?duration:integer(rng,e.selection.offMin,e.selection.offMax);}else if(state.player.position!=='GK'&&rng()<roleAssignment(db,state.player,state.player.club,state).benchChance){appearance='sub';entry=duration-integer(rng,e.selection.subMin,e.selection.subMax)+1;}}
     const setup=prepareMatch(db,fixture,state,rng,duration,own,appearance,entry,exit),{clubs,teams,plans,preMatch}=setup;
     if(state?._previewMatch&&own>=0){const error=Error('matchPreview');error.previewRecord={...clone(fixture),season:state.season,league:fixture.competition||Object.entries(state.fixtures).find(([,fixtures])=>fixtures.some(f=>f.id===fixture.id))?.[0]||indexes(db,state).clubs[state.player.club].league,club:state.player.club,stats:createStats(db),appearance,result:{duration,preMatch,strategy:strategySummary(state),home:teams[0],away:teams[1],events:[],appearance,player:createStats(db),context:null}};throw error;}
     const active=(side,minute)=>teams[side].players.filter(p=>p.entryMinute<=minute&&p.exitMinute>=minute&&!teams[side].redIds.includes(p.id));
@@ -42958,7 +42998,10 @@ const FootballCore = (() => {
     if(state?._strategy?.rivalry){const rivalry=state._strategy.rivalry;events.push({minute:1,type:'rivalryEvent',club:fixture.home,player:'',playerId:null,rivalry:rivalry.name,description:text(db,'rivalryEvent')});}
     if(state?._strategy?.counter){const counter=state._strategy.counter,type=db.opponentResponseRules.types.find(t=>t.id===counter.type);events.push({minute:1,type:'counterEvent',club:counter.opponent,player:state.player.name,playerId:'player',response:type.name,description:type.description});}
     const substitute=(side,outId,inId,minute,eventMinute=minute)=>{
-      const team=teams[side],out=team.players.find(p=>p.id===outId),incoming=team.players.find(p=>p.id===inId);
+      const team=teams[side],incoming=team.players.find(p=>p.id===inId);let out=team.players.find(p=>p.id===outId);
+      if(incoming?.id==='player'&&(!out||!registeredPositions(db,state.player).includes(out.position)||out.replaced||out.entryMinute>minute||out.exitMinute<minute-1||team.redIds.includes(out.id))){
+        out=team.players.filter(p=>p.id!=='player'&&!p.replaced&&p.entryMinute<=minute&&p.exitMinute>=minute-1&&!team.redIds.includes(p.id)&&registeredPositions(db,state.player).includes(p.position)).sort((a,b)=>roleFit(db,state.player,b.position)-roleFit(db,state.player,a.position)||suitability(db,a)-suitability(db,b))[0];
+      }
       if(!out||!incoming||out.replaced||out.entryMinute>minute||out.exitMinute<minute-1||team.redIds.includes(out.id)||incoming.entryMinute<=duration||team.substitutions>=db.matchBroadcast.subsMax)return false;
       if(!team.subWindows.includes(eventMinute)&&team.subWindows.length>=db.matchBroadcast.subWindowCount)return false;
       out.exitMinute=minute-1;out.replaced=true;incoming.entryMinute=minute;incoming.slot=out.slot;incoming.position=out.position;team.substitutions++;if(!team.subWindows.includes(eventMinute))team.subWindows.push(eventMinute);
@@ -43619,7 +43662,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const d=db.dynamics,rng=random(hash(`${state.seed}:${p.id||'player'}:dna`));
     p.traits={...Object.fromEntries(db.traits.map(t=>[t.id,t.initial])),...p.traits};p.personality||=db.profile.defaults.personality;p.characterTrait||=db.profile.defaults.characterTrait;p.growthType||=deriveGrowthType(db,p);
     const positions=db.positions.filter(x=>x.id!==p.position&&(p.position==='GK'?x.id==='GK':x.id!=='GK'));
-    p.secondaryPosition||=positions[0]?.id||p.position;p.tertiaryPosition||=positions.find(x=>x.id!==p.secondaryPosition)?.id||p.secondaryPosition;
+    p.secondaryPosition??=positions[0]?.id||p.position;p.tertiaryPosition??=p.secondaryPosition===db.profile.optionalPositionId?db.profile.optionalPositionId:positions.find(x=>x.id!==p.secondaryPosition)?.id||p.secondaryPosition;
     p.adaptation??=p.country===db.leagues.find(x=>x.id===indexes(db,state).clubs[p.club]?.league)?.country?d.initialAdaptation:d.foreignAdaptation;
     p.development||={birth:{},caps:{},experience:0,damage:0,inactive:0,ageOffset:integer(rng,-d.ageCurveJitter,d.ageCurveJitter),style:d.styles[0].id,phase:'growthSteady',records:[],injuries:[],factors:{}};
     for(const a of db.attributes){const physiological=d.physicalAttributes.includes(a.id);const birth=clamp(d.ceilingBase+(p.traits.potential-d.capTraitCenter)*d.ceilingPotential+(physiological?p.traits.talent-d.capTraitCenter:0)*d.ceilingTalent+range(rng,-d.potentialAttributeSpread,d.potentialAttributeSpread),Math.min(p.stats[a.id]+d.capHeadroom,db.rules.abilityMax),db.rules.abilityMax);p.development.birth[a.id]??=birth;p.development.caps[a.id]??=Math.min(birth,Math.max(p.stats[a.id]+d.growthCeilingMargin,birth*d.capSmoothing));}
@@ -43644,8 +43687,22 @@ function simulateWorldFixture(db,f,s,continuation=null){
   const matchIdentity=(db,p)=>Object.fromEntries(db.dynamics.matchIdentityFields.filter(key=>Object.hasOwn(p,key)).map(key=>[key,clone(p[key])]));
   function roster(db,clubId,state=null){return state?.world?.rosters?.[clubId]||generateRoster(db,clubId);}
   function managerTactic(db,state,clubId){const id=state?._strategy?.teams[clubId]?.tactic||coachStrategy(db,state,clubId)?.planA||state?.world?.clubs?.[clubId]?.manager?.tactic;return db.tactics.find(x=>x.id===id)||db.tactics[hash(clubId)%db.tactics.length];}
+  function registeredPositions(db,p){
+    const primary=p.naturalPosition||p.position,secondary=p.secondaryPosition,tertiary=secondary===db.profile.optionalPositionId?null:p.tertiaryPosition;
+    return [...new Set([primary,secondary,tertiary].filter(id=>db.positions.some(pos=>pos.id===id)))];
+  }
+  function positionAssessment(db,p,clubId,s){
+    const positions=registeredPositions(db,p),tactic=managerTactic(db,s,clubId),rule=db.profile.positionUsage,team=roster(db,clubId,s),primary=p.naturalPosition||p.position;
+    const candidates=[...new Set(tactic.formation)].filter(position=>positions.includes(position)&&((primary==='GK')===(position==='GK'))).map(position=>{
+      const fit=roleFit(db,p,position),ability=suitability(db,{...p,position})*fit,competition=Math.max(0,...team.filter(n=>!n.injury).map(n=>suitability(db,{...n,position})*roleFit(db,n,position)));
+      return {position,fit,ability,competition,score:ability-competition*rule.competitionWeight,available:true};
+    }).sort((a,b)=>b.score-a.score);
+    const best=candidates[0],coverage=Math.max(0,candidates.filter(c=>c.ability>=c.competition-rule.maximumCoverageGap).length-(best&&best.ability>=best.competition-rule.maximumCoverageGap?1:0)),manager=coachStrategy(db,s,clubId),adaptability=clamp((traits(db,p).adaptability-rule.adaptabilityFloor)/(db.rules.scale-rule.adaptabilityFloor),0,1);
+    return {positions,candidates,coverage,type:positions.length>1?'positionVersatile':'positionSpecialist',benchChance:clamp(db.engine.selection.subChance+coverage*adaptability*(rule.benchBonus[manager?.personality]??rule.benchBonus.balanced),0,1)};
+  }
   function roleFit(db,p,position){
     if((p.position==='GK')!==(position==='GK'))return 0;
+    if((!p.id||p.id==='player')&&!registeredPositions(db,p).includes(position))return 0;
     const ranks=[p.naturalPosition||p.position,p.secondaryPosition,p.tertiaryPosition],rank=ranks.indexOf(position),d=db.dynamics;
     if(rank>=0)return d.roleWeights[rank];
     const same=indexes(db).positions[ranks[0]].group===indexes(db).positions[position].group;
@@ -44255,7 +44312,8 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const context={fixture:f.id,teams,rivalry:rivalryContext(db,s,f),competition:f.competition||f.league||idx.clubs[f.home].league,counter:opponentResponse(db,s,f),spaceShown:false};return {...s,_strategy:context};
   }
   function strategyAssignment(db,p,clubId,s){
-    const tactic=managerTactic(db,s,clubId),candidates=tactic.formation.map(position=>({position,fit:roleFit(db,p,position),score:suitability(db,{...p,position})*roleFit(db,p,position)})).sort((a,b)=>b.score-a.score),best=candidates[0],plan=s?._strategy?.teams[clubId];
+    const tactic=managerTactic(db,s,clubId),isPlayer=!p.id||p.id==='player',assessment=isPlayer?positionAssessment(db,p,clubId,s):null,candidates=assessment?.candidates||tactic.formation.map(position=>({position,fit:roleFit(db,p,position),score:suitability(db,{...p,position})*roleFit(db,p,position)})).sort((a,b)=>b.score-a.score),best=candidates[0],plan=s?._strategy?.teams[clubId];
+    if(isPlayer)return {...(best||{position:p.naturalPosition||p.position,fit:db.dynamics.roleWeights[0],score:0,available:false}),positions:assessment.positions,coverage:assessment.coverage,type:assessment.type,benchChance:assessment.benchChance};
     if(plan?.experiment&&p.position!=='GK'){const alternative=candidates.find(c=>c.position!==best.position&&c.fit>=db.strategyRules.experimentMinFit&&c.fit<=db.strategyRules.experimentMaxFit&&c.position!=='GK');if(alternative)return alternative;}
     return best;
   }
@@ -44283,8 +44341,12 @@ function simulateWorldFixture(db,f,s,continuation=null){
       const plan=s._strategy.teams[team.club],other=teams[1-side],opponent=s._strategy.teams[other.club];if(minute!==plan.liveMinute||plan.changes.length>=r.maxLiveChanges)continue;
       const reason=team.redIds.length?'red-card':team.stats.goals<other.stats.goals?'chasing':opponent.changes.length?'response':null;if(!reason)continue;
       const character=r.personalities.find(p=>p.id===plan.profile.personality),rng=random(hash(s.seed+':'+s._strategy.fixture+':live:'+team.club));if(rng()>=Math.min(r.liveChanceCap,character.liveChance)*(db.leagueMetaRules.adaptFloor+coachCapability(db,s,team.club)*db.leagueMetaRules.adaptWeight))continue;
-      const next=plan.tactic===plan.profile.planA?plan.profile.planB:plan.profile.planA,tactic=db.tactics.find(t=>t.id===next);plan.tactic=next;plan.changes.push({minute,club:team.club,from:team.tactic.id,to:next,reason});team.tactic=clone(tactic);
-      for(const p of team.players)if(p.slot!==null&&p.slot!==undefined&&p.entryMinute<=minute&&p.exitMinute>=minute)p.position=tactic.formation[p.slot];
+      const next=plan.tactic===plan.profile.planA?plan.profile.planB:plan.profile.planA,tactic=db.tactics.find(t=>t.id===next),active=team.players.filter(p=>p.slot!==null&&p.slot!==undefined&&p.entryMinute<=minute&&p.exitMinute>=minute&&!team.redIds.includes(p.id)),player=active.find(p=>p.id==='player');
+      let playerSlot=null;
+      if(player){const allowed=registeredPositions(db,s.player),position=tactic.formation.includes(player.position)?player.position:allowed.find(id=>tactic.formation.includes(id));if(!position||!allowed.includes(position))continue;playerSlot=tactic.formation[player.slot]===position?player.slot:tactic.formation.indexOf(position);}
+      plan.tactic=next;plan.changes.push({minute,club:team.club,from:team.tactic.id,to:next,reason});team.tactic=clone(tactic);
+      if(player&&playerSlot!==player.slot){const displaced=active.find(p=>p.slot===playerSlot),previous=player.slot;if(displaced)displaced.slot=previous;player.slot=playerSlot;}
+      for(const p of active)p.position=tactic.formation[p.slot];
       events.push({minute,type:'tacticEvent',club:team.club,formation:tactic.name,reason:r.reasons.find(x=>x.id===reason).name,player:'',playerId:null});
     }
     for(const [side,team] of teams.entries()){const other=teams[1-side],plan=s._strategy.teams[team.club];Object.assign(plan,tacticalAdvantage(db,s,{national:!!indexes(db,s).clubs[team.club]?.national},team.club,other.club,team.tactic,other.tactic,plan.experiment));}
@@ -44478,11 +44540,12 @@ function simulateWorldFixture(db,f,s,continuation=null){
     event.vars={...context.vars,...(event.episode?{episode:db.careerEpisodes.find(e=>e.id===story.activeEpisode.chain).name}:{})};event.name=textTemplate(template.name,event.vars);event.description=textTemplate(template.description,event.vars);story.pending={id:event.id,template:event.template,date:s.date,season:s.season,vars:clone(event.vars),episode:event.episode||null};return story.pending;
   }
   function upgradeCareerEventsDatabase(db,old){
+    old.profile.optionalPositionId??=db.profile.optionalPositionId;old.profile.positionUsage??=clone(db.profile.positionUsage);old.startingRouteRules??=clone(db.startingRouteRules);old.startingRouteRules.initialContract??=clone(db.startingRouteRules.initialContract);
     old.careerEventRules??=clone(db.careerEventRules);old.careerEpisodes??=clone(db.careerEpisodes);old.postseasonInboxRules??=clone(db.postseasonInboxRules);old.ui.reviewGrowthDisplay??=clone(db.ui.reviewGrowthDisplay);old.startingRouteRules??=clone(db.startingRouteRules);if(old.ui.labels.reviewGrowthHint===db.ui.reworkLegacyLabels.reviewGrowthHint)old.ui.labels.reviewGrowthHint=db.ui.labels.reviewGrowthHint;old.startingRouteRules.diversity??=clone(db.startingRouteRules.diversity);for(const league of db.startingRouteRules.europeLeagues)if(!old.startingRouteRules.europeLeagues.includes(league))old.startingRouteRules.europeLeagues.push(league);for(const t of old.careerDecisions){t.topic??=db.careerEventRules.legacyTopics[t.id]||db.careerEventRules.defaultTopic;t.kind??='standalone';t.requirements??=[];t.weight??=1;}
     for(const [key,value] of Object.entries(db.careerEventRules.previousIntervals))if(old.careerDecisionRules[key]===value)old.careerDecisionRules[key]=db.careerDecisionRules[key];
     for(const t of db.careerDecisions){const current=old.careerDecisions.find(x=>x.id===t.id);if(!current)old.careerDecisions.push(clone(t));else for(const key of ['topic','kind','requirements','weight','episode','success'])if(t[key]!==undefined)current[key]??=clone(t[key]);}
   }
-  return {playStyleDefaults,validPlayStyleBuild,playStyleEffects,setPlayStyleBuild,playStyleOpportunity,playStyleMatchEffects,trainingInjuryChance,trainingInjury,careerTraitFacts,careerTraitQualification,playerValueCheckpoints,trainingGrowthFactors,initializePlayerValueHistory,recordPlayerValue,retentionProposal,initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
+  return {playStyleDefaults,validPlayStyleBuild,playStyleEffects,setPlayStyleBuild,playStyleOpportunity,playStyleMatchEffects,trainingInjuryChance,trainingInjury,careerTraitFacts,careerTraitQualification,playerValueCheckpoints,trainingGrowthFactors,initializePlayerValueHistory,recordPlayerValue,retentionProposal,initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,initialWage,registeredPositions,positionAssessment,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
 })();
 </script>
 <script id="game-ui">
@@ -44715,6 +44778,7 @@ function validateDevelopmentSave(db,s){
 }
 
 function validateCareerEventsContent(db){
+ const usage=db.profile.positionUsage,initial=db.startingRouteRules.initialContract.europe;if(!db.profile.optionalPositionId||db.positions.some(p=>p.id===db.profile.optionalPositionId)||!usage||usage.maximumCoverageGap<0||usage.competitionWeight<0||usage.competitionWeight>1||usage.adaptabilityFloor<0||usage.adaptabilityFloor>=db.rules.scale||Object.values(usage.benchBonus).some(v=>!Number.isFinite(v)||v<0||v>1)||!initial||initial.minimumWeekly<db.rules.minimumSalary||initial.maximumWeekly<initial.minimumWeekly||initial.baseWeekly<initial.minimumWeekly||initial.baseWeekly>initial.maximumWeekly||initial.leagueReference<=0||initial.leagueExponent<0||initial.leagueExponent>1||initial.abilityFloor<=0||initial.abilityCeiling<initial.abilityFloor||initial.prestigeCap<0||initial.prestigeCap>1)throw Error('startingCareer.rules');
  const diversity=db.startingRouteRules.diversity;if(!diversity||!Number.isInteger(diversity.alternatives)||diversity.alternatives<1||['minimumFitWeight','fitExponent','preferenceCap','maximumSquadGap','leagueWeight'].some(k=>!Number.isFinite(diversity[k])||diversity[k]<=0)||db.startingRouteRules.europeLeagues.some(id=>!db.leagues.some(l=>l.id===id&&l.senior)))throw Error('startingOffers.diversity');const r=db.careerEventRules,ids=new Set(db.careerDecisions.map(t=>t.id));if(!r||!db.postseasonInboxRules?.resultPrefix||['revision','templateCooldownDays','topicCooldownDays','recentTopics','retryDays','contextMatches','contextDays','congestedMatches','episodeCooldownDays','episodeHistoryLimit'].some(k=>!Number.isInteger(r[k])||r[k]<=0)||!Array.isArray(db.careerEpisodes)||new Set(db.careerEpisodes.map(e=>e.id)).size!==db.careerEpisodes.length)throw Error('careerEvents.rules');
  for(const t of db.careerDecisions){if(!r.topics.includes(t.topic)||!['standalone','episode-start','episode-outcome'].includes(t.kind)||!Number.isFinite(t.weight)||t.weight<=0||!Array.isArray(t.requirements)||t.requirements.some(v=>!r.facts.includes(v.field)||!r.operators.includes(v.op)||typeof v.value!==r.factTypes?.[v.field]||['gte','lte'].includes(v.op)&&!Number.isFinite(v.value))||t.episode&&!db.careerEpisodes.some(e=>e.id===t.episode)||t.options.some(o=>o.episode&&!db.careerEpisodes.some(e=>e.id===o.episode)))throw Error('careerEvents.template');}
  for(const e of db.careerEpisodes)if(!e.id||!e.name||!e.description||!ids.has(e.success)||!ids.has(e.failure)||[e.success,e.failure].some(id=>{const t=db.careerDecisions.find(t=>t.id===id);return t.kind!=='episode-outcome'||t.episode!==e.id;})||!Number.isInteger(e.durationDays)||e.durationDays<=0||!Number.isInteger(e.minApps)||e.minApps<0||!Number.isInteger(e.finishApps)||e.finishApps<e.minApps||!Array.isArray(e.targets)||!e.targets.length||e.targets.some(t=>!db.ui.statFields.some(f=>f.id===t.field)||!Number.isFinite(t.value)||t.value<=0))throw Error('careerEpisodes.content');
@@ -44775,7 +44839,7 @@ function validateSave(envelope){
   for(const offer of s.offers)if(!finite(offer.weekly,0,Number.MAX_SAFE_INTEGER)||!/^\d{4}-\d{2}-\d{2}$/.test(offer.expiresDate)||!Number.isInteger(offer.years))throw Error(t('invalidSave'));
   const db=envelope.db,d=db.dynamics,w=s.world;validateIdentitySave(db,s);
   if(!w||!w.clubs||!w.rosters||!Array.isArray(w.news)||!Array.isArray(w.events)||!Array.isArray(w.retired)||!Array.isArray(w.snapshots)||!db.dynamics.trends.some(x=>x.id===w.trend))throw Error(t('invalidSave'));
-  const validateDNA=person=>{if(!db.characterTraits.some(x=>x.id===person.characterTrait)||!person.development||!person.traits||!db.personalities.some(x=>x.id===person.personality)||!db.growthTypes.some(x=>x.id===person.growthType)||!db.dynamics.styles.some(x=>x.id===person.development.style)||!Array.isArray(person.development.records)||!Array.isArray(person.development.injuries)||!finite(person.adaptation,0,db.rules.scale))throw Error(t('invalidSave'));for(const trait of db.traits)if(!finite(person.traits[trait.id],d.traitMin,d.traitMax))throw Error(t('invalidSave'));for(const a of db.attributes)for(const key of ['birth','caps'])if(!finite(person.development[key]?.[a.id],db.rules.abilityMin,db.rules.abilityMax))throw Error(t('invalidSave'));for(const id of [person.position,person.secondaryPosition,person.tertiaryPosition])if(!db.positions.some(pos=>pos.id===id))throw Error(t('invalidSave'));};
+  const validateDNA=person=>{if(!db.characterTraits.some(x=>x.id===person.characterTrait)||!person.development||!person.traits||!db.personalities.some(x=>x.id===person.personality)||!db.growthTypes.some(x=>x.id===person.growthType)||!db.dynamics.styles.some(x=>x.id===person.development.style)||!Array.isArray(person.development.records)||!Array.isArray(person.development.injuries)||!finite(person.adaptation,0,db.rules.scale))throw Error(t('invalidSave'));for(const trait of db.traits)if(!finite(person.traits[trait.id],d.traitMin,d.traitMax))throw Error(t('invalidSave'));for(const a of db.attributes)for(const key of ['birth','caps'])if(!finite(person.development[key]?.[a.id],db.rules.abilityMin,db.rules.abilityMax))throw Error(t('invalidSave'));if(!db.positions.some(pos=>pos.id===person.position))throw Error(t('invalidSave'));for(const id of [person.secondaryPosition,person.tertiaryPosition])if(id!==db.profile.optionalPositionId&&!db.positions.some(pos=>pos.id===id))throw Error(t('invalidSave'));if(person.secondaryPosition===db.profile.optionalPositionId&&person.tertiaryPosition!==db.profile.optionalPositionId)throw Error(t('invalidSave'));};
   for(const item of w.news)if(typeof item.headline!=='string'||typeof item.body!=='string'||typeof item.fans!=='string'||typeof item.press!=='string'||typeof item.sns!=='string'||!db.newsRules.some(rule=>rule.event===item.event)||!finite(item.likes,0,Number.MAX_SAFE_INTEGER)||!finite(item.comments,0,Number.MAX_SAFE_INTEGER)||!item.impact||!finite(item.impact.morale,-db.rules.scale,db.rules.scale)||!finite(item.impact.reputation,-db.rules.scale,db.rules.scale)||(item.club&&!db.clubs.some(c=>c.id===item.club)))throw Error(t('invalidSave'));
   const ledger=p.development.training;if(!ledger||ledger.season!==s.season||!finite(ledger.total,0,db.trainingRules.seasonTotalMax)||!Number.isInteger(ledger.weeks)||ledger.weeks<0||db.attributes.some(a=>!finite(ledger.gains?.[a.id],0,db.trainingRules.seasonAttributeMax))||Math.abs(Core.sum(Object.values(ledger.gains))-ledger.total)>Number.EPSILON*db.rules.scale*db.rules.scale)throw Error('training.progress');
   if(p.lastClubChangeDate&&!/^\d{4}-\d{2}-\d{2}$/.test(p.lastClubChangeDate))throw Error('transfer.arrivalDate');
@@ -45226,9 +45290,9 @@ function defaultDraft(){return {...Core.clone(DB.profile.defaults),startingSeed:
 const options=(items,current)=>items.map(x=>`<option value="${h(x.id)}" ${x.id===current?'selected':''}>${h(x.name)}</option>`).join('');
 function showContracts(){
  const offers=Core.startingOffers(DB,draft);draft.startingClubSelections??={};
- openModal(creationSteps("contract")+'<h2 id="dialog-title">'+h(t('chooseContract'))+'</h2><p>'+h(t('chooseContractDescription'))+'</p><p class="small muted">'+h(t('startingAlternativesHint'))+'</p><div class="club-cards">'+offers.map(({route,club,alternatives})=>{
+ openModal(creationSteps("contract")+'<h2 id="dialog-title">'+h(t('chooseContract'))+'</h2><p>'+h(t('chooseContractDescription'))+'</p><p class="small muted">'+h(t('startingAlternativesHint'))+' '+h(t('startingSalaryHint'))+'</p><div class="club-cards">'+offers.map(({route,club,alternatives})=>{
   club=alternatives.find(c=>c.id===draft.startingClubSelections[route.id])||club;draft.startingClubSelections[route.id]=club.id;
-  return '<article class="card club-card"><div class="row between"><div class="eyebrow">'+h(route.name)+'</div>'+badge(t('difficulty')+' '+route.difficulty,route.tag)+'</div><label class="starting-club-picker">'+h(t('startingAlternatives'))+'<select data-starting-route="'+h(route.id)+'" aria-label="'+h(t('startingAlternativesLabel',{route:route.name}))+'">'+alternatives.map(c=>'<option value="'+h(c.id)+'"'+(c.id===club.id?' selected':'')+'>'+h(c.name)+' · '+h(idx().leagues[c.league].name)+'</option>').join('')+'</select></label><div class="row">'+crest(club)+'<div><h3>'+h(club.name)+'</h3><p>'+h(idx().leagues[club.league].name)+'</p></div></div><p>'+h(route.description)+'</p><div class="detail-list">'+detail(t('weeklyWage'),money(Core.wage(DB,club.id,draft,route.salaryFactor)))+detail(t('contractLength'),t('years',{n:DB.rules.contractYears}))+detail(t('trust'),route.trust+'/'+DB.rules.scale)+detail(t('clubPrestige'),clubTier(club))+'</div><div class="notice">'+h(route.promise)+'</div>'+btn(t('sign'),'sign','data-route="'+h(route.id)+'" data-club="'+h(club.id)+'"','primary')+'</article>';
+  return '<article class="card club-card"><div class="row between"><div class="eyebrow">'+h(route.name)+'</div>'+badge(t('difficulty')+' '+route.difficulty,route.tag)+'</div><label class="starting-club-picker">'+h(t('startingAlternatives'))+'<select data-starting-route="'+h(route.id)+'" aria-label="'+h(t('startingAlternativesLabel',{route:route.name}))+'">'+alternatives.map(c=>'<option value="'+h(c.id)+'"'+(c.id===club.id?' selected':'')+'>'+h(c.name)+' · '+h(idx().leagues[c.league].name)+'</option>').join('')+'</select></label><div class="row">'+crest(club)+'<div><h3>'+h(club.name)+'</h3><p>'+h(idx().leagues[club.league].name)+'</p></div></div><p>'+h(route.description)+'</p><div class="detail-list">'+detail(t('weeklyWage'),money(Core.initialWage(DB,club.id,draft,route.id)))+detail(t('contractLength'),t('years',{n:DB.rules.contractYears}))+detail(t('trust'),route.trust+'/'+DB.rules.scale)+detail(t('clubPrestige'),clubTier(club))+'</div><div class="notice">'+h(route.promise)+'</div>'+btn(t('sign'),'sign','data-route="'+h(route.id)+'" data-club="'+h(club.id)+'"','primary')+'</article>';
  }).join('')+'</div><div class="dialog-actions">'+btn(t('personalityBack'),'personality-back')+'</div>');
 }
 function currentClub(){return idx().clubs[state.player.club];}
@@ -45363,19 +45427,23 @@ function clubBrowseLeagues(){const clubs=Object.values(idx().clubs).filter(c=>!c
 function worldBrowse(){const leagues=clubBrowseLeagues();let selection=browseSelection(leagues,worldCountryFilter,worldLeagueFilter,true);worldCountryFilter=selection.country;worldLeagueFilter=selection.league;let clubs=scopedBrowseClubs(worldCountryFilter,worldLeagueFilter);if(!clubs.some(c=>c.id===worldClubFilter))worldClubFilter='all';selection=browseSelection(leagues,worldPlayerCountryFilter,worldPlayerLeagueFilter,true);worldPlayerCountryFilter=selection.country;worldPlayerLeagueFilter=selection.league;const playerClubs=scopedBrowseClubs(worldPlayerCountryFilter,worldPlayerLeagueFilter);if(!playerClubs.some(c=>c.id===worldPlayerClubFilter))worldPlayerClubFilter='all';return {clubs,playerClubs};}
 function profileLocationField(field){const clubField=field.type==='club',selected=clubField?idx().clubs[draft[field.id]]:idx().leagues[draft[field.id]],leagues=DB.leagues.filter(l=>DB.profile.preferredLeagues.some(p=>p.id===l.id));let location=profileLocations[field.id];if(!location){const preferred=selected&&(clubField?idx().leagues[selected.league]:selected);location=profileLocations[field.id]=browseSelection(leagues,preferred?.country||draft.country,preferred?.id||draft.preferredLeague);}const available=leagues.filter(l=>l.country===location.country),clubs=DB.profile.dreamClubs.filter(c=>idx().clubs[c.id]?.league===location.league),undecided={id:DB.profile.unspecifiedId,name:t('undecided')};return `<fieldset class="profile-location" data-profile-location="${h(field.id)}"><legend>${h(field.label)}</legend><div class="location-filters ${clubField?'':'two-step'}"><label>${h(t('browseCountry'))}<select id="profile-${h(field.id)}-country" autocomplete="off" data-browse-country="${h(location.country)}" data-profile-filter="${h(field.id)}" data-step="country">${browseCountryOptions(leagues,location.country)}</select></label><label>${h(t('browseLeague'))}<select id="profile-${h(field.id)}${clubField?'-league':''}" ${clubField?`data-profile-filter="${h(field.id)}" data-step="league"`:`name="${h(field.id)}"`}>${clubField?browseLeagueOptions(available,location.country,location.league):options([undecided,...sortedBrowseLeagues(available)],draft[field.id])}</select></label>${clubField?`<label class="location-filter-club">${h(t('browseClub'))}<select id="profile-${h(field.id)}" name="${h(field.id)}">${browseClubOptions(clubs,draft[field.id],false).replace(/^/,options([undecided],draft[field.id]))}</select></label>`:''}</div></fieldset>`;}
 
-function positionOptions(fieldId){return DB.positions.map(p=>`<option value="${h(p.id)}" ${draft[fieldId]===p.id?'selected':''}>${h(p.id+' · '+p.name)}</option>`).join('');}
-function profileField(field){if(['league','club'].includes(field.type))return profileLocationField(field);const value=draft[field.id],lim=DB.profile.limits;let input;if(field.type==='text')input=`<input id="profile-${h(field.id)}" name="${h(field.id)}" value="${h(value)}" maxlength="${field.id==='displayName'?lim.displayNameMax:lim.nameMax}" autocomplete="off" ${field.optional?'':'required'}>`;else if(field.type==='number')input=`<input id="profile-${h(field.id)}" name="${h(field.id)}" type="number" value="${h(value)}" min="${lim[field.min]}" max="${lim[field.max]}" step="1" required>`;else{const tables={country:DB.countries,foot:DB.profile.feet,league:DB.profile.preferredLeagues,club:DB.profile.dreamClubs,characterTrait:DB.characterTraits};input=`<select id="profile-${h(field.id)}" name="${h(field.id)}" required>${field.type==='position'?positionOptions(field.id):options(tables[field.type],value)}</select>`;}return `<label for="profile-${h(field.id)}">${infoLabel(field.label)}${input}</label>`;}
+function positionOptions(fieldId){const none=DB.profile.optionalPositionId;return (fieldId==='position'?'':`<option value="${h(none)}" ${draft[fieldId]===none?'selected':''}>${h(t('positionNone'))}</option>`)+DB.positions.map(p=>`<option value="${h(p.id)}" ${draft[fieldId]===p.id?'selected':''}>${h(p.id+' · '+p.name)}</option>`).join('');}
+function profileField(field){if(['league','club'].includes(field.type))return profileLocationField(field);const value=draft[field.id],lim=DB.profile.limits;let input;if(field.type==='text')input=`<input id="profile-${h(field.id)}" name="${h(field.id)}" value="${h(value)}" maxlength="${field.id==='displayName'?lim.displayNameMax:lim.nameMax}" autocomplete="off" ${field.optional?'':'required'}>`;else if(field.type==='number')input=`<input id="profile-${h(field.id)}" name="${h(field.id)}" type="number" value="${h(value)}" min="${lim[field.min]}" max="${lim[field.max]}" step="1" required>`;else{const tables={country:DB.countries,foot:DB.profile.feet,league:DB.profile.preferredLeagues,club:DB.profile.dreamClubs,characterTrait:DB.characterTraits};input=`<select id="profile-${h(field.id)}" name="${h(field.id)}" required ${field.id==='tertiaryPosition'&&draft.secondaryPosition===DB.profile.optionalPositionId?'disabled aria-disabled="true"':''}>${field.type==='position'?positionOptions(field.id):options(tables[field.type],value)}</select>`;}return `<label for="profile-${h(field.id)}">${infoLabel(field.label)}${input}</label>`;}
 function renderOnboard(){draft||=defaultDraft();if(screen==='settings'){renderOnboardSettings();return;}if(creationStep==='personality'){renderPersonality();return;}renderProfile();}
 function renderOnboardSettings(){document.getElementById('app').innerHTML=`<main class="onboard"><header class="onboard-header row between wrap"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(DB.meta.subtitle)}</small></div></div>${btn(t('settingsBack'),'onboard-settings-back')}</header>${settings()}</main>`;}
 function renderProfile(){
- document.getElementById('app').innerHTML=`<main class="onboard"><header class="onboard-header row between wrap"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(DB.meta.subtitle)}</small></div></div><div class="row wrap">${btn(t('import'),'import','','subtle')}${btn(t('settings'),'onboard-settings')}${btn(t(preferences.layout==='desktop'?'autoView':'desktopView'),'layout-toggle','','subtle')}${badge('v'+DB.meta.version)}</div></header><div class="onboard-main"><aside class="intro"><div class="eyebrow">${h(t('newCareer'))}</div><h1>${h(t('introTitle')).replace(/\n/g,'<br>')}</h1><p class="muted">${h(t('introDescription'))}</p><div class="profile-preview"><div id="preview-shirt">${shirt(draft.number,draft.displayName||draft.name)}</div><div id="preview-name" class="player-name">${h(draft.name)}</div><div id="preview-meta" class="player-meta"></div></div><p class="small muted" style="margin-top:22px">${h(t('storageNotice'))}</p></aside><section class="card">${creationSteps('profile')}<h2>${h(t('create'))}</h2><div class="divider"></div><form id="profile-form"><div class="form-grid">${DB.profile.fields.map(profileField).join('')}</div><p class="small muted" style="margin-top:12px">${h(t('positionSwapHint'))}</p><div class="notice small" style="margin-top:18px"><b>${h(t('characterTraitHint'))}</b><p id="character-trait-hint" style="margin-top:8px"></p></div><div class="divider"></div><div class="section-head"><h3>${h(t('initialStats'))}</h3><span class="tag">${h(t('overall'))} <output id="initial-overall"></output> / ${DB.rules.initialOverallMax}</span></div><div class="stat-sliders">${DB.attributes.map(a=>`<label for="stat-${h(a.id)}"><span class="row between"><span>${h(a.name)} <span class="small muted">${h(a.short)}</span></span><output id="value-${h(a.id)}">${draft.stats[a.id]}</output></span><input id="stat-${h(a.id)}" name="stat-${h(a.id)}" type="range" min="${DB.profile.limits.statMin}" max="${DB.profile.limits.statMax}" step="${DB.profile.limits.statStep}" value="${draft.stats[a.id]}"></label>`).join('')}</div><div class="budget"><div class="row between"><b>${h(t('remainingAbility'))}</b><strong class="metric num"><output id="ability-remaining"></output></strong></div><p class="small muted">${h(t('initialStatsHint',{max:DB.rules.initialOverallMax,totalMax:DB.rules.initialOverallMax*DB.attributes.length}))} ${h(t('remainingAbilityHint'))}</p></div>${traitSliders()}<div id="profile-error" class="form-error" role="status"></div><button type="submit" id="begin-career" class="primary" style="width:100%">${h(t('begin'))} →</button></form></section></div><p class="small muted" style="margin-top:30px">${h(DB.meta.sampleNotice)}</p></main>`;updateDraft();
+ document.getElementById('app').innerHTML=`<main class="onboard"><header class="onboard-header row between wrap"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(DB.meta.subtitle)}</small></div></div><div class="row wrap">${btn(t('import'),'import','','subtle')}${btn(t('settings'),'onboard-settings')}${btn(t(preferences.layout==='desktop'?'autoView':'desktopView'),'layout-toggle','','subtle')}${badge('v'+DB.meta.version)}</div></header><div class="onboard-main"><aside class="intro"><div class="eyebrow">${h(t('newCareer'))}</div><h1>${h(t('introTitle')).replace(/\n/g,'<br>')}</h1><p class="muted">${h(t('introDescription'))}</p><div class="profile-preview"><div id="preview-shirt">${shirt(draft.number,draft.displayName||draft.name)}</div><div id="preview-name" class="player-name">${h(draft.name)}</div><div id="preview-meta" class="player-meta"></div></div><p class="small muted" style="margin-top:22px">${h(t('storageNotice'))}</p></aside><section class="card">${creationSteps('profile')}<h2>${h(t('create'))}</h2><div class="divider"></div><form id="profile-form"><div class="form-grid">${DB.profile.fields.map(profileField).join('')}</div><p class="small muted" style="margin-top:12px">${h(t('positionSwapHint'))} ${h(t('positionUsageHint'))}</p><div class="notice small" style="margin-top:18px"><b>${h(t('characterTraitHint'))}</b><p id="character-trait-hint" style="margin-top:8px"></p></div><div class="divider"></div><div class="section-head"><h3>${h(t('initialStats'))}</h3><span class="tag">${h(t('overall'))} <output id="initial-overall"></output> / ${DB.rules.initialOverallMax}</span></div><div class="stat-sliders">${DB.attributes.map(a=>`<label for="stat-${h(a.id)}"><span class="row between"><span>${h(a.name)} <span class="small muted">${h(a.short)}</span></span><output id="value-${h(a.id)}">${draft.stats[a.id]}</output></span><input id="stat-${h(a.id)}" name="stat-${h(a.id)}" type="range" min="${DB.profile.limits.statMin}" max="${DB.profile.limits.statMax}" step="${DB.profile.limits.statStep}" value="${draft.stats[a.id]}"></label>`).join('')}</div><div class="budget"><div class="row between"><b>${h(t('remainingAbility'))}</b><strong class="metric num"><output id="ability-remaining"></output></strong></div><p class="small muted">${h(t('initialStatsHint',{max:DB.rules.initialOverallMax,totalMax:DB.rules.initialOverallMax*DB.attributes.length}))} ${h(t('remainingAbilityHint'))}</p></div>${traitSliders()}<div id="profile-error" class="form-error" role="status"></div><button type="submit" id="begin-career" class="primary" style="width:100%">${h(t('begin'))} →</button></form></section></div><p class="small muted" style="margin-top:30px">${h(DB.meta.sampleNotice)}</p></main>`;updateDraft();
 }
-function updateDraft(event=null){const form=document.getElementById('profile-form');if(!form)return;const previous=Object.fromEntries(DB.profile.positionFields.map(key=>[key,draft[key]])),values=new FormData(form);for(const field of DB.profile.fields)draft[field.id]=field.type==='number'?Number(values.get(field.id)):String(values.get(field.id)||'');const positionField=DB.profile.positionFields.find(key=>'profile-'+key===event?.target?.id);if(positionField){const duplicate=DB.profile.positionFields.find(key=>key!==positionField&&draft[key]===draft[positionField]);if(duplicate)draft[duplicate]=previous[positionField];}const changed=DB.attributes.find(a=>'stat-'+a.id===event?.target?.id),budget=DB.rules.initialOverallMax*DB.attributes.length;if(changed){const others=Core.sum(DB.attributes.filter(a=>a.id!==changed.id).map(a=>draft.stats[a.id]));draft.stats[changed.id]=Core.clamp(Number(values.get('stat-'+changed.id)),DB.profile.limits.statMin,Math.min(DB.profile.limits.statMax,budget-others));}
+function updateDraft(event=null){const form=document.getElementById('profile-form');if(!form)return;const previous=Object.fromEntries(DB.profile.positionFields.map(key=>[key,draft[key]])),values=new FormData(form);for(const field of DB.profile.fields)draft[field.id]=field.type==='number'?Number(values.get(field.id)):String(values.get(field.id)||'');const positionField=DB.profile.positionFields.find(key=>'profile-'+key===event?.target?.id);if(positionField&&draft[positionField]!==DB.profile.optionalPositionId){const duplicate=DB.profile.positionFields.find(key=>key!==positionField&&draft[key]===draft[positionField]);if(duplicate){if(duplicate==='position'&&previous[positionField]===DB.profile.optionalPositionId)draft[positionField]=DB.profile.optionalPositionId;else draft[duplicate]=previous[positionField];}}
+ if(draft.secondaryPosition===DB.profile.optionalPositionId)draft.tertiaryPosition=DB.profile.optionalPositionId;else if(!draft.tertiaryPosition)draft.tertiaryPosition=DB.profile.optionalPositionId;
+ // Moving an optional position into primary must never move "none" into primary.
+ if(draft.position===DB.profile.optionalPositionId){draft.position=previous.position;draft[positionField]=previous[positionField];}const changed=DB.attributes.find(a=>'stat-'+a.id===event?.target?.id),budget=DB.rules.initialOverallMax*DB.attributes.length;if(changed){const others=Core.sum(DB.attributes.filter(a=>a.id!==changed.id).map(a=>draft.stats[a.id]));draft.stats[changed.id]=Core.clamp(Number(values.get('stat-'+changed.id)),DB.profile.limits.statMin,Math.min(DB.profile.limits.statMax,budget-others));}
 
  const remaining=budget-Core.sum(Object.values(draft.stats));for(const a of DB.attributes){const slider=document.getElementById('stat-'+a.id);slider.max=DB.profile.limits.statMax;slider.value=draft.stats[a.id];document.getElementById('value-'+a.id).textContent=n(draft.stats[a.id]);}
  for(const a of DB.traits){draft.traits[a.id]=Number(values.get('trait-'+a.id));document.getElementById('trait-value-'+a.id).textContent=n(draft.traits[a.id]);}
  for(const field of DB.profile.positionFields)document.getElementById('profile-'+field).innerHTML=positionOptions(field);
- const unique=new Set(DB.profile.positionFields.map(key=>draft[key])).size===DB.profile.positionFields.length,valid=unique&&remaining>=0;
+ const tertiary=document.getElementById('profile-tertiaryPosition');tertiary.disabled=draft.secondaryPosition===DB.profile.optionalPositionId;tertiary.setAttribute('aria-disabled',String(tertiary.disabled));
+ const selected=DB.profile.positionFields.map(key=>draft[key]).filter(id=>id!==DB.profile.optionalPositionId),unique=new Set(selected).size===selected.length,valid=unique&&DB.positions.some(p=>p.id===draft.position)&&remaining>=0;
  document.getElementById('initial-overall').textContent=abilityLabel(Core.overall(DB,draft.stats));document.getElementById('ability-remaining').textContent=n(Math.max(0,remaining));document.getElementById('begin-career').disabled=!valid;document.getElementById('profile-error').textContent=!unique?t('positionUnique'):valid?'':t('invalidStats',{max:DB.rules.initialOverallMax});
  document.getElementById('character-trait-hint').textContent=DB.characterTraits.find(x=>x.id===draft.characterTrait).description;document.getElementById('preview-name').textContent=draft.name;document.getElementById('preview-meta').textContent=draft.position+' · '+(DB.countries.find(c=>c.id===draft.country)?.name||'');document.getElementById('preview-shirt').innerHTML=shirt(draft.number,draft.displayName||draft.name);fitShirtNames();
 }
@@ -45387,7 +45455,7 @@ function npcDetails(id){const p=[...Object.values(state.world.rosters).flat(),..
 
 let worldScope=DB.worldViews[0].id,worldQuery='',worldClubQuery='',seasonCalendarMonth=null,seasonCalendarDate=null,seasonCalendarKey=null,seasonCalendarObservedMonth=null,seasonCalendarObservedDate=null,shellHeaderObserver=null;
 function traitSliders(){return `<div class="divider"></div><h3>${h(t('traitTitle'))}</h3><p class="small muted" style="margin:8px 0 18px">${h(t('traitHint'))}</p><div class="stat-sliders dna-sliders">${DB.traits.map(a=>`<label for="trait-${h(a.id)}"><span class="row between"><span>${h(a.name)}</span><output id="trait-value-${h(a.id)}">${n(draft.traits[a.id])}</output></span><input id="trait-${h(a.id)}" name="trait-${h(a.id)}" type="range" min="${a.min}" max="${a.max}" step="${a.step}" value="${draft.traits[a.id]}"><span class="small muted">${h(a.description)}</span></label>`).join('')}</div>`;}
-function tacticsCard(){const p=state.player,club=currentClub(),manager=state.world.clubs[p.club].manager,tactic=Core.managerTactic(DB,state,p.club),role=Core.roleAssignment(DB,p,p.club,state);return `<section class="card"><div class="section-head"><h2>${h(t('tacticalFit'))}</h2>${badge(tactic.name)}</div><div class="detail-list">${detail(t('manager'),manager.name)}${detail(t('roleRank'),[p.position,p.secondaryPosition,p.tertiaryPosition].join(' / '))}${detail(t('actualRole'),role.position)}${detail(t('roleFit'),n(role.fit*DB.rules.scale,1)+'%')}${detail(t('coaching'),n(manager.coaching,1))}${detail(t('adaptation'),n(p.adaptation,1))}</div><p class="small muted" style="margin-top:16px">${h(t('managerHint'))}</p></section>`;}
+function tacticsCard(){const p=state.player,club=currentClub(),manager=state.world.clubs[p.club].manager,tactic=Core.managerTactic(DB,state,p.club),role=Core.roleAssignment(DB,p,p.club,state);return `<section class="card"><div class="section-head"><h2>${h(t('tacticalFit'))}</h2>${badge(tactic.name)}</div><div class="detail-list">${detail(t('manager'),manager.name)}${detail(t('roleRank'),Core.registeredPositions(DB,p).join(' / '))}${detail(t('managerPositionView'),t(role.type))}${detail(t('positionCoverage'),n(role.coverage))}${detail(t('actualRole'),role.available===false?t('positionNoSlot'):role.position)}${detail(t('roleFit'),n(role.fit*DB.rules.scale,1)+'%')}${detail(t('coaching'),n(manager.coaching,1))}${detail(t('adaptation'),n(p.adaptation,1))}</div><p class="small muted" style="margin-top:16px">${h(t(role.type==='positionSpecialist'?'managerSpecialistHint':'managerVersatileHint'))} ${h(t('managerHint'))}</p></section>`;}
 
 
 function restoreProgrammaticCountry(event){const select=event.target;if(select.dataset.browseCountry===undefined||event.isTrusted)return false;select.value=select.dataset.browseCountry;return true;}
