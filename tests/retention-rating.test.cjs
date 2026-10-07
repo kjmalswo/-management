@@ -1,0 +1,27 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8'),section=id=>html.match(new RegExp('<script id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>'))[1],DB=JSON.parse(section('game-db')),engine=section('game-engine'),ui=section('game-ui'),ctx=vm.createContext({});new vm.Script(ui);vm.runInContext(engine+';globalThis.C=FootballCore;',ctx);const C=ctx.C,clone=v=>C.clone(v),plain=v=>JSON.parse(JSON.stringify(v));
+const base=C.createCareer(DB,{...clone(DB.profile.defaults),name:'재계약 검증',stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial]))},'domestic','kr2-0');
+function candidate(){const s=clone(base);s.date=C.dateAdd(s.date,180);s.player.age=21;s.player.reputation=60;s.player.contract.weekly=100;for(const a of DB.attributes)s.player.stats[a.id]=85;s.world.clubs[s.player.club].finance=DB.dynamics.financeMax;for(let i=0;i<10;i++){const stats=C.createStats(DB);stats.minutes=90;stats.rating=i<5?6.9:7.7;s.player.history.push({date:C.dateAdd(s.date,-63+i*7),club:s.player.club,stats});}return s;}
+test('sustained rising form creates an affordable improved offer before expiry and carries its terms into negotiation',()=>{
+ const s=candidate(),contract=JSON.stringify(s.player.contract),offer=C.retentionProposal(DB,s);assert.ok(offer);assert.ok(offer.terms.weekly>=s.player.contract.weekly*DB.retentionRules.minimumWageFactor);assert.ok(C.validTerms(DB,offer.terms));assert.ok(offer.terms.signingBonus>0&&offer.terms.loyaltyBonus>0);
+ C.renewalInvitation(DB,s);const mail=s.inbox.find(m=>m.retentionTerms);assert.ok(mail);assert.ok(C.pendingResponses(DB,s).some(m=>m.id===mail.id));C.renewalInvitation(DB,s);assert.equal(s.inbox.filter(m=>m.retentionTerms).length,1);assert.equal(JSON.stringify(s.player.contract),contract);
+ const deal=C.startDeal(DB,s,s.player.club,'renewal');assert.ok(deal);assert.deepEqual(plain(deal.terms),plain(mail.retentionTerms));assert.equal(mail.answered,true);assert.equal(JSON.stringify(s.player.contract),contract);
+ const annual=offer.terms.weekly*DB.rules.annualSalaryWeeks,b=C.buyerLimits(DB,s,s.player.club),cost=annual*offer.terms.years+offer.terms.signingBonus+offer.terms.loyaltyBonus+annual*offer.terms.agentCommissionPercent/DB.rules.scale;assert.ok(cost<=b.budget+b.finance*DB.dealRules.buyerWageBudgetShare);
+});
+test('poor or isolated form, wrong-club records, recent contracts and insufficient club finances do not trigger retention',()=>{
+ for(const mutate of [s=>s.player.history=s.player.history.slice(-1),s=>s.player.history.at(-1).stats.rating=5,s=>s.player.history.forEach(h=>h.club='other'),s=>s.player.contract.signedDate=s.date,s=>s.world.clubs[s.player.club].finance=1,s=>s.player.freeAgent=true,s=>s.pendingTransfer={club:'other'}]){const s=candidate();mutate(s);assert.equal(C.retentionProposal(DB,s),null);}
+ const flat=candidate();flat.player.contract.weekly=DB.dealFields.find(f=>f.id==='weekly').max;flat.player.history.forEach(h=>h.stats.rating=7.7);assert.equal(C.retentionProposal(DB,flat),null);
+});
+test('declined proposals respect cooldown, expired offers stop blocking and live renewal talks prevent duplicates',()=>{
+ const s=candidate();C.renewalInvitation(DB,s);const m=s.inbox.find(m=>m.retentionTerms);m.answered=true;C.renewalInvitation(DB,s);assert.equal(s.inbox.filter(m=>m.retentionTerms).length,1);
+ const expired=candidate();C.renewalInvitation(DB,expired);const old=expired.inbox.find(m=>m.retentionTerms);expired.date=C.dateAdd(expired.date,31);assert.ok(!C.pendingResponses(DB,expired).some(m=>m.id===old.id));C.renewalInvitation(DB,expired);assert.equal(old.answered,true);assert.equal(expired.inbox.filter(m=>m.retentionTerms).length,1);
+ const live=candidate();C.startDeal(DB,live,live.player.club,'renewal');C.renewalInvitation(DB,live);assert.equal(live.inbox.filter(m=>m.retentionTerms).length,0);
+});
+test('old DB gains retention rules and default rating weights while custom weights remain',()=>{
+ const old=clone(DB);delete old.retentionRules;delete old.ratingBalanceRules;old.engine.rating.goal=.64;old.engine.rating.assist=.41;C.upgradeDatabase(DB,old);assert.deepEqual(plain(old.retentionRules),DB.retentionRules);assert.equal(old.engine.rating.goal,1.05);assert.equal(old.engine.rating.assist,.75);
+ const custom=clone(DB);custom.engine.rating.goal=.9;custom.engine.rating.assist=.6;C.upgradeDatabase(DB,custom);assert.equal(custom.engine.rating.goal,.9);assert.equal(custom.engine.rating.assist,.6);
+});
+test('actual rating calculation gives braces and hat tricks greater impact and retains penalties and the cap',()=>{
+ const line=engine.split('\n').find(line=>line.includes('for(const person of teams[side].players){const s=person.match;'));
+ function rate(goals,assists=0,red=0,db=DB){const stats=C.createStats(db);Object.assign(stats,{minutes:90,goals,assists,red});const person={position:'ST',match:stats},context=vm.createContext({db,e:db.engine,r:db.rules,idx:C.indexes(db),teams:[{players:[person],stats:{goals:4}},{stats:{goals:0}}],side:0,clamp:C.clamp,rolePerformance:()=>({score:0})});vm.runInContext(line,context);return stats.rating;}
+ assert.ok(rate(2)>=8.4);assert.ok(rate(3)>=9.5);assert.ok(rate(0,2)>rate(0)+1.4);assert.equal(rate(10),10);assert.ok(rate(2,0,1)<rate(2));const old=clone(DB);old.engine.rating.goal=.64;old.engine.rating.assist=.41;assert.ok(Math.abs(rate(2)-rate(2,0,0,old)-.82)<1e-9);assert.ok(Math.abs(rate(0,2)-rate(0,2,0,old)-.68)<1e-9);
+});

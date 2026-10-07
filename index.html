@@ -113,7 +113,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.8.2",
+    "version": "20.8.3",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -20363,8 +20363,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     },
     "rating": {
       "base": 6.25,
-      "goal": 0.64,
-      "assist": 0.41,
+      "goal": 1.05,
+      "assist": 0.75,
       "keyPass": 0.045,
       "shotTarget": 0.025,
       "tackle": 0.05,
@@ -21746,7 +21746,11 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "playerStrengthsCurrent": "현재 능력치 기준",
       "playerStrengthsHint": "최고 능력치와 {gap}점 이내인 능력치를 모두 특장점으로 표시합니다. 내 능력치 사이의 상대적인 장점이며 성장에 따라 달라집니다.",
       "assetPriceBasis": "실제 가격 기준",
-      "assetPriceReferenceHint": "실물 상품은 공개 가격을 구매 수수료 포함 총액으로 적용합니다. 신품·중고·세금 조건은 각 상품의 가격 기준을 확인하세요. 보유 후 평가액은 별도로 변동합니다."
+      "assetPriceReferenceHint": "구매 총액은 수수료를 포함합니다. 실물 상품의 공개 가격 조건과 부동산의 게임 설정 가격은 각 상품의 가격 기준을 확인하세요. 보유 후 평가액은 별도로 변동합니다.",
+      "moneyInputInvalid": "숫자와 소수점으로 금액을 입력하세요.",
+      "moneyInputRange": "금액은 {min} ~ {max} 범위로 입력하세요.",
+      "retentionInvitation": "구단의 개선된 재계약 제안",
+      "retentionInvitationBody": "{club}이 최근 꾸준한 활약과 가치 상승을 평가해 선수와 함께하고 싶어 합니다. 최근 5경기 평균 평점 {rating}. 제안 주급 {weekly}, 계약금 {signing}, 충성 보너스 {loyalty}, 계약 기간 {years}년입니다. {until}까지 재계약 협상을 시작하거나 거절할 수 있습니다. 협상과 메디컬을 마친 뒤 직접 서명해야 계약이 바뀝니다."
     },
     "statFields": [
       {
@@ -40767,7 +40771,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "commercial": [
       {
         "id": "local-boots",
-        "name": "스트라이드 풋볼",
+        "name": "푸마",
         "kind": "sponsor",
         "kindName": "축구화 스폰서",
         "category": "boots",
@@ -40778,11 +40782,11 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "payment": 150,
         "goalBonus": 15,
         "duration": 180,
-        "description": "지역 선수의 첫 장비 후원. 축구화 분야 독점 사용과 30일마다 콘텐츠 1회 제작이 필요합니다."
+        "description": "푸마 축구화 후원. 축구화 분야 독점 사용과 30일마다 콘텐츠 1회 제작이 필요합니다."
       },
       {
         "id": "pro-boots",
-        "name": "벨로시티 스포츠",
+        "name": "아디다스",
         "kind": "sponsor",
         "kindName": "장비 스폰서",
         "category": "boots",
@@ -40793,11 +40797,11 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "payment": 2200,
         "goalBonus": 120,
         "duration": 360,
-        "description": "프로 선수 장비 후원. 축구화 독점 사용과 정기 촬영을 통해 보수를 받습니다."
+        "description": "아디다스 선수 장비 후원. 축구화 독점 사용과 정기 촬영을 통해 보수를 받습니다."
       },
       {
         "id": "elite-boots",
-        "name": "에이펙스 퍼포먼스",
+        "name": "나이키",
         "kind": "sponsor",
         "kindName": "글로벌 장비 스폰서",
         "category": "boots",
@@ -40808,11 +40812,11 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "payment": 38000,
         "goalBonus": 1800,
         "duration": 360,
-        "description": "정상급 선수의 글로벌 장비 파트너십. 명성 조건과 독점·정기 홍보 의무를 적용합니다."
+        "description": "나이키 선수 장비 파트너십. 명성 조건과 독점·정기 홍보 의무를 적용합니다."
       },
       {
         "id": "nutrition",
-        "name": "리커버리 랩",
+        "name": "허벌라이프",
         "kind": "sponsor",
         "kindName": "영양 브랜드 스폰서",
         "category": "nutrition",
@@ -40823,11 +40827,11 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "payment": 500,
         "goalBonus": 25,
         "duration": 180,
-        "description": "정기 콘텐츠 제작을 조건으로 한 영양 브랜드 홍보 계약. 실제 회복 제품 효과를 보장하지 않습니다."
+        "description": "정기 콘텐츠 제작을 조건으로 한 허벌라이프 영양 브랜드 홍보 계약. 실제 회복 제품 효과를 보장하지 않습니다."
       },
       {
         "id": "tech-ad",
-        "name": "노바 모바일 캠페인",
+        "name": "삼성 갤럭시 캠페인",
         "kind": "advert",
         "kindName": "단기 광고 계약",
         "category": "technology",
@@ -40838,11 +40842,11 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "payment": 900,
         "goalBonus": 0,
         "duration": 30,
-        "description": "30일 안에 광고 콘텐츠 1회 제작 시 캠페인 보수를 지급합니다. 촬영 없이 기간이 지나면 보수가 없습니다."
+        "description": "삼성 갤럭시 광고. 30일 안에 광고 콘텐츠 1회 제작 시 캠페인 보수를 지급합니다. 촬영 없이 기간이 지나면 보수가 없습니다."
       },
       {
         "id": "fashion-ad",
-        "name": "메종 오라 앰배서더",
+        "name": "루이 비통 앰배서더",
         "kind": "advert",
         "kindName": "패션 광고 계약",
         "category": "fashion",
@@ -40853,7 +40857,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "payment": 10000,
         "goalBonus": 0,
         "duration": 90,
-        "description": "패션 분야 독점 앰배서더. 30일마다 콘텐츠를 제작해야 다음 정산금을 받을 수 있습니다."
+        "description": "루이 비통 패션 분야 독점 앰배서더. 30일마다 콘텐츠를 제작해야 다음 정산금을 받을 수 있습니다."
       }
     ],
     "investments": [
@@ -40908,26 +40912,28 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "name": "다운타운 최고급 아파트",
         "category": "부동산",
         "description": "첫 자가 주택 또는 임대용 아파트. 직접 거주하면 생활 관리의 주거비가 면제되고 임대료는 받지 않습니다.",
-        "price": 90000,
+        "price": 1666666.66666667,
         "upkeep": 120,
         "rent": 450,
         "home": true,
         "growth": 0.0015,
         "volatility": 0.008,
-        "limit": 4
+        "limit": 4,
+        "priceIncludesPurchaseFee": true
       },
       {
         "id": "villa",
         "name": "프라이빗 빌라",
         "category": "부동산",
         "description": "사생활을 지킬 수 있는 선수 주거 공간. 한 번에 한 채만 직접 거주할 수 있습니다.",
-        "price": 650000,
+        "price": 12000000,
         "upkeep": 900,
         "rent": 2800,
         "home": true,
         "growth": 0.001,
         "volatility": 0.012,
-        "limit": 2
+        "limit": 2,
+        "priceIncludesPurchaseFee": true
       },
       {
         "id": "retail",
@@ -41152,10 +41158,28 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "daily-car": 24000,
         "supercar": 180000,
         "watch": 6500,
-        "yacht": 900000
+        "yacht": 900000,
+        "apartment": 90000,
+        "villa": 650000
       },
       "previousLabels": {
         "investmentFeeHint": "입력 금액은 EUR 기준입니다. 매수 수수료는 별도로 현금에서 차감하며, 매도 수수료는 회수 금액에서 차감합니다."
+      },
+      "commercialNames": {
+        "local-boots": "스트라이드 풋볼",
+        "pro-boots": "벨로시티 스포츠",
+        "elite-boots": "에이펙스 퍼포먼스",
+        "nutrition": "리커버리 랩",
+        "tech-ad": "노바 모바일 캠페인",
+        "fashion-ad": "메종 오라 앰배서더"
+      },
+      "commercialDescriptions": {
+        "local-boots": "지역 선수의 첫 장비 후원. 축구화 분야 독점 사용과 30일마다 콘텐츠 1회 제작이 필요합니다.",
+        "pro-boots": "프로 선수 장비 후원. 축구화 독점 사용과 정기 촬영을 통해 보수를 받습니다.",
+        "elite-boots": "정상급 선수의 글로벌 장비 파트너십. 명성 조건과 독점·정기 홍보 의무를 적용합니다.",
+        "nutrition": "정기 콘텐츠 제작을 조건으로 한 영양 브랜드 홍보 계약. 실제 회복 제품 효과를 보장하지 않습니다.",
+        "tech-ad": "30일 안에 광고 콘텐츠 1회 제작 시 캠페인 보수를 지급합니다. 촬영 없이 기간이 지나면 보수가 없습니다.",
+        "fashion-ad": "패션 분야 독점 앰배서더. 30일마다 콘텐츠를 제작해야 다음 정산금을 받을 수 있습니다."
       }
     },
     "assetPriceReferences": {
@@ -41182,7 +41206,42 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "basis": "Navis Marine · 2026년식 신품 매물 · 부가세 별도 호가",
         "url": "https://navis-marine.com/project/2026-azimut-fly-53/",
         "checkedAt": "2026-10-07"
+      },
+      "apartment": {
+        "amount": 1666666.66666667,
+        "basis": "게임 설정가 · 25억 원 · 구매 수수료 포함",
+        "url": "",
+        "checkedAt": "2026-10-07"
+      },
+      "villa": {
+        "amount": 12000000,
+        "basis": "게임 설정가 · 180억 원 · 구매 수수료 포함",
+        "url": "",
+        "checkedAt": "2026-10-07"
       }
+    }
+  },
+  "retentionRules": {
+    "matches": 5,
+    "minimumMinutes": 30,
+    "lookbackDays": 90,
+    "minimumContractDays": 90,
+    "minimumRating": 6.8,
+    "averageRating": 7.3,
+    "formRise": 0.25,
+    "marketGrowthFactor": 1.2,
+    "targetWageFactor": 1.35,
+    "minimumWageFactor": 1.15,
+    "signingAnnualShare": 0.18,
+    "loyaltyAnnualShare": 0.12,
+    "offerDays": 30,
+    "cooldownDays": 90,
+    "ratingDigits": 2
+  },
+  "ratingBalanceRules": {
+    "previousWeights": {
+      "goal": 0.64,
+      "assist": 0.41
     }
   }
 }
@@ -41954,14 +42013,35 @@ function simulateWorldFixture(db,f,s,continuation=null){
     for(const d of s.deals.filter(d=>dealLive(d)&&!d.awaiting&&d.deadline>=s.date&&d.sourceClub===p.club)){const m=s.inbox.filter(m=>responseDeal(s,m)?.id===d.id).at(-1);if(m)items.push(m);}
     for(const m of s.inbox){if(items.includes(m))continue;if(m.action==='offer'){const o=s.offers.find(o=>o.id===m.offer);if(o?.status==='open'&&o.expiresDate>=s.date&&!o.responseDeferred&&!responseDeal(s,m)&&s.inbox.filter(x=>x.offer===o.id).at(-1)?.id===m.id)items.push(m);}
       else if(m.reply==='coach'&&!m.answered&&!p.freeAgent&&(!m.fromClub||m.fromClub===p.club)&&(m.key?m.key==='coach:'+s.season+':'+p.club+':'+club.manager.id:m.from===club.manager.name&&m.date>=club.manager.appointmentDate))items.push(m);
-      else if(m.action==='renewal'&&!m.answered&&!p.freeAgent&&!s.pendingTransfer&&m.fromClub===p.club&&m.contractExpiry===p.contract.expiresSeason&&!s.deals.some(d=>d.kind==='renewal'&&dealLive(d)))items.push(m);
+      else if(m.action==='renewal'&&!m.answered&&!p.freeAgent&&!s.pendingTransfer&&m.fromClub===p.club&&m.contractExpiry===p.contract.expiresSeason&&(!m.retentionTerms||m.retentionUntil>=s.date)&&!s.deals.some(d=>d.kind==='renewal'&&dealLive(d)))items.push(m);
     }return items.sort((a,b)=>a.date.localeCompare(b.date)||a.id.localeCompare(b.id));
   }
-  function renewalInvitation(db,s){
-    const p=s.player;if(p.freeAgent||s.pendingTransfer)return;const expiry=dateAdd(s.seasonStart,(p.contract.expiresSeason-s.season)*db.calendarRules.seasonDays);if(daysBetween(db,s.date,expiry)>db.responseRules.renewalLeadDays)return;
-    const key='renewal:'+p.club+':'+p.contract.expiresSeason+':'+(p.contract.signedDate||p.career[0].date);if(s.inbox.some(m=>m.key===key))return;
-    const club=indexes(db,s).clubs[p.club];mail(db,s,{key,subject:text(db,'renewalInvitation'),body:text(db,'renewalInvitationBody',{club:club.name}),from:club.name,fromClub:p.club,action:'renewal'});s.inbox.at(-1).contractExpiry=p.contract.expiresSeason;
+  function retentionProposal(db,s){
+    const p=s.player,r=db.retentionRules,signed=p.contract.signedDate||p.career.filter(c=>c.club===p.club).at(-1)?.date||s.date;
+    if(p.freeAgent||s.pendingTransfer||daysBetween(db,signed,s.date)<r.minimumContractDays)return null;
+    const records=p.history.filter(h=>h.club===p.club&&h.date>=signed&&h.date<=s.date&&h.stats.minutes>=r.minimumMinutes&&daysBetween(db,h.date,s.date)<=r.lookbackDays).slice().sort((a,b)=>a.date.localeCompare(b.date)),recent=records.slice(-r.matches);
+    if(recent.length<r.matches||recent.some(h=>h.stats.rating<r.minimumRating))return null;
+    const rating=mean(recent.map(h=>h.stats.rating)),previous=records.slice(-r.matches*2,-r.matches),previousRating=previous.length===r.matches?mean(previous.map(h=>h.stats.rating)):null,buyer=buyerLimits(db,s,p.club);
+    if(rating<r.averageRating||!(previousRating!==null&&rating-previousRating>=r.formRise||buyer.weekly>=p.contract.weekly*r.marketGrowthFactor))return null;
+    const generated=offerTerms(db,s,p.club);if(!generated)return null;const terms=clone(generated.terms),rule=db.dealRules;
+    const raisedMax=buyer.maxWeekly*(1-rule.buyerYearsRisk*Math.max(0,terms.years-db.rules.contractYears))/Math.pow(1+terms.annualRaisePercent/db.rules.scale,terms.years-1);
+    terms.weekly=Math.floor(Math.min(raisedMax,Math.max(terms.weekly,p.contract.weekly*r.targetWageFactor)));if(terms.weekly<p.contract.weekly*r.minimumWageFactor)return null;
+    const annual=terms.weekly*db.rules.annualSalaryWeeks;terms.signingBonus=Math.floor(Math.min(annual*rule.buyerSigningAnnualShare,Math.max(terms.signingBonus,annual*r.signingAnnualShare)));terms.loyaltyBonus=Math.floor(Math.min(annual*rule.buyerLoyaltyAnnualShare,Math.max(terms.loyaltyBonus,annual*r.loyaltyAnnualShare)));terms.fee=0;terms.arrival='nearest';terms.upfrontPercent=db.rules.scale;terms.sellOnPercent=0;
+    terms.releaseClause=Math.max(terms.releaseClause,Math.ceil(annual*rule.buyerMinimumReleaseFactor));for(const f of db.dealFields)if(['money','number'].includes(f.type))terms[f.id]=clamp(terms[f.id],f.min,f.max);
+    const agentFee=annual*terms.agentCommissionPercent/db.rules.scale;if(annual*terms.years+terms.signingBonus+terms.loyaltyBonus+agentFee>buyer.budget+buyer.finance*rule.buyerWageBudgetShare||terms.signingBonus+agentFee>buyer.finance||!validTerms(db,terms)||terms.weekly<p.contract.weekly*r.minimumWageFactor)return null;
+    return {terms,rating,previousRating};
   }
+  function renewalInvitation(db,s){
+    const p=s.player;if(p.freeAgent||s.pendingTransfer||s.deals.some(d=>d.kind==='renewal'&&dealLive(d)))return;
+    for(const m of s.inbox)if(m.retentionTerms&&!m.answered&&m.retentionUntil<s.date)m.answered=true;
+    if(s.inbox.some(m=>m.action==='renewal'&&!m.answered&&m.fromClub===p.club&&m.contractExpiry===p.contract.expiresSeason))return;
+    const club=indexes(db,s).clubs[p.club],r=db.retentionRules,last=s.inbox.filter(m=>m.retentionTerms&&m.fromClub===p.club).at(-1),proposal=!last||daysBetween(db,last.date,s.date)>=r.cooldownDays?retentionProposal(db,s):null;
+    if(proposal){const until=dateAdd(s.date,r.offerDays),key='retention:'+p.club+':'+p.contract.expiresSeason+':'+s.date;mail(db,s,{key,subject:text(db,'retentionInvitation'),body:text(db,'retentionInvitationBody',{club:club.name,rating:proposal.rating.toFixed(r.ratingDigits),weekly:cash(db,proposal.terms.weekly),signing:cash(db,proposal.terms.signingBonus),loyalty:cash(db,proposal.terms.loyaltyBonus),years:proposal.terms.years,until}),from:club.name,fromClub:p.club,action:'renewal'});Object.assign(s.inbox.at(-1),{contractExpiry:p.contract.expiresSeason,retentionTerms:clone(proposal.terms),retentionUntil:until});return;}
+    const expiry=dateAdd(s.seasonStart,(p.contract.expiresSeason-s.season)*db.calendarRules.seasonDays);if(daysBetween(db,s.date,expiry)>db.responseRules.renewalLeadDays)return;
+    const key='renewal:'+p.club+':'+p.contract.expiresSeason+':'+(p.contract.signedDate||p.career[0].date);if(s.inbox.some(m=>m.key===key))return;
+    mail(db,s,{key,subject:text(db,'renewalInvitation'),body:text(db,'renewalInvitationBody',{club:club.name}),from:club.name,fromClub:p.club,action:'renewal'});s.inbox.at(-1).contractExpiry=p.contract.expiresSeason;
+  }
+
   function queueMarketReview(db,s){
     const cfg=db.scoutingRules,p=s.player,window=activeWindow(db,s),key=p.freeAgent?'free:'+s.season+':'+Math.floor(daysBetween(db,s.seasonStart,s.date)/cfg.freeCycleDays):window?s.season+':'+window.id:null;
     if(!key||newClubGrace(db,s)||s.pendingTransfer)return null;const clock=s.marketReview;
@@ -42246,7 +42326,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const existing=s.deals.find(d=>d.club===clubId&&d.sourceClub===p.club&&d.kind===kind&&dealLive(d));if(existing)return existing;if(s.deals.filter(dealLive).length>=r.maxDeals)return null;
     const offer=s.offers.find(o=>o.club===clubId&&o.status==='open'&&o.expiresDate>=s.date);
     if(kind==='transfer'&&(!offer||clubId===p.club&&!p.freeAgent))return null;if(kind==='callup'&&(!canCallup(db,s)||indexes(db,s).clubs[p.club].parent!==clubId))return null;if(kind==='renewal'&&(p.freeAgent||clubId!==p.club))return null;
-    const generated=offer?.terms||offerTerms(db,s,clubId)?.terms;if(!generated)return null;const terms=clone(generated),agent=db.agents.find(a=>a.id===s.agent.id);if(kind!=='transfer'){terms.fee=0;terms.arrival='nearest';terms.upfrontPercent=db.rules.scale;terms.sellOnPercent=0;}
+    const retained=kind==='renewal'?s.inbox.filter(m=>m.retentionTerms&&!m.answered&&m.fromClub===p.club&&m.contractExpiry===p.contract.expiresSeason&&m.retentionUntil>=s.date).at(-1):null;const generated=retained?.retentionTerms||offer?.terms||offerTerms(db,s,clubId)?.terms;if(!generated)return null;const terms=clone(generated),agent=db.agents.find(a=>a.id===s.agent.id);if(kind!=='transfer'){terms.fee=0;terms.arrival='nearest';terms.upfrontPercent=db.rules.scale;terms.sellOnPercent=0;}
     const plan=kind==='transfer'?arrivalPlan(db,s,terms.arrival):{date:s.date,mode:'nearest',window:null},seller=kind==='transfer'?sellerLimits(db,s,plan.date):{...sellerLimits(db,s,s.date),minimum:0,ask:0,status:'agreed'},buyer=buyerLimits(db,s,clubId),deadline=dateAdd(s.date,r.expiryDays);
     const d={timingRevision:r.timingRevision,id:`deal:${++s.dealSerial}`,club:clubId,sourceClub:p.club,kind,offerId:offer?.id||null,status:'negotiating',round:0,createdDate:s.date,deadline,awaiting:false,responseDate:null,log:[],counter:null,medical:'pending',brief:{priority:s.agent.mandate.priority,style:db.agentSystem.defaults.style},relationship:db.agentSystem.relationshipStart,plannedArrival:plan.date,buyer:{...buyer,status:'pending'},seller,agent:{status:'pending',id:agent.id},terms};s.deals.push(d);if(kind==='renewal')for(const m of s.inbox)if(m.action==='renewal'&&m.fromClub===p.club&&m.contractExpiry===p.contract.expiresSeason)m.answered=true;dealLog(db,s,d,'negotiationHint');mail(db,s,{key:d.id+':opened',subject:text(db,'mailAgentSubject'),body:text(db,'mailAgentBody'),from:agent.name,deal:d.id,action:'deal'});return d;
   }
@@ -42707,7 +42787,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     return old===undefined?base:old;
   }
   function upgradeDatabase(db,old){
-    old.economyRules??=clone(db.economyRules);for(const tab of db.ui.tabs.filter(t=>db.ui.navigationGroups.find(g=>g.id==='economy').views.includes(t.id)))if(!old.ui.tabs.some(t=>t.id===tab.id))old.ui.tabs.push(clone(tab));if(!old.ui.navigationGroups.some(g=>g.id==='economy'))old.ui.navigationGroups.push(clone(db.ui.navigationGroups.find(g=>g.id==='economy')));
+    old.retentionRules??=clone(db.retentionRules);old.ratingBalanceRules??=clone(db.ratingBalanceRules);for(const [key,previous] of Object.entries(db.ratingBalanceRules.previousWeights))if(old.engine.rating[key]===previous)old.engine.rating[key]=db.engine.rating[key];old.economyRules??=clone(db.economyRules);for(const tab of db.ui.tabs.filter(t=>db.ui.navigationGroups.find(g=>g.id==='economy').views.includes(t.id)))if(!old.ui.tabs.some(t=>t.id===tab.id))old.ui.tabs.push(clone(tab));if(!old.ui.navigationGroups.some(g=>g.id==='economy'))old.ui.navigationGroups.push(clone(db.ui.navigationGroups.find(g=>g.id==='economy')));
     old.npcMarketRules??=clone(db.npcMarketRules);old.storageRules.maxAutosaveBytes??=db.storageRules.maxAutosaveBytes;for(const award of old.awardTypes||[])award.description??=db.awardTypes.find(a=>a.id===award.id)?.description;
     for(const key of ['strategyRules','opponentResponseRules','interviewRules','interviewQuestions','assessmentRules','starRules','marketContextRules','clubCultureRules','rivalryRules','leagueMetaRules'])old[key]??=clone(db[key]);
     old.terminologyRules??=clone(db.terminologyRules);for(const q of db.interviewQuestions)if(!old.interviewQuestions.some(x=>x.id===q.id))old.interviewQuestions.push(clone(q));for(const row of db.newsRules)if(!old.newsRules.some(x=>x.event===row.event))old.newsRules.push(clone(row));for(const event of db.social.personalEvents)if(!old.social.personalEvents.includes(event))old.social.personalEvents.push(event);
@@ -43192,7 +43272,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     for(const [key,value] of Object.entries(db.careerEventRules.previousIntervals))if(old.careerDecisionRules[key]===value)old.careerDecisionRules[key]=db.careerDecisionRules[key];
     for(const t of db.careerDecisions){const current=old.careerDecisions.find(x=>x.id===t.id);if(!current)old.careerDecisions.push(clone(t));else for(const key of ['topic','kind','requirements','weight','episode','success'])if(t[key]!==undefined)current[key]??=clone(t[key]);}
   }
-  return {initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
+  return {retentionProposal,initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
 })();
 </script>
 <script id="game-ui">
@@ -43324,7 +43404,7 @@ function validateDB(db,career=null){
       for(const key of keys){const owners=samples.filter(value=>Object.hasOwn(value,key));if(owners.length===samples.length||Object.hasOwn(current,key))checkShape(owners.map(value=>value[key]),current[key],`${path}.${key}`);}
     }
   };
-  checkShape([DEFAULT_DB],db,'DB');validateDevelopmentSystems(db);
+  checkShape([DEFAULT_DB],db,'DB');const retention=db.retentionRules;if(['matches','minimumMinutes','lookbackDays','minimumContractDays','offerDays','cooldownDays'].some(k=>!Number.isInteger(retention[k])||retention[k]<=0)||retention.minimumRating>db.engine.rating.max||retention.averageRating>db.engine.rating.max||retention.minimumWageFactor<=1||retention.targetWageFactor<retention.minimumWageFactor||retention.marketGrowthFactor<=1||retention.formRise<0)throw Error('retentionRules');validateDevelopmentSystems(db);
   const cfgCheckpoint=db.storageRules;if(cfgCheckpoint.presentationSlot===cfgCheckpoint.slot||cfgCheckpoint.presentationSlot===cfgCheckpoint.backupSlot||[db.meta.storageKey,cfgCheckpoint.backupKey].includes(cfgCheckpoint.presentationKey)||cfgCheckpoint.presentationMaxBytes<=0)throw Error('storageRules.presentation');
   const interactions=db.ui.interactions,infoIds=interactions.glossary.map(entry=>entry.id);
   if(interactions.tooltipWidthPixels<=0||interactions.tooltipInsetPixels<0||interactions.tooltipInsetPixels*2>=interactions.tooltipWidthPixels||interactions.tooltipDelayMs<0||interactions.tooltipLeaveMs<0||new Set(infoIds).size!==infoIds.length||infoIds.some(id=>!/^[-a-zA-Z0-9_]+$/.test(id))||interactions.glossary.some(entry=>new Set(entry.labels).size!==entry.labels.length))throw Error('ui.interactions');
@@ -43536,6 +43616,7 @@ function validateSave(envelope){
   }
 
   const calendarIds=new Set();for(const e of s.calendar.entries){if(typeof e.id!=='string'||calendarIds.has(e.id)||!validDate(e.date)||typeof e.completed!=='boolean'||!Number.isFinite(e.priority))throw Error(t('invalidSave'));calendarIds.add(e.id);}
+  for(const m of s.inbox)if(m.retentionTerms&&(m.action!=='renewal'||!validDate(m.retentionUntil)||m.retentionUntil<m.date||!Core.validTerms(db,m.retentionTerms)))throw Error(t('invalidSave'));
   for(const m of s.inbox)if(typeof m.id!=='string'||typeof m.subject!=='string'||typeof m.body!=='string'||!validDate(m.date)||typeof m.read!=='boolean')throw Error(t('invalidSave'));
   for(const d of s.deals)if(!db.clubs.some(c=>c.id===d.club)||!db.clubs.some(c=>c.id===d.sourceClub)||!['transfer','renewal','callup'].includes(d.kind)||!['negotiating','ready','failed','completed','withdrawn','scheduled'].includes(d.status)||!validDate(d.deadline)||!Number.isInteger(d.round)||d.round<0||d.round>db.dealRules.maxRounds||!Array.isArray(d.log)||!Core.validTerms(db,d.terms)||!d.seller||!d.buyer||!d.agent||d.medicalDeferred!==undefined&&typeof d.medicalDeferred!=='boolean'||d.medicalWaiting!==undefined&&typeof d.medicalWaiting!=='boolean'||d.medicalWaiting&&(!d.awaiting||d.status!=='negotiating'||d.medical!=='pending'||!validDate(d.responseDate)||d.responseDate<s.date||d.responseDate>d.deadline))throw Error(t('invalidSave'));
   for(const o of s.offers)if(o.responseDeferred!==undefined&&typeof o.responseDeferred!=='boolean'||o.source!==undefined&&!['manual','automatic'].includes(o.source)||!['open','declined'].includes(o.status)||!Core.validTerms(db,o.terms)||!o.context||!finite(o.context.valuation,0,Number.MAX_SAFE_INTEGER)||!finite(o.context.cap,0,db.rules.scale)||typeof o.shortlisted!=='boolean')throw Error(t('invalidSave'));
@@ -43777,7 +43858,8 @@ function upgradePresentationDatabase(database,previousDatabase=null){
   if(database.meta.schema!==DEFAULT_DB.meta.schema)return database;
   Core.upgradeDatabase(DEFAULT_DB,database);database.ui.playerStrengths??=Core.clone(DEFAULT_DB.ui.playerStrengths);database.updateRules.manifestPath??=DEFAULT_DB.updateRules.manifestPath;
   const catalog=DEFAULT_DB.economyRules.catalogUpgrade;
-  database.economyRules.catalogUpgrade??=Core.clone(catalog);database.economyRules.catalogUpgrade.assetPrices??=Core.clone(catalog.assetPrices);database.economyRules.catalogUpgrade.previousLabels??=Core.clone(catalog.previousLabels);for(const [key,previous] of Object.entries(catalog.previousLabels))if(database.ui.labels[key]===previous)database.ui.labels[key]=DEFAULT_DB.ui.labels[key];database.economyRules.assetPriceReferences??=Core.clone(DEFAULT_DB.economyRules.assetPriceReferences);
+  database.economyRules.catalogUpgrade??=Core.clone(catalog);database.economyRules.catalogUpgrade.assetPrices={...Core.clone(catalog.assetPrices),...database.economyRules.catalogUpgrade.assetPrices};database.economyRules.catalogUpgrade.previousLabels??=Core.clone(catalog.previousLabels);for(const [key,previous] of Object.entries(catalog.previousLabels))if(database.ui.labels[key]===previous)database.ui.labels[key]=DEFAULT_DB.ui.labels[key];database.economyRules.assetPriceReferences={...Core.clone(DEFAULT_DB.economyRules.assetPriceReferences),...database.economyRules.assetPriceReferences};
+  for(const key of ['commercialNames','commercialDescriptions'])database.economyRules.catalogUpgrade[key]??=Core.clone(catalog[key]);for(const item of database.economyRules.commercial){const current=DEFAULT_DB.economyRules.commercial.find(d=>d.id===item.id);if(current){if(item.name===catalog.commercialNames[item.id])item.name=current.name;if(item.description===catalog.commercialDescriptions[item.id])item.description=current.description;}}
   for(const item of database.economyRules.assets){const current=DEFAULT_DB.economyRules.assets.find(d=>d.id===item.id);if(current&&item.price===catalog.assetPrices[item.id]){item.price=current.price;item.priceIncludesPurchaseFee=current.priceIncludesPurchaseFee;}}
   for(const item of database.economyRules.assets){const current=DEFAULT_DB.economyRules.assets.find(d=>d.id===item.id);if(current&&catalog.assetNames[item.id]?.includes(item.name))item.name=current.name;}
   for(const item of database.economyRules.lifestyles){const previous=catalog.lifestyleCosts[item.id],current=DEFAULT_DB.economyRules.lifestyles.find(d=>d.id===item.id);if(previous&&current)for(const key of Object.keys(previous))if(item[key]===previous[key])item[key]=current[key];}
@@ -44260,12 +44342,19 @@ function playerCaptainMark(id,club=state.player.club){const order=Core.captainHi
 function careerTraitsCard(){return '<section class="card career-traits"><h2>'+h(t('careerTraits'))+'</h2><p class="small muted">'+h(t('careerTraitsHint'))+'</p><div class="trait-list">'+(state.player.careerTraits.length?state.player.careerTraits.map(e=>{const d=DB.careerTraitRules.traits.find(t=>t.id===e.id);return '<article class="earned-trait '+h(d.polarity)+'"><b>'+h(d.name)+'</b> '+badge(t(d.polarity==='positive'?'traitPositive':'traitNegative'),d.polarity==='positive'?'green':'red')+'<p>'+h(d.description)+'</p><small class="muted">'+h(e.date)+'</small></article>';}).join(''):'<p class="muted">'+h(t('careerTraitsEmpty'))+'</p>')+'</div></section>';}
 function captainCard(){const order=Core.captainHierarchy(DB,state,state.player.club),people=[{...state.player,id:'player'},...Core.roster(DB,state.player.club,state)];return '<section class="card captain-card"><h2>'+h(t('captainHierarchy'))+'</h2><p class="small muted">'+h(t('captainHint'))+'</p><div class="detail-list">'+order.map((id,i)=>'<div class="row between"><span>'+h(DB.captainRules.ranks[i].name)+'</span><b>'+(id?playerLink(id,people.find(p=>p.id===id)?.name||t('infoUnavailable')):h(t('captainVacant')))+'</b></div>').join('')+'</div><details class="helper-details"><summary>'+h(t('captainHistory'))+'</summary>'+(state.player.captainHistory.length?state.player.captainHistory.slice().reverse().map(e=>'<div class="row between small"><span>'+h(e.date)+' · '+clubLink(e.club)+'</span><b>'+h(DB.captainRules.ranks.find(r=>r.rank===e.rank).name)+'</b></div>').join(''):'<p class="muted">'+h(t('captainNone'))+'</p>')+'</details></section>';}
 function statusGauge(key,value){const percent=Core.clamp(value/DB.rules.scale*DB.rules.scale,0,DB.rules.scale);return '<div class="status-gauge"><div class="row between small"><span>'+h(t(key))+'</span><b>'+h(t('percentage',{value:n(percent)}))+'</b></div><progress max="'+DB.rules.scale+'" value="'+percent+'" aria-label="'+h(t(key))+'">'+h(t('percentage',{value:n(percent)}))+'</progress></div>';}
-function contractNumberField(f,d){const moneyField=f.type==='money',rate=moneyField?currencyRate():1,value=moneyField?Number((d.terms[f.id]*rate).toFixed(DB.settings.moneyInputDigits)):d.terms[f.id],min=f.min*rate,max=f.max*rate,rangeMax=moneyField?Math.min(max,Math.max(min+f.step*rate,value*DB.clubNegotiationRules.sliderValueMultiplier,f.id==='weekly'?d.buyer.maxWeekly*rate:max*DB.clubNegotiationRules.sliderFraction)):max,step=moneyField?'any':f.step;return '<div class="contract-number"><input type="range" data-contract-range="'+h(f.id)+'" min="'+min+'" max="'+rangeMax+'" step="'+step+'" value="'+value+'" aria-label="'+h(f.name)+'"><input name="'+h(f.id)+'" type="number" value="'+value+'" min="'+min+'" max="'+max+'" step="'+step+'" inputmode="decimal" aria-label="'+h(t('editContractNumber',{name:f.name}))+'" required></div>';}
-document.addEventListener('input',event=>{const form=event.target.closest?.('#deal-form');if(!form)return;const range=event.target.dataset.contractRange;if(range){const input=form.elements.namedItem(range);input.value=event.target.value;return;}const slider=form.querySelector('[data-contract-range="'+event.target.name+'"]');if(slider&&event.target.validity.valid){if(Number(event.target.value)>Number(slider.max))slider.max=event.target.value;slider.value=event.target.value;}});
+function moneyInputNumber(value){const plain=String(value??'').replaceAll(',','').trim();return /^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(plain)?Number(plain):NaN;}
+function formatMoneyInput(value){const plain=String(value??'').replaceAll(',','');if(!/^[-+]?\d*(?:\.\d*)?$/.test(plain))return String(value??'');const [whole,fraction]=plain.split('.');return whole.replace(/\B(?=(\d{3})+(?!\d))/g,',')+(fraction===undefined?'':'.'+fraction);}
+function moneyNumberInput(name,value,min,max,extra=''){return '<input type="text" data-money-input name="'+h(name)+'" value="'+h(formatMoneyInput(value))+'" data-money-min="'+min+'" data-money-max="'+max+'" inputmode="decimal" autocomplete="off" '+extra+' required>';}
+function validateMoneyInput(input){const value=moneyInputNumber(input.value),min=Number(Number(input.dataset.moneyMin).toPrecision(15)),max=Number(Number(input.dataset.moneyMax).toPrecision(15));input.setCustomValidity(!input.value?'':!Number.isFinite(value)?t('moneyInputInvalid'):value<min||value>max?t('moneyInputRange',{min:formatMoneyInput(min),max:formatMoneyInput(max)}):'');return input.validity.valid;}
+function validateMoneyInputs(form){for(const input of form.querySelectorAll('[data-money-input]'))validateMoneyInput(input);}
+document.addEventListener('input',event=>{const input=event.target;if(!input.matches?.('[data-money-input]')||event.isComposing)return;const raw=input.value,start=input.selectionStart,end=input.selectionEnd,formatted=formatMoneyInput(raw);if(formatted!==raw){const position=offset=>{const count=raw.slice(0,offset).replaceAll(',','').length;let i=0,seen=0;while(i<formatted.length&&seen<count){if(formatted[i]!==',')seen++;i++;}return i;};input.value=formatted;if(start!==null)input.setSelectionRange(position(start),position(end));}validateMoneyInput(input);});
+
+function contractNumberField(f,d){const moneyField=f.type==='money',rate=moneyField?currencyRate():1,value=moneyField?Number((d.terms[f.id]*rate).toFixed(DB.settings.moneyInputDigits)):d.terms[f.id],min=f.min*rate,max=f.max*rate,rangeMax=moneyField?Math.min(max,Math.max(min+f.step*rate,value*DB.clubNegotiationRules.sliderValueMultiplier,f.id==='weekly'?d.buyer.maxWeekly*rate:max*DB.clubNegotiationRules.sliderFraction)):max,step=moneyField?'any':f.step;return '<div class="contract-number"><input type="range" data-contract-range="'+h(f.id)+'" min="'+min+'" max="'+rangeMax+'" step="'+step+'" value="'+value+'" aria-label="'+h(f.name)+'">'+(moneyField?moneyNumberInput(f.id,value,min,max,'aria-label="'+h(t('editContractNumber',{name:f.name}))+'"'):'<input name="'+h(f.id)+'" type="number" value="'+value+'" min="'+min+'" max="'+max+'" step="'+step+'" inputmode="decimal" aria-label="'+h(t('editContractNumber',{name:f.name}))+'" required>')+'</div>';}
+document.addEventListener('input',event=>{const form=event.target.closest?.('#deal-form');if(!form)return;const range=event.target.dataset.contractRange;if(range){const input=form.elements.namedItem(range);input.value=input.matches('[data-money-input]')?formatMoneyInput(event.target.value):event.target.value;if(input.matches('[data-money-input]'))validateMoneyInput(input);return;}const slider=form.querySelector('[data-contract-range="'+event.target.name+'"]');if(slider&&event.target.validity.valid){const value=event.target.matches('[data-money-input]')?moneyInputNumber(event.target.value):Number(event.target.value);if(value>Number(slider.max))slider.max=String(value);slider.value=String(value);}});
 
 function negotiation(d){const c=idx().clubs[d.club],source=idx().clubs[d.sourceClub],live=['negotiating','ready'].includes(d.status),locked=!live||d.awaiting||d.status==='ready';return `<div class="welcome row between wrap"><div><div class="eyebrow">${h(t(d.kind==='renewal'?'contractRenew':d.kind==='callup'?'callupTitle':'negotiations'))}</div><h1>${h(c.name)}</h1><p>${h(t('negotiationRound',{n:d.round,max:DB.dealRules.maxRounds}))} · ${h(t('deadline'))} ${h(d.deadline)}</p></div>${btn(t('marketBack'),'deal-close')}</div><div class="row wrap" style="margin-bottom:20px">${badge(t(d.status),d.status==='ready'?'green':'')}${d.awaiting?badge(t(d.medicalWaiting?'medicalReviewDate':'responseDate')+' '+d.responseDate,'pink'):''}</div>${d.medicalWaiting?`<p class="notice medical-waiting" role="status">${h(t('medicalWaiting'))} · ${h(t(d.medicalDeferred?'medicalDeferredHint':'medicalWaitingHint',{date:d.responseDate,deadline:d.deadline}))}</p>`:''}<div class="kpi-grid" style="margin-bottom:20px">${kpi(t('seller'),source.name,t(d.seller.status))}${kpi(t('buyer'),c.name,t(d.buyer.status))}${kpi(t('agent'),DB.agents.find(a=>a.id===d.agent.id).name,t(d.agent.status))}${kpi(t('medical'),t(d.medical),state.player.injury?t('injured',{n:state.player.injury}):n(state.player.fitness)+' / '+DB.rules.scale)}</div><div class="cols equal" style="margin-bottom:20px"><section class="card"><h2>${h(t('seller'))}</h2><p class="small muted" style="margin:12px 0">${h(t(d.seller.minimum?d.seller.importance>=DB.dealRules.importanceThreshold?'sellerKeep':'sellerSell':'sellerFree'))}</p><div class="detail-list">${detail(t('askingFee'),money(d.seller.ask))}${detail(t('minimumFee'),money(d.seller.minimum))}${detail(t('replacement'),d.seller.replacementDate)}${detail(t('transferFeeBudget'),n(d.seller.upfront)+'%')}</div><div class="row wrap" style="margin-top:20px">${d.seller.minimum&&live&&!d.awaiting?`${!d.seller.permission?btn(t('askPermission'),'deal-interact',`data-id="${h(d.id)}" data-kind="permission"`):''}${!d.seller.requested?btn(t('requestTransfer'),'deal-interact',`data-id="${h(d.id)}" data-kind="request"`):''}${!d.seller.mediated?btn(t('agentMediation'),'deal-interact',`data-id="${h(d.id)}" data-kind="mediate"`):''}`:''}</div></section><section class="card"><h2>${h(t('buyer'))}</h2><div class="detail-list" style="margin-top:16px">${detail(t('maximumBudget'),money(d.buyer.budget))}${detail(t('maximumWeekly'),money(d.buyer.maxWeekly))}${detail(t('maximumRole'),roleName(d.buyer.role))}${detail(t('tacticalFit'),n(d.buyer.fit*DB.rules.scale)+'%')}${detail(t('contractPosition'),d.buyer.position)}</div><p class="small muted" style="margin-top:16px">${h(t('dealBudgetNote'))}</p></section></div>${agentBriefCard(d)}<section class="card club-ai-card"><h2>${h(t('clubAiTitle'))}</h2><p class="small muted">${h(t('clubAiHint'))}</p><div class="profile-facts">${DB.dealFields.filter(f=>f.group==='seller').map(f=>detail(f.name,f.type==='money'?money(d.terms[f.id]):n(d.terms[f.id]))).join('')}</div></section>${arrivalPreview(d)}<form id="deal-form" data-id="${h(d.id)}"><fieldset ${locked?'disabled':''} class="card"><div class="section-head"><h2>${h(t('personal'))}</h2>${d.counter&&live&&!locked?btn(t('termsCounter'),'deal-counter',`data-id="${h(d.id)}"`):''}</div><p class="small muted">${h(t('contractSliderHint'))}</p><div class="form-grid">${DB.dealFields.filter(f=>f.group!=='seller').map(f=>`<label>${h(f.name)}${f.type==='money'?' · '+h(preferences.currency):''}${f.type==='role'?`<select name="${h(f.id)}">${options(DB.contractRoles,d.terms[f.id])}</select>`:f.type==='position'?`<select name="${h(f.id)}">${options(DB.positions,d.terms[f.id])}</select>`:f.type==='arrival'?d.kind==='transfer'?`<select name="${h(f.id)}">${options(DB.arrivalOptions,d.terms[f.id])}</select>`:`<input value="${h(t('contractImmediate'))}" disabled>`:contractNumberField(f,d)}</label>`).join('')}</div><div class="creation-actions"><p class="small muted">${h(t('transferRequestRisk'))}</p><button class="primary" type="submit">${h(t('negotiationSubmit'))}</button></div></fieldset></form><div class="row wrap" style="margin:20px 0">${live&&!d.awaiting?`${d.status==='negotiating'&&d.round>0&&d.medical==='pending'?btn(t('medicalWaitButton'),'deal-medical-wait',`data-id="${h(d.id)}"`,'primary'):''}${d.status==='ready'?`${btn(d.kind==='transfer'&&Core.arrivalPlan(DB,state,d.terms.arrival).date>state.date?t('arrivalSign',{date:Core.arrivalPlan(DB,state,d.terms.arrival).date}):t('negotiationComplete'),'deal-sign',`data-id="${h(d.id)}"`,'primary')}${btn(t('dealEdit'),'deal-edit',`data-id="${h(d.id)}"`)}`:''}${btn(t('negotiationWithdraw'),'deal-withdraw',`data-id="${h(d.id)}"`)}`:''}${live&&d.awaiting?btn(t('negotiationWithdraw'),'deal-withdraw',`data-id="${h(d.id)}"`):''}</div><section class="card"><h2>${h(t('negotiationHistory'))}</h2><div class="events">${d.log.slice().reverse().map(entry=>`<div class="event"><time>${h(entry.date)}</time><div>${h(entry.text)}</div></div>`).join('')}</div></section>`;}
 function openDeal(club,kind='transfer'){const deal=Core.startDeal(DB,state,club,kind);if(!deal){toast(t(state.pendingTransfer?'arrivalBinding':'dealCapacity'));return;}activeDeal=deal.id;screen='market';reportId=null;persist();render();window.scrollTo({top:0});}
-document.addEventListener('submit',event=>{if(event.target.id!=='deal-form')return;event.preventDefault();if(!event.target.reportValidity())return;const form=new FormData(event.target),currentDeal=state.deals.find(d=>d.id===event.target.dataset.id),terms=Object.fromEntries(DB.dealFields.map(f=>[f.id,f.group==='seller'?currentDeal.terms[f.id]:f.type==='role'||f.type==='position'||f.type==='arrival'?String(form.get(f.id)||DB.dealDefaults.arrival):Number(form.get(f.id))/(f.type==='money'?currencyRate():1)]));const id=event.target.dataset.id,deal=state.deals.find(d=>d.id===id),before=deal?.status,issue=Core.dealSubmissionIssue(DB,state,id,terms);if(Core.submitDeal(DB,state,id,terms)){persist();render();toast(t('negotiationWait'));}else{if(deal?.status!==before){persist();render();}toast(t(issue?.key||'negotiationInvalid',issue||{}));}});
+document.addEventListener('submit',event=>{if(event.target.id!=='deal-form')return;event.preventDefault();validateMoneyInputs(event.target);if(!event.target.reportValidity())return;const form=new FormData(event.target),currentDeal=state.deals.find(d=>d.id===event.target.dataset.id),terms=Object.fromEntries(DB.dealFields.map(f=>[f.id,f.group==='seller'?currentDeal.terms[f.id]:f.type==='role'||f.type==='position'||f.type==='arrival'?String(form.get(f.id)||DB.dealDefaults.arrival):(f.type==='money'?moneyInputNumber(form.get(f.id))/currencyRate():Number(form.get(f.id)))]));const id=event.target.dataset.id,deal=state.deals.find(d=>d.id===id),before=deal?.status,issue=Core.dealSubmissionIssue(DB,state,id,terms);if(Core.submitDeal(DB,state,id,terms)){persist();render();toast(t('negotiationWait'));}else{if(deal?.status!==before){persist();render();}toast(t(issue?.key||'negotiationInvalid',issue||{}));}});
 
 document.addEventListener('click',event=>{const b=event.target.closest('[data-action]');if(!b||b.disabled||!state)return;const id=b.dataset.id,deal=state.deals.find(d=>d.id===id);switch(b.dataset.action){
  case 'mail-filter':mailScope=id;render();break;
@@ -44530,7 +44619,7 @@ function commercialView(){
  return financeHead('commercial')+`<section class="card"><h2>${h(t('commercialActive'))}</h2><div class="rework-list">${e.contracts.map(c=>{const d=r.commercial.find(x=>x.id===c.definition);return `<article class="coach-review"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(d.categoryName+(d.exclusive?' · '+t('commercialExclusive'):''))}</div><p class="small muted">${h(c.start)} — ${h(c.end)} · ${h(t('commercialDeadline',{date:c.nextDue}))}</p><p>${h(t('commercialPay',{amount:money(c.terms.payment),bonus:money(c.terms.goalBonus)}))}</p><p class="small muted">${h(t('commercialDuty',{cost:c.terms.fitnessCost,misses:c.misses,max:r.maxMisses}))}</p><div class="row wrap">${financeButton(c.delivered?t('commercialDelivered'):t('commercialShoot'),'deliver',c.id,'',c.delivered||state.player.fitness<c.terms.fitnessCost)}${financeButton(t('commercialCancel',{fee:money(Core.commercialCancelFee(DB,state,c.id))}),'cancel',c.id,'',e.arrears>0||e.cash<Core.commercialCancelFee(DB,state,c.id))}</div></article>`;}).join('')||`<p class="empty">${h(t('commercialNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><div class="section-head"><h2>${h(t('commercialOffers'))}</h2><label>${h(t('commercialPackage'))}<select id="commercial-package">${r.packages.map(p=>`<option value="${h(p.id)}" ${p.id===commercialPackage?'selected':''}>${h(p.name)}</option>`).join('')}</select></label></div><p class="small muted">${h(r.packages.find(p=>p.id===commercialPackage).description)}</p><div class="offer-grid">${offers.map(o=>{const d=r.commercial.find(x=>x.id===o.id),q=Core.commercialTerms(DB,state,d.id,commercialPackage);return `<article class="card"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(d.kindName)}</div><p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('commercialReputation'),n(d.minReputation))}${detail(t('commercialCategory'),d.categoryName+(d.exclusive?' · '+t('commercialExclusive'):''))}${detail(t('commercialDuration'),t('financeDays',{n:d.duration}))}${detail(t('commercialUpfront'),money(q.upfront))}${detail(t('commercialPeriodPay'),money(q.payment))}${detail(t('commercialGoalBonus'),money(q.goalBonus))}${detail(t('commercialShootCost'),n(q.fitnessCost))}</div><p class="small muted">${h(t('commercialExitTerms',{share:n(q.cancelShare*DB.rules.scale)}))}</p>${financeButton(t('commercialSign'),'sign',d.id,'',!o.eligible)}${!o.eligible?`<p class="small muted">${h(o.conflict?t('commercialConflict'):o.cooldown?t('commercialCooldown',{n:o.cooldown}):state.player.reputation<d.minReputation?t('commercialLocked'):t('commercialLimit',{n:r.maxContracts}))}</p>`:''}</article>`;}).join('')}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('commercialHistory'))}</h2>${e.contractHistory.slice().reverse().map(c=>`<div class="history-item"><b>${h(r.commercial.find(x=>x.id===c.definition).name)}</b><time>${h(c.closed)}</time>${badge(t('commercialStatus'+c.status))}</div>`).join('')||`<p class="empty">${h(t('commercialNone'))}</p>`}</section>`;
 }
 function investmentsView(){
- const r=DB.economyRules,e=state.economy,rate=currencyRate();return financeHead('investments')+`<p class="notice">${h(t('investmentRiskHint'))}</p><section class="card"><h2>${h(t('investmentHoldings'))}</h2>${e.investments.map(a=>{const d=r.investments.find(x=>x.id===a.definition);return `<article class="coach-review"><h3>${h(d.name)}</h3><div class="form-grid">${detail(t('investmentBasis'),money(a.basis))}${detail(t('investmentValue'),money(a.value))}${detail(t('investmentUnrealized'),money(a.value*(1-d.fee)-a.basis))}${detail(t('investmentDividends'),money(a.dividends))}</div><div class="row wrap">${r.redemptionShares.map(share=>financeButton(t('investmentRedeem',{share:n(share*DB.rules.scale),amount:money(a.value*share*(1-d.fee))}),'redeem',a.definition,`data-share="${share}"`)).join('')}</div></article>`;}).join('')||`<p class="empty">${h(t('investmentNone'))}</p>`}</section><div class="offer-grid" style="margin-top:20px">${r.investments.map(d=>`<article class="card"><h2>${h(d.name)}</h2>${badge(d.risk)}<p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('investmentMinimum'),money(d.minimum))}${detail(t('financeFee'),n(d.fee*DB.rules.scale,1)+'%')}${detail(t('investmentDividendRate'),n(d.dividend*DB.rules.scale,2)+'%')}${detail(t('investmentRange'),n((d.growth-d.volatility)*DB.rules.scale,2)+'% ~ '+n((d.growth+d.volatility)*DB.rules.scale,2)+'%')}</div><form class="finance-form" data-finance-form="invest" data-id="${h(d.id)}" data-currency="${h(preferences.currency)}"><label>${h(t('investmentOrder'))} (${h(preferences.currency)})<input type="number" name="amount" min="${Number((d.minimum*rate).toPrecision(15))}" max="${Number((r.maxTransaction*rate).toPrecision(15))}" step="any" value="${Number((d.minimum*rate).toPrecision(15))}" inputmode="decimal" required></label><p class="small muted">${h(t('investmentFeeHint'))}</p><button type="submit" ${e.arrears||e.cash<d.minimum*(1+d.fee)?'disabled':''}>${h(t('investmentBuy'))}</button></form></article>`).join('')}</div>`;
+ const r=DB.economyRules,e=state.economy,rate=currencyRate();return financeHead('investments')+`<p class="notice">${h(t('investmentRiskHint'))}</p><section class="card"><h2>${h(t('investmentHoldings'))}</h2>${e.investments.map(a=>{const d=r.investments.find(x=>x.id===a.definition);return `<article class="coach-review"><h3>${h(d.name)}</h3><div class="form-grid">${detail(t('investmentBasis'),money(a.basis))}${detail(t('investmentValue'),money(a.value))}${detail(t('investmentUnrealized'),money(a.value*(1-d.fee)-a.basis))}${detail(t('investmentDividends'),money(a.dividends))}</div><div class="row wrap">${r.redemptionShares.map(share=>financeButton(t('investmentRedeem',{share:n(share*DB.rules.scale),amount:money(a.value*share*(1-d.fee))}),'redeem',a.definition,`data-share="${share}"`)).join('')}</div></article>`;}).join('')||`<p class="empty">${h(t('investmentNone'))}</p>`}</section><div class="offer-grid" style="margin-top:20px">${r.investments.map(d=>`<article class="card"><h2>${h(d.name)}</h2>${badge(d.risk)}<p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('investmentMinimum'),money(d.minimum))}${detail(t('financeFee'),n(d.fee*DB.rules.scale,1)+'%')}${detail(t('investmentDividendRate'),n(d.dividend*DB.rules.scale,2)+'%')}${detail(t('investmentRange'),n((d.growth-d.volatility)*DB.rules.scale,2)+'% ~ '+n((d.growth+d.volatility)*DB.rules.scale,2)+'%')}</div><form class="finance-form" data-finance-form="invest" data-id="${h(d.id)}" data-currency="${h(preferences.currency)}"><label>${h(t('investmentOrder'))} (${h(preferences.currency)})${moneyNumberInput('amount',Number((d.minimum*rate).toPrecision(15)),Number((d.minimum*rate).toPrecision(15)),Number((r.maxTransaction*rate).toPrecision(15)))}</label><p class="small muted">${h(t('investmentFeeHint'))}</p><button type="submit" ${e.arrears||e.cash<d.minimum*(1+d.fee)?'disabled':''}>${h(t('investmentBuy'))}</button></form></article>`).join('')}</div>`;
 }
 function assetsView(){
  const r=DB.economyRules,e=state.economy;return financeHead('assets')+`<section class="card"><h2>${h(t('assetHoldings'))}</h2><div class="offer-grid">${e.assets.map(a=>{const d=r.assets.find(x=>x.id===a.definition),sell=a.value*(1-r.assetSaleFee);return `<article class="card"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(t('assetUse'+a.use))}</div><div class="detail-list">${detail(t('assetPurchased'),a.bought)}${detail(t('assetBasis'),money(a.basis))}${detail(t('assetValue'),money(a.value))}${detail(t('assetUpkeep'),money(d.upkeep))}${detail(t('assetRent'),money(a.use==='rental'?d.rent:0))}</div><div class="row wrap">${d.home?financeButton(t(a.use==='personal'?'assetRentOut':'assetMoveIn'),'asset-use',a.id,`data-use="${a.use==='personal'?'rental':'personal'}"`):''}${financeButton(t('assetSell',{amount:money(sell)}),'asset-sell',a.id)}</div></article>`;}).join('')||`<p class="empty">${h(t('assetNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('assetMarket'))}</h2><p class="small muted">${h(t('assetMarketHint',{buy:n(r.assetPurchaseFee*DB.rules.scale),sell:n(r.assetSaleFee*DB.rules.scale),vacancy:n(r.vacancyChance*DB.rules.scale)}))}</p><p class="small muted">${h(t('assetPriceReferenceHint'))}</p><div class="offer-grid">${r.assets.map(d=>{const price=Core.assetPrice(DB,state,d.id)*(1+r.assetPurchaseFee),owned=e.assets.filter(a=>a.definition===d.id).length;return `<article class="card"><h3>${h(d.name)}</h3>${badge(d.category)}<p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('assetTotalPrice'),money(price))}${d.priceIncludesPurchaseFee&&r.assetPriceReferences[d.id]?detail(t('assetPriceBasis'),r.assetPriceReferences[d.id].basis+' · '+r.assetPriceReferences[d.id].checkedAt):''}${detail(t('assetUpkeep'),money(d.upkeep))}${detail(t('assetRent'),money(d.rent))}${detail(t('assetPriceRange'),n((d.growth-d.volatility)*DB.rules.scale,1)+'% ~ '+n((d.growth+d.volatility)*DB.rules.scale,1)+'%')}${detail(t('assetPurchaseLimit'),n(owned)+' / '+n(d.limit))}</div>${financeButton(t('assetBuy'),'asset-buy',d.id,'',e.arrears>0||e.cash<price||owned>=d.limit)}</article>`;}).join('')}</div></section>`;
@@ -44547,8 +44636,8 @@ function handleFinanceAction(button){
  switch(op){case 'sign':result=Core.signCommercial(DB,state,id,commercialPackage);break;case 'deliver':result=Core.commercialDelivery(DB,state,id);break;case 'cancel':result=Core.cancelCommercial(DB,state,id);break;case 'asset-buy':result=Core.buyAsset(DB,state,id);break;case 'asset-sell':result=Core.sellAsset(DB,state,id);break;case 'asset-use':result=Core.assetUse(DB,state,id,button.dataset.use);break;case 'redeem':result=Core.redeemInvestment(DB,state,id,Number(button.dataset.share));break;case 'lifestyle':result=Core.lifestyleChange(DB,state,id);break;case 'brand-expand':case 'brand-marketing':case 'brand-sell':result=Core.brandAction(DB,state,id,op.slice('brand-'.length));break;}
  financeResult(result);
 }
-function investmentAmountInBase(form,value){const unit=DB.settings.currencies.find(c=>c.id===form.dataset.currency);return unit?Number((Number(value)/unit.rate).toPrecision(15)):NaN;}
-document.addEventListener('submit',event=>{const form=event.target.closest('[data-finance-form]');if(!form)return;event.preventDefault();if(!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation||!form.reportValidity())return;
+function investmentAmountInBase(form,value){const unit=DB.settings.currencies.find(c=>c.id===form.dataset.currency);return unit?Number((moneyInputNumber(value)/unit.rate).toPrecision(15)):NaN;}
+document.addEventListener('submit',event=>{const form=event.target.closest('[data-finance-form]');if(!form)return;event.preventDefault();validateMoneyInputs(form);if(!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation||!form.reportValidity())return;
  const fields=new FormData(form),id=form.dataset.id;financeResult(form.dataset.financeForm==='invest'?Core.investMoney(DB,state,id,investmentAmountInBase(form,fields.get('amount'))):Core.foundBrand(DB,state,id,fields.get('name'),fields.get('strategy')));
 });
 document.addEventListener('change',event=>{if(!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation)return;if(event.target.id==='commercial-package'){commercialPackage=event.target.value;render();}if(event.target.matches('.brand-strategy'))financeResult(Core.brandAction(DB,state,event.target.dataset.id,'strategy',event.target.value));});
