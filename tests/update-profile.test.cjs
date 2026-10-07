@@ -58,9 +58,9 @@ test('paired skills, balanced attributes and growth produce clear current player
  const all=strengthContext(Object.fromEntries(DB.attributes.map(a=>[a.id,64])));assert.equal(all.api.playerStrengthProfile().strengths.length,DB.attributes.length);assert.equal(all.api.playerStrengthProfile().type,DB.ui.playerStrengths.allRoundType);
  pair.state.player.stats.passing=90;assert.equal(pair.api.playerStrengthProfile().type,DB.ui.playerStrengths.types.passing.name);
 });
-test('overview and player profile render labels and values while NPC profile code is unchanged',()=>{
+test('strengths remain in the player profile and are absent from the overview and NPC profiles',()=>{
  const ctx=strengthContext({passing:82}),full=ctx.api.playerStrengthsCard(),compact=ctx.api.playerStrengthsCard(true);assert.ok(full.includes('패스'));assert.ok(full.includes('82'));assert.ok(full.includes(DB.ui.labels.playerStrengths));assert.ok(compact.includes('compact'));
- assert.equal((ui.match(/playerStrengthsCard\(\)/g)||[]).length,1);assert.equal((ui.match(/playerStrengthsCard\(true\)/g)||[]).length,1);
+ assert.equal((ui.match(/playerStrengthsCard\(\)/g)||[]).length,1);assert.equal((ui.match(/playerStrengthsCard\(true\)/g)||[]).length,0);
 });
 test('version manifest matches HTML and old presentation DB gains rules without changing player data',()=>{
  const manifest=JSON.parse(fs.readFileSync(path.join(__dirname,'../version.json'),'utf8'));assert.equal(manifest.version,DB.meta.version);assert.equal(manifest.title,DB.meta.title);

@@ -113,7 +113,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.8.1",
+    "version": "20.8.2",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -21684,7 +21684,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "investmentDividendRate": "30일 배당률",
       "investmentRange": "30일 가격 변동 범위",
       "investmentOrder": "투자금",
-      "investmentFeeHint": "입력 금액은 EUR 기준입니다. 매수 수수료는 별도로 현금에서 차감하며, 매도 수수료는 회수 금액에서 차감합니다.",
+      "investmentFeeHint": "입력한 투자금에 상품 수수료가 추가됩니다. 설정한 표시 통화로 입력하며 게임 환율로 환산합니다.",
       "investmentBuy": "현금으로 투자",
       "assets": "보유 자산",
       "assetsHint": "내 자산은 이 메뉴에서 확인합니다. 주택·차량·수집품을 구매하고 거주·임대·매각을 관리하세요.",
@@ -21744,7 +21744,9 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "commercialMissedMail": "{date}: 콘텐츠 의무를 완료하지 않아 이번 기간 보수는 지급하지 않습니다. 연속 미이행 {misses}/{max}.",
       "playerStrengths": "내 선수의 유형·특장점",
       "playerStrengthsCurrent": "현재 능력치 기준",
-      "playerStrengthsHint": "최고 능력치와 {gap}점 이내인 능력치를 모두 특장점으로 표시합니다. 내 능력치 사이의 상대적인 장점이며 성장에 따라 달라집니다."
+      "playerStrengthsHint": "최고 능력치와 {gap}점 이내인 능력치를 모두 특장점으로 표시합니다. 내 능력치 사이의 상대적인 장점이며 성장에 따라 달라집니다.",
+      "assetPriceBasis": "실제 가격 기준",
+      "assetPriceReferenceHint": "실물 상품은 공개 가격을 구매 수수료 포함 총액으로 적용합니다. 신품·중고·세금 조건은 각 상품의 가격 기준을 확인하세요. 보유 후 평가액은 별도로 변동합니다."
     },
     "statFields": [
       {
@@ -40945,52 +40947,56 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "name": "포르쉐 911 GT3",
         "category": "자동차",
         "description": "훈련장과 집을 오가는 개인 차량. 보험·정비 비용과 감가상각이 발생합니다.",
-        "price": 24000,
+        "price": 211200,
         "upkeep": 140,
         "rent": 0,
         "home": false,
         "growth": -0.009,
         "volatility": 0.002,
-        "limit": 2
+        "limit": 2,
+        "priceIncludesPurchaseFee": true
       },
       {
         "id": "supercar",
         "name": "페라리 488 GTB",
         "category": "자동차",
         "description": "스타 선수의 차고 컬렉션. 유지비와 매각 시 거래 비용을 확인하세요.",
-        "price": 180000,
+        "price": 249800,
         "upkeep": 650,
         "rent": 0,
         "home": false,
         "growth": -0.012,
         "volatility": 0.004,
-        "limit": 3
+        "limit": 3,
+        "priceIncludesPurchaseFee": true
       },
       {
         "id": "watch",
         "name": "롤렉스 서브마리너",
         "category": "수집품",
         "description": "가격 상승과 하락이 모두 가능한 수집품. 보관·보험 비용이 발생합니다.",
-        "price": 6500,
+        "price": 9800,
         "upkeep": 15,
         "rent": 0,
         "home": false,
         "growth": 0,
         "volatility": 0.035,
-        "limit": 8
+        "limit": 8,
+        "priceIncludesPurchaseFee": true
       },
       {
         "id": "yacht",
         "name": "아지무트 Fly 53",
         "category": "라이프스타일",
         "description": "휴식과 개인 시간을 위한 고가 자산. 계류·보험·정비 비용이 매 정산마다 발생합니다.",
-        "price": 900000,
+        "price": 1895000,
         "upkeep": 6500,
         "rent": 0,
         "home": false,
         "growth": -0.006,
         "volatility": 0.003,
-        "limit": 1
+        "limit": 1,
+        "priceIncludesPurchaseFee": true
       }
     ],
     "brandTypes": [
@@ -41141,6 +41147,41 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
           "rent": 2500,
           "spending": 4000
         }
+      },
+      "assetPrices": {
+        "daily-car": 24000,
+        "supercar": 180000,
+        "watch": 6500,
+        "yacht": 900000
+      },
+      "previousLabels": {
+        "investmentFeeHint": "입력 금액은 EUR 기준입니다. 매수 수수료는 별도로 현금에서 차감하며, 매도 수수료는 회수 금액에서 차감합니다."
+      }
+    },
+    "assetPriceReferences": {
+      "daily-car": {
+        "amount": 211200,
+        "basis": "독일 신차 기본가 · 부가세 포함",
+        "url": "https://www.porsche.com/germany/models/911/911-gt3-models/911-gt3/",
+        "checkedAt": "2026-10-07"
+      },
+      "supercar": {
+        "amount": 249800,
+        "basis": "Ferrari Frankfurt · 2018년식·3,500 km 중고 매물",
+        "url": "https://home.mobile.de/AH-ULRICH-GMBH",
+        "checkedAt": "2026-10-07"
+      },
+      "watch": {
+        "amount": 9800,
+        "basis": "프랑스 공식가 · Submariner 124060",
+        "url": "https://www.rolex.com/fr-fr/watches/submariner/m124060-0001",
+        "checkedAt": "2026-10-07"
+      },
+      "yacht": {
+        "amount": 1895000,
+        "basis": "Navis Marine · 2026년식 신품 매물 · 부가세 별도 호가",
+        "url": "https://navis-marine.com/project/2026-azimut-fly-53/",
+        "checkedAt": "2026-10-07"
       }
     }
   }
@@ -41535,7 +41576,7 @@ const FootballCore = (() => {
     const c=s.economy.contracts.find(x=>x.id===id);if(!c)return false;const d=db.economyRules.commercial.find(x=>x.id===c.definition),fee=commercialCancelFee(db,s,id);
     if(!financeDebit(db,s,fee,'commercialExit',s.date,d.name))return false;closeCommercial(db,s,c,'cancelled',s.date);return true;
   }
-  function assetPrice(db,s,id){const d=db.economyRules.assets.find(a=>a.id===id),period=Math.floor(daysBetween(db,db.meta.initialDate,s.date)/db.economyRules.periodDays);return d?Math.round(d.price*Math.pow(1+d.growth,period)):0;}
+  function assetPrice(db,s,id){const d=db.economyRules.assets.find(a=>a.id===id),period=Math.floor(daysBetween(db,db.meta.initialDate,s.date)/db.economyRules.periodDays);return d?(d.priceIncludesPurchaseFee?d.price/(1+db.economyRules.assetPurchaseFee):Math.round(d.price*Math.pow(1+d.growth,period))):0;}
   function buyAsset(db,s,id){
     const r=db.economyRules,d=r.assets.find(x=>x.id===id),e=s.economy;if(!d||e.assets.filter(x=>x.definition===id).length>=d.limit)return false;
     const cost=assetPrice(db,s,id)*(1+r.assetPurchaseFee);if(!financeDebit(db,s,cost,'assetBuy',s.date,d.name))return false;
@@ -43516,6 +43557,7 @@ function validateEconomyContent(db,career=null){
  if(numeric(r.investments,['minimum','fee','volatility','dividend'])||r.investments.some(d=>!number(d.growth,-1,1)||d.growth-d.volatility<=-1||d.fee>=1||d.minimum<=0||d.minimum>r.maxTransaction||!string(d.risk)))throw Error('DB.economyRules.investments');
  if(numeric(r.assets,['price','upkeep','rent','volatility','limit'])||r.assets.some(d=>!number(d.growth,-1,1)||d.growth-d.volatility<=-1||d.price<=0||!Number.isInteger(d.limit)||d.limit<1||typeof d.home!=='boolean'||!string(d.category)))throw Error('DB.economyRules.assets');
  if(numeric(r.brandTypes,['capital','minReputation','turnover','overhead','productionShare'])||r.brandTypes.some(d=>d.capital<=0||d.minReputation>db.rules.scale||d.productionShare>1)||numeric(r.brandStrategies,['sales','cost','growth'])||r.brandStrategies.some(d=>d.sales<=0||d.cost<=0))throw Error('DB.economyRules.brands');
+ if(r.assets.some(d=>d.priceIncludesPurchaseFee!==undefined&&typeof d.priceIncludesPurchaseFee!=='boolean'))throw Error('economyRules.assetPrice');
  if(numeric(r.lifestyles,['rent','spending','morale','recovery'])||!r.lifestyles.some(d=>d.id===r.defaultLifestyle)||!Array.isArray(r.redemptionShares)||!r.redemptionShares.includes(1)||r.redemptionShares.some(v=>!number(v,Number.EPSILON,1)))throw Error('DB.economyRules.lifestyle');
  if(!r.ledgerTypes||Object.keys(base.ledgerTypes).some(k=>!string(r.ledgerTypes[k])))throw Error('DB.economyRules.ledgerTypes');
  if(career?.economy)validateEconomySave(db,career);
@@ -43735,7 +43777,8 @@ function upgradePresentationDatabase(database,previousDatabase=null){
   if(database.meta.schema!==DEFAULT_DB.meta.schema)return database;
   Core.upgradeDatabase(DEFAULT_DB,database);database.ui.playerStrengths??=Core.clone(DEFAULT_DB.ui.playerStrengths);database.updateRules.manifestPath??=DEFAULT_DB.updateRules.manifestPath;
   const catalog=DEFAULT_DB.economyRules.catalogUpgrade;
-  database.economyRules.catalogUpgrade??=Core.clone(catalog);
+  database.economyRules.catalogUpgrade??=Core.clone(catalog);database.economyRules.catalogUpgrade.assetPrices??=Core.clone(catalog.assetPrices);database.economyRules.catalogUpgrade.previousLabels??=Core.clone(catalog.previousLabels);for(const [key,previous] of Object.entries(catalog.previousLabels))if(database.ui.labels[key]===previous)database.ui.labels[key]=DEFAULT_DB.ui.labels[key];database.economyRules.assetPriceReferences??=Core.clone(DEFAULT_DB.economyRules.assetPriceReferences);
+  for(const item of database.economyRules.assets){const current=DEFAULT_DB.economyRules.assets.find(d=>d.id===item.id);if(current&&item.price===catalog.assetPrices[item.id]){item.price=current.price;item.priceIncludesPurchaseFee=current.priceIncludesPurchaseFee;}}
   for(const item of database.economyRules.assets){const current=DEFAULT_DB.economyRules.assets.find(d=>d.id===item.id);if(current&&catalog.assetNames[item.id]?.includes(item.name))item.name=current.name;}
   for(const item of database.economyRules.lifestyles){const previous=catalog.lifestyleCosts[item.id],current=DEFAULT_DB.economyRules.lifestyles.find(d=>d.id===item.id);if(previous&&current)for(const key of Object.keys(previous))if(item[key]===previous[key])item[key]=current[key];}
   // Patch only the old bundled colors; user-edited palettes keep their colors.
@@ -44061,7 +44104,7 @@ function organizeView(){const content=document.querySelector('.content');if(!con
 function updateShellMetrics(){
   document.documentElement.style.setProperty('--shell-bar-height',(document.querySelector('.topbar')?.offsetHeight||0)+'px');document.documentElement.style.setProperty('--section-tabs-height',(document.querySelector('.content .group-tabs')?.offsetHeight||0)+'px');
 }
-function dashboard(){const p=state.player,club=currentClub(),fixture=nextFixture(),chance=Core.selection(DB,state)*DB.rules.scale;return pendingArrival()+(p.freeAgent?'<div class="notice warning">'+h(t('freeAgent'))+'</div>':'')+'<section class="card dashboard-profile"><div class="row">'+shirt(p.number,p.displayName||p.name)+'<div><h1>'+h(p.name)+' '+playerCaptainMark('player')+'</h1><p class="small muted">'+h(club.name)+' · '+h(p.position)+' · '+n(p.age)+h(t('ageUnit'))+'</p></div></div>'+playerStrengthsCard(true)+'<div class="row wrap">'+badge(t('overall')+' '+abilityLabel(Core.overall(DB,p.stats)),'green')+badge(t('roleOverall')+' '+abilityLabel(Core.suitability(DB,p)))+btn(t('personalProfile'),'tab','data-tab="career"','small')+'</div></section><section class="card dashboard-fitness">'+fitnessGauge('overview')+'<p class="small muted">'+h(t('fitnessDistinction'))+'</p></section>'+calendarSummary()+'<section class="card next-match"><div class="section-head"><h2>'+h(t('nextFixture'))+'</h2>'+btn(t('schedule'),'tab','data-tab="fixtures"','subtle small')+'</div>'+(fixture?'<p class="small muted">'+h(competitionName(fixture))+'</p>'+fixtureCard(fixture)+'<div class="row between wrap small"><span>'+h(t('matchImportance'))+' · '+h(Core.fixtureImportance(DB,state,fixture).name)+'</span><b>'+h(t('selection'))+' '+n(chance)+'%</b></div>':'<div class="empty">'+h(t('noFixture'))+'</div>')+'</section><nav class="overview-shortcuts" aria-label="'+h(t('secondaryNavigation'))+'">'+btn(t('trainingOpen'),'tab','data-tab="training"')+btn(t('performanceOpen'),'tab','data-tab="performance"')+btn(t('recordSummary'),'tab','data-tab="statistics"')+'</nav><p class="small muted overview-hint">'+h(t('overviewHint'))+'</p>';}
+function dashboard(){const p=state.player,club=currentClub(),fixture=nextFixture(),chance=Core.selection(DB,state)*DB.rules.scale;return pendingArrival()+(p.freeAgent?'<div class="notice warning">'+h(t('freeAgent'))+'</div>':'')+'<section class="card dashboard-profile"><div class="row">'+shirt(p.number,p.displayName||p.name)+'<div><h1>'+h(p.name)+' '+playerCaptainMark('player')+'</h1><p class="small muted">'+h(club.name)+' · '+h(p.position)+' · '+n(p.age)+h(t('ageUnit'))+'</p></div></div>'+'<div class="row wrap">'+badge(t('overall')+' '+abilityLabel(Core.overall(DB,p.stats)),'green')+badge(t('roleOverall')+' '+abilityLabel(Core.suitability(DB,p)))+btn(t('personalProfile'),'tab','data-tab="career"','small')+'</div></section><section class="card dashboard-fitness">'+fitnessGauge('overview')+'<p class="small muted">'+h(t('fitnessDistinction'))+'</p></section>'+calendarSummary()+'<section class="card next-match"><div class="section-head"><h2>'+h(t('nextFixture'))+'</h2>'+btn(t('schedule'),'tab','data-tab="fixtures"','subtle small')+'</div>'+(fixture?'<p class="small muted">'+h(competitionName(fixture))+'</p>'+fixtureCard(fixture)+'<div class="row between wrap small"><span>'+h(t('matchImportance'))+' · '+h(Core.fixtureImportance(DB,state,fixture).name)+'</span><b>'+h(t('selection'))+' '+n(chance)+'%</b></div>':'<div class="empty">'+h(t('noFixture'))+'</div>')+'</section><nav class="overview-shortcuts" aria-label="'+h(t('secondaryNavigation'))+'">'+btn(t('trainingOpen'),'tab','data-tab="training"')+btn(t('performanceOpen'),'tab','data-tab="performance"')+btn(t('recordSummary'),'tab','data-tab="statistics"')+'</nav><p class="small muted overview-hint">'+h(t('overviewHint'))+'</p>';}
 function team(){if(idx().leagues[teamCompetition]?.kind==='continental')return baseTeam();return baseTeam()+postseasonCard(teamCompetition||currentClub().league);}
 function honourRows(records){return records.length?records.slice().reverse().map(r=>'<article class="honour-row" data-honour="'+h(r.type)+'"><div><b>'+entityLink('award',r.type,DB.awardTypes.find(t=>t.id===r.type)?.name||r.type)+'</b><p class="small muted">'+h(seasonLabel(r.season))+' · '+h(r.date)+'</p></div><div><b>'+h(r.name)+'</b><p class="small muted">'+h(idx().leagues[r.competition]?.name||t('honoursWorld'))+' · '+h(idx().clubs[r.club]?.name||'')+'</p>'+(r.goal?'<p class="small muted">'+h(t('honoursGoal',{date:r.goal.date,minute:r.goal.minute,club:idx().clubs[r.goal.club].name,xg:n(r.goal.xg,2)}))+'</p>':'')+'</div></article>').join(''):'<p class="notice">'+h(t('honoursEmpty'))+'</p>';}
 function awardInformation(id){const award=DB.awardTypes.find(a=>a.id===id);if(!award||!state)return;const rows=(state.awards?.records||[]).filter(r=>r.type===id).slice().sort((a,b)=>b.season-a.season||a.date.localeCompare(b.date)||a.id.localeCompare(b.id));openModal(infoHeader(award.name)+'<h3>'+h(t('awardDescription'))+'</h3><p class="info-copy">'+h(award.description||t('honoursModel'))+'</p><h3>'+h(t('awardHistory'))+' · '+n(rows.length)+'</h3><p class="small muted">'+h(t('awardCareerHistory'))+'</p><div class="list-pane award-winners">'+(rows.length?rows.map(r=>'<article class="honour-row"><div><b>'+h(seasonLabel(r.season))+'</b><p class="small muted">'+h(r.date)+'</p></div><div><b>'+h(r.name)+'</b><p>'+h(idx().leagues[r.competition]?.name||t('honoursWorld'))+' · '+clubLink(r.club)+'</p></div></article>').join(''):'<p class="notice">'+h(t('awardHistoryEmpty'))+'</p>')+'</div>','info');}
@@ -44487,10 +44530,10 @@ function commercialView(){
  return financeHead('commercial')+`<section class="card"><h2>${h(t('commercialActive'))}</h2><div class="rework-list">${e.contracts.map(c=>{const d=r.commercial.find(x=>x.id===c.definition);return `<article class="coach-review"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(d.categoryName+(d.exclusive?' · '+t('commercialExclusive'):''))}</div><p class="small muted">${h(c.start)} — ${h(c.end)} · ${h(t('commercialDeadline',{date:c.nextDue}))}</p><p>${h(t('commercialPay',{amount:money(c.terms.payment),bonus:money(c.terms.goalBonus)}))}</p><p class="small muted">${h(t('commercialDuty',{cost:c.terms.fitnessCost,misses:c.misses,max:r.maxMisses}))}</p><div class="row wrap">${financeButton(c.delivered?t('commercialDelivered'):t('commercialShoot'),'deliver',c.id,'',c.delivered||state.player.fitness<c.terms.fitnessCost)}${financeButton(t('commercialCancel',{fee:money(Core.commercialCancelFee(DB,state,c.id))}),'cancel',c.id,'',e.arrears>0||e.cash<Core.commercialCancelFee(DB,state,c.id))}</div></article>`;}).join('')||`<p class="empty">${h(t('commercialNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><div class="section-head"><h2>${h(t('commercialOffers'))}</h2><label>${h(t('commercialPackage'))}<select id="commercial-package">${r.packages.map(p=>`<option value="${h(p.id)}" ${p.id===commercialPackage?'selected':''}>${h(p.name)}</option>`).join('')}</select></label></div><p class="small muted">${h(r.packages.find(p=>p.id===commercialPackage).description)}</p><div class="offer-grid">${offers.map(o=>{const d=r.commercial.find(x=>x.id===o.id),q=Core.commercialTerms(DB,state,d.id,commercialPackage);return `<article class="card"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(d.kindName)}</div><p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('commercialReputation'),n(d.minReputation))}${detail(t('commercialCategory'),d.categoryName+(d.exclusive?' · '+t('commercialExclusive'):''))}${detail(t('commercialDuration'),t('financeDays',{n:d.duration}))}${detail(t('commercialUpfront'),money(q.upfront))}${detail(t('commercialPeriodPay'),money(q.payment))}${detail(t('commercialGoalBonus'),money(q.goalBonus))}${detail(t('commercialShootCost'),n(q.fitnessCost))}</div><p class="small muted">${h(t('commercialExitTerms',{share:n(q.cancelShare*DB.rules.scale)}))}</p>${financeButton(t('commercialSign'),'sign',d.id,'',!o.eligible)}${!o.eligible?`<p class="small muted">${h(o.conflict?t('commercialConflict'):o.cooldown?t('commercialCooldown',{n:o.cooldown}):state.player.reputation<d.minReputation?t('commercialLocked'):t('commercialLimit',{n:r.maxContracts}))}</p>`:''}</article>`;}).join('')}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('commercialHistory'))}</h2>${e.contractHistory.slice().reverse().map(c=>`<div class="history-item"><b>${h(r.commercial.find(x=>x.id===c.definition).name)}</b><time>${h(c.closed)}</time>${badge(t('commercialStatus'+c.status))}</div>`).join('')||`<p class="empty">${h(t('commercialNone'))}</p>`}</section>`;
 }
 function investmentsView(){
- const r=DB.economyRules,e=state.economy;return financeHead('investments')+`<p class="notice">${h(t('investmentRiskHint'))}</p><section class="card"><h2>${h(t('investmentHoldings'))}</h2>${e.investments.map(a=>{const d=r.investments.find(x=>x.id===a.definition);return `<article class="coach-review"><h3>${h(d.name)}</h3><div class="form-grid">${detail(t('investmentBasis'),money(a.basis))}${detail(t('investmentValue'),money(a.value))}${detail(t('investmentUnrealized'),money(a.value*(1-d.fee)-a.basis))}${detail(t('investmentDividends'),money(a.dividends))}</div><div class="row wrap">${r.redemptionShares.map(share=>financeButton(t('investmentRedeem',{share:n(share*DB.rules.scale),amount:money(a.value*share*(1-d.fee))}),'redeem',a.definition,`data-share="${share}"`)).join('')}</div></article>`;}).join('')||`<p class="empty">${h(t('investmentNone'))}</p>`}</section><div class="offer-grid" style="margin-top:20px">${r.investments.map(d=>`<article class="card"><h2>${h(d.name)}</h2>${badge(d.risk)}<p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('investmentMinimum'),money(d.minimum))}${detail(t('financeFee'),n(d.fee*DB.rules.scale,1)+'%')}${detail(t('investmentDividendRate'),n(d.dividend*DB.rules.scale,2)+'%')}${detail(t('investmentRange'),n((d.growth-d.volatility)*DB.rules.scale,2)+'% ~ '+n((d.growth+d.volatility)*DB.rules.scale,2)+'%')}</div><form class="finance-form" data-finance-form="invest" data-id="${h(d.id)}"><label>${h(t('investmentOrder'))} (${h(DB.meta.currency)})<input type="number" name="amount" min="${d.minimum}" max="${r.maxTransaction}" step="${r.moneyStep}" value="${d.minimum}" required></label><p class="small muted">${h(t('investmentFeeHint'))}</p><button type="submit" ${e.arrears||e.cash<d.minimum*(1+d.fee)?'disabled':''}>${h(t('investmentBuy'))}</button></form></article>`).join('')}</div>`;
+ const r=DB.economyRules,e=state.economy,rate=currencyRate();return financeHead('investments')+`<p class="notice">${h(t('investmentRiskHint'))}</p><section class="card"><h2>${h(t('investmentHoldings'))}</h2>${e.investments.map(a=>{const d=r.investments.find(x=>x.id===a.definition);return `<article class="coach-review"><h3>${h(d.name)}</h3><div class="form-grid">${detail(t('investmentBasis'),money(a.basis))}${detail(t('investmentValue'),money(a.value))}${detail(t('investmentUnrealized'),money(a.value*(1-d.fee)-a.basis))}${detail(t('investmentDividends'),money(a.dividends))}</div><div class="row wrap">${r.redemptionShares.map(share=>financeButton(t('investmentRedeem',{share:n(share*DB.rules.scale),amount:money(a.value*share*(1-d.fee))}),'redeem',a.definition,`data-share="${share}"`)).join('')}</div></article>`;}).join('')||`<p class="empty">${h(t('investmentNone'))}</p>`}</section><div class="offer-grid" style="margin-top:20px">${r.investments.map(d=>`<article class="card"><h2>${h(d.name)}</h2>${badge(d.risk)}<p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('investmentMinimum'),money(d.minimum))}${detail(t('financeFee'),n(d.fee*DB.rules.scale,1)+'%')}${detail(t('investmentDividendRate'),n(d.dividend*DB.rules.scale,2)+'%')}${detail(t('investmentRange'),n((d.growth-d.volatility)*DB.rules.scale,2)+'% ~ '+n((d.growth+d.volatility)*DB.rules.scale,2)+'%')}</div><form class="finance-form" data-finance-form="invest" data-id="${h(d.id)}" data-currency="${h(preferences.currency)}"><label>${h(t('investmentOrder'))} (${h(preferences.currency)})<input type="number" name="amount" min="${Number((d.minimum*rate).toPrecision(15))}" max="${Number((r.maxTransaction*rate).toPrecision(15))}" step="any" value="${Number((d.minimum*rate).toPrecision(15))}" inputmode="decimal" required></label><p class="small muted">${h(t('investmentFeeHint'))}</p><button type="submit" ${e.arrears||e.cash<d.minimum*(1+d.fee)?'disabled':''}>${h(t('investmentBuy'))}</button></form></article>`).join('')}</div>`;
 }
 function assetsView(){
- const r=DB.economyRules,e=state.economy;return financeHead('assets')+`<section class="card"><h2>${h(t('assetHoldings'))}</h2><div class="offer-grid">${e.assets.map(a=>{const d=r.assets.find(x=>x.id===a.definition),sell=a.value*(1-r.assetSaleFee);return `<article class="card"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(t('assetUse'+a.use))}</div><div class="detail-list">${detail(t('assetPurchased'),a.bought)}${detail(t('assetBasis'),money(a.basis))}${detail(t('assetValue'),money(a.value))}${detail(t('assetUpkeep'),money(d.upkeep))}${detail(t('assetRent'),money(a.use==='rental'?d.rent:0))}</div><div class="row wrap">${d.home?financeButton(t(a.use==='personal'?'assetRentOut':'assetMoveIn'),'asset-use',a.id,`data-use="${a.use==='personal'?'rental':'personal'}"`):''}${financeButton(t('assetSell',{amount:money(sell)}),'asset-sell',a.id)}</div></article>`;}).join('')||`<p class="empty">${h(t('assetNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('assetMarket'))}</h2><p class="small muted">${h(t('assetMarketHint',{buy:n(r.assetPurchaseFee*DB.rules.scale),sell:n(r.assetSaleFee*DB.rules.scale),vacancy:n(r.vacancyChance*DB.rules.scale)}))}</p><div class="offer-grid">${r.assets.map(d=>{const price=Core.assetPrice(DB,state,d.id)*(1+r.assetPurchaseFee),owned=e.assets.filter(a=>a.definition===d.id).length;return `<article class="card"><h3>${h(d.name)}</h3>${badge(d.category)}<p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('assetTotalPrice'),money(price))}${detail(t('assetUpkeep'),money(d.upkeep))}${detail(t('assetRent'),money(d.rent))}${detail(t('assetPriceRange'),n((d.growth-d.volatility)*DB.rules.scale,1)+'% ~ '+n((d.growth+d.volatility)*DB.rules.scale,1)+'%')}${detail(t('assetPurchaseLimit'),n(owned)+' / '+n(d.limit))}</div>${financeButton(t('assetBuy'),'asset-buy',d.id,'',e.arrears>0||e.cash<price||owned>=d.limit)}</article>`;}).join('')}</div></section>`;
+ const r=DB.economyRules,e=state.economy;return financeHead('assets')+`<section class="card"><h2>${h(t('assetHoldings'))}</h2><div class="offer-grid">${e.assets.map(a=>{const d=r.assets.find(x=>x.id===a.definition),sell=a.value*(1-r.assetSaleFee);return `<article class="card"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(t('assetUse'+a.use))}</div><div class="detail-list">${detail(t('assetPurchased'),a.bought)}${detail(t('assetBasis'),money(a.basis))}${detail(t('assetValue'),money(a.value))}${detail(t('assetUpkeep'),money(d.upkeep))}${detail(t('assetRent'),money(a.use==='rental'?d.rent:0))}</div><div class="row wrap">${d.home?financeButton(t(a.use==='personal'?'assetRentOut':'assetMoveIn'),'asset-use',a.id,`data-use="${a.use==='personal'?'rental':'personal'}"`):''}${financeButton(t('assetSell',{amount:money(sell)}),'asset-sell',a.id)}</div></article>`;}).join('')||`<p class="empty">${h(t('assetNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('assetMarket'))}</h2><p class="small muted">${h(t('assetMarketHint',{buy:n(r.assetPurchaseFee*DB.rules.scale),sell:n(r.assetSaleFee*DB.rules.scale),vacancy:n(r.vacancyChance*DB.rules.scale)}))}</p><p class="small muted">${h(t('assetPriceReferenceHint'))}</p><div class="offer-grid">${r.assets.map(d=>{const price=Core.assetPrice(DB,state,d.id)*(1+r.assetPurchaseFee),owned=e.assets.filter(a=>a.definition===d.id).length;return `<article class="card"><h3>${h(d.name)}</h3>${badge(d.category)}<p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('assetTotalPrice'),money(price))}${d.priceIncludesPurchaseFee&&r.assetPriceReferences[d.id]?detail(t('assetPriceBasis'),r.assetPriceReferences[d.id].basis+' · '+r.assetPriceReferences[d.id].checkedAt):''}${detail(t('assetUpkeep'),money(d.upkeep))}${detail(t('assetRent'),money(d.rent))}${detail(t('assetPriceRange'),n((d.growth-d.volatility)*DB.rules.scale,1)+'% ~ '+n((d.growth+d.volatility)*DB.rules.scale,1)+'%')}${detail(t('assetPurchaseLimit'),n(owned)+' / '+n(d.limit))}</div>${financeButton(t('assetBuy'),'asset-buy',d.id,'',e.arrears>0||e.cash<price||owned>=d.limit)}</article>`;}).join('')}</div></section>`;
 }
 function brandsView(){
  const r=DB.economyRules,e=state.economy;return financeHead('brands')+`<section class="card"><h2>${h(t('brandHoldings'))}</h2><div class="offer-grid">${e.brands.map(b=>`<article class="card"><h3>${h(b.name)}</h3><p class="small muted">${h(r.brandTypes.find(d=>d.id===b.type).name)} · ${h(t('brandLevel',{n:b.level,max:r.brandMaxLevel}))}</p><div class="detail-list">${detail(t('brandEquity'),money(b.equity))}${detail(t('brandRevenue'),money(b.lastRevenue))}${detail(t('brandCost'),money(b.lastCost))}${detail(t('brandProfit'),money(b.profit))}${detail(t('brandMarketingUntil'),b.marketingUntil>state.date?b.marketingUntil:t('brandNoMarketing'))}</div><label>${h(t('brandStrategy'))}<select class="brand-strategy" data-id="${h(b.id)}">${r.brandStrategies.map(p=>`<option value="${h(p.id)}" ${p.id===b.strategy?'selected':''}>${h(p.name)}</option>`).join('')}</select></label><div class="row wrap" style="margin-top:12px">${financeButton(t('brandExpand',{amount:money(b.equity*r.brandExpansionCost)}),'brand-expand',b.id,'',b.level>=r.brandMaxLevel||e.arrears>0||e.cash<b.equity*r.brandExpansionCost)}${financeButton(t('brandMarketing',{amount:money(b.equity*r.marketingCost)}),'brand-marketing',b.id,'',e.arrears>0||e.cash<b.equity*r.marketingCost||b.lastMarketing&&Core.daysBetween(DB,b.lastMarketing,state.date)<r.periodDays)}${financeButton(t('brandSell',{amount:money(b.equity*r.brandSaleShare)}),'brand-sell',b.id)}</div></article>`).join('')||`<p class="empty">${h(t('brandNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('brandFound'))}</h2><p class="small muted">${h(t('brandFoundHint',{n:r.maxBrands,days:r.marketingDays,boost:n((r.marketingRevenueFactor-1)*DB.rules.scale)}))}</p><div class="offer-grid">${r.brandTypes.map(d=>`<article class="card"><h3>${h(d.name)}</h3><p>${h(d.description)}</p><div class="detail-list">${detail(t('brandCapital'),money(d.capital))}${detail(t('commercialReputation'),n(d.minReputation))}${detail(t('brandMargin'),n((1-d.productionShare)*DB.rules.scale)+'%')}${detail(t('brandOverhead'),n(d.overhead*DB.rules.scale,2)+'%')}</div><form class="finance-form" data-finance-form="brand" data-id="${h(d.id)}"><label>${h(t('brandName'))}<input name="name" maxlength="${r.brandNameLimit}" required></label><label>${h(t('brandStrategy'))}<select name="strategy">${r.brandStrategies.map(p=>`<option value="${h(p.id)}">${h(p.name)}</option>`).join('')}</select></label><button type="submit" ${e.arrears||e.cash<d.capital||state.player.reputation<d.minReputation||e.brands.length>=r.maxBrands?'disabled':''}>${h(t('brandLaunch'))}</button></form></article>`).join('')}</div><div class="divider"></div>${r.brandStrategies.map(p=>`<p class="small muted"><b>${h(p.name)}</b> · ${h(p.description)}</p>`).join('')}</section>`;
@@ -44504,8 +44547,9 @@ function handleFinanceAction(button){
  switch(op){case 'sign':result=Core.signCommercial(DB,state,id,commercialPackage);break;case 'deliver':result=Core.commercialDelivery(DB,state,id);break;case 'cancel':result=Core.cancelCommercial(DB,state,id);break;case 'asset-buy':result=Core.buyAsset(DB,state,id);break;case 'asset-sell':result=Core.sellAsset(DB,state,id);break;case 'asset-use':result=Core.assetUse(DB,state,id,button.dataset.use);break;case 'redeem':result=Core.redeemInvestment(DB,state,id,Number(button.dataset.share));break;case 'lifestyle':result=Core.lifestyleChange(DB,state,id);break;case 'brand-expand':case 'brand-marketing':case 'brand-sell':result=Core.brandAction(DB,state,id,op.slice('brand-'.length));break;}
  financeResult(result);
 }
+function investmentAmountInBase(form,value){const unit=DB.settings.currencies.find(c=>c.id===form.dataset.currency);return unit?Number((Number(value)/unit.rate).toPrecision(15)):NaN;}
 document.addEventListener('submit',event=>{const form=event.target.closest('[data-finance-form]');if(!form)return;event.preventDefault();if(!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation||!form.reportValidity())return;
- const fields=new FormData(form),id=form.dataset.id;financeResult(form.dataset.financeForm==='invest'?Core.investMoney(DB,state,id,Number(fields.get('amount'))):Core.foundBrand(DB,state,id,fields.get('name'),fields.get('strategy')));
+ const fields=new FormData(form),id=form.dataset.id;financeResult(form.dataset.financeForm==='invest'?Core.investMoney(DB,state,id,investmentAmountInBase(form,fields.get('amount'))):Core.foundBrand(DB,state,id,fields.get('name'),fields.get('strategy')));
 });
 document.addEventListener('change',event=>{if(!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation)return;if(event.target.id==='commercial-package'){commercialPackage=event.target.value;render();}if(event.target.matches('.brand-strategy'))financeResult(Core.brandAction(DB,state,event.target.dataset.id,'strategy',event.target.value));});
 

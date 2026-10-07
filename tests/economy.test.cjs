@@ -77,8 +77,32 @@ test('economic saves round-trip and reject broken balances, references, dates an
 });
 test('finance pages render holdings inside their menus and escape custom brand names',()=>{
  const s=create(300000);s.player.reputation=DB.rules.scale;C.buyAsset(DB,s,'apartment');C.investMoney(DB,s,'deposit',1000);C.foundBrand(DB,s,'streetwear','<img onerror=bad>','online');
- const viewCtx=vm.createContext({DB,C,state:s,document:{addEventListener(){}},FormData});
+ const viewCtx=vm.createContext({DB,C,state:s,preferences:{currency:'EUR'},currencyRate:()=>1,document:{addEventListener(){}},FormData});
  vm.runInContext(`const Core=C;const h=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const t=(k,v={})=>String(DB.ui.labels[k]||k).replace(/\\{(\\w+)\\}/g,(_,x)=>v[x]??'');const n=x=>String(x);const money=x=>String(x);const badge=x=>'<span>'+h(x)+'</span>';const btn=(l,a,d='')=>'<button data-action="'+a+'" '+d+'>'+h(l)+'</button>';const detail=(l,v)=>'<p>'+h(l)+': '+h(v)+'</p>';const kpi=detail;${ui.slice(ui.indexOf('function financeButton('),ui.indexOf('let sectionVisits='))};globalThis.views={financesView,commercialView,investmentsView,assetsView,brandsView,lifestyleView};`,viewCtx);
  for(const fn of Object.values(viewCtx.views))assert.ok(fn().length>100);
  assert.ok(viewCtx.views.assetsView().includes(DB.economyRules.assets[0].name));assert.ok(viewCtx.views.assetsView().includes('data-operation="asset-use"'));assert.ok(!viewCtx.views.financesView().includes('data-operation="asset-use"'));assert.ok(viewCtx.views.brandsView().includes('&lt;img onerror=bad&gt;'));assert.ok(!viewCtx.views.brandsView().includes('<img onerror=bad>'));
+});
+test('real product prices include purchase fees across dates and migrate only default prices',()=>{
+ const s=create(3000000),totals={'daily-car':211200,supercar:249800,watch:9800,yacht:1895000};
+ for(const [id,total] of Object.entries(totals)){
+  near(C.assetPrice(DB,s,id)*(1+DB.economyRules.assetPurchaseFee),total);const cash=s.economy.cash,a=C.buyAsset(DB,s,id);assert.ok(a);near(cash-s.economy.cash,total);near(a.basis,total);near(a.value,total/(1+DB.economyRules.assetPurchaseFee));
+ }
+ const savedAtPurchase=C.clone(s);days(DB,s,60);for(const [id,total] of Object.entries(totals))near(C.assetPrice(DB,s,id)*(1+DB.economyRules.assetPurchaseFee),total);assert.ok(s.economy.assets.find(a=>a.definition==='daily-car').value<211200/(1+DB.economyRules.assetPurchaseFee));assert.ok(validate(s));
+ const old=C.clone(DB);delete old.economyRules.assetPriceReferences;delete old.economyRules.catalogUpgrade.assetPrices;for(const d of old.economyRules.assets)if(totals[d.id]){d.price=DB.economyRules.catalogUpgrade.assetPrices[d.id];delete d.priceIncludesPurchaseFee;}
+ old.economyRules.assets.find(d=>d.id==='watch').price=7777;old.ui.labels.investmentFeeHint=DB.economyRules.catalogUpgrade.previousLabels.investmentFeeHint;const before=JSON.stringify(savedAtPurchase.economy),loaded=ctx.V.prepareImportedCareer({schema:DB.meta.schema,db:old,state:savedAtPurchase});assert.equal(JSON.stringify(loaded.state.economy),before);assert.equal(loaded.db.ui.labels.investmentFeeHint,DB.ui.labels.investmentFeeHint);assert.equal(loaded.db.economyRules.assets.find(d=>d.id==='watch').price,7777);assert.equal(loaded.db.economyRules.assets.find(d=>d.id==='watch').priceIncludesPurchaseFee,undefined);near(C.assetPrice(loaded.db,s,'yacht')*(1+loaded.db.economyRules.assetPurchaseFee),totals.yacht);
+ const again=ctx.V.prepareImportedCareer(loaded);assert.deepEqual(plain(again),plain(loaded));
+});
+test('investment forms accept selected EUR USD KRW amounts and debit the same base amount plus fee',()=>{
+ const s=create(10000),events={},preferences={currency:'EUR'};
+ class InputData{constructor(form){this.form=form;}get(key){return this.form.values[key];}}
+ const viewCtx=vm.createContext({DB,C,state:s,preferences,storageLoading:false,matchLoading:false,calendarLoading:false,document:{addEventListener(type,fn){events[type]=fn;}},FormData:InputData,currencyRate:()=>DB.settings.currencies.find(c=>c.id===preferences.currency).rate});
+ vm.runInContext(`const Core=C;const h=x=>String(x??'');const t=(k,v={})=>String(DB.ui.labels[k]||k).replace(/\\{(\\w+)\\}/g,(_,x)=>v[x]??'');const n=x=>String(x);const money=x=>String(x);const badge=h;const btn=h;const detail=(l,v)=>l+': '+v;const persist=()=>{};const render=()=>{};const toast=()=>{};${ui.slice(ui.indexOf('function financeButton('),ui.indexOf('let sectionVisits='))};globalThis.views={investmentsView,investmentAmountInBase};`,viewCtx);
+ const d=DB.economyRules.investments[0];
+ for(const unit of DB.settings.currencies){
+  preferences.currency=unit.id;const markup=viewCtx.views.investmentsView();assert.ok(markup.includes('data-currency="'+unit.id+'"'));assert.ok(markup.includes('min="'+Number((d.minimum*unit.rate).toPrecision(15))+'"'));assert.ok(markup.includes('max="'+Number((DB.economyRules.maxTransaction*unit.rate).toPrecision(15))+'"'));assert.ok(markup.includes('value="'+Number((d.minimum*unit.rate).toPrecision(15))+'"'));assert.ok(markup.includes('step="any"'));
+  const form={dataset:{financeForm:'invest',id:d.id,currency:unit.id},values:{amount:String(500*unit.rate)},reportValidity:()=>true};near(viewCtx.views.investmentAmountInBase(form,form.values.amount),500);assert.equal(viewCtx.views.investmentAmountInBase(form,Number((d.minimum*unit.rate).toPrecision(15))),d.minimum);const cash=s.economy.cash,held=s.economy.investments.find(a=>a.definition===d.id)?.value||0;
+  events.submit({target:{closest:()=>form},preventDefault(){}});near(cash-s.economy.cash,500*(1+d.fee));near(s.economy.investments.find(a=>a.definition===d.id).value-held,500);
+  assert.equal(C.investMoney(DB,s,d.id,viewCtx.views.investmentAmountInBase(form,(d.minimum-1)*unit.rate)),false);assert.equal(C.investMoney(DB,s,d.id,viewCtx.views.investmentAmountInBase(form,(DB.economyRules.maxTransaction+1)*unit.rate)),false);
+ }
+ assert.ok(Number.isNaN(viewCtx.views.investmentAmountInBase({dataset:{currency:'invalid'}},100)));assert.ok(ui.includes("Core.investMoney(DB,state,id,investmentAmountInBase(form,fields.get('amount')))"));assert.ok(validate(s));
 });
