@@ -99,6 +99,7 @@ button.info-link:active:enabled{background:var(--soft);color:var(--accent);trans
 .form-gauge progress{width:100%;height:10px;accent-color:var(--accent);margin:10px 0}.form-gauge p{margin-top:8px}.market-parts{padding:16px 0 26px}.market-parts h3{margin-bottom:18px}.market-assessment{border-top:1px solid var(--line);padding-top:28px;margin-top:8px}.market-assessment h3{margin-bottom:22px}.market-assessment>p{margin-top:16px}.review-achievements{margin:22px 0}.review-achievements>h2{margin-bottom:16px}.review-achievement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.review-achievement-grid .card{border-color:var(--accent)}.review-achievement-grid h3{font-size:21px;margin-bottom:18px}.review-memories{margin:20px 0}.review-numbers{border-top:1px solid var(--line);margin-top:28px;padding-top:20px}.review-numbers>summary{cursor:pointer;font-weight:700;margin-bottom:18px}.season-club-records>p{margin-bottom:18px}@media(max-width:650px){.review-achievement-grid{grid-template-columns:1fr}.market-parts{padding-bottom:22px}.market-assessment{padding-top:24px}}
 
 .starting-club-picker{display:block;margin:16px 0 20px;font-size:12px;color:var(--muted)}.starting-club-picker select{display:block;margin-top:8px;width:100%}.episode-card{margin-top:22px}.episode-card h3{margin:14px 0 10px}.episode-card>p{margin:12px 0}.episode-progress{margin:18px 0}.episode-progress>p{margin-top:9px}.episode-card details{border-top:1px solid var(--line);margin-top:20px;padding-top:16px}.episode-card summary{cursor:pointer;font-weight:700}.episode-result{margin-top:18px}.event-description{margin:12px 0 18px;line-height:1.8}
+.finance-form{display:grid;gap:12px;margin-top:16px}.finance-form label{display:grid;gap:6px}.finance-form button{justify-self:start}.content[data-screen="finances"] .kpi-grid{margin-bottom:20px}
 </style>
 </head>
 <body>
@@ -111,7 +112,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.7.0",
+    "version": "20.8.0",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -20480,6 +20481,36 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "id": "interviews",
         "label": "인터뷰·관계",
         "icon": "◌"
+      },
+      {
+        "id": "finances",
+        "label": "재정 현황",
+        "icon": "€"
+      },
+      {
+        "id": "commercial",
+        "label": "스폰서·광고 계약",
+        "icon": "€"
+      },
+      {
+        "id": "investments",
+        "label": "투자",
+        "icon": "€"
+      },
+      {
+        "id": "assets",
+        "label": "보유 자산",
+        "icon": "€"
+      },
+      {
+        "id": "brands",
+        "label": "개인 브랜드",
+        "icon": "€"
+      },
+      {
+        "id": "lifestyle",
+        "label": "생활 관리",
+        "icon": "€"
       }
     ],
     "labels": {
@@ -21582,7 +21613,134 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "episodeHint": "목표는 출전이나 득점을 보장하지 않습니다. 실제 소속팀 경기 기록으로 평가합니다.",
       "episodeHistory": "지난 에피소드",
       "eventSituation": "선택 당시 상황",
-      "eventHistoryHint": "주제와 상황을 바꿔 새 사건을 제공합니다. 같은 선택은 바로 반복되지 않습니다."
+      "eventHistoryHint": "주제와 상황을 바꿔 새 사건을 제공합니다. 같은 선택은 바로 반복되지 않습니다.",
+      "finances": "재정 현황",
+      "financesHint": "주급·보너스·상업 수입이 실제 현금으로 쌓이고, 소비·투자·운영비가 차감됩니다. 이전 저장의 누적 수입은 한 번만 현금으로 이전됩니다.",
+      "financeCash": "사용 가능한 현금",
+      "financeNetWorth": "순자산",
+      "financeValuationHint": "현금 + 자산 평가액 + 투자 + 브랜드 매각가 − 미납금",
+      "financeIncome": "누적 입금",
+      "financeSpent": "누적 지출",
+      "financeComposition": "재산 구성",
+      "financeAssets": "보유 자산 평가액",
+      "financeInvestments": "투자 평가액",
+      "financeBusinesses": "브랜드 매각 평가액",
+      "financeArrears": "미납금",
+      "financeArrearsHint": "미납금 {amount}. 이후 입금에서 먼저 상환되며, 미납금이 남아 있으면 새로운 구매·투자와 계약 해지가 제한됩니다.",
+      "financeNextSettlement": "다음 30일 정산",
+      "financeLedger": "입출금 내역",
+      "financeLedgerHint": "최근 거래를 보관합니다. 주급은 실제 경과일 ÷ 7로 지급하며 연속 입금은 하나의 내역으로 합칩니다.",
+      "financeSource": "입출금 항목",
+      "financeAmount": "금액",
+      "financeNoLedger": "아직 입출금이 없습니다.",
+      "financeStatement": "개인 경제 정산",
+      "financeStatementBody": "{date} 정산: 상업·자산·투자·브랜드 수입 {income}, 운영·생활 지출 {spent}. 사용 가능한 현금 {cash}, 미납금 {arrears}. 자세한 내역은 자산·라이프 메뉴에서 확인하세요.",
+      "financeDays": "{n}일",
+      "financeFee": "매수·매도 수수료",
+      "financeDone": "개인 경제에 반영하고 저장했습니다.",
+      "financeFailed": "현금·명성·의무·보유 한도 또는 입력 조건을 확인해주세요.",
+      "commercial": "스폰서·광고 계약",
+      "commercialHint": "가상의 브랜드와 계약하세요. 명성과 에이전트 신뢰가 제안에 반영됩니다. 기간당 촬영 1회를 완료해야 보수를 받습니다. 계약은 기존 경기·이적을 막지 않습니다.",
+      "commercialActive": "진행 중인 계약",
+      "commercialOffers": "계약 제안",
+      "commercialPackage": "협상 방향",
+      "commercialExclusive": "동일 분야 독점",
+      "commercialDeadline": "다음 의무 마감 {date}",
+      "commercialPay": "30일 보수 {amount} · 기간 중 득점당 {bonus}",
+      "commercialDuty": "촬영 체력 비용 {cost} · 연속 미이행 {misses}/{max}. 미이행 시 해당 기간 보수·득점 보너스를 지급하지 않으며 명성이 감소합니다.",
+      "commercialShoot": "촬영·콘텐츠 제작",
+      "commercialDelivered": "이번 기간 제작 완료",
+      "commercialCancel": "계약 해지 · 비용 {fee}",
+      "commercialReputation": "필요 명성",
+      "commercialCategory": "계약 분야",
+      "commercialDuration": "기간",
+      "commercialUpfront": "서명 시 계약금",
+      "commercialPeriodPay": "30일 의무 완료 보수",
+      "commercialGoalBonus": "득점당 보너스",
+      "commercialShootCost": "기간당 촬영 체력 비용",
+      "commercialExitTerms": "중도 해지 시 계약금 + 남은 기간 기본 보수 합계의 {share}%를 반환합니다.",
+      "commercialSign": "조건에 서명",
+      "commercialConflict": "진행 중인 동일 브랜드 또는 같은 분야 독점 계약이 있습니다.",
+      "commercialCooldown": "재제안까지 {n}일 남았습니다.",
+      "commercialLocked": "필요 명성에 도달하면 계약할 수 있습니다.",
+      "commercialLimit": "동시 계약은 최대 {n}개입니다.",
+      "commercialNone": "아직 계약이 없습니다.",
+      "commercialHistory": "종료 계약 이력",
+      "commercialStatuscompleted": "기간 완료",
+      "commercialStatuscancelled": "중도 해지",
+      "commercialStatusterminated": "의무 미이행 종료",
+      "investments": "투자",
+      "investmentsHint": "보유 현금을 나누어 투자하세요. 실제 금융 상품이 아닌 게임 속 시장이며 커리어 시드와 경과일에 따라 평가액이 달라집니다.",
+      "investmentRiskHint": "예금을 제외한 펀드는 손실이 날 수 있습니다. 가격 범위·배당은 30일 기준 게임 계수이며, 매수·매도 수수료를 포함한 현금을 사용합니다.",
+      "investmentHoldings": "내 투자 포트폴리오",
+      "investmentBasis": "남아 있는 투자 원금·매수 비용",
+      "investmentValue": "현재 평가액",
+      "investmentUnrealized": "매도 비용 반영 평가 손익",
+      "investmentDividends": "누적 현금 배당",
+      "investmentRedeem": "{share}% 회수 · {amount}",
+      "investmentNone": "보유 중인 투자가 없습니다.",
+      "investmentMinimum": "최소 주문",
+      "investmentDividendRate": "30일 배당률",
+      "investmentRange": "30일 가격 변동 범위",
+      "investmentOrder": "투자금",
+      "investmentFeeHint": "입력 금액은 EUR 기준입니다. 매수 수수료는 별도로 현금에서 차감하며, 매도 수수료는 회수 금액에서 차감합니다.",
+      "investmentBuy": "현금으로 투자",
+      "assets": "보유 자산",
+      "assetsHint": "내 자산은 이 메뉴에서 확인합니다. 주택·차량·수집품을 구매하고 거주·임대·매각을 관리하세요.",
+      "assetHoldings": "내 보유 자산",
+      "assetUsepersonal": "직접 거주",
+      "assetUserental": "임대 운용",
+      "assetUsecollection": "개인 보유",
+      "assetPurchased": "구매일",
+      "assetBasis": "구매 비용",
+      "assetValue": "평가액",
+      "assetUpkeep": "30일 유지비",
+      "assetRent": "30일 임대료",
+      "assetRentOut": "임대로 전환",
+      "assetMoveIn": "직접 거주",
+      "assetSell": "매각 · 수령 {amount}",
+      "assetNone": "보유한 자산이 없습니다. 아래 시장에서 구매할 수 있습니다.",
+      "assetMarket": "자산 시장",
+      "assetMarketHint": "구매 비용 {buy}%·매각 비용 {sell}%를 적용합니다. 임대 자산은 정산별 공실 확률 {vacancy}%가 있으며 공실에도 유지비가 발생합니다. 첫 정산은 보유 일수에 비례합니다.",
+      "assetTotalPrice": "수수료 포함 구매가",
+      "assetPriceRange": "30일 평가액 변동 범위",
+      "assetPurchaseLimit": "동일 자산 보유 한도",
+      "assetBuy": "현금으로 구매",
+      "brands": "개인 브랜드",
+      "brandsHint": "내 이름을 가진 사업을 시작하고 운영 전략·확장·마케팅을 결정하세요. 매출에서 제작비와 고정비를 뺀 이익 또는 적자가 현금에 반영됩니다.",
+      "brandHoldings": "내 브랜드",
+      "brandLevel": "운영 규모 {n}/{max}",
+      "brandEquity": "운영 자본 평가액",
+      "brandRevenue": "최근 정산 매출",
+      "brandCost": "최근 정산 제작비·운영비",
+      "brandProfit": "누적 운영 손익",
+      "brandMarketingUntil": "홍보 효과 종료",
+      "brandNoMarketing": "진행 중인 캠페인 없음",
+      "brandStrategy": "운영 전략",
+      "brandExpand": "확장 · {amount}",
+      "brandMarketing": "마케팅 · {amount}",
+      "brandSell": "브랜드 매각 · {amount}",
+      "brandNone": "아직 창설한 브랜드가 없습니다.",
+      "brandFound": "브랜드 창설",
+      "brandFoundHint": "최대 {n}개 브랜드를 운영합니다. 창업 자금 일부는 초기 비용으로 소진됩니다. 마케팅은 {days}일간 매출 {boost}% 증가, 30일마다 한 번 실행할 수 있습니다. 낮은 명성·수요와 높은 고정비에서는 적자가 발생합니다.",
+      "brandCapital": "필요 창업 자금",
+      "brandMargin": "제작비 차감 매출 비중",
+      "brandOverhead": "30일 고정비 / 운영 자본",
+      "brandName": "브랜드 이름",
+      "brandLaunch": "브랜드 창설",
+      "lifestyle": "생활 관리",
+      "lifestyleHint": "현금 흐름에 맞는 주거·식단·개인 관리 수준을 선택하세요. 30일 정산마다 생활비가 발생합니다.",
+      "lifestyleHousing": "현재 개인 주거",
+      "lifestyleRented": "생활 수준에 맞는 임대 주거",
+      "lifestyleHousingHint": "보유 주택에서 직접 거주하면 임대 주거비가 면제됩니다. 해당 주택의 임대 수입은 중단되고 유지비는 계속 발생합니다.",
+      "lifestyleCost": "30일 생활비·주거비",
+      "lifestyleRecovery": "정산 때 체력 회복",
+      "lifestyleMorale": "정산 때 사기 변화",
+      "lifestyleSelected": "현재 생활 수준",
+      "lifestyleSelect": "이 생활 수준 선택",
+      "lifestyleCostHint": "현금이 부족한 유지비·생활비·사업 적자는 미납금으로 쌓입니다. 미납 상태에서는 생활 수준의 회복 효과가 중단되고 사기가 감소합니다. 자산 매각이나 다음 수입으로 자동 상환할 수 있습니다. 생활 수준·거주 변경은 변경 이후의 일수부터 적용합니다.",
+      "commercialPaidMail": "{date}: 콘텐츠 의무를 완료해 {amount}를 지급했습니다. 자산·라이프 메뉴에서 다음 기간 촬영 의무를 확인하세요.",
+      "commercialMissedMail": "{date}: 콘텐츠 의무를 완료하지 않아 이번 기간 보수는 지급하지 않습니다. 연속 미이행 {misses}/{max}."
     },
     "statFields": [
       {
@@ -22008,6 +22166,19 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         ]
       },
       {
+        "id": "economy",
+        "label": "자산·라이프",
+        "icon": "€",
+        "views": [
+          "finances",
+          "commercial",
+          "investments",
+          "assets",
+          "brands",
+          "lifestyle"
+        ]
+      },
+      {
         "id": "club",
         "label": "소속팀·리그",
         "icon": "◇",
@@ -22275,7 +22446,13 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "valuation": "능력치와 시장의 평가를 비교하세요. 국적·스타성·최근 활약의 환경이 가격에 반영됩니다.",
         "legacy": "입단과 계약 이력, 수상·우승과 커리어에서 얻은 특징을 확인하세요.",
         "clubroom": "감독의 전술, 구단 환경과 문화, 등록 시점에 선임한 주장단을 확인하세요.",
-        "interviews": "지난 답변과 감독·구단·언론과의 관계, 구단 문화에 따른 평가를 확인하세요."
+        "interviews": "지난 답변과 감독·구단·언론과의 관계, 구단 문화에 따른 평가를 확인하세요.",
+        "finances": "주급·보너스·상업 수입이 실제 현금으로 쌓이고, 소비·투자·운영비가 차감됩니다. 이전 저장의 누적 수입은 한 번만 현금으로 이전됩니다.",
+        "commercial": "가상의 브랜드와 계약하세요. 명성과 에이전트 신뢰가 제안에 반영됩니다. 기간당 촬영 1회를 완료해야 보수를 받습니다. 계약은 기존 경기·이적을 막지 않습니다.",
+        "investments": "보유 현금을 나누어 투자하세요. 실제 금융 상품이 아닌 게임 속 시장이며 커리어 시드와 경과일에 따라 평가액이 달라집니다.",
+        "assets": "내 자산은 이 메뉴에서 확인합니다. 주택·차량·수집품을 구매하고 거주·임대·매각을 관리하세요.",
+        "brands": "내 이름을 가진 사업을 시작하고 운영 전략·확장·마케팅을 결정하세요. 매출에서 제작비와 고정비를 뺀 이익 또는 적자가 현금에 반영됩니다.",
+        "lifestyle": "현금 흐름에 맞는 주거·식단·개인 관리 수준을 선택하세요. 30일 정산마다 생활비가 발생합니다."
       },
       "actionHints": {
         "advance": "다음 일정으로 진행합니다. 경기나 선택이 있으면 해당 화면이 열립니다.",
@@ -22309,7 +22486,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "agent-cancel-inquiry": "회신 전 접촉을 철회합니다. 사용한 신뢰와 접촉 재요청 대기 기간은 되돌리지 않습니다.",
         "agent-focus": "에이전트 전략·클럽 검색·접촉 보고서로 바로 이동합니다.",
         "section-back": "이전 화면",
-        "section-forward": "앞으로 이동 · 이전 화면 취소"
+        "section-forward": "앞으로 이동 · 이전 화면 취소",
+        "finance-action": "표시된 조건으로 개인 경제에 반영합니다."
       }
     },
     "reworkLegacyLabels": {
@@ -40435,7 +40613,420 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       ],
       "description": "두 경기 이상 출전해 평균 평점 6.8을 목표로 합니다. 최대 네 번의 팀 경기·35일 안에 실제 활약으로 평가합니다."
     }
-  ]
+  ],
+  "economyRules": {
+    "revision": 1,
+    "initialCash": 0,
+    "periodDays": 30,
+    "offerDays": 90,
+    "ledgerLimit": 180,
+    "historyLimit": 60,
+    "maxContracts": 4,
+    "maxMisses": 3,
+    "agentTrustFactor": 0.001,
+    "deliveryReputation": 0.25,
+    "missedReputation": 1,
+    "assetPurchaseFee": 0.03,
+    "assetSaleFee": 0.06,
+    "vacancyChance": 0.12,
+    "minimumAssetValue": 1,
+    "maxTransaction": 100000000,
+    "moneyStep": 0.01,
+    "redemptionShares": [
+      0.5,
+      1
+    ],
+    "defaultLifestyle": "simple",
+    "maxBrands": 3,
+    "brandNameLimit": 40,
+    "brandInitialEquity": 0.8,
+    "brandSaleShare": 0.65,
+    "brandMaxLevel": 5,
+    "brandExpansionCost": 0.45,
+    "brandExpansionEquity": 0.8,
+    "brandAudienceBase": 0.6,
+    "brandReputationFactor": 0.025,
+    "brandDemandMin": 0.65,
+    "brandDemandMax": 1.35,
+    "brandEquityGrowth": 0.003,
+    "marketingCost": 0.025,
+    "marketingDays": 90,
+    "marketingRevenueFactor": 1.35,
+    "arrearsMorale": 3,
+    "packages": [
+      {
+        "id": "light",
+        "name": "선수 생활 우선",
+        "description": "낮은 촬영 부담과 낮은 보수. 매 기간 콘텐츠 제작에 체력 2를 사용합니다.",
+        "upfront": 0.7,
+        "payment": 0.8,
+        "fitnessCost": 2,
+        "cancelShare": 0.08
+      },
+      {
+        "id": "balanced",
+        "name": "균형 계약",
+        "description": "보수와 촬영 일정을 균형 있게 조율합니다. 콘텐츠 제작에 체력 5를 사용합니다.",
+        "upfront": 1,
+        "payment": 1,
+        "fitnessCost": 5,
+        "cancelShare": 0.12
+      },
+      {
+        "id": "premium",
+        "name": "집중 홍보 계약",
+        "description": "높은 계약금과 보수에 더 많은 촬영 부담·중도 해지 비용이 따릅니다. 콘텐츠 제작에 체력 9를 사용합니다.",
+        "upfront": 1.3,
+        "payment": 1.25,
+        "fitnessCost": 9,
+        "cancelShare": 0.2
+      }
+    ],
+    "commercial": [
+      {
+        "id": "local-boots",
+        "name": "스트라이드 풋볼",
+        "kind": "sponsor",
+        "kindName": "축구화 스폰서",
+        "category": "boots",
+        "categoryName": "축구화",
+        "exclusive": true,
+        "minReputation": 0,
+        "upfront": 400,
+        "payment": 150,
+        "goalBonus": 15,
+        "duration": 180,
+        "description": "지역 선수의 첫 장비 후원. 축구화 분야 독점 사용과 30일마다 콘텐츠 1회 제작이 필요합니다."
+      },
+      {
+        "id": "pro-boots",
+        "name": "벨로시티 스포츠",
+        "kind": "sponsor",
+        "kindName": "장비 스폰서",
+        "category": "boots",
+        "categoryName": "축구화",
+        "exclusive": true,
+        "minReputation": 30,
+        "upfront": 8000,
+        "payment": 2200,
+        "goalBonus": 120,
+        "duration": 360,
+        "description": "프로 선수 장비 후원. 축구화 독점 사용과 정기 촬영을 통해 보수를 받습니다."
+      },
+      {
+        "id": "elite-boots",
+        "name": "에이펙스 퍼포먼스",
+        "kind": "sponsor",
+        "kindName": "글로벌 장비 스폰서",
+        "category": "boots",
+        "categoryName": "축구화",
+        "exclusive": true,
+        "minReputation": 70,
+        "upfront": 180000,
+        "payment": 38000,
+        "goalBonus": 1800,
+        "duration": 360,
+        "description": "정상급 선수의 글로벌 장비 파트너십. 명성 조건과 독점·정기 홍보 의무를 적용합니다."
+      },
+      {
+        "id": "nutrition",
+        "name": "리커버리 랩",
+        "kind": "sponsor",
+        "kindName": "영양 브랜드 스폰서",
+        "category": "nutrition",
+        "categoryName": "영양·건강",
+        "exclusive": true,
+        "minReputation": 15,
+        "upfront": 1200,
+        "payment": 500,
+        "goalBonus": 25,
+        "duration": 180,
+        "description": "정기 콘텐츠 제작을 조건으로 한 영양 브랜드 홍보 계약. 실제 회복 제품 효과를 보장하지 않습니다."
+      },
+      {
+        "id": "tech-ad",
+        "name": "노바 모바일 캠페인",
+        "kind": "advert",
+        "kindName": "단기 광고 계약",
+        "category": "technology",
+        "categoryName": "테크·전자기기",
+        "exclusive": false,
+        "minReputation": 8,
+        "upfront": 0,
+        "payment": 900,
+        "goalBonus": 0,
+        "duration": 30,
+        "description": "30일 안에 광고 콘텐츠 1회 제작 시 캠페인 보수를 지급합니다. 촬영 없이 기간이 지나면 보수가 없습니다."
+      },
+      {
+        "id": "fashion-ad",
+        "name": "메종 오라 앰배서더",
+        "kind": "advert",
+        "kindName": "패션 광고 계약",
+        "category": "fashion",
+        "categoryName": "패션·럭셔리",
+        "exclusive": true,
+        "minReputation": 45,
+        "upfront": 15000,
+        "payment": 10000,
+        "goalBonus": 0,
+        "duration": 90,
+        "description": "패션 분야 독점 앰배서더. 30일마다 콘텐츠를 제작해야 다음 정산금을 받을 수 있습니다."
+      }
+    ],
+    "investments": [
+      {
+        "id": "deposit",
+        "name": "선수 예금",
+        "risk": "낮음",
+        "minimum": 100,
+        "fee": 0,
+        "growth": 0.0018,
+        "volatility": 0,
+        "dividend": 0,
+        "description": "30일 기준 0.18% 이자가 평가액에 쌓이는 게임 내 예금. 필요할 때 일부 또는 전부 회수합니다."
+      },
+      {
+        "id": "bonds",
+        "name": "채권 분산 펀드",
+        "risk": "낮음~보통",
+        "minimum": 500,
+        "fee": 0.002,
+        "growth": 0.001,
+        "volatility": 0.009,
+        "dividend": 0.0025,
+        "description": "작은 가격 변동과 정기 배당을 함께 반영합니다. 가격 하락으로 원금 손실이 발생할 수 있습니다."
+      },
+      {
+        "id": "index",
+        "name": "글로벌 주식 인덱스",
+        "risk": "보통",
+        "minimum": 500,
+        "fee": 0.005,
+        "growth": 0.004,
+        "volatility": 0.045,
+        "dividend": 0.001,
+        "description": "여러 기업에 분산한 펀드. 시드에 따른 시장 변동을 반영하며 수익률을 보장하지 않습니다."
+      },
+      {
+        "id": "sports-tech",
+        "name": "스포츠 테크 성장 펀드",
+        "risk": "높음",
+        "minimum": 2000,
+        "fee": 0.01,
+        "growth": 0.006,
+        "volatility": 0.13,
+        "dividend": 0,
+        "description": "스포츠 기술 기업에 투자하는 고위험 펀드. 큰 상승과 큰 하락이 모두 가능합니다."
+      }
+    ],
+    "assets": [
+      {
+        "id": "apartment",
+        "name": "도심 아파트",
+        "category": "부동산",
+        "description": "첫 자가 주택 또는 임대용 아파트. 직접 거주하면 생활 관리의 주거비가 면제되고 임대료는 받지 않습니다.",
+        "price": 90000,
+        "upkeep": 120,
+        "rent": 450,
+        "home": true,
+        "growth": 0.0015,
+        "volatility": 0.008,
+        "limit": 4
+      },
+      {
+        "id": "villa",
+        "name": "프라이빗 빌라",
+        "category": "부동산",
+        "description": "사생활을 지킬 수 있는 선수 주거 공간. 한 번에 한 채만 직접 거주할 수 있습니다.",
+        "price": 650000,
+        "upkeep": 900,
+        "rent": 2800,
+        "home": true,
+        "growth": 0.001,
+        "volatility": 0.012,
+        "limit": 2
+      },
+      {
+        "id": "retail",
+        "name": "상업용 임대 공간",
+        "category": "수익 부동산",
+        "description": "임대료를 받는 상업용 부동산. 공실과 관리비를 고려해야 합니다.",
+        "price": 220000,
+        "upkeep": 400,
+        "rent": 1800,
+        "home": false,
+        "growth": 0.001,
+        "volatility": 0.016,
+        "limit": 4
+      },
+      {
+        "id": "daily-car",
+        "name": "프리미엄 데일리카",
+        "category": "자동차",
+        "description": "훈련장과 집을 오가는 개인 차량. 보험·정비 비용과 감가상각이 발생합니다.",
+        "price": 24000,
+        "upkeep": 140,
+        "rent": 0,
+        "home": false,
+        "growth": -0.009,
+        "volatility": 0.002,
+        "limit": 2
+      },
+      {
+        "id": "supercar",
+        "name": "퍼포먼스 슈퍼카",
+        "category": "자동차",
+        "description": "스타 선수의 차고 컬렉션. 유지비와 매각 시 거래 비용을 확인하세요.",
+        "price": 180000,
+        "upkeep": 650,
+        "rent": 0,
+        "home": false,
+        "growth": -0.012,
+        "volatility": 0.004,
+        "limit": 3
+      },
+      {
+        "id": "watch",
+        "name": "기계식 시계 컬렉션",
+        "category": "수집품",
+        "description": "가격 상승과 하락이 모두 가능한 수집품. 보관·보험 비용이 발생합니다.",
+        "price": 6500,
+        "upkeep": 15,
+        "rent": 0,
+        "home": false,
+        "growth": 0,
+        "volatility": 0.035,
+        "limit": 8
+      },
+      {
+        "id": "yacht",
+        "name": "프라이빗 요트",
+        "category": "라이프스타일",
+        "description": "휴식과 개인 시간을 위한 고가 자산. 계류·보험·정비 비용이 매 정산마다 발생합니다.",
+        "price": 900000,
+        "upkeep": 6500,
+        "rent": 0,
+        "home": false,
+        "growth": -0.006,
+        "volatility": 0.003,
+        "limit": 1
+      }
+    ],
+    "brandTypes": [
+      {
+        "id": "streetwear",
+        "name": "시그니처 의류 브랜드",
+        "description": "선수의 이름을 담은 의류·액세서리. 명성과 판매 전략에 따라 매출이 달라집니다.",
+        "capital": 12000,
+        "minReputation": 10,
+        "turnover": 0.075,
+        "overhead": 0.022,
+        "productionShare": 0.55
+      },
+      {
+        "id": "academy",
+        "name": "개인 축구 아카데미",
+        "description": "유소년 코칭 사업. 코치·시설 운영비와 선수 명성에 따른 수강 수요를 계산합니다.",
+        "capital": 40000,
+        "minReputation": 25,
+        "turnover": 0.06,
+        "overhead": 0.032,
+        "productionShare": 0.25
+      },
+      {
+        "id": "coffee",
+        "name": "라이프스타일 카페",
+        "description": "팬들이 방문하는 개인 매장. 직원·임대 비용 때문에 낮은 수요에서는 적자가 날 수 있습니다.",
+        "capital": 25000,
+        "minReputation": 0,
+        "turnover": 0.09,
+        "overhead": 0.04,
+        "productionShare": 0.35
+      }
+    ],
+    "brandStrategies": [
+      {
+        "id": "online",
+        "name": "가벼운 온라인 운영",
+        "description": "판매 배율 0.8, 고정비 배율 0.65. 저비용으로 꾸준히 운영합니다.",
+        "sales": 0.8,
+        "cost": 0.65,
+        "growth": 0.7
+      },
+      {
+        "id": "balanced",
+        "name": "온·오프라인 균형",
+        "description": "판매·고정비 배율 1. 팬과 일반 소비자에게 함께 판매합니다.",
+        "sales": 1,
+        "cost": 1,
+        "growth": 1
+      },
+      {
+        "id": "flagship",
+        "name": "플래그십 확장",
+        "description": "판매 배율 1.45, 고정비 배율 1.8. 큰 수요가 필요하며 적자 위험이 높습니다.",
+        "sales": 1.45,
+        "cost": 1.8,
+        "growth": 1.4
+      }
+    ],
+    "lifestyles": [
+      {
+        "id": "simple",
+        "name": "실속 있는 선수 생활",
+        "description": "공동 주거·집밥·기본 관리. 첫 커리어부터 선택되는 생활 수준입니다.",
+        "rent": 100,
+        "spending": 80,
+        "morale": 0,
+        "recovery": 0
+      },
+      {
+        "id": "comfortable",
+        "name": "편안한 프로 생활",
+        "description": "개인 주거와 식단 관리. 매 30일 사기와 회복에 작은 도움을 줍니다.",
+        "rent": 450,
+        "spending": 450,
+        "morale": 1,
+        "recovery": 1
+      },
+      {
+        "id": "star",
+        "name": "스타 선수의 생활",
+        "description": "개인 셰프·매니저·회복 서비스를 포함합니다. 많은 고정비를 감당할 수 있을 때 선택하세요.",
+        "rent": 2500,
+        "spending": 4000,
+        "morale": 2,
+        "recovery": 2
+      }
+    ],
+    "ledgerTypes": {
+      "opening": "기존 누적 수입 이전",
+      "salary": "주급 입금",
+      "appearanceBonus": "출전 보너스",
+      "goalBonus": "득점 보너스",
+      "signingBonus": "선수 계약금",
+      "loyaltyBonus": "충성 보너스",
+      "commercialSigning": "상업 계약금",
+      "commercialPayment": "스폰서·광고 정산",
+      "commercialMissed": "홍보 의무 미이행",
+      "commercialExit": "상업 계약 해지 비용",
+      "assetBuy": "자산 구매",
+      "assetSell": "자산 매각",
+      "assetUpkeep": "자산 유지비",
+      "rent": "임대 수입",
+      "investmentBuy": "투자금 납입",
+      "investmentSell": "투자금 회수",
+      "dividend": "투자 배당",
+      "brandFound": "브랜드 창업",
+      "brandExpand": "브랜드 확장",
+      "brandMarketing": "브랜드 마케팅",
+      "brandSell": "브랜드 매각",
+      "brandProfit": "브랜드 운영 이익",
+      "brandLoss": "브랜드 운영 적자",
+      "living": "생활비"
+    }
+  }
 }
 </script>
 <div id="app"></div>
@@ -40772,6 +41363,133 @@ const FootballCore = (() => {
     t.fee=clamp(Math.min(ask,Math.max(minimum,Math.floor(available))),field.min,field.max);t.upfrontPercent=d.seller.upfront;t.installmentMonths=t.upfrontPercent<db.rules.scale?db.dealDefaults.installmentMonths:0;t.sellOnPercent=cfg.sellOnPercent;
     // Budget shortage remains visible and can be resolved by personal concessions or mediation.
     d.clubNegotiation={revision:cfg.revision,date:s.date,minimum,available,status:available>=minimum?'agreed':'pending'};
+  }
+
+  // Personal finances live beside the player: football earnings remain cumulative.
+  function initializeEconomy(db,s){
+    if(s.economy!==undefined)return s.economy;
+    const r=db.economyRules,opening=s.player.earned+r.initialCash;
+    s.economy={revision:r.revision,cash:opening,arrears:0,income:opening,spent:0,statementIncome:opening,statementSpent:0,serial:0,lastSettlement:s.date,lastLivingDate:s.date,livingAccrued:0,moraleAccrued:0,recoveryAccrued:0,lifestyle:r.defaultLifestyle,contracts:[],contractHistory:[],lastSigned:{},assets:[],investments:[],brands:[],ledger:[]};
+    if(opening)financeRecord(db,s,'opening',opening,s.date);return s.economy;
+  }
+  function financeRecord(db,s,type,amount,date=s.date,name=''){
+    const e=s.economy,last=e.ledger.at(-1);
+    if(type==='salary'&&last?.type===type&&last.amount>=0){last.amount+=amount;last.date=date;return;}
+    e.ledger.push({id:++e.serial,date,type,amount,name});e.ledger=e.ledger.slice(-db.economyRules.ledgerLimit);
+  }
+  function financeCredit(db,s,amount,type,date=s.date,name=''){
+    const e=initializeEconomy(db,s);if(!Number.isFinite(amount)||amount<0)return false;if(!amount)return true;
+    const paid=Math.min(e.arrears,amount);e.arrears-=paid;e.cash+=amount-paid;e.income+=amount;financeRecord(db,s,type,amount,date,name);return true;
+  }
+  function financeDebit(db,s,amount,type,date=s.date,name='',mandatory=false){
+    const e=initializeEconomy(db,s);if(!Number.isFinite(amount)||amount<0||!mandatory&&(e.arrears>0||e.cash<amount))return false;if(!amount)return true;
+    const paid=Math.min(e.cash,amount);e.cash-=paid;e.arrears+=amount-paid;e.spent+=amount;financeRecord(db,s,type,-amount,date,name);return true;
+  }
+  function careerIncome(db,s,amount,type){initializeEconomy(db,s);s.player.earned+=amount;financeCredit(db,s,amount,type);}
+  function economySummary(db,s){
+    const e=s.economy,assets=sum(e.assets.map(a=>a.value)),investments=sum(e.investments.map(a=>a.value)),business=sum(e.brands.map(b=>b.equity*db.economyRules.brandSaleShare));
+    return {cash:e.cash,arrears:e.arrears,assets,investments,business,netWorth:e.cash+assets+investments+business-e.arrears};
+  }
+  function commercialOffers(db,s){
+    const r=db.economyRules,e=s.economy;
+    return r.commercial.map(d=>{const conflict=e.contracts.some(c=>{const other=r.commercial.find(x=>x.id===c.definition);return other.id===d.id||other.category===d.category&&(other.exclusive||d.exclusive);}),cooldown=e.lastSigned[d.id]?Math.max(0,r.offerDays-daysBetween(db,e.lastSigned[d.id],s.date)):0;
+      return {id:d.id,eligible:s.player.reputation>=d.minReputation&&!conflict&&!cooldown&&e.contracts.length<r.maxContracts,conflict,cooldown};});
+  }
+  function commercialTerms(db,s,id,packageId){
+    const r=db.economyRules,d=r.commercial.find(x=>x.id===id),pack=r.packages.find(x=>x.id===packageId);if(!d||!pack)return null;
+    const agent=1+s.agent.trust*r.agentTrustFactor;
+    return {upfront:Math.round(d.upfront*pack.upfront*agent),payment:Math.round(d.payment*pack.payment*agent),goalBonus:Math.round(d.goalBonus*pack.payment),fitnessCost:pack.fitnessCost,cancelShare:pack.cancelShare};
+  }
+  function signCommercial(db,s,id,packageId){
+    initializeEconomy(db,s);if(!commercialOffers(db,s).find(x=>x.id===id)?.eligible)return false;
+    const d=db.economyRules.commercial.find(x=>x.id===id),terms=commercialTerms(db,s,id,packageId);if(!terms)return false;
+    const c={id:'commercial:'+ ++s.economy.serial,definition:id,package:packageId,start:s.date,end:dateAdd(s.date,d.duration),periodStart:s.date,nextDue:dateAdd(s.date,db.economyRules.periodDays),delivered:false,misses:0,terms};
+    s.economy.contracts.push(c);s.economy.lastSigned[id]=s.date;financeCredit(db,s,terms.upfront,'commercialSigning',s.date,d.name);return c;
+  }
+  function commercialDelivery(db,s,id){
+    const c=s.economy.contracts.find(x=>x.id===id);if(!c||c.delivered||s.date>=c.end||s.player.fitness<c.terms.fitnessCost)return false;
+    c.delivered=true;s.player.fitness=clamp(s.player.fitness-c.terms.fitnessCost,0,db.rules.scale);return true;
+  }
+  function closeCommercial(db,s,c,status,date){
+    s.economy.contracts=s.economy.contracts.filter(x=>x!==c);s.economy.contractHistory.push({...clone(c),status,closed:date});s.economy.contractHistory=s.economy.contractHistory.slice(-db.economyRules.historyLimit);
+  }
+  function commercialCancelFee(db,s,id){const c=s.economy.contracts.find(x=>x.id===id);if(!c)return 0;const remaining=Math.max(0,Math.ceil(daysBetween(db,s.date,c.end)/db.economyRules.periodDays));return Math.round((c.terms.upfront+c.terms.payment*remaining)*c.terms.cancelShare);}
+  function cancelCommercial(db,s,id){
+    const c=s.economy.contracts.find(x=>x.id===id);if(!c)return false;const d=db.economyRules.commercial.find(x=>x.id===c.definition),fee=commercialCancelFee(db,s,id);
+    if(!financeDebit(db,s,fee,'commercialExit',s.date,d.name))return false;closeCommercial(db,s,c,'cancelled',s.date);return true;
+  }
+  function assetPrice(db,s,id){const d=db.economyRules.assets.find(a=>a.id===id),period=Math.floor(daysBetween(db,db.meta.initialDate,s.date)/db.economyRules.periodDays);return d?Math.round(d.price*Math.pow(1+d.growth,period)):0;}
+  function buyAsset(db,s,id){
+    const r=db.economyRules,d=r.assets.find(x=>x.id===id),e=s.economy;if(!d||e.assets.filter(x=>x.definition===id).length>=d.limit)return false;
+    const cost=assetPrice(db,s,id)*(1+r.assetPurchaseFee);if(!financeDebit(db,s,cost,'assetBuy',s.date,d.name))return false;
+    const a={id:'asset:'+ ++e.serial,definition:id,bought:s.date,lastValued:s.date,basis:cost,value:assetPrice(db,s,id),use:d.rent?'rental':'collection',rentalDays:0};e.assets.push(a);return a;
+  }
+  function sellAsset(db,s,id){
+    const e=s.economy,a=e.assets.find(x=>x.id===id);if(!a)return false;const d=db.economyRules.assets.find(x=>x.id===a.definition);
+    financeCredit(db,s,a.value*(1-db.economyRules.assetSaleFee),'assetSell',s.date,d.name);e.assets=e.assets.filter(x=>x!==a);return true;
+  }
+  function assetUse(db,s,id,use){
+    const a=s.economy.assets.find(x=>x.id===id),d=db.economyRules.assets.find(x=>x.id===a?.definition);if(!d?.home||!['personal','rental'].includes(use))return false;
+    if(use==='personal')for(const other of s.economy.assets)if(other.use==='personal')other.use='rental';a.use=use;return true;
+  }
+  function investMoney(db,s,id,amount){
+    const r=db.economyRules,d=r.investments.find(x=>x.id===id),e=s.economy;if(!d||!Number.isFinite(amount)||amount<d.minimum||amount>r.maxTransaction)return false;
+    if(!financeDebit(db,s,amount*(1+d.fee),'investmentBuy',s.date,d.name))return false;
+    let holding=e.investments.find(x=>x.definition===id);if(!holding){holding={definition:id,basis:0,value:0,dividends:0,pendingDividends:0,lastValued:s.date};e.investments.push(holding);}holding.basis+=amount*(1+d.fee);holding.value+=amount;return true;
+  }
+  function redeemInvestment(db,s,id,share){
+    const e=s.economy,a=e.investments.find(x=>x.definition===id),d=db.economyRules.investments.find(x=>x.id===id);if(!a||!db.economyRules.redemptionShares.includes(share))return false;
+    const proceeds=a.value*share*(1-d.fee),dividend=a.pendingDividends*share;financeCredit(db,s,proceeds,'investmentSell',s.date,d.name);financeCredit(db,s,dividend,'dividend',s.date,d.name);a.dividends+=dividend;a.pendingDividends-=dividend;a.value*=1-share;a.basis*=1-share;if(share===1)e.investments=e.investments.filter(x=>x!==a);return true;
+  }
+  function foundBrand(db,s,type,name,strategy){
+    const r=db.economyRules,d=r.brandTypes.find(x=>x.id===type),plan=r.brandStrategies.find(x=>x.id===strategy),clean=String(name||'').trim(),e=s.economy;
+    if(!d||!plan||!clean||clean.length>r.brandNameLimit||e.brands.length>=r.maxBrands||e.brands.some(b=>b.name===clean)||s.player.reputation<d.minReputation)return false;
+    if(!financeDebit(db,s,d.capital,'brandFound',s.date,clean))return false;
+    const b={id:'brand:'+ ++e.serial,type,name:clean,strategy,created:s.date,lastValued:s.date,equity:d.capital*r.brandInitialEquity,level:1,profit:0,lastRevenue:0,lastCost:0,pendingRevenue:0,pendingCost:0,marketingUntil:s.date,lastMarketing:null};e.brands.push(b);return b;
+  }
+  function brandAction(db,s,id,action,value){
+    const e=s.economy,r=db.economyRules,b=e.brands.find(x=>x.id===id);if(!b)return false;
+    if(action==='strategy'){if(!r.brandStrategies.some(x=>x.id===value))return false;b.strategy=value;return true;}
+    if(action==='expand'){if(b.level>=r.brandMaxLevel)return false;const cost=b.equity*r.brandExpansionCost;if(!financeDebit(db,s,cost,'brandExpand',s.date,b.name))return false;b.equity+=cost*r.brandExpansionEquity;b.level++;return true;}
+    if(action==='marketing'){if(b.lastMarketing&&daysBetween(db,b.lastMarketing,s.date)<r.periodDays)return false;if(!financeDebit(db,s,b.equity*r.marketingCost,'brandMarketing',s.date,b.name))return false;b.lastMarketing=s.date;b.marketingUntil=dateAdd(s.date,r.marketingDays);return true;}
+    if(action==='sell'){settleBrandBalance(db,s,b,s.date);financeCredit(db,s,b.equity*r.brandSaleShare,'brandSell',s.date,b.name);e.brands=e.brands.filter(x=>x!==b);return true;}return false;
+  }
+  function settleBrandBalance(db,s,b,date){const profit=b.pendingRevenue-b.pendingCost;b.lastRevenue=b.pendingRevenue;b.lastCost=b.pendingCost;b.pendingRevenue=0;b.pendingCost=0;b.profit+=profit;if(profit>=0)financeCredit(db,s,profit,'brandProfit',date,b.name);else financeDebit(db,s,-profit,'brandLoss',date,b.name,true);}
+  function lifestyleChange(db,s,id){if(!db.economyRules.lifestyles.some(x=>x.id===id))return false;s.economy.lifestyle=id;return true;}
+  function settleEconomy(db,s){
+    const e=initializeEconomy(db,s),r=db.economyRules;
+    if(daysBetween(db,e.lastLivingDate,s.date)>1){const target=s.date;while(e.lastLivingDate<target){s.date=dateAdd(e.lastLivingDate,1);settleEconomy(db,s);}s.date=target;return;}
+    // Contract deadlines use their own signing date rather than the personal bill cycle.
+    for(const c of e.contracts.slice())while(e.contracts.includes(c)&&c.nextDue<=s.date){
+        const d=r.commercial.find(x=>x.id===c.definition),goals=sum(s.player.history.filter(h=>h.date>=c.periodStart&&h.date<c.nextDue).map(h=>h.stats.goals));
+        if(c.delivered){financeCredit(db,s,c.terms.payment+goals*c.terms.goalBonus,'commercialPayment',c.nextDue,d.name);c.misses=0;s.player.reputation=clamp(s.player.reputation+r.deliveryReputation,0,db.rules.scale);}
+        else{c.misses++;s.player.reputation=clamp(s.player.reputation-r.missedReputation,0,db.rules.scale);financeRecord(db,s,'commercialMissed',0,c.nextDue,d.name);}
+        mail(db,s,{key:'commercial:'+c.id+':'+c.nextDue,subject:d.name,body:text(db,c.delivered?'commercialPaidMail':'commercialMissedMail',{date:c.nextDue,amount:cash(db,c.delivered?c.terms.payment+goals*c.terms.goalBonus:0),misses:c.misses,max:r.maxMisses}),from:d.name});
+        if(c.nextDue>=c.end||c.misses>=r.maxMisses){closeCommercial(db,s,c,c.misses>=r.maxMisses?'terminated':'completed',c.nextDue);break;}
+        c.periodStart=c.nextDue;c.nextDue=dateAdd(c.nextDue,r.periodDays);c.delivered=false;
+    }
+    // Accrue market exposure by actual holding days; adding capital cannot earn past returns.
+    for(const a of e.investments){const d=r.investments.find(x=>x.id===a.definition);
+      while(a.lastValued<s.date){const day=dateAdd(a.lastValued,1),period=Math.floor(daysBetween(db,db.meta.initialDate,day)/r.periodDays),rng=random(hash(s.seed+':fund:'+d.id+':'+period)),change=d.growth+range(rng,-d.volatility,d.volatility);a.pendingDividends+=a.value*d.dividend/r.periodDays;a.value*=Math.pow(1+change,1/r.periodDays);a.lastValued=day;}
+    }
+    for(const a of e.assets){const elapsed=Math.max(0,daysBetween(db,a.lastValued,s.date));if(a.use==='rental')a.rentalDays+=elapsed;}
+    for(const b of e.brands){const d=r.brandTypes.find(x=>x.id===b.type),plan=r.brandStrategies.find(x=>x.id===b.strategy);
+      while(b.lastValued<s.date){const day=dateAdd(b.lastValued,1),period=Math.floor(daysBetween(db,db.meta.initialDate,day)/r.periodDays),rng=random(hash(s.seed+':brand:'+b.id+':'+period)),audience=r.brandAudienceBase+s.player.reputation*r.brandReputationFactor,marketing=b.marketingUntil>=day?r.marketingRevenueFactor:1;
+        const revenue=b.equity*d.turnover*audience*plan.sales*marketing*range(rng,r.brandDemandMin,r.brandDemandMax)/r.periodDays,cost=b.equity*d.overhead*plan.cost/r.periodDays+revenue*d.productionShare;b.pendingRevenue+=revenue;b.pendingCost+=cost;b.equity*=Math.pow(1+r.brandEquityGrowth*plan.growth,1/r.periodDays);b.lastValued=day;}
+    }
+    while(e.lastLivingDate<s.date){const life=r.lifestyles.find(x=>x.id===e.lifestyle),home=e.assets.some(a=>a.use==='personal');e.livingAccrued+=(life.spending+(home?0:life.rent))/r.periodDays;e.moraleAccrued+=life.morale/r.periodDays;e.recoveryAccrued+=life.recovery/r.periodDays;e.lastLivingDate=dateAdd(e.lastLivingDate,1);}
+    while(dateAdd(e.lastSettlement,r.periodDays)<=s.date){
+      const date=dateAdd(e.lastSettlement,r.periodDays),beforeIncome=e.statementIncome,beforeSpent=e.statementSpent,previous=e.lastSettlement;e.lastSettlement=date;
+      for(const a of e.assets){const d=r.assets.find(x=>x.id===a.definition),rng=random(hash(s.seed+':asset:'+a.id+':'+date)),fraction=Math.min(1,daysBetween(db,[a.bought,previous].sort().at(-1),date)/r.periodDays);
+        a.value=Math.max(r.minimumAssetValue,a.value*Math.pow(1+d.growth+range(rng,-d.volatility,d.volatility),fraction));if(a.rentalDays&&rng()>=r.vacancyChance)financeCredit(db,s,d.rent*Math.min(1,a.rentalDays/r.periodDays),'rent',date,d.name);a.rentalDays=0;financeDebit(db,s,d.upkeep*fraction,'assetUpkeep',date,d.name,true);}
+      for(const a of e.investments){const d=r.investments.find(x=>x.id===a.definition),dividend=a.pendingDividends;a.dividends+=dividend;a.pendingDividends=0;if(dividend)financeCredit(db,s,dividend,'dividend',date,d.name);}
+      for(const b of e.brands)settleBrandBalance(db,s,b,date);
+      const life=r.lifestyles.find(x=>x.id===e.lifestyle);financeDebit(db,s,e.livingAccrued,'living',date,life.name,true);s.player.morale=clamp(s.player.morale+(e.arrears?-r.arrearsMorale:e.moraleAccrued),0,db.rules.scale);
+      if(!e.arrears)s.player.fitness=clamp(s.player.fitness+e.recoveryAccrued,0,db.rules.scale);e.livingAccrued=0;e.moraleAccrued=0;e.recoveryAccrued=0;
+      if(e.contracts.length||e.contractHistory.some(c=>c.closed===date)||e.assets.length||e.investments.length||e.brands.length||e.arrears)mail(db,s,{key:'economy:'+date,subject:text(db,'financeStatement'),body:text(db,'financeStatementBody',{date,income:cash(db,e.income-beforeIncome),spent:cash(db,e.spent-beforeSpent),cash:cash(db,e.cash),arrears:cash(db,e.arrears)}),from:'mailSystem'});
+      e.statementIncome=e.income;e.statementSpent=e.spent;
+    }
+    for(const a of e.assets)a.lastValued=s.date;
   }
 
   function createCareer(db,profile,routeId,clubId) {
@@ -41192,7 +41910,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   }
 
   function initializeSystems(db,s,legacy=false){
-    initializeCareerStories(db,s);initializeCompetitionStats(db,s);initializeAwards(db,s);s.continentalBrackets??={};initializePostseason(db,s);s.automaticOfferHistory??=Object.fromEntries(Object.entries(s.offerHistory||{}).map(([club,date])=>[club,{date}]));s.marketReview??=null;s.inbox||=[];s.inboxSerial??=0;s.deals||=[];s.dealSerial??=0;s.offerSerial??=0;s.agent||={id:db.agents[0].id,trust:db.agents[0].trust};s.agentContacts||={};s.agentInquiries||=[];s.offerHistory||={};s.scoutingCycle??=0;s.worldTickSerial??=0;s.pendingTransfer??=null;
+    initializeEconomy(db,s);initializeCareerStories(db,s);initializeCompetitionStats(db,s);initializeAwards(db,s);s.continentalBrackets??={};initializePostseason(db,s);s.automaticOfferHistory??=Object.fromEntries(Object.entries(s.offerHistory||{}).map(([club,date])=>[club,{date}]));s.marketReview??=null;s.inbox||=[];s.inboxSerial??=0;s.deals||=[];s.dealSerial??=0;s.offerSerial??=0;s.agent||={id:db.agents[0].id,trust:db.agents[0].trust};s.agentContacts||={};s.agentInquiries||=[];s.offerHistory||={};s.scoutingCycle??=0;s.worldTickSerial??=0;s.pendingTransfer??=null;
     const p=s.player;p.development.practice??={since:s.date,last:{}};p.displayName??=p.name;p.injuryDays??=p.injury*db.calendarRules.injuryDaysPerWeek;p.freeAgent??=false;p.contract={...clone(db.dealDefaults),role:db.contractRoles.at(-1).id,position:p.position,agentCommissionPercent:db.agents[0].commission,...p.contract};
     if(!s.calendar)buildCalendar(db,s,legacy);initializeTrainingProgram(db,s);initializeAgentSystem(db,s);initializeCareerIdentity(db,s);initializeNations(db,s);initializeCaptainRegistration(db,s);initializeNpcMarket(db,s);
     for(const o of s.offers){o.id||=`offer:${++s.offerSerial}`;o.expiresDate||=dateAdd(s.date,db.dealRules.interestDays);}
@@ -41227,7 +41945,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     if(s.matchPreparation)return false;
     if(s.interviews?.pending)resolveInterview(db,s,db.interviewRules.defaultOption,true);
     if(s.trainingProgram&&s.trainingProgram.plan.primary!==s.training&&db.training.some(t=>t.id===s.training))setTrainingPlan(db,s,{...s.trainingProgram.plan,primary:s.training,secondary:s.trainingProgram.plan.secondary===s.training?db.trainingProgramRules.defaults.secondary:s.trainingProgram.plan.secondary});ensureWorld(db,s);initializeSystems(db,s);advancePostseason(db,s);if(s.careerStories.pending)resolveCareerDecision(db,s,db.careerDecisionRules.defaultOption,true);queueCareerDecision(db,s);const event=nextCalendar(s);if(!event)return false;
-    const p=s.player,c=db.calendarRules,elapsed=Math.max(0,daysBetween(db,s.date,event.date));p.earned+=elapsed/c.daysToWeeks*p.contract.weekly;
+    const p=s.player,c=db.calendarRules;
     advanceTrainingDays(db,s,event.date,event.type==='seasonend'||daysBetween(db,s.seasonStart,event.date)>=db.calendarEvents.find(x=>x.type==='seasonclose').offset);
     reconcileNationalInjury(db,s);settleObligations(db,s);indexCache.delete(s.world);expireDeals(db,s);event.completed=true;s.calendar.lastEvent={id:event.id,type:event.type,name:event.name,date:event.date};let report=null;
     if(event.type==='captain-registration'){registerCaptains(db,s,event);
@@ -41237,7 +41955,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     }else if(event.type==='national-return'){releaseNationalPlayer(db,s,event.id.slice('national-return:'.length));
     }else if(event.type==='match'){
       report=playRound(db,s);applyClubPolicy(db,s);externalIssues(db,s);
-      if(report){s.trainingProgram.fatigue=clamp(s.trainingProgram.fatigue+report.stats.minutes/db.rules.matchMinutes*db.trainingProgramRules.matchFatigue,0,db.rules.scale);p.earned+=report.stats.minutes?p.contract.appearanceBonus:0;p.earned+=report.stats.goals*p.contract.goalBonus;reviewPromise(db,s);}
+      if(report){s.trainingProgram.fatigue=clamp(s.trainingProgram.fatigue+report.stats.minutes/db.rules.matchMinutes*db.trainingProgramRules.matchFatigue,0,db.rules.scale);careerIncome(db,s,report.stats.minutes?p.contract.appearanceBonus:0,'appearanceBonus');careerIncome(db,s,report.stats.goals*p.contract.goalBonus,'goalBonus');reviewPromise(db,s);}
       refreshOffers(db,s);
     }else if(event.type==='decision'){activateCareerDecision(db,s,event);
     }else if(event.type==='arrival'){resolveArrival(db,s);
@@ -41257,7 +41975,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function nextSeason(db,s){
     advancePostseason(db,s);if(!seasonReady(s)||s.careerStories?.pending)return false;if(s.interviews?.pending)resolveInterview(db,s,db.interviewRules.defaultOption,true);captureSeasonReview(db,s,true);const p=s.player,oldLeague=indexes(db,s).clubs[p.club].league,oldContract=p.contract;
     s.continentalQualification=Object.fromEntries(db.continentalRules.domesticLeagues.map(id=>[id,standings(db,s,id).map(row=>row.club)]));ensureWorld(db,s);
-    const start=dateAdd(s.seasonStart,db.calendarRules.seasonDays),elapsed=Math.max(0,daysBetween(db,s.date,start));p.earned+=elapsed/db.calendarRules.daysToWeeks*p.contract.weekly;advanceTrainingDays(db,s,start,true);
+    const start=dateAdd(s.seasonStart,db.calendarRules.seasonDays);advanceTrainingDays(db,s,start,true);
     worldSeason(db,s);indexCache.delete(s.world);
     s.archives.push({season:s.season,fixtures:s.fixtures,postseason:clone(s.postseason)});s.archives=s.archives.slice(-db.dynamics.archiveLimit);
     s.date=start;s.seasonStart=start;s.season++;s.continentalBrackets={};s.postseason=null;s.careerStories.pending=null;s.careerStories.focus=null;s.careerStories.lastDate=null;s.seasonBaseline={season:s.season,date:start,stats:clone(p.stats),earned:p.earned};s.marketReview=null;s.competitionStats=null;p.development.training={season:s.season,gains:Object.fromEntries(db.attributes.map(a=>[a.id,0])),total:0,weeks:0};s.round=0;p.age+=db.rules.seasonAgeStep;p.suspension=0;p.yellows=0;
@@ -41265,7 +41983,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
       const newLeague=indexes(db,s).clubs[p.club].league,relegated=indexes(db).leagues[newLeague].level>indexes(db).leagues[oldLeague].level;
       p.contract.weekly=Math.round(p.contract.weekly*(1+p.contract.annualRaisePercent/db.rules.scale)*(relegated?1-p.contract.relegationDropPercent/db.rules.scale:1));
       if(p.contract.expiresSeason<=s.season){
-        p.earned+=p.contract.loyaltyBonus;
+        careerIncome(db,s,p.contract.loyaltyBonus,'loyaltyBonus');
         if(p.contract.clubOptionYears>0&&selection(db,s)>=db.dealRules.clubOptionSelection){p.contract.expiresSeason+=p.contract.clubOptionYears;p.contract.clubOptionYears=0;mail(db,s,{subject:text(db,'clubOptionSubject'),body:text(db,'clubOptionBody')});}
         else{p.freeAgent=true;p.contract.weekly=0;p.contract.initial=false;mail(db,s,{subject:text(db,'freeAgent'),body:text(db,'contractExpiredMail')});}
       }
@@ -41466,7 +42184,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const old=p.club,c=indexes(db,s).clubs[d.club],terms=d.terms,annual=terms.weekly*db.rules.annualSalaryWeeks,agentFee=annual*terms.agentCommissionPercent/db.rules.scale,upfront=terms.fee*terms.upfrontPercent/db.rules.scale;
     if(!reserved&&s.world.clubs[d.club].finance<upfront+terms.signingBonus+agentFee)return false;
     if(old!==d.club){s.world.clubs[old].finance+=upfront;if(!reserved)s.world.clubs[d.club].finance-=upfront;s.world.obligations||=[];const balance=terms.fee-upfront;if(balance>0)s.world.obligations.push({from:d.club,to:old,remaining:balance,months:terms.installmentMonths,start:s.date,paidUntil:s.date,perMonth:balance/terms.installmentMonths});s.world.sellOn||=[];for(const prior of s.world.sellOn.filter(x=>x.player==='player'&&x.buyer===old)){const share=Math.max(0,terms.fee-prior.basis)*prior.percent/db.rules.scale;s.world.clubs[old].finance=Math.max(0,s.world.clubs[old].finance-share);s.world.clubs[prior.seller].finance+=share;}s.world.sellOn=s.world.sellOn.filter(x=>x.player!=='player');s.world.sellOn.push({player:'player',seller:old,buyer:d.club,percent:terms.sellOnPercent,basis:terms.fee});}
-    if(!reserved)s.world.clubs[d.club].finance-=terms.signingBonus+agentFee;p.earned+=terms.signingBonus;if(old!==d.club){p.lastClubChangeDate=s.date;s.lastOfferRefresh=s.date;for(const q of s.agentInquiries)if(!q.resolved){q.resolved=true;q.result='cancelled';q.resolvedDate=s.date;const event=s.calendar.entries.find(e=>e.id===q.id);if(event)event.completed=true;}}p.club=d.club;p.freeAgent=false;p.adaptation=clubCountry(db,c)===p.country?db.dynamics.initialAdaptation:db.dynamics.foreignAdaptation;p.trust=terms.role==='key'?r.signTrustKey:r.signTrustDefault;
+    if(!reserved)s.world.clubs[d.club].finance-=terms.signingBonus+agentFee;careerIncome(db,s,terms.signingBonus,'signingBonus');if(old!==d.club){p.lastClubChangeDate=s.date;s.lastOfferRefresh=s.date;for(const q of s.agentInquiries)if(!q.resolved){q.resolved=true;q.result='cancelled';q.resolvedDate=s.date;const event=s.calendar.entries.find(e=>e.id===q.id);if(event)event.completed=true;}}p.club=d.club;p.freeAgent=false;p.adaptation=clubCountry(db,c)===p.country?db.dynamics.initialAdaptation:db.dynamics.foreignAdaptation;p.trust=terms.role==='key'?r.signTrustKey:r.signTrustDefault;
     p.contract={...clone(terms),expiresSeason:s.season+terms.years,initial:false,signedDate:s.date,agreementDate:d.signedDate||s.date,arrivalDate:s.date,promiseReviewed:0};p.career.push({season:s.season,date:s.date,club:d.club,type:d.kind==='renewal'?'renewed':d.kind==='callup'?'promoted':'joined'});d.status='completed';rivalryTransfer(db,s,old,d.club);indexCache.delete(s.world);dealLog(db,s,d,'contractSigned');s.offers=[];
     for(const other of s.deals)if(other.id!==d.id&&dealLive(other)){other.status='withdrawn';other.awaiting=false;other.medicalWaiting=false;other.medicalDeferred=false;}
     if(old!==d.club)worldEvents(db,s,'eventTransfer',{name:p.name,from:indexes(db,s).clubs[old].name,to:c.name},d.club);else worldEvents(db,s,'eventContract',{name:p.name,club:c.name},d.club);
@@ -41601,7 +42319,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function advanceTrainingDays(db,s,endDate,offseason){
     initializeTrainingProgram(db,s);const cfg=db.trainingProgramRules,program=s.trainingProgram,p=s.player,c=db.calendarRules,start=s.date,elapsed=Math.max(0,daysBetween(db,start,endDate));
     // Every day earns its own exposure before a future plan can replace it.
-    for(let day=cfg.minimumDays;day<=elapsed;day+=cfg.minimumDays){s.date=dateAdd(start,day);const session=trainingSession(db,s,s.date);updateTrainingCondition(db,s,session);p.injuryDays=Math.max(0,p.injuryDays-cfg.minimumDays);p.injury=Math.ceil(p.injuryDays/c.injuryDaysPerWeek);npcMarketDay(db,s);
+    for(let day=cfg.minimumDays;day<=elapsed;day+=cfg.minimumDays){s.date=dateAdd(start,day);careerIncome(db,s,p.contract.weekly*cfg.minimumDays/c.daysToWeeks,'salary');settleEconomy(db,s);const session=trainingSession(db,s,s.date);updateTrainingCondition(db,s,session);p.injuryDays=Math.max(0,p.injuryDays-cfg.minimumDays);p.injury=Math.ceil(p.injuryDays/c.injuryDaysPerWeek);npcMarketDay(db,s);
       p.traitProgress.activeDays+=cfg.minimumDays;if(session.work)p.traitProgress.trainingDays+=cfg.minimumDays;reviewCareerTraits(db,s);
       const pending=program.pending;pending.days+=cfg.minimumDays;pending.workDays+=session.work?cfg.minimumDays:0;pending.recoveryDays+=session.work?0:cfg.minimumDays;for(const a of db.attributes){pending.exposure[a.id]+=session.exposure[a.id];if(session.exposure[a.id]>0)p.development.practice.last[a.id]=s.date;}
       if(session.focus==='role'&&session.work)p.trust=clamp(p.trust+cfg.roleTrustDaily,0,db.rules.scale);
@@ -41831,6 +42549,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     return old===undefined?base:old;
   }
   function upgradeDatabase(db,old){
+    old.economyRules??=clone(db.economyRules);for(const tab of db.ui.tabs.filter(t=>db.ui.navigationGroups.find(g=>g.id==='economy').views.includes(t.id)))if(!old.ui.tabs.some(t=>t.id===tab.id))old.ui.tabs.push(clone(tab));if(!old.ui.navigationGroups.some(g=>g.id==='economy'))old.ui.navigationGroups.push(clone(db.ui.navigationGroups.find(g=>g.id==='economy')));
     old.npcMarketRules??=clone(db.npcMarketRules);old.storageRules.maxAutosaveBytes??=db.storageRules.maxAutosaveBytes;for(const award of old.awardTypes||[])award.description??=db.awardTypes.find(a=>a.id===award.id)?.description;
     for(const key of ['strategyRules','opponentResponseRules','interviewRules','interviewQuestions','assessmentRules','starRules','marketContextRules','clubCultureRules','rivalryRules','leagueMetaRules'])old[key]??=clone(db[key]);
     old.terminologyRules??=clone(db.terminologyRules);for(const q of db.interviewQuestions)if(!old.interviewQuestions.some(x=>x.id===q.id))old.interviewQuestions.push(clone(q));for(const row of db.newsRules)if(!old.newsRules.some(x=>x.event===row.event))old.newsRules.push(clone(row));for(const event of db.social.personalEvents)if(!old.social.personalEvents.includes(event))old.social.personalEvents.push(event);
@@ -42315,7 +43034,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     for(const [key,value] of Object.entries(db.careerEventRules.previousIntervals))if(old.careerDecisionRules[key]===value)old.careerDecisionRules[key]=db.careerDecisionRules[key];
     for(const t of db.careerDecisions){const current=old.careerDecisions.find(x=>x.id===t.id);if(!current)old.careerDecisions.push(clone(t));else for(const key of ['topic','kind','requirements','weight','episode','success'])if(t[key]!==undefined)current[key]??=clone(t[key]);}
   }
-  return {postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
+  return {initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
 })();
 </script>
 <script id="game-ui">
@@ -42423,6 +43142,7 @@ const detail=(label,value)=>`<div class="row between"><span>${infoLabel(label)}<
 const kpi=(label,value,caption='')=>`<div class="card kpi"><div class="muted">${infoLabel(label)}</div><div class="metric num">${h(value)}</div><div class="small muted">${h(caption)}</div></div>`;
 
 function validateDB(db,career=null){
+  validateEconomyContent(db,career);
   validateNpcMarketDatabase(db);
   validateWorldContent(db);
   validateStrategyContent(db);
@@ -42664,8 +43384,44 @@ function validateSave(envelope){
   if(!db.contractRoles.some(r=>r.id===p.contract.role)||!db.positions.some(pos=>pos.id===p.contract.position))throw Error(t('invalidSave'));
   for(const f of db.dealFields.filter(f=>f.type==='number'||f.type==='money'))if(f.id!=='fee'&&f.id!=='years'&&!(f.id==='weekly'&&p.freeAgent)&&!finite(p.contract[f.id],f.type==='money'?0:f.min,f.type==='money'?Number.MAX_SAFE_INTEGER:f.max))throw Error(t('invalidSave'));
   if(s.matchPresentation){const presentation=s.matchPresentation,record=s.matchPreparation?.preview||Core.nationalRecords(s).find(r=>r.id===presentation.reportId);if(!record?.result.preMatch||!envelope.db.matchBroadcast.phaseIds.includes(presentation.phase)||!Number.isInteger(presentation.cursor)||presentation.cursor<0||presentation.cursor>record.result.events.length+envelope.db.matchBroadcast.systemEventCount||typeof presentation.paused!=='boolean'||(presentation.phase==='finished'&&presentation.cursor!==record.result.events.length+envelope.db.matchBroadcast.systemEventCount))throw Error('matchPresentation');for(const side of ['home','away'])if(record.result[side].players.filter(person=>person.starter).length!==envelope.db.matchBroadcast.teamSize)throw Error('startingXI');for(const side of ['home','away']){const team=record.result[side];if(!team.tactic||!envelope.db.tactics.some(t=>t.id===team.tactic.id)||team.players.some(person=>typeof person.starter!=='boolean'||!Number.isInteger(person.number)||person.number<envelope.db.profile.limits.numberMin||person.number>envelope.db.profile.limits.numberMax))throw Error('broadcastLineup');}if(!envelope.db.positions.some(pos=>pos.id===record.result.preMatch.position)||!record.result.preMatch.manager||!record.result.preMatch.tactic)throw Error('lockerRoom');}
-  validateWorldContextSave(db,s);validateStrategySave(db,s);validateGameplaySave(db,s);validateNationalSave(db,s);validateDevelopmentSave(db,s);validateNpcMarketSave(db,s);validateDB(envelope.db,s);return true;
+  validateWorldContextSave(db,s);validateStrategySave(db,s);validateGameplaySave(db,s);validateNationalSave(db,s);validateDevelopmentSave(db,s);validateNpcMarketSave(db,s);validateEconomySave(db,s);validateDB(envelope.db,s);return true;
 }
+function validateEconomyContent(db,career=null){
+ const r=db?.economyRules,base=DEFAULT_DB.economyRules,number=(v,min=0,max=Number.MAX_SAFE_INTEGER)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max,string=v=>typeof v==='string'&&v.trim().length>0;
+ if(!r||Object.entries(base).some(([key,value])=>typeof value==='number'&&!number(r[key])))throw Error('DB.economyRules');
+ for(const key of ['revision','periodDays','offerDays','ledgerLimit','historyLimit','maxContracts','maxMisses','maxBrands','brandNameLimit','brandMaxLevel'])if(!Number.isInteger(r[key])||r[key]<1)throw Error('DB.economyRules.'+key);
+ if(r.periodDays>db.calendarRules.seasonDays||r.offerDays<r.periodDays||r.moneyStep<=0||r.minimumAssetValue<=0||r.brandDemandMin<=0||r.brandDemandMax<r.brandDemandMin||r.brandAudienceBase<=0||r.brandInitialEquity>1||r.brandSaleShare>1||r.assetPurchaseFee>1||r.assetSaleFee>=1||r.vacancyChance>1)throw Error('DB.economyRules.range');
+ for(const key of ['packages','commercial','investments','assets','brandTypes','brandStrategies','lifestyles']){const list=r[key];if(!Array.isArray(list)||!list.length||new Set(list.map(x=>x.id)).size!==list.length||list.some(x=>!string(x.id)||!string(x.name)||!string(x.description)||['__proto__','constructor','prototype'].includes(x.id)))throw Error('DB.economyRules.'+key);}
+ const numeric=(list,keys)=>list.some(d=>keys.some(k=>!number(d[k])));
+ if(numeric(r.packages,['upfront','payment','fitnessCost','cancelShare'])||r.packages.some(p=>p.cancelShare>1||p.fitnessCost>db.rules.scale))throw Error('DB.economyRules.packages');
+ if(numeric(r.commercial,['minReputation','upfront','payment','goalBonus','duration'])||r.commercial.some(d=>!['sponsor','advert'].includes(d.kind)||!string(d.kindName)||!string(d.category)||!string(d.categoryName)||typeof d.exclusive!=='boolean'||d.minReputation>db.rules.scale||!Number.isInteger(d.duration)||d.duration<r.periodDays||d.duration%r.periodDays))throw Error('DB.economyRules.commercial');
+ if(numeric(r.investments,['minimum','fee','volatility','dividend'])||r.investments.some(d=>!number(d.growth,-1,1)||d.growth-d.volatility<=-1||d.fee>=1||d.minimum<=0||d.minimum>r.maxTransaction||!string(d.risk)))throw Error('DB.economyRules.investments');
+ if(numeric(r.assets,['price','upkeep','rent','volatility','limit'])||r.assets.some(d=>!number(d.growth,-1,1)||d.growth-d.volatility<=-1||d.price<=0||!Number.isInteger(d.limit)||d.limit<1||typeof d.home!=='boolean'||!string(d.category)))throw Error('DB.economyRules.assets');
+ if(numeric(r.brandTypes,['capital','minReputation','turnover','overhead','productionShare'])||r.brandTypes.some(d=>d.capital<=0||d.minReputation>db.rules.scale||d.productionShare>1)||numeric(r.brandStrategies,['sales','cost','growth'])||r.brandStrategies.some(d=>d.sales<=0||d.cost<=0))throw Error('DB.economyRules.brands');
+ if(numeric(r.lifestyles,['rent','spending','morale','recovery'])||!r.lifestyles.some(d=>d.id===r.defaultLifestyle)||!Array.isArray(r.redemptionShares)||!r.redemptionShares.includes(1)||r.redemptionShares.some(v=>!number(v,Number.EPSILON,1)))throw Error('DB.economyRules.lifestyle');
+ if(!r.ledgerTypes||Object.keys(base.ledgerTypes).some(k=>!string(r.ledgerTypes[k])))throw Error('DB.economyRules.ledgerTypes');
+ if(career?.economy)validateEconomySave(db,career);
+}
+function validateEconomySave(db,s){
+ const e=s.economy,r=db.economyRules,num=(v,min=0)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=Number.MAX_SAFE_INTEGER,date=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v,ref=(group,id)=>r[group].some(d=>d.id===id),past=v=>date(v)&&v<=s.date;
+ if(!e||e.revision!==r.revision||!Number.isInteger(e.serial)||e.serial<0||!['cash','arrears','income','spent','statementIncome','statementSpent','livingAccrued','moraleAccrued','recoveryAccrued'].every(k=>num(e[k]))||e.statementIncome>e.income||e.statementSpent>e.spent||!past(e.lastSettlement)||!past(e.lastLivingDate)||!ref('lifestyles',e.lifestyle))throw Error('economy.balance');
+ const difference=e.income-e.spent-e.cash+e.arrears;if(Math.abs(difference)>Number.EPSILON*Math.max(1,e.income,e.spent)*db.rules.scale)throw Error('economy.accounting');
+ for(const key of ['contracts','contractHistory','assets','investments','brands','ledger'])if(!Array.isArray(e[key]))throw Error('economy.'+key);
+ if(e.contracts.length>r.maxContracts||e.contractHistory.length>r.historyLimit||e.brands.length>r.maxBrands||e.ledger.length>r.ledgerLimit)throw Error('economy.limits');
+ if(!e.lastSigned||typeof e.lastSigned!=='object'||Array.isArray(e.lastSigned)||Object.entries(e.lastSigned).some(([id,value])=>!ref('commercial',id)||!past(value)))throw Error('economy.lastSigned');
+ const contracts=[...e.contracts,...e.contractHistory];for(const c of contracts)if(!ref('commercial',c.definition)||!ref('packages',c.package)||!past(c.start)||!date(c.end)||c.end<=c.start||!past(c.periodStart)||c.periodStart<c.start||!date(c.nextDue)||c.nextDue<=c.periodStart||c.nextDue>c.end||typeof c.delivered!=='boolean'||!Number.isInteger(c.misses)||c.misses<0||!c.terms||!['upfront','payment','goalBonus','fitnessCost','cancelShare'].every(k=>num(c.terms[k]))||c.terms.cancelShare>1||c.terms.fitnessCost>db.rules.scale)throw Error('economy.contracts');
+ if(e.contractHistory.some(c=>!['completed','cancelled','terminated'].includes(c.status)||!past(c.closed)||c.closed<c.start)||new Set(e.contracts.map(c=>c.definition)).size!==e.contracts.length)throw Error('economy.contractHistory');
+ for(const c of e.contracts)for(const other of e.contracts){if(c===other)continue;const d=r.commercial.find(x=>x.id===c.definition),o=r.commercial.find(x=>x.id===other.definition);if(d.category===o.category&&(d.exclusive||o.exclusive))throw Error('economy.exclusivity');}
+ for(const a of e.assets){if(!ref('assets',a.definition)||!past(a.bought)||!past(a.lastValued)||a.lastValued<a.bought||!num(a.basis)||!num(a.value)||!num(a.rentalDays)||a.rentalDays>r.periodDays||!['personal','rental','collection'].includes(a.use))throw Error('economy.assets');const d=r.assets.find(x=>x.id===a.definition);if((a.use==='personal'&&!d.home)||(a.use==='rental'&&!d.rent)||e.assets.filter(x=>x.definition===d.id).length>d.limit)throw Error('economy.assetUse');}
+ if(e.assets.filter(a=>a.use==='personal').length>1)throw Error('economy.home');
+ for(const a of e.investments)if(!ref('investments',a.definition)||!past(a.lastValued)||!['basis','value','dividends','pendingDividends'].every(k=>num(a[k])))throw Error('economy.investments');
+ if(new Set(e.investments.map(x=>x.definition)).size!==e.investments.length)throw Error('economy.investments.duplicate');
+ for(const b of e.brands)if(!ref('brandTypes',b.type)||!ref('brandStrategies',b.strategy)||typeof b.name!=='string'||!b.name.trim()||b.name.length>r.brandNameLimit||!past(b.created)||!past(b.lastValued)||b.lastValued<b.created||!date(b.marketingUntil)||b.lastMarketing!==null&&!past(b.lastMarketing)||!Number.isInteger(b.level)||b.level<1||b.level>r.brandMaxLevel||!['equity','lastRevenue','lastCost','pendingRevenue','pendingCost'].every(k=>num(b[k]))||!num(b.profit,-Number.MAX_SAFE_INTEGER))throw Error('economy.brands');
+ if(new Set(e.brands.map(b=>b.name)).size!==e.brands.length)throw Error('economy.brands.name');
+ const ids=[...contracts,...e.assets,...e.brands].map(x=>x.id);if(ids.some(id=>typeof id!=='string'||!/^\w+:\d+$/.test(id)||Number(id.split(':')[1])>e.serial)||new Set(ids).size!==ids.length)throw Error('economy.ids');
+ if(e.ledger.some(l=>!Number.isInteger(l.id)||l.id<1||l.id>e.serial||!past(l.date)||!Object.hasOwn(r.ledgerTypes,l.type)||!num(l.amount,-Number.MAX_SAFE_INTEGER)||typeof l.name!=='string')||new Set(e.ledger.map(l=>l.id)).size!==e.ledger.length)throw Error('economy.ledger');
+}
+
 function validateNationalContent(db){
   const r=db.nationalRules,ids=new Set(),competitions=new Set();if(!r||r.squadSize!==Core.sum(Object.values(r.positionQuotas))||r.reserveSize<r.squadSize||r.reservePositions.length<r.reserveSize||r.reservePositions.some(id=>!db.positions.some(p=>p.id===id))||r.minimumApps<1||r.minimumMinutes<1||r.groupRoundGap<db.calendarRules.minimumMatchGapDays||r.knockoutGap<db.calendarRules.minimumMatchGapDays||r.matchOffsets.some(day=>!Number.isInteger(day)||day<1)||Core.sum(Object.values(r.worldCupSlots))!==db.nationalCompetitions.find(c=>c.id==='world-cup')?.participants)throw Error('nations.rules');
   for(const c of db.nationalCompetitions){if(competitions.has(c.id)||db.leagues.some(l=>l.id===c.id)||!/^[-a-zA-Z0-9_]+$/.test(c.id)||c.kind!=='national'||!Number.isInteger(c.interval)||c.interval<1||c.month<1||c.month>12||c.day<1||c.day>28||c.groupSize<2||!Number.isInteger(c.participants)||c.participants<0||c.advancePerGroup<0||c.advancePerGroup>c.groupSize||c.bestThird<0)throw Error('nations.competition');competitions.add(c.id);}
@@ -42989,7 +43745,7 @@ function competitionName(f){const league=idx().leagues[f.competition||f.league||
 
 function historyItems(records){if(!records.length)return `<div class="empty">${h(t('noMatches'))}</div>`;return records.slice().reverse().map(record=>{const result=matchOutcome(record),opponent=idx().clubs[record.home===record.club?record.away:record.home];return `<div class="history-item"><div class="result-badge ${result.class}">${h(result.label)} ${h(result.score)}</div><div><b>${clubLink(opponent.id)}</b><p>${h(record.date)} · ${h(competitionName(record))} · ${h(t(record.appearance))} · ${n(record.stats.minutes)}${h(t('minutesShort'))}</p></div><div class="row">${record.stats.minutes?`<span class="rating num">${n(record.stats.rating,1)}</span>`:badge(t('unused'))}${btn(t('matchDetails'),'report',`data-id="${h(record.id)}"`,'subtle small')}</div></div>`;}).join('');}
 function render(){hideInteractionTooltip();shellHeaderObserver?.disconnect();if(state){syncSeasonCalendar();Core.syncMarketState(DB,state);}applyTheme();if(calendarLoading){document.getElementById('app').innerHTML=`<main class="match-loading"><span class="match-loader" aria-hidden="true"></span><h1>${h(t('calendarAdvancing'))}</h1></main>`;return;}if(storageLoading){document.getElementById('app').innerHTML=`<main class="match-loading"><span class="match-loader" aria-hidden="true"></span><h1>${h(t('storageLoading'))}</h1></main>`;return;}if(state&&(matchLoading||state.matchPresentation)){renderMatchExperience();return;}if(!state){sectionCareer=null;renderOnboard();return;}rememberSectionVisit();const p=state.player,club=currentClub(),league=idx().leagues[club.league],tab=screen==='settings'?{label:t('settings')}:DB.ui.tabs.find(x=>x.id===screen)||DB.ui.tabs[0],finished=Core.seasonReady(state),responses=Core.pendingResponses(DB,state),decision=state.careerStories.pending;const interviewing=state.interviews.pending;document.title=`${DB.meta.title} — ${p.name}`;
-  document.getElementById('app').innerHTML=`<aside class="sidebar" id="sidebar"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(DB.meta.subtitle)}</small></div></div><div class="career-mini"><div class="row"><span class="avatar">${h(p.name.slice(0,1))}</span><div><b>${h(p.name)}</b><p>${h(p.position)} · ${n(p.age)}${h(t('ageUnit'))}</p></div></div><div class="divider"></div><p>${p.freeAgent?h(t('freeAgent')):clubLink(club.id)}</p></div><div class="nav-caption">${h(t('navigation'))}</div><nav class="nav" aria-label="${h(t('navigation'))}">${DB.ui.navigationGroups.map(x=>`<button type="button" data-action="tab" data-group="${h(x.id)}" data-tab="${h(x.views[0])}" class="${x.views.includes(screen)?'active':''}" ${x.views.includes(screen)?'aria-current="page"':''}><span class="nav-icon" aria-hidden="true">${h(x.icon)}</span><span class="nav-label">${h(x.label)}</span>${x.views.includes('inbox')&&unreadCount()?badge(n(unreadCount()),'green'):''}</button>`).join('')}</nav><footer class="sidebar-footer">${h(DB.meta.title)} / v${h(DB.meta.version)}${btn(t('settings'),'tab','data-tab="settings"','subtle')}${btn(t('newCareer'),'new','','subtle')}</footer></aside><main class="shell"><header class="topbar"><div class="row topbar-heading"><div class="topbar-controls">${btn('☰','menu','','mobile-menu')}${sectionHistoryControls()}</div><div class="topbar-context"><p class="career-date"><span>${leagueLink(league.id)}</span><span>${h(t('season',{n:state.season}))}</span><time datetime="${h(state.date)}">${h(state.date)}</time></p><div class="row wrap"><h2>${h(tab.label)}</h2>${fitnessGauge()}</div></div></div><div class="top-actions"><details class="header-tools"><summary>${h(t('pageTools'))}</summary><div>${btn(t('export'),'export','','subtle')}${btn(t('import'),'import','','subtle')}</div></details><span id="save-indicator" class="save-indicator" role="status" data-status="${h(storageStatus)}">${h(t(storageStatus))}</span>${btn(t('save'),'save')}${btn(interviewing?t('interviewAnswer'):decision?t('chooseDecision'):responses.length?t('respondRequired',{n:responses.length}):t(finished?'nextSeason':'continue'),interviewing?'interview-open':decision?'career-decision':responses.length?'respond-required':finished?'next-season':'advance','','primary')}</div></header><div class="content" data-screen="${h(screen)}">${sectionNavigation()}${!storageHealthy?`<div class="notice warning" style="margin-bottom:18px">${h(t('saveWarning'))}</div>`:''}${({settings:settings,dashboard:dashboard,calendar:calendar,inbox:inbox,fixtures:fixtures,statistics:statistics,team:team,market:market,training:trainingCenter,performance:performanceView,'training-history':trainingHistoryView,valuation:valuationView,legacy:legacyView,clubroom:clubroomView,interviews:interviewsView,career:career,world:world,news:news,nations:nations}[screen]||dashboard)()}</div></main>`;organizeView();if(screen==='market'&&!activeDeal)refreshAgentTargets();
+  document.getElementById('app').innerHTML=`<aside class="sidebar" id="sidebar"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(DB.meta.subtitle)}</small></div></div><div class="career-mini"><div class="row"><span class="avatar">${h(p.name.slice(0,1))}</span><div><b>${h(p.name)}</b><p>${h(p.position)} · ${n(p.age)}${h(t('ageUnit'))}</p></div></div><div class="divider"></div><p>${p.freeAgent?h(t('freeAgent')):clubLink(club.id)}</p></div><div class="nav-caption">${h(t('navigation'))}</div><nav class="nav" aria-label="${h(t('navigation'))}">${DB.ui.navigationGroups.map(x=>`<button type="button" data-action="tab" data-group="${h(x.id)}" data-tab="${h(x.views[0])}" class="${x.views.includes(screen)?'active':''}" ${x.views.includes(screen)?'aria-current="page"':''}><span class="nav-icon" aria-hidden="true">${h(x.icon)}</span><span class="nav-label">${h(x.label)}</span>${x.views.includes('inbox')&&unreadCount()?badge(n(unreadCount()),'green'):''}</button>`).join('')}</nav><footer class="sidebar-footer">${h(DB.meta.title)} / v${h(DB.meta.version)}${btn(t('settings'),'tab','data-tab="settings"','subtle')}${btn(t('newCareer'),'new','','subtle')}</footer></aside><main class="shell"><header class="topbar"><div class="row topbar-heading"><div class="topbar-controls">${btn('☰','menu','','mobile-menu')}${sectionHistoryControls()}</div><div class="topbar-context"><p class="career-date"><span>${leagueLink(league.id)}</span><span>${h(t('season',{n:state.season}))}</span><time datetime="${h(state.date)}">${h(state.date)}</time></p><div class="row wrap"><h2>${h(tab.label)}</h2>${fitnessGauge()}</div></div></div><div class="top-actions"><details class="header-tools"><summary>${h(t('pageTools'))}</summary><div>${btn(t('export'),'export','','subtle')}${btn(t('import'),'import','','subtle')}</div></details><span id="save-indicator" class="save-indicator" role="status" data-status="${h(storageStatus)}">${h(t(storageStatus))}</span>${btn(t('save'),'save')}${btn(interviewing?t('interviewAnswer'):decision?t('chooseDecision'):responses.length?t('respondRequired',{n:responses.length}):t(finished?'nextSeason':'continue'),interviewing?'interview-open':decision?'career-decision':responses.length?'respond-required':finished?'next-season':'advance','','primary')}</div></header><div class="content" data-screen="${h(screen)}">${sectionNavigation()}${!storageHealthy?`<div class="notice warning" style="margin-bottom:18px">${h(t('saveWarning'))}</div>`:''}${({settings:settings,dashboard:dashboard,calendar:calendar,inbox:inbox,fixtures:fixtures,statistics:statistics,team:team,market:market,training:trainingCenter,performance:performanceView,'training-history':trainingHistoryView,valuation:valuationView,legacy:legacyView,clubroom:clubroomView,interviews:interviewsView,career:career,world:world,news:news,nations:nations,finances:financesView,commercial:commercialView,investments:investmentsView,assets:assetsView,brands:brandsView,lifestyle:lifestyleView}[screen]||dashboard)()}</div></main>`;organizeView();if(screen==='market'&&!activeDeal)refreshAgentTargets();
   fitShirtNames();maybeShowCareerMoment();
 }
 function baseDashboard(){const p=state.player,club=currentClub(),tot=Core.totals(DB,myHistory()),fixture=nextFixture(),chance=Core.selection(DB,state)*DB.rules.scale,comp=Core.competition(DB,p,p.club,state),dream=idx().clubs[p.dreamClub]||{name:t('undecided'),color:DB.profile.unspecifiedColor,quality:DB.rules.scale},fit=Core.suitability(DB,p),route=DB.routes.find(x=>x.id===p.route);return `<div class="welcome"><div class="eyebrow">${h(t('currentClub'))} / ${h(club.name)}</div><h1>${h(t('welcome',{name:p.name}))}</h1><p>${h(t('welcomeSub'))}</p></div><div class="cols"><div class="stack"><section class="card hero"><div class="hero-profile">${shirt(p.number,p.displayName||p.name)}<div>${badge(p.position)}<h2>${h(p.name)}</h2><p>${h(DB.countries.find(c=>c.id===p.country).name)} · ${n(p.age)}${h(t('ageUnit'))} · ${n(p.height)} cm</p><div style="margin-top:12px">${badge(club.parent?route.name:t('currentClub'),'pink')}</div></div></div><div class="hero-score"><span>${h(t('overall'))}</span><strong class="num">${abilityLabel(Core.overall(DB,p.stats))}</strong><p>${h(t('roleOverall'))} ${abilityLabel(fit)}</p></div></section><div class="kpi-grid">${kpi(t('apps'),`${tot.apps}`,`${t('starts')} ${tot.starts} · ${tot.minutes}${t('minutesShort')}`)}${kpi(t('goal'),n(tot.goals),`${t('xg')} ${n(tot.xg,2)}`)}${kpi(t('assist'),n(tot.assists),`${t('xa')} ${n(tot.xa,2)}`)}${kpi(t('avgRating'),tot.apps?n(tot.rating,2):t('noRating'),t('seasonStats'))}</div><section class="card"><div class="section-head"><h2>${h(t('coachReport'))}</h2>${badge(p.injury?t('injured',{n:p.injury}):p.suspension?t('suspended',{n:p.suspension}):t(chance>=DB.competitionRules.roleStarterChance?'roleStarter':chance>=DB.competitionRules.roleRotationChance?'roleRotation':'roleBackup'),p.injury||p.suspension?'red':'green')}</div><p class="small muted">${h(t('coachReportText',{competition:n(comp,1),chance:n(chance)}))}</p><div class="form-grid" style="margin-top:20px">${['trust','fitness','morale','reputation'].map(key=>`<div><div class="row between small" style="margin-bottom:7px"><span class="muted">${h(t(key))}</span><b class="num">${n(p[key])}/${DB.rules.scale}</b></div>${progress(p[key])}</div>`).join('')}</div>${p.fitness<DB.rules.minimumFitnessForSelection?`<div class="notice warning" style="margin-top:20px">${h(t('lowFitness'))}</div>`:''}</section><section class="card"><div class="section-head"><h2>${h(t('recentMatches'))}</h2>${btn(t('viewAll'),'tab','data-tab="fixtures"','subtle')}</div>${historyItems(myHistory().slice(-DB.rules.recentFormMatches))}</section></div><div class="stack"><section class="card"><div class="section-head"><h2>${h(t('nextFixture'))}</h2>${fixture?badge(t('round',{n:fixture.round+1})):badge(t('endSeason'),'pink')}</div>${fixture?`<p class="small muted">${h(competitionName(fixture))}</p>${fixtureCard(fixture)}<div class="divider"></div>${detail(t('selection'),`${n(chance)}% ${t('starter')}`)}${detail(t('fitness'),`${n(p.fitness)}/${DB.rules.scale}`)}`:`<div class="notice">${h(t('noFixture'))}</div>`}</section><section class="card"><div class="section-head"><h2>${h(t('training'))}</h2>${badge(abilityLabel(Core.suitability(DB,p)))}</div><div class="training-list">${DB.training.map(tr=>btn(tr.name,'training',`data-id="${h(tr.id)}" aria-pressed="${tr.id===state.training}"`,tr.id===state.training?'selected':'')).join('')}</div><p class="small muted" style="margin-top:12px">${h(DB.training.find(tr=>tr.id===state.training).description)}</p><div class="divider"></div><p class="small muted">${h(t('trainingHint'))}</p>${trainingProgress()}${quickAbilities()}</section><section class="card"><div class="section-head"><h2>${h(t('dream'))}</h2>${crest(dream)}</div><h3>${h(dream.name)}</h3><p class="small muted" style="margin:7px 0 15px">${h(t(p.dreamClub===DB.profile.unspecifiedId?'undecidedDream':'dreamHint'))}</p>${p.dreamClub===DB.profile.unspecifiedId?'':progress(fit,dream.quality)+`<div class="row between small" style="margin-top:10px"><span class="muted">${h(t('abilityGap'))}</span><b class="num">${n(Math.max(0,dream.quality-fit),1)}</b></div>`}</section></div></div>`;}
@@ -43057,6 +43813,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
   case 'world-scope':worldScope=button.dataset.scope;render();break;
   case 'fixture-scope':fixtureScope=button.dataset.scope;render();break;
   case 'stats-scope':statsScope=button.dataset.scope;render();break;
+  case 'finance-action':handleFinanceAction(button);break;
   case 'save':persist(true);break;
   case 'export':if(state){download(envelope(),DB.rules.exportFilename);toast(t('exportDone'));}break;
   case 'import':document.getElementById('save-input').click();break;
@@ -43569,12 +44326,45 @@ function valuationView(){return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=
 function legacyView(){const p=state.player;return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='legacy').label)+'</h1><p>'+h(t('legacyHint'))+'</p></div>'+honoursHero()+'<div class="rework-grid">'+`<section class="card"><h2>${h(t('careerHistory'))}</h2><div class="list-pane">${p.career.slice().reverse().map(entry=>`<div class="history-item"><span>${badge(t(entry.type))}</span><div><b>${h(idx().clubs[entry.club].name)}</b><p>${h(entry.date)}</p></div><span class="small muted">${h(t('season',{n:entry.season}))}</span></div>`).join('')}</div></section>`+careerTraitsCard()+'</div>'+episodeCard();}
 function clubroomView(){return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='clubroom').label)+'</h1><p>'+h(t('clubroomHint'))+'</p></div><div class="rework-grid">'+tacticsCard()+`<section class="card"><h2>${h(t('environment'))}</h2><div class="detail-list">${detail(t('clubPrestige'),clubTier(currentClub()))}${detail(t('prestigeValue'),n(currentClub().prestige,1))}${detail(t('finance'),money(state.world.clubs[state.player.club].finance))}${detail(t('environment'),n(state.world.clubs[state.player.club].environment,1))}${detail(t('trend'),DB.dynamics.trends.find(x=>x.id===state.world.trend).name)}</div><p class="small muted" style="margin-top:15px">${h(t('clubStandingHint'))}</p>${currentClub().scenarioNote?`<p class="notice small" style="margin-top:12px">${h(currentClub().scenarioNote)}</p>`:''}</section>`+'</div><div class="rework-grid">'+cultureCard(state.player.club)+captainCard()+'</div>';}
 function interviewsView(){return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='interviews').label)+'</h1><p>'+h(t('interviewsHint'))+'</p></div>'+interviewJournal();}
+function financeButton(label,operation,id='',extra='',disabled=false){return btn(label,'finance-action',`data-operation="${h(operation)}" data-id="${h(id)}" ${extra} ${disabled?'disabled':''}`);}
+function financeHead(key){return `<div class="welcome"><h1>${h(t(key))}</h1><p>${h(t(key+'Hint'))}</p></div>`;}
+function financesView(){
+ const e=state.economy,v=Core.economySummary(DB,state);return financeHead('finances')+`<div class="kpi-grid">${kpi(t('financeCash'),money(v.cash))}${kpi(t('financeNetWorth'),money(v.netWorth),t('financeValuationHint'))}${kpi(t('financeIncome'),money(e.income))}${kpi(t('financeSpent'),money(e.spent))}</div>${e.arrears?`<p class="notice warning">${h(t('financeArrearsHint',{amount:money(e.arrears)}))}</p>`:''}<section class="card" style="margin-top:20px"><h2>${h(t('financeComposition'))}</h2><div class="detail-list">${detail(t('financeCash'),money(v.cash))}${detail(t('financeAssets'),money(v.assets))}${detail(t('financeInvestments'),money(v.investments))}${detail(t('financeBusinesses'),money(v.business))}${detail(t('financeArrears'),money(v.arrears))}${detail(t('financeNextSettlement'),Core.dateAdd(e.lastSettlement,DB.economyRules.periodDays))}${detail(t('weeklyWage'),money(state.player.contract.weekly))}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('financeLedger'))}</h2><p class="small muted">${h(t('financeLedgerHint'))}</p><div class="table-wrap"><table><thead><tr>${['date','financeSource','financeAmount'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody>${e.ledger.slice().reverse().map(l=>`<tr><td>${h(l.date)}</td><td>${h(DB.economyRules.ledgerTypes[l.type])}${l.name?' · '+h(l.name):''}</td><td class="num ${l.amount<0?'negative':'positive'}">${l.amount>0?'+':''}${money(l.amount)}</td></tr>`).join('')||`<tr><td colspan="3">${h(t('financeNoLedger'))}</td></tr>`}</tbody></table></div></section>`;
+}
+let commercialPackage=null;
+function commercialView(){
+ const r=DB.economyRules,e=state.economy;if(!r.packages.some(p=>p.id===commercialPackage))commercialPackage=r.packages[0].id;const offers=Core.commercialOffers(DB,state);
+ return financeHead('commercial')+`<section class="card"><h2>${h(t('commercialActive'))}</h2><div class="rework-list">${e.contracts.map(c=>{const d=r.commercial.find(x=>x.id===c.definition);return `<article class="coach-review"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(d.categoryName+(d.exclusive?' · '+t('commercialExclusive'):''))}</div><p class="small muted">${h(c.start)} — ${h(c.end)} · ${h(t('commercialDeadline',{date:c.nextDue}))}</p><p>${h(t('commercialPay',{amount:money(c.terms.payment),bonus:money(c.terms.goalBonus)}))}</p><p class="small muted">${h(t('commercialDuty',{cost:c.terms.fitnessCost,misses:c.misses,max:r.maxMisses}))}</p><div class="row wrap">${financeButton(c.delivered?t('commercialDelivered'):t('commercialShoot'),'deliver',c.id,'',c.delivered||state.player.fitness<c.terms.fitnessCost)}${financeButton(t('commercialCancel',{fee:money(Core.commercialCancelFee(DB,state,c.id))}),'cancel',c.id,'',e.arrears>0||e.cash<Core.commercialCancelFee(DB,state,c.id))}</div></article>`;}).join('')||`<p class="empty">${h(t('commercialNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><div class="section-head"><h2>${h(t('commercialOffers'))}</h2><label>${h(t('commercialPackage'))}<select id="commercial-package">${r.packages.map(p=>`<option value="${h(p.id)}" ${p.id===commercialPackage?'selected':''}>${h(p.name)}</option>`).join('')}</select></label></div><p class="small muted">${h(r.packages.find(p=>p.id===commercialPackage).description)}</p><div class="offer-grid">${offers.map(o=>{const d=r.commercial.find(x=>x.id===o.id),q=Core.commercialTerms(DB,state,d.id,commercialPackage);return `<article class="card"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(d.kindName)}</div><p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('commercialReputation'),n(d.minReputation))}${detail(t('commercialCategory'),d.categoryName+(d.exclusive?' · '+t('commercialExclusive'):''))}${detail(t('commercialDuration'),t('financeDays',{n:d.duration}))}${detail(t('commercialUpfront'),money(q.upfront))}${detail(t('commercialPeriodPay'),money(q.payment))}${detail(t('commercialGoalBonus'),money(q.goalBonus))}${detail(t('commercialShootCost'),n(q.fitnessCost))}</div><p class="small muted">${h(t('commercialExitTerms',{share:n(q.cancelShare*DB.rules.scale)}))}</p>${financeButton(t('commercialSign'),'sign',d.id,'',!o.eligible)}${!o.eligible?`<p class="small muted">${h(o.conflict?t('commercialConflict'):o.cooldown?t('commercialCooldown',{n:o.cooldown}):state.player.reputation<d.minReputation?t('commercialLocked'):t('commercialLimit',{n:r.maxContracts}))}</p>`:''}</article>`;}).join('')}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('commercialHistory'))}</h2>${e.contractHistory.slice().reverse().map(c=>`<div class="history-item"><b>${h(r.commercial.find(x=>x.id===c.definition).name)}</b><time>${h(c.closed)}</time>${badge(t('commercialStatus'+c.status))}</div>`).join('')||`<p class="empty">${h(t('commercialNone'))}</p>`}</section>`;
+}
+function investmentsView(){
+ const r=DB.economyRules,e=state.economy;return financeHead('investments')+`<p class="notice">${h(t('investmentRiskHint'))}</p><section class="card"><h2>${h(t('investmentHoldings'))}</h2>${e.investments.map(a=>{const d=r.investments.find(x=>x.id===a.definition);return `<article class="coach-review"><h3>${h(d.name)}</h3><div class="form-grid">${detail(t('investmentBasis'),money(a.basis))}${detail(t('investmentValue'),money(a.value))}${detail(t('investmentUnrealized'),money(a.value*(1-d.fee)-a.basis))}${detail(t('investmentDividends'),money(a.dividends))}</div><div class="row wrap">${r.redemptionShares.map(share=>financeButton(t('investmentRedeem',{share:n(share*DB.rules.scale),amount:money(a.value*share*(1-d.fee))}),'redeem',a.definition,`data-share="${share}"`)).join('')}</div></article>`;}).join('')||`<p class="empty">${h(t('investmentNone'))}</p>`}</section><div class="offer-grid" style="margin-top:20px">${r.investments.map(d=>`<article class="card"><h2>${h(d.name)}</h2>${badge(d.risk)}<p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('investmentMinimum'),money(d.minimum))}${detail(t('financeFee'),n(d.fee*DB.rules.scale,1)+'%')}${detail(t('investmentDividendRate'),n(d.dividend*DB.rules.scale,2)+'%')}${detail(t('investmentRange'),n((d.growth-d.volatility)*DB.rules.scale,2)+'% ~ '+n((d.growth+d.volatility)*DB.rules.scale,2)+'%')}</div><form class="finance-form" data-finance-form="invest" data-id="${h(d.id)}"><label>${h(t('investmentOrder'))} (${h(DB.meta.currency)})<input type="number" name="amount" min="${d.minimum}" max="${r.maxTransaction}" step="${r.moneyStep}" value="${d.minimum}" required></label><p class="small muted">${h(t('investmentFeeHint'))}</p><button type="submit" ${e.arrears||e.cash<d.minimum*(1+d.fee)?'disabled':''}>${h(t('investmentBuy'))}</button></form></article>`).join('')}</div>`;
+}
+function assetsView(){
+ const r=DB.economyRules,e=state.economy;return financeHead('assets')+`<section class="card"><h2>${h(t('assetHoldings'))}</h2><div class="offer-grid">${e.assets.map(a=>{const d=r.assets.find(x=>x.id===a.definition),sell=a.value*(1-r.assetSaleFee);return `<article class="card"><div class="row between wrap"><h3>${h(d.name)}</h3>${badge(t('assetUse'+a.use))}</div><div class="detail-list">${detail(t('assetPurchased'),a.bought)}${detail(t('assetBasis'),money(a.basis))}${detail(t('assetValue'),money(a.value))}${detail(t('assetUpkeep'),money(d.upkeep))}${detail(t('assetRent'),money(a.use==='rental'?d.rent:0))}</div><div class="row wrap">${d.home?financeButton(t(a.use==='personal'?'assetRentOut':'assetMoveIn'),'asset-use',a.id,`data-use="${a.use==='personal'?'rental':'personal'}"`):''}${financeButton(t('assetSell',{amount:money(sell)}),'asset-sell',a.id)}</div></article>`;}).join('')||`<p class="empty">${h(t('assetNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('assetMarket'))}</h2><p class="small muted">${h(t('assetMarketHint',{buy:n(r.assetPurchaseFee*DB.rules.scale),sell:n(r.assetSaleFee*DB.rules.scale),vacancy:n(r.vacancyChance*DB.rules.scale)}))}</p><div class="offer-grid">${r.assets.map(d=>{const price=Core.assetPrice(DB,state,d.id)*(1+r.assetPurchaseFee),owned=e.assets.filter(a=>a.definition===d.id).length;return `<article class="card"><h3>${h(d.name)}</h3>${badge(d.category)}<p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('assetTotalPrice'),money(price))}${detail(t('assetUpkeep'),money(d.upkeep))}${detail(t('assetRent'),money(d.rent))}${detail(t('assetPriceRange'),n((d.growth-d.volatility)*DB.rules.scale,1)+'% ~ '+n((d.growth+d.volatility)*DB.rules.scale,1)+'%')}${detail(t('assetPurchaseLimit'),n(owned)+' / '+n(d.limit))}</div>${financeButton(t('assetBuy'),'asset-buy',d.id,'',e.arrears>0||e.cash<price||owned>=d.limit)}</article>`;}).join('')}</div></section>`;
+}
+function brandsView(){
+ const r=DB.economyRules,e=state.economy;return financeHead('brands')+`<section class="card"><h2>${h(t('brandHoldings'))}</h2><div class="offer-grid">${e.brands.map(b=>`<article class="card"><h3>${h(b.name)}</h3><p class="small muted">${h(r.brandTypes.find(d=>d.id===b.type).name)} · ${h(t('brandLevel',{n:b.level,max:r.brandMaxLevel}))}</p><div class="detail-list">${detail(t('brandEquity'),money(b.equity))}${detail(t('brandRevenue'),money(b.lastRevenue))}${detail(t('brandCost'),money(b.lastCost))}${detail(t('brandProfit'),money(b.profit))}${detail(t('brandMarketingUntil'),b.marketingUntil>state.date?b.marketingUntil:t('brandNoMarketing'))}</div><label>${h(t('brandStrategy'))}<select class="brand-strategy" data-id="${h(b.id)}">${r.brandStrategies.map(p=>`<option value="${h(p.id)}" ${p.id===b.strategy?'selected':''}>${h(p.name)}</option>`).join('')}</select></label><div class="row wrap" style="margin-top:12px">${financeButton(t('brandExpand',{amount:money(b.equity*r.brandExpansionCost)}),'brand-expand',b.id,'',b.level>=r.brandMaxLevel||e.arrears>0||e.cash<b.equity*r.brandExpansionCost)}${financeButton(t('brandMarketing',{amount:money(b.equity*r.marketingCost)}),'brand-marketing',b.id,'',e.arrears>0||e.cash<b.equity*r.marketingCost||b.lastMarketing&&Core.daysBetween(DB,b.lastMarketing,state.date)<r.periodDays)}${financeButton(t('brandSell',{amount:money(b.equity*r.brandSaleShare)}),'brand-sell',b.id)}</div></article>`).join('')||`<p class="empty">${h(t('brandNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('brandFound'))}</h2><p class="small muted">${h(t('brandFoundHint',{n:r.maxBrands,days:r.marketingDays,boost:n((r.marketingRevenueFactor-1)*DB.rules.scale)}))}</p><div class="offer-grid">${r.brandTypes.map(d=>`<article class="card"><h3>${h(d.name)}</h3><p>${h(d.description)}</p><div class="detail-list">${detail(t('brandCapital'),money(d.capital))}${detail(t('commercialReputation'),n(d.minReputation))}${detail(t('brandMargin'),n((1-d.productionShare)*DB.rules.scale)+'%')}${detail(t('brandOverhead'),n(d.overhead*DB.rules.scale,2)+'%')}</div><form class="finance-form" data-finance-form="brand" data-id="${h(d.id)}"><label>${h(t('brandName'))}<input name="name" maxlength="${r.brandNameLimit}" required></label><label>${h(t('brandStrategy'))}<select name="strategy">${r.brandStrategies.map(p=>`<option value="${h(p.id)}">${h(p.name)}</option>`).join('')}</select></label><button type="submit" ${e.arrears||e.cash<d.capital||state.player.reputation<d.minReputation||e.brands.length>=r.maxBrands?'disabled':''}>${h(t('brandLaunch'))}</button></form></article>`).join('')}</div><div class="divider"></div>${r.brandStrategies.map(p=>`<p class="small muted"><b>${h(p.name)}</b> · ${h(p.description)}</p>`).join('')}</section>`;
+}
+function lifestyleView(){
+ const r=DB.economyRules,e=state.economy,home=e.assets.find(a=>a.use==='personal');return financeHead('lifestyle')+`<section class="card"><h2>${h(t('lifestyleHousing'))}</h2><p>${h(home?r.assets.find(d=>d.id===home.definition).name:t('lifestyleRented'))}</p><p class="small muted">${h(t('lifestyleHousingHint'))}</p>${btn(t('assetHoldings'),'tab','data-tab="assets"')}</section><div class="offer-grid" style="margin-top:20px">${r.lifestyles.map(d=>`<article class="card"><h2>${h(d.name)}</h2><p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('lifestyleCost'),money(d.spending+(home?0:d.rent)))}${detail(t('lifestyleRecovery'),n(d.recovery))}${detail(t('lifestyleMorale'),n(d.morale))}</div>${financeButton(e.lifestyle===d.id?t('lifestyleSelected'):t('lifestyleSelect'),'lifestyle',d.id,'',e.lifestyle===d.id)}</article>`).join('')}</div><p class="notice" style="margin-top:20px">${h(t('lifestyleCostHint'))}</p>`;
+}
+function financeResult(ok){if(ok){persist();render();toast(t('financeDone'));}else toast(t('financeFailed'));}
+function handleFinanceAction(button){
+ const id=button.dataset.id,op=button.dataset.operation;let result=false;
+ switch(op){case 'sign':result=Core.signCommercial(DB,state,id,commercialPackage);break;case 'deliver':result=Core.commercialDelivery(DB,state,id);break;case 'cancel':result=Core.cancelCommercial(DB,state,id);break;case 'asset-buy':result=Core.buyAsset(DB,state,id);break;case 'asset-sell':result=Core.sellAsset(DB,state,id);break;case 'asset-use':result=Core.assetUse(DB,state,id,button.dataset.use);break;case 'redeem':result=Core.redeemInvestment(DB,state,id,Number(button.dataset.share));break;case 'lifestyle':result=Core.lifestyleChange(DB,state,id);break;case 'brand-expand':case 'brand-marketing':case 'brand-sell':result=Core.brandAction(DB,state,id,op.slice('brand-'.length));break;}
+ financeResult(result);
+}
+document.addEventListener('submit',event=>{const form=event.target.closest('[data-finance-form]');if(!form)return;event.preventDefault();if(!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation||!form.reportValidity())return;
+ const fields=new FormData(form),id=form.dataset.id;financeResult(form.dataset.financeForm==='invest'?Core.investMoney(DB,state,id,Number(fields.get('amount'))):Core.foundBrand(DB,state,id,fields.get('name'),fields.get('strategy')));
+});
+document.addEventListener('change',event=>{if(!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation)return;if(event.target.id==='commercial-package'){commercialPackage=event.target.value;render();}if(event.target.matches('.brand-strategy'))financeResult(Core.brandAction(DB,state,event.target.dataset.id,'strategy',event.target.value));});
+
 let sectionVisits=[],sectionCursor=-1,sectionCareer=null,sectionRestoring=false;
-function sectionViewSnapshot(){return {screen,reportId,activeDeal,activeMail,statsScope,selectedStatsSeason,fixtureScope,fixtureCompetition,fixtureCountryFilter,teamCompetition,teamCountry:teamClubSelection,worldScope,worldQuery,worldClubQuery,worldCountryFilter,worldLeagueFilter,worldClubFilter,worldPlayerCountryFilter,worldPlayerLeagueFilter,worldPlayerClubFilter,newsScope,mailScope,agentPane,agentCountryFilter,agentLeagueFilter,agentClubQuery,agentTarget,offerScope,seasonCalendarMonth,seasonCalendarDate,nationalTeamSelection,nationalTournamentSelection,continentalView,worldSort:Core.clone(worldSort)};}
+function sectionViewSnapshot(){return {commercialPackage,screen,reportId,activeDeal,activeMail,statsScope,selectedStatsSeason,fixtureScope,fixtureCompetition,fixtureCountryFilter,teamCompetition,teamCountry:teamClubSelection,worldScope,worldQuery,worldClubQuery,worldCountryFilter,worldLeagueFilter,worldClubFilter,worldPlayerCountryFilter,worldPlayerLeagueFilter,worldPlayerClubFilter,newsScope,mailScope,agentPane,agentCountryFilter,agentLeagueFilter,agentClubQuery,agentTarget,offerScope,seasonCalendarMonth,seasonCalendarDate,nationalTeamSelection,nationalTournamentSelection,continentalView,worldSort:Core.clone(worldSort)};}
 function sectionViewKey(view){return [view.screen,view.screen==='fixtures'?view.reportId:'',view.screen==='market'?view.activeDeal:'',view.screen==='inbox'?view.activeMail:''].join('|');}
 function rememberSectionVisit(){const view=sectionViewSnapshot();if(sectionCareer!==state){sectionCareer=state;sectionVisits=[];sectionCursor=-1;sectionRestoring=false;}const current=sectionVisits[sectionCursor];if(sectionRestoring||current&&sectionViewKey(current.view)===sectionViewKey(view)){if(current)current.view=view;return;}if(current)current.scroll=window.scrollY;sectionVisits.splice(sectionCursor+1);sectionVisits.push({view,scroll:0});if(sectionVisits.length>DB.ui.navigationLayout.historyLimit)sectionVisits.shift();sectionCursor=sectionVisits.length-1;}
 function sectionHistoryControls(){return '<nav class="section-history" aria-label="'+h(t('sectionHistory'))+'">'+btn('<','section-back','aria-label="'+h(t('sectionPrevious'))+'" title="'+h(t('sectionPrevious'))+'" '+(sectionCursor>0?'':'disabled'),'subtle')+btn('>','section-forward','aria-label="'+h(t('sectionForward'))+'" title="'+h(t('sectionForward'))+'" '+(sectionCursor<sectionVisits.length-1?'':'disabled'),'subtle')+'</nav>';}
-function moveSectionHistory(direction){const target=sectionCursor+direction;if(target<0||target>=sectionVisits.length)return;const current=sectionVisits[sectionCursor];current.view=sectionViewSnapshot();current.scroll=window.scrollY;sectionCursor=target;const entry=sectionVisits[target],v=entry.view;({screen,reportId,activeDeal,activeMail,statsScope,selectedStatsSeason,fixtureScope,fixtureCompetition,fixtureCountryFilter,teamCompetition,worldScope,worldQuery,worldClubQuery,worldCountryFilter,worldLeagueFilter,worldClubFilter,worldPlayerCountryFilter,worldPlayerLeagueFilter,worldPlayerClubFilter,newsScope,mailScope,agentPane,agentCountryFilter,agentLeagueFilter,agentClubQuery,agentTarget,offerScope,seasonCalendarMonth,seasonCalendarDate,nationalTeamSelection,nationalTournamentSelection,continentalView,worldSort}=Core.clone(v));teamClubSelection=v.teamCountry;if(reportId&&!state.player.history.some(r=>r.id===reportId)&&!Core.nationalRecords(state).some(r=>r.id===reportId))reportId=null;if(activeDeal&&!state.deals.some(d=>d.id===activeDeal))activeDeal=null;if(activeMail&&!state.inbox.some(m=>m.id===activeMail))activeMail=null;closeModal();sectionRestoring=true;render();sectionRestoring=false;requestAnimationFrame(()=>{window.scrollTo({top:entry.scroll,behavior:'instant'});document.querySelector('[data-action="'+(direction<0?'section-back':'section-forward')+'"]:not(:disabled)')?.focus({preventScroll:true});});}
+function moveSectionHistory(direction){const target=sectionCursor+direction;if(target<0||target>=sectionVisits.length)return;const current=sectionVisits[sectionCursor];current.view=sectionViewSnapshot();current.scroll=window.scrollY;sectionCursor=target;const entry=sectionVisits[target],v=entry.view;({commercialPackage,screen,reportId,activeDeal,activeMail,statsScope,selectedStatsSeason,fixtureScope,fixtureCompetition,fixtureCountryFilter,teamCompetition,worldScope,worldQuery,worldClubQuery,worldCountryFilter,worldLeagueFilter,worldClubFilter,worldPlayerCountryFilter,worldPlayerLeagueFilter,worldPlayerClubFilter,newsScope,mailScope,agentPane,agentCountryFilter,agentLeagueFilter,agentClubQuery,agentTarget,offerScope,seasonCalendarMonth,seasonCalendarDate,nationalTeamSelection,nationalTournamentSelection,continentalView,worldSort}=Core.clone(v));teamClubSelection=v.teamCountry;if(reportId&&!state.player.history.some(r=>r.id===reportId)&&!Core.nationalRecords(state).some(r=>r.id===reportId))reportId=null;if(activeDeal&&!state.deals.some(d=>d.id===activeDeal))activeDeal=null;if(activeMail&&!state.inbox.some(m=>m.id===activeMail))activeMail=null;closeModal();sectionRestoring=true;render();sectionRestoring=false;requestAnimationFrame(()=>{window.scrollTo({top:entry.scroll,behavior:'instant'});document.querySelector('[data-action="'+(direction<0?'section-back':'section-forward')+'"]:not(:disabled)')?.focus({preventScroll:true});});}
 
 
 </script>
