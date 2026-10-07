@@ -16,9 +16,9 @@ test('money inputs retain minimum maximum required and numeric checks',()=>{
 });
 test('all contract money fields use grouping in every currency and stay synchronized with sliders',()=>{
  const moneyFields=DB.dealFields.filter(f=>f.type==='money'),d={terms:Object.fromEntries(DB.dealFields.map(f=>[f.id,1000])),buyer:{maxWeekly:5000}};
- for(const unit of DB.settings.currencies){preferences.currency=unit.id;for(const f of moneyFields){const markup=A.contractNumberField(f,d);assert.ok(markup.includes('data-money-input'));assert.ok(markup.includes('value="'+A.formatMoneyInput(Number((1000*unit.rate).toFixed(DB.settings.moneyInputDigits)))+'"'));}}
+ for(const unit of DB.settings.currencies){preferences.currency=unit.id;for(const f of moneyFields){const markup=A.contractNumberField(f,d);assert.ok(markup.includes('data-money-input'));assert.ok(markup.includes('step="1"'));assert.ok(!/value="[^"]*\.[^"]*"/.test(markup));assert.ok(markup.includes('value="'+A.formatMoneyInput(Number((1000*unit.rate).toFixed(DB.settings.contractMoneyInputDigits)))+'"'));}}
  const numeric=DB.dealFields.find(f=>f.type==='number');if(numeric)assert.ok(!A.contractNumberField(numeric,d).includes('data-money-input'));
  const amount=input('123456'),slider={max:'1000',value:'0'},form={elements:{namedItem:()=>amount},querySelector:()=>slider};amount.name='weekly';amount.closest=()=>form;for(const fn of handlers)fn({target:amount});assert.equal(amount.value,'123,456');assert.equal(slider.value,'123456');assert.equal(slider.max,'123456');
- const range={dataset:{contractRange:'weekly'},value:'5000',matches:()=>false,closest:()=>form};for(const fn of handlers)fn({target:range});assert.equal(amount.value,'5,000');assert.equal(amount.error,'');
+ const range={dataset:{contractRange:'weekly'},value:'5000.75',matches:()=>false,closest:()=>form};for(const fn of handlers)fn({target:range});assert.equal(amount.value,'5,001');assert.equal(range.value,'5001');assert.equal(amount.error,'');
  assert.ok(ui.includes("moneyInputNumber(form.get(f.id))/currencyRate()"));assert.ok(ui.includes('validateMoneyInputs(event.target)'));assert.ok(ui.includes('validateMoneyInputs(form)'));
 });
