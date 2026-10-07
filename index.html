@@ -100,6 +100,7 @@ button.info-link:active:enabled{background:var(--soft);color:var(--accent);trans
 
 .starting-club-picker{display:block;margin:16px 0 20px;font-size:12px;color:var(--muted)}.starting-club-picker select{display:block;margin-top:8px;width:100%}.episode-card{margin-top:22px}.episode-card h3{margin:14px 0 10px}.episode-card>p{margin:12px 0}.episode-progress{margin:18px 0}.episode-progress>p{margin-top:9px}.episode-card details{border-top:1px solid var(--line);margin-top:20px;padding-top:16px}.episode-card summary{cursor:pointer;font-weight:700}.episode-result{margin-top:18px}.event-description{margin:12px 0 18px;line-height:1.8}
 .finance-form{display:grid;gap:12px;margin-top:16px}.finance-form label{display:grid;gap:6px}.finance-form button{justify-self:start}.content[data-screen="finances"] .kpi-grid{margin-bottom:20px}
+.player-strengths{margin:18px 0;padding:18px;border:1px solid var(--accent);border-radius:12px;background:var(--paper)}.player-strengths h2{font-size:18px;line-height:1.5;overflow-wrap:anywhere}.player-strength-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.player-strength-chip{display:flex;gap:12px;align-items:center;padding:8px 12px;border-radius:8px;background:var(--paper);border:1px solid var(--line)}.player-strength-chip strong{color:var(--accent)}.player-strengths.compact{margin:12px 0;padding:12px}.player-strengths.compact .eyebrow{font-size:11px}.player-strengths.compact h2{font-size:15px}.player-strengths .small{margin-top:8px}
 </style>
 </head>
 <body>
@@ -112,7 +113,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.8.0",
+    "version": "20.8.1",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -21740,7 +21741,10 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "lifestyleSelect": "이 생활 수준 선택",
       "lifestyleCostHint": "현금이 부족한 유지비·생활비·사업 적자는 미납금으로 쌓입니다. 미납 상태에서는 생활 수준의 회복 효과가 중단되고 사기가 감소합니다. 자산 매각이나 다음 수입으로 자동 상환할 수 있습니다. 생활 수준·거주 변경은 변경 이후의 일수부터 적용합니다.",
       "commercialPaidMail": "{date}: 콘텐츠 의무를 완료해 {amount}를 지급했습니다. 자산·라이프 메뉴에서 다음 기간 촬영 의무를 확인하세요.",
-      "commercialMissedMail": "{date}: 콘텐츠 의무를 완료하지 않아 이번 기간 보수는 지급하지 않습니다. 연속 미이행 {misses}/{max}."
+      "commercialMissedMail": "{date}: 콘텐츠 의무를 완료하지 않아 이번 기간 보수는 지급하지 않습니다. 연속 미이행 {misses}/{max}.",
+      "playerStrengths": "내 선수의 유형·특장점",
+      "playerStrengthsCurrent": "현재 능력치 기준",
+      "playerStrengthsHint": "최고 능력치와 {gap}점 이내인 능력치를 모두 특장점으로 표시합니다. 내 능력치 사이의 상대적인 장점이며 성장에 따라 달라집니다."
     },
     "statFields": [
       {
@@ -22602,6 +22606,81 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "previous-season",
         "season-start",
         "import-start"
+      ]
+    },
+    "playerStrengths": {
+      "nearTopGap": 3,
+      "separator": "·",
+      "descriptionSeparator": " ",
+      "compositeType": "{strengths} 중심의 복합형",
+      "allRoundType": "균형형 올라운더",
+      "types": {
+        "speed": {
+          "name": "스피드 중심의 침투형",
+          "description": "빠른 움직임과 공간 침투가 상대적인 장점입니다."
+        },
+        "shooting": {
+          "name": "슈팅 중심의 마무리형",
+          "description": "슛과 득점 마무리에 강점이 있습니다."
+        },
+        "passing": {
+          "name": "패스 중심의 플레이메이커",
+          "description": "패스와 동료를 활용한 전개가 강점입니다."
+        },
+        "physical": {
+          "name": "피지컬 중심의 경합형",
+          "description": "몸싸움과 피지컬을 활용하는 플레이가 장점입니다."
+        },
+        "defending": {
+          "name": "수비 중심의 차단형",
+          "description": "수비와 상대 공격 차단에 강점이 있습니다."
+        },
+        "dribbling": {
+          "name": "드리블 중심의 돌파형",
+          "description": "볼을 다루고 상대를 제치는 플레이가 강점입니다."
+        }
+      },
+      "combinations": [
+        {
+          "id": "speed-dribble",
+          "attributes": [
+            "speed",
+            "dribbling"
+          ],
+          "name": "스피드·드리블 중심의 돌파형"
+        },
+        {
+          "id": "shooting-dribble",
+          "attributes": [
+            "shooting",
+            "dribbling"
+          ],
+          "name": "돌파·마무리형"
+        },
+        {
+          "id": "passing-dribble",
+          "attributes": [
+            "passing",
+            "dribbling"
+          ],
+          "name": "창조적인 볼 전개형"
+        },
+        {
+          "id": "physical-defending",
+          "attributes": [
+            "physical",
+            "defending"
+          ],
+          "name": "피지컬·수비 중심의 대인 차단형"
+        },
+        {
+          "id": "speed-shooting",
+          "attributes": [
+            "speed",
+            "shooting"
+          ],
+          "name": "침투·마무리형"
+        }
       ]
     }
   },
@@ -31525,8 +31604,9 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
     "checkTimeoutMs": 8000,
     "reloadDelayMs": 650,
     "queryKey": "game-update",
-    "revision": 1,
-    "noticeInsetPixels": 18
+    "revision": 2,
+    "noticeInsetPixels": 18,
+    "manifestPath": "version.json"
   },
   "growthRules": {
     "revision": 1,
@@ -40888,7 +40968,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       },
       {
         "id": "watch",
-        "name": "최고급 시계 컬렉션",
+        "name": "롤렉스 서브마리너",
         "category": "수집품",
         "description": "가격 상승과 하락이 모두 가능한 수집품. 보관·보험 비용이 발생합니다.",
         "price": 6500,
@@ -40901,7 +40981,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       },
       {
         "id": "yacht",
-        "name": "프라이빗 요트",
+        "name": "아지무트 Fly 53",
         "category": "라이프스타일",
         "description": "휴식과 개인 시간을 위한 고가 자산. 계류·보험·정비 비용이 매 정산마다 발생합니다.",
         "price": 900000,
@@ -40976,8 +41056,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "id": "simple",
         "name": "실속 있는 선수 생활",
         "description": "공동 주거·집밥·기본 관리. 첫 커리어부터 선택되는 생활 수준입니다.",
-        "rent": 100,
-        "spending": 80,
+        "rent": 1000,
+        "spending": 800,
         "morale": 0,
         "recovery": 0
       },
@@ -40985,8 +41065,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "id": "comfortable",
         "name": "편안한 프로 생활",
         "description": "개인 주거와 식단 관리. 매 30일 사기와 회복에 작은 도움을 줍니다.",
-        "rent": 450,
-        "spending": 450,
+        "rent": 4500,
+        "spending": 4500,
         "morale": 1,
         "recovery": 1
       },
@@ -40994,8 +41074,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "id": "star",
         "name": "스타 선수의 생활",
         "description": "개인 셰프·매니저·회복 서비스를 포함합니다. 많은 고정비를 감당할 수 있을 때 선택하세요.",
-        "rent": 2500,
-        "spending": 4000,
+        "rent": 25000,
+        "spending": 40000,
         "morale": 2,
         "recovery": 2
       }
@@ -41025,6 +41105,43 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "brandProfit": "브랜드 운영 이익",
       "brandLoss": "브랜드 운영 적자",
       "living": "생활비"
+    },
+    "catalogUpgrade": {
+      "assetNames": {
+        "daily-car": [
+          "프리미엄 데일리카"
+        ],
+        "supercar": [
+          "퍼포먼스 슈퍼카"
+        ],
+        "watch": [
+          "기계식 시계 컬렉션",
+          "최고급 시계 컬렉션"
+        ],
+        "yacht": [
+          "프라이빗 요트"
+        ],
+        "apartment": [
+          "도심 아파트"
+        ],
+        "retail": [
+          "상업용 임대 공간"
+        ]
+      },
+      "lifestyleCosts": {
+        "simple": {
+          "rent": 100,
+          "spending": 80
+        },
+        "comfortable": {
+          "rent": 450,
+          "spending": 450
+        },
+        "star": {
+          "rent": 2500,
+          "spending": 4000
+        }
+      }
     }
   }
 }
@@ -43198,7 +43315,8 @@ function validateDB(db,career=null){
   for(const club of db.clubs){if(club.reserveParent&&(club.parent||!refs.clubs[club.reserveParent]||refs.leagues[club.league].country!==refs.leagues[refs.clubs[club.reserveParent].league].country))throw Error('postseason.reserve');if(club.conference&&!['east','west'].includes(club.conference))throw Error('postseason.conference');}
   const european=db.continentalRules;
   if(db.leagues.filter(l=>l.kind==='continental').some(c=>!european.formats.some(f=>f.id===c.id&&f.qualified===c.qualificationCount*european.domesticLeagues.length)||c.phaseRounds%2||c.phaseRounds>=c.qualificationCount*european.domesticLeagues.length)||european.formats.some(f=>f.nodes.some(n=>n.offsets.some(day=>!european.knockoutOffsets.includes(day))))||DEFAULT_DB.awardTypes.some(t=>!db.awardTypes.some(c=>c.id===t.id)))throw Error('careerExpansion.references');if(european.stageIds.length!==european.stageLabels.length||european.formats.some(format=>refs.leagues[format.id]?.kind!=='continental'||!Number.isInteger(format.bye)||format.bye<1||format.qualified!==format.bye*3||format.nodes.some(n=>!european.stageIds.includes(n.stage)||!Number.isInteger(n.legs)||![1,2].includes(n.legs)||n.offsets.length!==n.legs||n.offsets.some(day=>day<=european.phaseOffsets.at(-1)||day>=db.calendarRules.finalDay||db.calendarEvents.some(e=>e.type==='international'&&day>=e.offset&&day<=e.end))))||Object.values(db.offerFitRules).some(v=>!Number.isFinite(v)||v<=0)||db.growthRules.trainingMultiplier<=0||db.growthRules.matchMultiplier<=0||new Set(db.awardTypes.map(t=>t.id)).size!==db.awardTypes.length||db.awardTypes.some(t=>!['individual','trophy'].includes(t.kind))||db.awardRules.minimumMinutes<=0||db.awardRules.minimumTrophyMinutes<1||db.awardRules.worldGoalChances.some(c=>c.xg<0||c.xg>1||c.weight<=0))throw Error('careerExpansion.rules');
-  const update=db.updateRules;if(!update||update.checkIntervalMs<=0||update.checkTimeoutMs<=0||update.reloadDelayMs<0||typeof update.queryKey!=='string'||!update.queryKey)throw Error('updateRules');
+  const strengths=db.ui.playerStrengths;if(!strengths||!Number.isFinite(strengths.nearTopGap)||strengths.nearTopGap<0||strengths.nearTopGap>db.rules.scale||['separator','descriptionSeparator','compositeType','allRoundType'].some(k=>typeof strengths[k]!=='string'||!strengths[k])||db.attributes.some(a=>typeof strengths.types?.[a.id]?.name!=='string'||!strengths.types[a.id].name||typeof strengths.types[a.id].description!=='string'||!strengths.types[a.id].description)||!Array.isArray(strengths.combinations)||strengths.combinations.some(c=>!c.name||!Array.isArray(c.attributes)||c.attributes.length<2||new Set(c.attributes).size!==c.attributes.length||c.attributes.some(id=>!db.attributes.some(a=>a.id===id))))throw Error('ui.playerStrengths');
+  const update=db.updateRules;if(typeof update?.manifestPath!=='string'||!/^[-\w./]+\.json$/.test(update.manifestPath))throw Error('updateRules.manifestPath');if(!update||update.checkIntervalMs<=0||update.checkTimeoutMs<=0||update.reloadDelayMs<0||typeof update.queryKey!=='string'||!update.queryKey)throw Error('updateRules');
 
   if(db.meta.schema!==DEFAULT_DB.meta.schema)throw Error('meta.schema');
   if(db.rules.scale<=0||db.rules.weekDays<1||db.rules.matchMinutes<1||db.rules.matchMinutes>db.rules.scale*2||db.rules.contractYears<1||!Number.isInteger(db.rules.contractYears)||db.rules.offerRefreshRounds<1||db.rules.initialOverallMin>db.rules.initialOverallMax||db.rules.injuryMinMatches<1||db.rules.injuryMaxMatches<db.rules.injuryMinMatches||db.rules.stoppageMin<0||db.rules.stoppageMax<db.rules.stoppageMin)throw Error('rules');
@@ -43615,7 +43733,11 @@ function upgradePresentationDatabase(database,previousDatabase=null){
  for(const [key,previous] of Object.entries(DEFAULT_DB.terminologyRules.physicalLabels)){const current=database.ui.labels[key];if(current===previous||current===previous.replaceAll(DEFAULT_DB.terminologyRules.replacements[0].from,DEFAULT_DB.terminologyRules.replacements[0].to))database.ui.labels[key]=DEFAULT_DB.ui.labels[key];}
 
   if(database.meta.schema!==DEFAULT_DB.meta.schema)return database;
-  Core.upgradeDatabase(DEFAULT_DB,database);
+  Core.upgradeDatabase(DEFAULT_DB,database);database.ui.playerStrengths??=Core.clone(DEFAULT_DB.ui.playerStrengths);database.updateRules.manifestPath??=DEFAULT_DB.updateRules.manifestPath;
+  const catalog=DEFAULT_DB.economyRules.catalogUpgrade;
+  database.economyRules.catalogUpgrade??=Core.clone(catalog);
+  for(const item of database.economyRules.assets){const current=DEFAULT_DB.economyRules.assets.find(d=>d.id===item.id);if(current&&catalog.assetNames[item.id]?.includes(item.name))item.name=current.name;}
+  for(const item of database.economyRules.lifestyles){const previous=catalog.lifestyleCosts[item.id],current=DEFAULT_DB.economyRules.lifestyles.find(d=>d.id===item.id);if(previous&&current)for(const key of Object.keys(previous))if(item[key]===previous[key])item[key]=current[key];}
   // Patch only the old bundled colors; user-edited palettes keep their colors.
   const colorRules=DEFAULT_DB.teamColorRules,stock=new Map(DEFAULT_DB.clubs.map(club=>[club.id,club])),byId=new Map(database.clubs.map(club=>[club.id,club]));
   if(previousDatabase&&previousDatabase.meta.schema!==DEFAULT_DB.meta.schema)for(const previous of previousDatabase.clubs){const club=byId.get(previous.id);if(!club)continue;club.color=previous.color;if(Object.hasOwn(previous,'secondaryColor'))club.secondaryColor=previous.secondaryColor;else delete club.secondaryColor;}
@@ -43673,24 +43795,40 @@ function positionUpdateNotice(){
 }
 window.addEventListener('resize',positionUpdateNotice);window.visualViewport?.addEventListener('resize',positionUpdateNotice);window.visualViewport?.addEventListener('scroll',positionUpdateNotice);
 function drawUpdateNotice(){
-  const root=document.getElementById('update-root');positionUpdateNotice();if(!availableUpdate){root.replaceChildren();return;}
+  let root=document.getElementById('update-root');if(!root){root=document.createElement('div');root.id='update-root';document.body.append(root);}positionUpdateNotice();if(!availableUpdate){root.replaceChildren();return;}
   root.innerHTML='<aside class="update-notice" role="status" aria-live="polite"><div><b>'+h(t(updateBusy?'updateLoading':'updateAvailable'))+'</b><span class="small muted">'+h(t('updateVersion',{version:availableUpdate}))+'</span></div><button type="button" class="primary" data-action="app-update" '+(updateBusy?'disabled aria-busy="true"':'')+'>'+(updateBusy?'<span class="update-spinner" aria-hidden="true"></span>':h(t('updateButton')))+'</button></aside>';
 }
 function newerAppVersion(next,current){
   const parse=value=>/^\d+\.\d+\.\d+$/.test(value)?value.split('.').map(Number):null,a=parse(next),b=parse(current);if(!a||!b)return false;
   for(let i=0;i<a.length;i++){if(a[i]>b[i])return true;if(a[i]<b[i])return false;}return false;
 }
-async function checkAppUpdate(){
-  if(updateChecking||updateBusy||!['http:','https:'].includes(location.protocol)||document.visibilityState==='hidden')return;
-  updateChecking=true;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),DEFAULT_DB.updateRules.checkTimeoutMs);
-  try{
-    const url=new URL(location.href);url.hash='';url.searchParams.set(DEFAULT_DB.updateRules.queryKey,String(Date.now()));
-    const response=await fetch(url,{cache:'no-store',credentials:'same-origin',signal:controller.signal});if(!response.ok)return;
-    const doc=new DOMParser().parseFromString(await response.text(),'text/html'),source=doc.getElementById('game-db');if(!source)return;
-    const meta=JSON.parse(source.textContent).meta;if(meta.title!==DEFAULT_DB.meta.title||!newerAppVersion(meta.version,DEFAULT_DB.meta.version))return;
-    availableUpdate=meta.version;drawUpdateNotice();
-  }catch{}finally{clearTimeout(timer);updateChecking=false;}
+async function requestAppVersion(url,format){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),DEFAULT_DB.updateRules.checkTimeoutMs);
+ try{const response=await fetch(url,{cache:'no-store',credentials:'same-origin',signal:controller.signal});if(!response.ok)return null;
+  if(format==='json')return await response.json();
+  const source=new DOMParser().parseFromString(await response.text(),'text/html').getElementById('game-db');return source?JSON.parse(source.textContent).meta:null;
+ }catch{return null;}finally{clearTimeout(timer);}
 }
+async function checkAppUpdate(){
+ if(updateChecking||updateBusy||!['http:','https:'].includes(location.protocol)||document.visibilityState==='hidden')return;
+ updateChecking=true;
+ try{
+  const stamp=String(Date.now()),manifest=new URL(DEFAULT_DB.updateRules.manifestPath,location.href);manifest.search='';manifest.hash='';manifest.searchParams.set(DEFAULT_DB.updateRules.queryKey,stamp);
+  const valid=meta=>meta?.title===DEFAULT_DB.meta.title&&/^\d+\.\d+\.\d+$/.test(meta.version);
+  let meta=await requestAppVersion(manifest,'json');
+  // A deployment that serves only index.html must still be able to announce updates.
+  if(!valid(meta)||!newerAppVersion(meta.version,DEFAULT_DB.meta.version)){const page=new URL(location.href);page.hash='';page.searchParams.set(DEFAULT_DB.updateRules.queryKey,stamp);const htmlMeta=await requestAppVersion(page,'html');if(valid(htmlMeta)&&(!valid(meta)||newerAppVersion(htmlMeta.version,meta.version)))meta=htmlMeta;}
+  if(!valid(meta)||!newerAppVersion(meta.version,DEFAULT_DB.meta.version))return;
+  if(!availableUpdate||newerAppVersion(meta.version,availableUpdate))availableUpdate=meta.version;drawUpdateNotice();
+ }finally{updateChecking=false;}
+}
+let updateCheckTimer=null;
+function startAppUpdateChecks(){
+ if(updateCheckTimer!==null)return;
+ // Register polling before asynchronous career restoration can delay or reject boot.
+ updateCheckTimer=setInterval(checkAppUpdate,DEFAULT_DB.updateRules.checkIntervalMs);checkAppUpdate();
+}
+
 async function applyAppUpdate(){
   if(updateBusy||!availableUpdate||storageLoading)return;updateBusy=true;clearMatchTimer();drawUpdateNotice();
   const app=document.getElementById('app'),modal=document.getElementById('modal-root');app.inert=true;modal.inert=true;
@@ -43704,7 +43842,9 @@ async function applyAppUpdate(){
 }
 document.addEventListener('click',event=>{if(event.target.closest('[data-action="app-update"]'))applyAppUpdate();});
 window.addEventListener('online',()=>checkAppUpdate());
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkAppUpdate();});
+window.addEventListener('focus',()=>{drawUpdateNotice();checkAppUpdate();});
+window.addEventListener('pageshow',()=>{drawUpdateNotice();checkAppUpdate();});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){drawUpdateNotice();checkAppUpdate();}});
 
 function postseasonCard(league=currentClub().league,review=null){
   if(review&&!review.postseason)return '';const post=review?review.postseason:state.postseason,clubs=idx().clubs,rules=[...DB.postseasonRules.boundaries,...DB.postseasonRules.titleCompetitions].filter(r=>r.competition===league||r.league===league||r.upper===league||r.lowers?.includes(league));
@@ -43921,12 +44061,22 @@ function organizeView(){const content=document.querySelector('.content');if(!con
 function updateShellMetrics(){
   document.documentElement.style.setProperty('--shell-bar-height',(document.querySelector('.topbar')?.offsetHeight||0)+'px');document.documentElement.style.setProperty('--section-tabs-height',(document.querySelector('.content .group-tabs')?.offsetHeight||0)+'px');
 }
-function dashboard(){const p=state.player,club=currentClub(),fixture=nextFixture(),chance=Core.selection(DB,state)*DB.rules.scale;return pendingArrival()+(p.freeAgent?'<div class="notice warning">'+h(t('freeAgent'))+'</div>':'')+'<section class="card dashboard-profile"><div class="row">'+shirt(p.number,p.displayName||p.name)+'<div><h1>'+h(p.name)+' '+playerCaptainMark('player')+'</h1><p class="small muted">'+h(club.name)+' · '+h(p.position)+' · '+n(p.age)+h(t('ageUnit'))+'</p></div></div><div class="row wrap">'+badge(t('overall')+' '+abilityLabel(Core.overall(DB,p.stats)),'green')+badge(t('roleOverall')+' '+abilityLabel(Core.suitability(DB,p)))+btn(t('personalProfile'),'tab','data-tab="career"','small')+'</div></section><section class="card dashboard-fitness">'+fitnessGauge('overview')+'<p class="small muted">'+h(t('fitnessDistinction'))+'</p></section>'+calendarSummary()+'<section class="card next-match"><div class="section-head"><h2>'+h(t('nextFixture'))+'</h2>'+btn(t('schedule'),'tab','data-tab="fixtures"','subtle small')+'</div>'+(fixture?'<p class="small muted">'+h(competitionName(fixture))+'</p>'+fixtureCard(fixture)+'<div class="row between wrap small"><span>'+h(t('matchImportance'))+' · '+h(Core.fixtureImportance(DB,state,fixture).name)+'</span><b>'+h(t('selection'))+' '+n(chance)+'%</b></div>':'<div class="empty">'+h(t('noFixture'))+'</div>')+'</section><nav class="overview-shortcuts" aria-label="'+h(t('secondaryNavigation'))+'">'+btn(t('trainingOpen'),'tab','data-tab="training"')+btn(t('performanceOpen'),'tab','data-tab="performance"')+btn(t('recordSummary'),'tab','data-tab="statistics"')+'</nav><p class="small muted overview-hint">'+h(t('overviewHint'))+'</p>';}
+function dashboard(){const p=state.player,club=currentClub(),fixture=nextFixture(),chance=Core.selection(DB,state)*DB.rules.scale;return pendingArrival()+(p.freeAgent?'<div class="notice warning">'+h(t('freeAgent'))+'</div>':'')+'<section class="card dashboard-profile"><div class="row">'+shirt(p.number,p.displayName||p.name)+'<div><h1>'+h(p.name)+' '+playerCaptainMark('player')+'</h1><p class="small muted">'+h(club.name)+' · '+h(p.position)+' · '+n(p.age)+h(t('ageUnit'))+'</p></div></div>'+playerStrengthsCard(true)+'<div class="row wrap">'+badge(t('overall')+' '+abilityLabel(Core.overall(DB,p.stats)),'green')+badge(t('roleOverall')+' '+abilityLabel(Core.suitability(DB,p)))+btn(t('personalProfile'),'tab','data-tab="career"','small')+'</div></section><section class="card dashboard-fitness">'+fitnessGauge('overview')+'<p class="small muted">'+h(t('fitnessDistinction'))+'</p></section>'+calendarSummary()+'<section class="card next-match"><div class="section-head"><h2>'+h(t('nextFixture'))+'</h2>'+btn(t('schedule'),'tab','data-tab="fixtures"','subtle small')+'</div>'+(fixture?'<p class="small muted">'+h(competitionName(fixture))+'</p>'+fixtureCard(fixture)+'<div class="row between wrap small"><span>'+h(t('matchImportance'))+' · '+h(Core.fixtureImportance(DB,state,fixture).name)+'</span><b>'+h(t('selection'))+' '+n(chance)+'%</b></div>':'<div class="empty">'+h(t('noFixture'))+'</div>')+'</section><nav class="overview-shortcuts" aria-label="'+h(t('secondaryNavigation'))+'">'+btn(t('trainingOpen'),'tab','data-tab="training"')+btn(t('performanceOpen'),'tab','data-tab="performance"')+btn(t('recordSummary'),'tab','data-tab="statistics"')+'</nav><p class="small muted overview-hint">'+h(t('overviewHint'))+'</p>';}
 function team(){if(idx().leagues[teamCompetition]?.kind==='continental')return baseTeam();return baseTeam()+postseasonCard(teamCompetition||currentClub().league);}
 function honourRows(records){return records.length?records.slice().reverse().map(r=>'<article class="honour-row" data-honour="'+h(r.type)+'"><div><b>'+entityLink('award',r.type,DB.awardTypes.find(t=>t.id===r.type)?.name||r.type)+'</b><p class="small muted">'+h(seasonLabel(r.season))+' · '+h(r.date)+'</p></div><div><b>'+h(r.name)+'</b><p class="small muted">'+h(idx().leagues[r.competition]?.name||t('honoursWorld'))+' · '+h(idx().clubs[r.club]?.name||'')+'</p>'+(r.goal?'<p class="small muted">'+h(t('honoursGoal',{date:r.goal.date,minute:r.goal.minute,club:idx().clubs[r.goal.club].name,xg:n(r.goal.xg,2)}))+'</p>':'')+'</div></article>').join(''):'<p class="notice">'+h(t('honoursEmpty'))+'</p>';}
 function awardInformation(id){const award=DB.awardTypes.find(a=>a.id===id);if(!award||!state)return;const rows=(state.awards?.records||[]).filter(r=>r.type===id).slice().sort((a,b)=>b.season-a.season||a.date.localeCompare(b.date)||a.id.localeCompare(b.id));openModal(infoHeader(award.name)+'<h3>'+h(t('awardDescription'))+'</h3><p class="info-copy">'+h(award.description||t('honoursModel'))+'</p><h3>'+h(t('awardHistory'))+' · '+n(rows.length)+'</h3><p class="small muted">'+h(t('awardCareerHistory'))+'</p><div class="list-pane award-winners">'+(rows.length?rows.map(r=>'<article class="honour-row"><div><b>'+h(seasonLabel(r.season))+'</b><p class="small muted">'+h(r.date)+'</p></div><div><b>'+h(r.name)+'</b><p>'+h(idx().leagues[r.competition]?.name||t('honoursWorld'))+' · '+clubLink(r.club)+'</p></div></article>').join(''):'<p class="notice">'+h(t('awardHistoryEmpty'))+'</p>')+'</div>','info');}
 function honoursHero(){const records=state.player.honours||[],trophies=records.filter(r=>DB.awardTypes.find(t=>t.id===r.type)?.kind==='trophy').length;return '<section class="card honours-hero"><div class="section-head"><h2>'+h(t('honours'))+'</h2>'+badge(state.player.name)+'</div><div class="honours-counts"><div><span class="small muted">'+h(t('honoursAwards'))+'</span> <strong class="num">'+n(records.length-trophies)+'</strong></div><div><span class="small muted">'+h(t('honoursTrophies'))+'</span> <strong class="num">'+n(trophies)+'</strong></div></div>'+'<details class="helper-details award-catalog"><summary>'+h(t('awardCatalog'))+'</summary><div class="row wrap">'+DB.awardTypes.map(a=>entityLink('award',a.id,a.name)).join('')+'</div></details>'+'<div class="honours-preview list-pane">'+honourRows(records.slice(-DB.awardRules.profilePreview))+'</div><details class="helper-details"><summary>'+h(t('honoursAll'))+'</summary><div class="list-pane">'+honourRows(records)+'</div></details><details class="helper-details"><summary>'+h(t('honoursWorld'))+'</summary><div class="list-pane">'+honourRows(state.awards?.records||[])+'</div></details><p class="small muted">'+h(t('honoursSince',{date:state.awards?.since||state.date}))+' '+h(t('honoursModel'))+'</p></section>';}
-function career(){const p=state.player,c=p.contract;return pendingArrival()+`<div class="profile-grid"><section class="card"><div class="section-head"><div class="row">${shirt(p.number,p.displayName||p.name)}<div><h1>${h(p.name)}</h1><p class="small muted">${h(p.position)} · ${h(currentClub().name)}</p></div></div>${btn(t('recordSummary'),'tab','data-tab="statistics"','small')}</div><div class="profile-facts">${detail(t('nationality'),DB.countries.find(x=>x.id===p.country).name)}${detail(t('age'),n(p.age))}${detail(t('height'),n(p.height)+' cm')}${detail(t('weight'),n(p.weight)+' kg')}${detail(t('foot'),DB.profile.feet.find(x=>x.id===p.foot).name)}${detail(t('displayName'),p.displayName||p.name)}</div><div class="divider"></div><h2>${h(t('development'))}</h2><div class="ability-grid">${DB.attributes.map(a=>`<div><div class="row between small"><span>${h(a.name)}</span><b>${abilityLabel(p.stats[a.id])} ${trainingMarker(a.id)}</b></div>${progress(p.stats[a.id])}</div>`).join('')}</div><p class="small muted">${h(t('growthHint'))}</p><details class="helper-details"><summary>${h(t('dream'))}</summary><div class="detail-list">${detail(t('preferredLeague'),wishName('league',p.preferredLeague))}${detail(t('dream'),wishName('club',p.dreamClub))}</div></details></section><div class="stack"><section class="card contract-summary"><div class="section-head"><h2>${h(t('contractLength'))}</h2>${p.freeAgent?badge(t('freeAgent')):btn(t('contractRenew'),'renew','','primary small')}</div><div class="profile-facts">${detail(t('weeklyWage'),money(c.weekly))}${detail(t('salaryAnnual'),money(c.weekly*DB.rules.annualSalaryWeeks))}${detail(t('remaining'),t('years',{n:c.expiresSeason-state.season}))}${detail(t('marketValue'),money(Core.marketValue(DB,p,state)))}${detail(t('starPower'),n(Core.starPower(DB,p,state),1))}${detail(t('contractPromise'),roleName(c.role))}${detail(t('contractPosition'),c.position)}</div><details class="helper-details"><summary>${h(t('contractDetails'))}</summary><div class="detail-list">${DB.dealFields.filter(f=>!['fee','weekly','years','role','position','upfrontPercent','installmentMonths','sellOnPercent','agentCommissionPercent','arrival'].includes(f.id)).map(f=>detail(f.name,f.type==='money'?money(c[f.id]):n(c[f.id]))).join('')}${detail(t('earned'),money(p.earned))}</div></details></section></div></div>`;}
+function playerStrengthProfile(){
+ const cfg=DB.ui.playerStrengths,stats=state.player.stats,ranked=DB.attributes.map(a=>({...a,value:stats[a.id]})).sort((a,b)=>b.value-a.value),highest=ranked[0].value,strengths=ranked.filter(a=>highest-a.value<=cfg.nearTopGap);
+ const exact=cfg.combinations.find(c=>c.attributes.length===strengths.length&&c.attributes.every(id=>strengths.some(a=>a.id===id))),allRound=strengths.length===DB.attributes.length;
+ const type=allRound?cfg.allRoundType:exact?exact.name:strengths.length===1?cfg.types[strengths[0].id].name:Core.template(cfg.compositeType,{strengths:strengths.map(a=>a.name).join(cfg.separator)});
+ return {type,strengths,highest,gap:cfg.nearTopGap,descriptions:strengths.map(a=>cfg.types[a.id].description)};
+}
+function playerStrengthsCard(compact=false){
+ const profile=playerStrengthProfile();return `<section class="player-strengths ${compact?'compact':''}" aria-label="${h(t('playerStrengths'))}"><div class="row between wrap"><div><p class="eyebrow">${h(t('playerStrengths'))}</p><h2>${h(profile.type)}</h2></div>${badge(t('playerStrengthsCurrent'))}</div><div class="player-strength-chips">${profile.strengths.map(a=>`<span class="player-strength-chip"><b>${h(a.name)}</b><strong class="num">${abilityLabel(a.value)}</strong></span>`).join('')}</div>${compact?'':`<p class="small">${h(profile.descriptions.join(DB.ui.playerStrengths.descriptionSeparator))}</p><p class="small muted">${h(t('playerStrengthsHint',{gap:profile.gap}))}</p>`}</section>`;
+}
+
+function career(){const p=state.player,c=p.contract;return pendingArrival()+`<div class="profile-grid"><section class="card"><div class="section-head"><div class="row">${shirt(p.number,p.displayName||p.name)}<div><h1>${h(p.name)}</h1><p class="small muted">${h(p.position)} · ${h(currentClub().name)}</p></div></div>${btn(t('recordSummary'),'tab','data-tab="statistics"','small')}</div>${playerStrengthsCard()}<div class="profile-facts">${detail(t('nationality'),DB.countries.find(x=>x.id===p.country).name)}${detail(t('age'),n(p.age))}${detail(t('height'),n(p.height)+' cm')}${detail(t('weight'),n(p.weight)+' kg')}${detail(t('foot'),DB.profile.feet.find(x=>x.id===p.foot).name)}${detail(t('displayName'),p.displayName||p.name)}</div><div class="divider"></div><h2>${h(t('development'))}</h2><div class="ability-grid">${DB.attributes.map(a=>`<div><div class="row between small"><span>${h(a.name)}</span><b>${abilityLabel(p.stats[a.id])} ${trainingMarker(a.id)}</b></div>${progress(p.stats[a.id])}</div>`).join('')}</div><p class="small muted">${h(t('growthHint'))}</p><details class="helper-details"><summary>${h(t('dream'))}</summary><div class="detail-list">${detail(t('preferredLeague'),wishName('league',p.preferredLeague))}${detail(t('dream'),wishName('club',p.dreamClub))}</div></details></section><div class="stack"><section class="card contract-summary"><div class="section-head"><h2>${h(t('contractLength'))}</h2>${p.freeAgent?badge(t('freeAgent')):btn(t('contractRenew'),'renew','','primary small')}</div><div class="profile-facts">${detail(t('weeklyWage'),money(c.weekly))}${detail(t('salaryAnnual'),money(c.weekly*DB.rules.annualSalaryWeeks))}${detail(t('remaining'),t('years',{n:c.expiresSeason-state.season}))}${detail(t('marketValue'),money(Core.marketValue(DB,p,state)))}${detail(t('starPower'),n(Core.starPower(DB,p,state),1))}${detail(t('contractPromise'),roleName(c.role))}${detail(t('contractPosition'),c.position)}</div><details class="helper-details"><summary>${h(t('contractDetails'))}</summary><div class="detail-list">${DB.dealFields.filter(f=>!['fee','weekly','years','role','position','upfrontPercent','installmentMonths','sellOnPercent','agentCommissionPercent','arrival'].includes(f.id)).map(f=>detail(f.name,f.type==='money'?money(c[f.id]):n(c[f.id]))).join('')}${detail(t('earned'),money(p.earned))}</div></details></section></div></div>`;}
 function report(record){const c=record.result.context,reactions=record.reactions;return strategyMatchCard(record)+roleMatchCard(record)+baseReport(record)+`<div class="cols equal" style="margin-top:20px"><section class="card"><h2>${h(t('fans'))}</h2><p class="reaction">${h(reactions?.fans||t('legacyReport'))}</p><div class="divider"></div><h2>${h(t('press'))}</h2><p class="reaction">${h(reactions?.press||t('legacyReport'))}</p></section><section class="card"><div class="section-head"><h2>${h(t('contextTitle'))}</h2>${c?badge(c.position):''}</div>${c?`<div class="detail-list">${detail(t('manager'),c.manager.name)}${detail(t('roleFit'),n(c.roleFit*DB.rules.scale,1)+'%')}${detail(t('fitness'),n(c.fitness,1))}${detail(t('adaptation'),n(c.adaptation,1))}</div><div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>${h(t('initialStats'))}</th><th>${h(t('quality'))}</th><th>${h(t('factorPsychology'))}</th><th>${h(t('factorFatigue'))}</th><th>${h(t('factorPressure'))}</th></tr></thead><tbody>${DB.attributes.map(a=>{const f=c.actions[a.id];return `<tr><td>${h(a.name)}</td><td class="num">${n(f.skill,1)}</td><td class="num">×${n(f.psychology,2)}</td><td class="num">×${n(f.fatigue,2)}</td><td class="num">×${n(f.pressure,2)}</td></tr>`;}).join('')}</tbody></table></div><p class="small muted" style="margin-top:14px">${h(t('contextHint'))}</p>`:`<p class="small muted">${h(t('legacyReport'))}</p>`}</section></div>`;}
 
 function npcMarketCard(){const m=state.world.npcMarket,rows=(m?.history||[]).slice().reverse();return '<section class="card npc-market"><h2>'+h(t('npcMarketTitle'))+'</h2><p class="small muted">'+h(t('npcMarketHint'))+'</p><div class="list-pane">'+(rows.length?rows.map(r=>'<article class="honour-row"><div><b>'+h(r.name)+'</b><p class="small muted">'+h(r.date)+' · '+h(seasonLabel(r.season))+'</p></div><div>'+clubLink(r.from)+' → '+clubLink(r.to)+'<p class="small muted">'+h(t('npcTransferFee'))+' '+money(r.fee)+' · '+h(t(r.reason))+'</p></div></article>').join(''):'<p class="notice">'+h(t('npcNoTransfers'))+'</p>')+'</div></section>';}
@@ -44248,7 +44398,7 @@ function mailSender(m){const role=DB.senderRoles.find(r=>r.id===(m.fromRole||Cor
 document.addEventListener('change',event=>{if(event.target.id==='setting-layout'&&DB.settings.layoutOptions.some(o=>o.id===event.target.value)){preferences.layout=event.target.value;savePreferences();render();}});
 document.addEventListener('click',event=>{const b=event.target.closest('[data-action]');if(b?.dataset.action==='layout-toggle'){preferences.layout=preferences.layout==='desktop'?'auto':'desktop';savePreferences();render();}});
 
-bootGame().then(()=>{checkAppUpdate();setInterval(checkAppUpdate,DEFAULT_DB.updateRules.checkIntervalMs);});
+startAppUpdateChecks();bootGame();
 let nationalTeamSelection=null,nationalTournamentSelection=null;
 function nationalTeamInformation(club){openNationalProfile(club.id);}
 function nationalKit(team,away=false){return away?{...team,color:team.secondaryColor,secondaryColor:team.color}:team;}

@@ -61,8 +61,8 @@ test('brand income and losses accrue only for operating days, sale settles outst
  const loss=create(30000);loss.player.reputation=0;const cafe=C.foundBrand(DB,loss,'coffee','저수요 카페','flagship');days(DB,loss,15);assert.ok(cafe.pendingCost>cafe.pendingRevenue);const before=loss.economy.cash;const proceeds=cafe.equity*DB.economyRules.brandSaleShare+cafe.pendingRevenue-cafe.pendingCost;assert.ok(C.brandAction(DB,loss,cafe.id,'sell'));near(loss.economy.cash,before+proceeds);
 });
 test('living costs follow actual choices and unpaid bills are repaid by the next income',()=>{
- const s=create();days(DB,s,30);near(s.economy.arrears,180);assert.equal(C.investMoney(DB,s,'deposit',100),false);C.careerIncome(DB,s,500,'salary');near(s.economy.arrears,0);near(s.economy.cash,320);assert.ok(validate(s));
- const changed=create(10000);days(DB,changed,15);C.lifestyleChange(DB,changed,'star');days(DB,changed,15);near(changed.economy.spent,180/2+6500/2);assert.ok(validate(changed));
+ const simple=DB.economyRules.lifestyles.find(d=>d.id==='simple'),star=DB.economyRules.lifestyles.find(d=>d.id==='star'),simpleCost=simple.rent+simple.spending;const s=create();days(DB,s,30);near(s.economy.arrears,simpleCost);assert.equal(C.investMoney(DB,s,'deposit',100),false);C.careerIncome(DB,s,simpleCost+320,'salary');near(s.economy.arrears,0);near(s.economy.cash,320);assert.ok(validate(s));
+ const changed=create(simpleCost+star.rent+star.spending);days(DB,changed,15);C.lifestyleChange(DB,changed,'star');days(DB,changed,15);near(changed.economy.spent,simpleCost/2+(star.rent+star.spending)/2);assert.ok(validate(changed));
 });
 test('legacy migration preserves player, fixtures and custom DB rules and credits earnings once',()=>{
  const s=create(12345),old=C.clone(DB);delete s.economy;delete old.economyRules;old.economyRules=undefined;old.ui.tabs=old.ui.tabs.filter(t=>!DB.ui.navigationGroups.find(g=>g.id==='economy').views.includes(t.id));old.ui.navigationGroups=old.ui.navigationGroups.filter(g=>g.id!=='economy');old.scoutingRules.minRating=6.43;
