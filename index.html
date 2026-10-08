@@ -429,7 +429,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.8.11",
+    "version": "20.9.0",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -5269,6 +5269,39 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "goalDiff",
         "goalsFor"
       ]
+    },
+    {
+      "id": "sa-pro",
+      "name": "사우디 스타 리그",
+      "country": "SA",
+      "level": 1,
+      "reputation": 65,
+      "salaryBase": 9000,
+      "preferred": true,
+      "senior": true,
+      "kind": "domestic"
+    },
+    {
+      "id": "qa-stars",
+      "name": "카타르 스타 리그",
+      "country": "QA",
+      "level": 1,
+      "reputation": 65,
+      "salaryBase": 6500,
+      "preferred": true,
+      "senior": true,
+      "kind": "domestic"
+    },
+    {
+      "id": "ae-pro",
+      "name": "UAE 프로 리그",
+      "country": "AE",
+      "level": 1,
+      "reputation": 65,
+      "salaryBase": 6500,
+      "preferred": true,
+      "senior": true,
+      "kind": "domestic"
     }
   ],
   "clubs": [
@@ -19492,6 +19525,110 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "statusLock": true,
       "inheritParentStatus": true,
       "historical": false
+    },
+    {
+      "id": "al-hilal",
+      "name": "알 힐랄",
+      "league": "sa-pro",
+      "quality": 76,
+      "reputation": 68,
+      "color": "#145BC7",
+      "secondaryColor": "#FFFFFF",
+      "prestigeTier": "low",
+      "prestige": 35,
+      "historical": false,
+      "finance": 110000000
+    },
+    {
+      "id": "al-nassr",
+      "name": "알 나스르",
+      "league": "sa-pro",
+      "quality": 74,
+      "reputation": 68,
+      "color": "#FFD335",
+      "secondaryColor": "#1647A0",
+      "prestigeTier": "low",
+      "prestige": 35,
+      "historical": false,
+      "finance": 110000000
+    },
+    {
+      "id": "al-ittihad",
+      "name": "알 이티하드",
+      "league": "sa-pro",
+      "quality": 73,
+      "reputation": 68,
+      "color": "#F6D32D",
+      "secondaryColor": "#202020",
+      "prestigeTier": "low",
+      "prestige": 35,
+      "historical": false,
+      "finance": 110000000
+    },
+    {
+      "id": "al-ahli-sa",
+      "name": "알 아흘리",
+      "league": "sa-pro",
+      "quality": 71,
+      "reputation": 68,
+      "color": "#147D44",
+      "secondaryColor": "#FFFFFF",
+      "prestigeTier": "low",
+      "prestige": 35,
+      "historical": false,
+      "finance": 110000000
+    },
+    {
+      "id": "al-sadd",
+      "name": "알 사드",
+      "league": "qa-stars",
+      "quality": 69,
+      "reputation": 68,
+      "color": "#FFFFFF",
+      "secondaryColor": "#202020",
+      "prestigeTier": "low",
+      "prestige": 35,
+      "historical": false,
+      "finance": 110000000
+    },
+    {
+      "id": "al-duhail",
+      "name": "알 두하일",
+      "league": "qa-stars",
+      "quality": 68,
+      "reputation": 68,
+      "color": "#CE2029",
+      "secondaryColor": "#FFFFFF",
+      "prestigeTier": "low",
+      "prestige": 35,
+      "historical": false,
+      "finance": 110000000
+    },
+    {
+      "id": "al-ain",
+      "name": "알 아인",
+      "league": "ae-pro",
+      "quality": 69,
+      "reputation": 68,
+      "color": "#683C93",
+      "secondaryColor": "#FFFFFF",
+      "prestigeTier": "low",
+      "prestige": 35,
+      "historical": false,
+      "finance": 110000000
+    },
+    {
+      "id": "shabab-al-ahli",
+      "name": "샤바브 알 아흘리",
+      "league": "ae-pro",
+      "quality": 68,
+      "reputation": 68,
+      "color": "#C82333",
+      "secondaryColor": "#1D753C",
+      "prestigeTier": "low",
+      "prestige": 35,
+      "historical": false,
+      "finance": 110000000
     }
   ],
   "routes": [
@@ -20839,6 +20976,11 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "id": "lifestyle",
         "label": "생활 관리",
         "icon": "€"
+      },
+      {
+        "id": "vacation",
+        "label": "휴가",
+        "icon": "☀"
       }
     ],
     "labels": {
@@ -22131,7 +22273,39 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "managerVersatileHint": "등록한 포지션별 숙련도와 경쟁을 평가합니다. 소화 가능한 자리가 많고 적응력이 좋을수록 교체 활용 폭이 넓어지며 유연한 감독이 이를 더 높게 평가합니다.",
       "positionCoverage": "현재 전술에서 경쟁 가능한 추가 포지션",
       "positionNoSlot": "현재 전술에 등록 포지션이 없어 출전 배치 불가",
-      "startingSalaryHint": "첫 계약은 신인 급여 기준입니다. 구단을 바꾸면 해당 제안의 급여가 갱신되며, 표시된 금액으로 계약합니다."
+      "startingSalaryHint": "첫 계약은 신인 급여 기준입니다. 구단을 바꾸면 해당 제안의 급여가 갱신되며, 표시된 금액으로 계약합니다.",
+      "vacation": "휴가",
+      "vacationHint": "목적지와 기간을 선택해 구단에 휴가를 신청합니다. 시즌 종료 후에는 다음 프리시즌 전까지 여행할 수 있습니다.",
+      "vacationDestination": "휴가지",
+      "vacationStart": "출발일",
+      "vacationDays": "기간 (일)",
+      "vacationCost": "예상 휴가 비용",
+      "vacationApply": "휴가 신청",
+      "vacationApproved": "휴가 승인",
+      "vacationActive": "여행 중",
+      "vacationCompleted": "복귀 완료",
+      "vacationCancelled": "취소",
+      "vacationDenied": "경기·대표팀·프리시즌 일정과 겹치거나 신청 가능한 기간이 아닙니다.",
+      "vacationFunds": "휴가 비용을 지불할 현금이 부족하거나 미납금이 있습니다.",
+      "vacationBusy": "이미 승인된 휴가가 있습니다.",
+      "vacationGuide": "승인된 휴가는 달력의 출발·복귀 일정으로 진행됩니다. 출발할 때 생활 관리 수준에 따른 비용을 지불하며, 여행 중 훈련을 쉽니다. 체력과 경기력은 떨어지고 피로도는 매우 낮아집니다. 복귀 후 훈련으로 경기 감각을 회복하세요.",
+      "vacationApprovalBody": "{destination} 휴가를 승인했습니다. {start}부터 {end}까지 {days}일이며 복귀 후 팀 훈련에 합류하세요.",
+      "vacationStartBody": "{destination}로 출발했습니다. 현재 생활 수준에 따라 {cost}를 지출했습니다.",
+      "vacationReturnBody": "{destination} 휴가에서 돌아왔습니다. 피로는 낮아졌지만 체력과 경기 감각을 회복할 훈련이 필요합니다.",
+      "vacationHistory": "휴가 내역",
+      "vacationNone": "아직 신청한 휴가가 없습니다.",
+      "vacationSeasonEnd": "시즌 종료 후 휴가 안내",
+      "vacationSeasonEndBody": "리그 시즌이 끝났습니다. 자산·라이프의 휴가에서 목적지와 기간을 고르세요. 남은 토너먼트·대표팀 일정을 마친 뒤 다음 프리시즌 전에 복귀할 수 있습니다.",
+      "vacationCancel": "휴가 취소",
+      "clubCareer": "클럽 경력",
+      "clubCareerPeriod": "소속 기간",
+      "spotlightRise": "큰 무대에서 결정적인 활약을 펼친 {name}. 팬과 언론의 평가가 급상승했습니다.",
+      "spotlightFall": "큰 무대에서 부진한 {name}. 팬과 언론의 평가가 급격히 나빠졌습니다.",
+      "spotlightTitle": "주목 경기 · 평가 변화",
+      "spotlightEffect": "평판 {reputation} · 폼 {form}",
+      "formMomentumHint": "주목 경기의 반응과 휴가 후 경기 감각이 현재 폼에 반영됩니다.",
+      "lateCareerOffer": "스타 영입 · 고액 오퍼",
+      "lateCareerOfferBody": "30대 선수의 경험과 명성을 높이 평가한 스타 영입 제안입니다. 구단의 특별 영입 예산이 주급과 계약금에 반영됐습니다."
     },
     "statFields": [
       {
@@ -22580,7 +22754,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
           "investments",
           "assets",
           "brands",
-          "lifestyle"
+          "lifestyle",
+          "vacation"
         ]
       },
       {
@@ -22857,7 +23032,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "investments": "보유 현금을 나누어 투자하세요. 실제 금융 상품이 아닌 게임 속 시장이며 커리어 시드와 경과일에 따라 평가액이 달라집니다.",
         "assets": "내 자산은 이 메뉴에서 확인합니다. 주택·차량·수집품을 구매하고 거주·임대·매각을 관리하세요.",
         "brands": "내 이름을 가진 사업을 시작하고 운영 전략·확장·마케팅을 결정하세요. 매출에서 제작비와 고정비를 뺀 이익 또는 적자가 현금에 반영됩니다.",
-        "lifestyle": "현금 흐름에 맞는 주거·식단·개인 관리 수준을 선택하세요. 30일 정산마다 생활비가 발생합니다."
+        "lifestyle": "현금 흐름에 맞는 주거·식단·개인 관리 수준을 선택하세요. 30일 정산마다 생활비가 발생합니다.",
+        "vacation": "목적지와 휴가 기간을 선택하고 비용·여행 및 복귀 일정을 확인합니다."
       },
       "actionHints": {
         "advance": "다음 일정으로 진행합니다. 경기나 선택이 있으면 해당 화면이 열립니다.",
@@ -22909,7 +23085,10 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "countryNames": {
         "IT": "이탈리아",
         "PT": "포르투갈",
-        "EU": "유럽대항전"
+        "EU": "유럽대항전",
+        "SA": "사우디아라비아",
+        "QA": "카타르",
+        "AE": "아랍에미리트"
       },
       "kindOrder": [
         "domestic",
@@ -32545,6 +32724,10 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       {
         "id": "taper",
         "name": "경기 전 조절"
+      },
+      {
+        "id": "vacation",
+        "name": "휴가"
       }
     ],
     "secondaryOptions": [
@@ -39594,6 +39777,18 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "post-usl-cup": {
         "quality": 0.5151818641375453,
         "exposure": 0.5263157894736843
+      },
+      "sa-pro": {
+        "quality": 0.66,
+        "exposure": 0.68
+      },
+      "qa-stars": {
+        "quality": 0.66,
+        "exposure": 0.68
+      },
+      "ae-pro": {
+        "quality": 0.66,
+        "exposure": 0.68
       }
     }
   },
@@ -39813,7 +40008,10 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "post-br12": 0.7282193905817174,
       "post-br23": 0.5005850415512466,
       "post-mls-cup": 0.7282193905817174,
-      "post-usl-cup": 0.32523545706371193
+      "post-usl-cup": 0.32523545706371193,
+      "sa-pro": 0.58,
+      "qa-stars": 0.58,
+      "ae-pro": 0.58
     }
   },
   "clubCultureRules": {
@@ -41934,7 +42132,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "brandSell": "브랜드 매각",
       "brandProfit": "브랜드 운영 이익",
       "brandLoss": "브랜드 운영 적자",
-      "living": "생활비"
+      "living": "생활비",
+      "vacation": "휴가 비용"
     },
     "catalogUpgrade": {
       "assetNames": {
@@ -42430,6 +42629,115 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         ]
       }
     ]
+  },
+  "vacationRules": {
+    "minimumDays": 3,
+    "maximumDays": 28,
+    "leadDays": 1,
+    "fitnessDailyCost": 0.85,
+    "travelFitnessCost": 2,
+    "fatigueCeiling": 3,
+    "fatigueDailyRecovery": 18,
+    "formDailyLoss": 0.07,
+    "formMaximumLoss": 1.5,
+    "formRecoveryDaily": 0.045,
+    "historyLimit": 30,
+    "lifestyleFactors": {
+      "simple": 1,
+      "comfortable": 3,
+      "star": 10
+    },
+    "destinations": [
+      {
+        "id": "hawaii",
+        "name": "하와이",
+        "travel": 1800,
+        "daily": 240
+      },
+      {
+        "id": "nice",
+        "name": "니스",
+        "travel": 600,
+        "daily": 230
+      },
+      {
+        "id": "rio",
+        "name": "리우 데 자네이루",
+        "travel": 1200,
+        "daily": 170
+      },
+      {
+        "id": "mallorca",
+        "name": "마요르카",
+        "travel": 450,
+        "daily": 200
+      },
+      {
+        "id": "tokyo",
+        "name": "도쿄",
+        "travel": 1300,
+        "daily": 220
+      },
+      {
+        "id": "santorini",
+        "name": "산토리니",
+        "travel": 700,
+        "daily": 250
+      },
+      {
+        "id": "sardinia",
+        "name": "샤르데냐",
+        "travel": 650,
+        "daily": 240
+      }
+    ]
+  },
+  "spotlightRules": {
+    "minimumMinutes": 30,
+    "excellentRating": 8.5,
+    "poorRating": 5.5,
+    "minimumLevel": 2,
+    "highReputation": 80,
+    "highExposure": 0.9,
+    "reputationBase": 6,
+    "reputationLevelWeight": 2,
+    "formImpact": 0.6,
+    "maximumMomentum": 1.8,
+    "momentumDecayDaily": 0.035,
+    "executionWeight": 0.045
+  },
+  "lateCareerOfferRules": {
+    "minimumAge": 30,
+    "minimumReputation": 45,
+    "minimumAbility": 55,
+    "minimumApps": 10,
+    "maximumAbilityGap": 18,
+    "chance": 0.85,
+    "weight": 12,
+    "groups": [
+      {
+        "id": "gulf",
+        "leagues": [
+          "sa-pro",
+          "qa-stars",
+          "ae-pro"
+        ],
+        "minimumWeekly": 85000,
+        "wageMultiplier": 3,
+        "currentWageMultiplier": 2,
+        "finance": 120000000
+      },
+      {
+        "id": "mls",
+        "leagues": [
+          "us-1"
+        ],
+        "minimumWeekly": 50000,
+        "wageMultiplier": 2.3,
+        "currentWageMultiplier": 1.7,
+        "finance": 90000000
+      }
+    ]
   }
 }
 </script>
@@ -42493,8 +42801,8 @@ const FootballCore = (() => {
 
   function selection(db,state) {
     const p=state.player,r=db.rules,e=db.engine.selection,d=db.dynamics;
-    if(p.freeAgent||p.injury>0||p.suspension>0||p.fitness<r.minimumFitnessForSelection)return 0;
-    const recent=p.history.filter(x=>x.stats.minutes>0).slice(-r.recentFormMatches),form=recent.length?mean(recent.map(x=>x.stats.rating)):e.formCenter;
+    if(vacationActive(state)||p.freeAgent||p.injury>0||p.suspension>0||p.fitness<r.minimumFitnessForSelection)return 0;
+    const form=currentForm(db,p);
     const route=db.routes.find(x=>x.id===p.route),bonus=p.contract.initial?route.selectionBonus:0,role=roleAssignment(db,p,p.club,state);
     if(role.available===false)return 0;
     const strength=(suitability(db,{...p,position:role.position})-competition(db,p,p.club,state)-e.positionCompetition)*e.overallWeight+(p.trust-e.trustCenter)*e.trustWeight+(p.fitness-e.fitnessCenter)*e.fitnessWeight+(form-e.formCenter)*e.formWeight+(p.morale-db.competitionRules.moraleSelectionCenter)*db.competitionRules.moraleSelectionWeight+bonus+(role.fit-1)*d.tacticalSelection;
@@ -43130,6 +43438,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
       p.trust=clamp(p.trust+(s.minutes?(s.rating-r.trustRatingTarget)*r.trustRatingWeight+s.minutes/r.matchMinutes*r.trustMinutesBonus:-r.trustNonAppearancePenalty)+(personality.discipline*p.traits.professionalism/d.traitCenter/managerTactic(db,state,p.club).discipline-1)*d.trustHabit,0,r.scale);
       p.reputation=clamp(p.reputation+(s.minutes?(r.reputationAppearance+s.goals*r.reputationGoal+s.assists*r.reputationAssist+Math.max(0,s.rating-r.trustRatingTarget)*r.reputationRating)*personal.reactions.context.exposure*personal.reactions.context.quality:0)+personal.reactions.reputation*d.mediaRepWeight*personality.star,0,r.scale);
       p.morale=clamp(p.morale+(s.minutes?(s.rating-r.trustRatingTarget)*r.moraleRatingWeight:(d.traitCenter-p.traits.ambition)*d.ambitionFrustration)*personality.stress+personal.reactions.morale*d.mediaMoraleWeight+(p.traits.mental-d.traitCenter)*d.mentalRecovery,0,r.scale);
+      applySpotlight(db,state,personal);
       p.yellows+=s.yellow;if(s.red){p.suspension=r.redBanMatches;p.yellows=Math.max(0,p.yellows-s.yellow);}else if(p.yellows>=r.yellowBanCount){p.suspension=r.redBanMatches;p.yellows-=r.yellowBanCount;}
       const injuryEvent=personal.result.events.find(e=>e.type==='injuryEvent'&&e.playerId==='player');if(injuryEvent&&!p.injury){const rng=random(hash(`${state.seed}:${personal.id}:injury-career`));applyInjury(db,state,p,db.dynamics.injuries.find(i=>i.id===injuryEvent.injuryId),rng);}
     }
@@ -43268,6 +43577,8 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function scoutingCandidate(db,s,c){
     const p=s.player,cfg=db.scoutingRules,ability=overall(db,p.stats),recent=totals(db,p.history.filter(h=>h.date>=dateAdd(s.date,-cfg.recentDays))),evaluation=performanceContext(db,s,p,null,c.id),prior=s.automaticOfferHistory?.[c.id],strong=c.quality>=cfg.strongQuality;
     if(c.national||c.historical||c.parent||c.id===p.club&&!p.freeAgent||prior&&daysBetween(db,prior.date,s.date)<(strong?cfg.strongCooldownDays:cfg.repeatClubDays)||s.offers.some(o=>o.club===c.id&&o.expiresDate>=s.date)||s.deals.some(d=>d.club===c.id&&dealLive(d)))return null;
+    const marquee=lateCareerBuyer(db,s,c);
+    if(marquee){const limits=buyerLimits(db,s,c.id);return limits.fit>=db.dealRules.buyerFitMin&&offerTerms(db,s,c.id)?{club:c.id,weight:db.lateCareerOfferRules.weight+limits.need*cfg.needWeight,lateCareer:true}:null;}
     if(!p.freeAgent&&(recent.apps<cfg.minApps||recent.minutes<cfg.minMinutes||evaluation.rating<cfg.minRating))return null;
     const teamAbility=squadOverall(db,c.id,s),prospect=p.age<=db.offerRules.potentialAgeMax&&p.traits.potential>=cfg.talentPotential&&mean(Object.values(p.development.birth))>=teamAbility&&ability>=db.offerFitRules.prospectMinOverall&&teamAbility-ability<=db.offerFitRules.prospectMaxGap;
     if(teamAbility>ability+cfg.qualityGap+(p.traits.potential>=cfg.talentPotential?cfg.potentialGap:0))return null;
@@ -43351,6 +43662,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
 
   function normalizeCareerSave(db,s,legacy=false){
     ensureWorld(db,s);ensureManagers(db,s);const p=s.player;
+    for(const id of db.lateCareerOfferRules.groups[0].leagues)if(!s.fixtures[id]){const fixtures=schedule(db,id,s.season,s.seasonStart,s),count=Math.max(...fixtures.map(f=>f.round))+1;s.fixtures[id]=fixtures;for(const f of fixtures){f.competition=id;f.date=dateAdd(s.seasonStart,db.calendarRules.scheduleStart+Math.round(f.round*(db.calendarRules.scheduleEnd-db.calendarRules.scheduleStart)/Math.max(1,count-1)));if(f.date<s.date){f.historical=true;continue;}if(!s.calendar.entries.some(e=>e.type==='match'&&e.date===f.date))s.calendar.entries.push({id:'match:'+s.season+':'+id+':'+f.date,date:f.date,type:'match',name:text(db,'calendarMatch',{n:f.round+1}),description:'',priority:db.calendarRules.matchPriority,completed:false});}}
     if(!s.postseason)for(const club of db.clubs.filter(c=>!c.historical))if(!Object.values(s.fixtures).some(list=>list.some(f=>!f.historical&&(f.home===club.id||f.away===club.id))))s.world.clubs[club.id].league=club.league;
     indexCache.delete(s.world);p.growthBaseline??=clone(p.stats);
     for(const [clubId,list] of Object.entries(s.world.rosters))for(const npc of list){npc.club??=clubId;npc.seasonMinutes??=0;npc.careerMinutes??=npc.seasonMinutes;initializePlayer(db,npc,s);}
@@ -43372,7 +43684,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
       const info=indexes(db).leagues[league];if(['continental','postseason'].includes(info.kind))continue;
       const count=Math.max(0,...fixtures.map(f=>f.round))+1,europe=db.continentalRules.domesticLeagues.includes(league),days=[];
       for(let day=c.scheduleStart;day<=c.scheduleEnd;day++)if(!breaks.some(b=>day>=b.offset&&day<=b.end)&&(!europe||!reserved.some(r=>Math.abs(r-day)<c.minimumMatchGapDays)))days.push(day);
-      for(const f of fixtures)if(!f.result){const slot=Math.round(f.round*(days.length-1)/Math.max(1,count-1));f.calendarSlot=slot;f.competition=league;f.date=dateAdd(s.seasonStart,days[slot]);}
+      for(const f of fixtures)if(!f.result&&!f.historical){const slot=Math.round(f.round*(days.length-1)/Math.max(1,count-1));f.calendarSlot=slot;f.competition=league;f.date=dateAdd(s.seasonStart,days[slot]);}
     }
     if(legacy){const pending=Object.values(s.fixtures).flat().filter(f=>!f.result),dates=[...new Set(pending.map(f=>f.date))].sort(),first=dates[0],shift=first&&first<=s.date?daysBetween(db,first,s.date)+c.minimumMatchGapDays:0;for(const f of pending)f.date=dateAdd(f.date,shift);}
     const dates=[...new Set(Object.values(s.fixtures).flat().filter(f=>!f.result).map(f=>f.date))].sort();
@@ -43406,6 +43718,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
       report=playRound(db,s);applyClubPolicy(db,s);externalIssues(db,s);
       if(report){s.trainingProgram.fatigue=clamp(s.trainingProgram.fatigue+report.stats.minutes/db.rules.matchMinutes*db.trainingProgramRules.matchFatigue,0,db.rules.scale);careerIncome(db,s,report.stats.minutes?p.contract.appearanceBonus:0,'appearanceBonus');careerIncome(db,s,report.stats.goals*p.contract.goalBonus,'goalBonus');reviewPromise(db,s);}
       refreshOffers(db,s);
+    }else if(event.type==='vacation-start'||event.type==='vacation-end'){processVacation(db,s,event);
     }else if(event.type==='decision'){activateCareerDecision(db,s,event);
     }else if(event.type==='arrival'){resolveArrival(db,s);
     }else if(event.type==='contact'){resolveInquiry(db,s,event);
@@ -43416,6 +43729,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
       if(event.type==='international')p.morale=clamp(p.morale+c.breakMoraleRecovery,0,db.rules.scale);
       if(event.type==='window')refreshOffers(db,s);
       if(event.type==='deadline')for(const deal of s.deals)if(deal.kind==='transfer'&&!p.freeAgent&&deal.terms.arrival==='nearest'&&deal.plannedArrival<=s.date&&['negotiating','ready'].includes(deal.status)){prepareArrival(db,s,deal);dealLog(db,s,deal,'negotiationNextWindow',{date:deal.plannedArrival});mail(db,s,{subject:event.name,body:text(db,'negotiationNextWindow',{date:deal.plannedArrival}),deal:deal.id,action:'deal'});}
+      if(event.type==='seasonclose')mail(db,s,{key:'vacation-invite:'+s.season,subject:text(db,'vacationSeasonEnd'),body:text(db,'vacationSeasonEndBody'),from:'mailCoach'});
       if(event.type==='seasonend')s.calendar.ended=true;
       if(event.type!=='market')mail(db,s,{key:event.id,subject:event.name,body:event.description,from:'mailSystem'});
     }
@@ -43465,8 +43779,9 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function buyerLimits(db,s,clubId){
     indexCache.delete(s.world);const p=s.player,c=indexes(db,s).clubs[clubId],r=db.dealRules,o=db.offerRules,assignment=roleAssignment(db,p,clubId,s),comp=competition(db,p,clubId,s),gap=suitability(db,{...p,position:assignment.position})-comp,group=indexes(db,s).positions[assignment.position].group,team=roster(db,clubId,s).filter(n=>indexes(db,s).positions[n.position].group===group),injuryShare=team.length?team.filter(n=>n.injury>0).length/team.length:0;
     const role=gap>=r.roleKeyGap&&assignment.fit>=r.roleKeyFit?'key':gap>=r.roleStarterGap&&assignment.fit>=r.roleStarterFit?'starter':gap>=r.roleRotationGap?'rotation':'prospect',v=valuation(db,p,s),young=p.age<=o.potentialAgeMax?Math.max(0,v.cap-v.current)*o.potentialWageWeight:0,health=clamp(c.finance/o.financialHealthBaseline,o.financialHealthMin,o.financialHealthMax),need=clamp(injuryShare*o.needInjuryWeight+Math.max(0,gap)*o.needAbilityWeight,0,o.needMax);
-    const salary=(wage(db,clubId,p,1,s)*o.roleWages[role]*o.baseWageWeight+v.value*o.wageValueShare/db.rules.annualSalaryWeeks)*(1+young)*(1+p.reputation*o.reputationWageWeight)*health,cap=Math.max(db.rules.minimumSalary,c.finance*o.annualWageShare/db.rules.annualSalaryWeeks),weekly=Math.max(db.rules.minimumSalary,Math.round(Math.min(salary,cap)));
-    return {budget:Math.max(0,c.finance*o.financeFeeShare),maxWeekly:Math.max(db.rules.minimumSalary,Math.round(Math.min(weekly*r.buyerMaxWageFactor,cap))),weekly,role,position:assignment.position,fit:assignment.fit,tactic:managerTactic(db,s,clubId).id,need,urgent:need>=o.urgentNeed,finance:c.finance,environment:c.environment,coaching:c.manager.coaching};
+    const marquee=lateCareerBuyer(db,s,c),finance=marquee&&c.marqueeFundingSeason!==s.season?Math.max(c.finance,marquee.finance):c.finance;
+    const baseSalary=(wage(db,clubId,p,1,s)*o.roleWages[role]*o.baseWageWeight+v.value*o.wageValueShare/db.rules.annualSalaryWeeks)*(1+young)*(1+p.reputation*o.reputationWageWeight)*health,salary=marquee?Math.max(baseSalary*marquee.wageMultiplier,p.contract.weekly*marquee.currentWageMultiplier,marquee.minimumWeekly*(.7+p.reputation/db.rules.scale*.6)):baseSalary,cap=Math.max(db.rules.minimumSalary,finance*o.annualWageShare/db.rules.annualSalaryWeeks),weekly=Math.max(db.rules.minimumSalary,Math.round(Math.min(salary,cap)));
+    return {lateCareer:marquee?.id||null,budget:Math.max(0,finance*o.financeFeeShare),maxWeekly:Math.max(db.rules.minimumSalary,Math.round(Math.min(weekly*r.buyerMaxWageFactor,cap))),weekly,role,position:assignment.position,fit:assignment.fit,tactic:managerTactic(db,s,clubId).id,need,urgent:need>=o.urgentNeed,finance,environment:c.environment,coaching:c.manager.coaching};
   }
   function offerTerms(db,s,clubId){
     const p=s.player,r=db.offerRules,b=buyerLimits(db,s,clubId),v=valuation(db,p,s),seller=sellerLimits(db,s,arrivalPlan(db,s,'nearest').date),young=p.age<=r.longContractAge,years=b.finance<r.shortFinance?r.shortYears:young&&v.potential>=r.longContractPotential?r.longContractYears:r.standardYears,weekly=b.weekly,annual=weekly*db.rules.annualSalaryWeeks,agent=db.agents.find(a=>a.id===s.agent.id),offensive=db.positions.find(x=>x.id===p.position).group==='attack',terms={...clone(db.dealDefaults),arrival:'nearest',weekly,years,role:b.role,position:b.position,agentCommissionPercent:agent.commission};
@@ -43477,13 +43792,13 @@ function simulateWorldFixture(db,f,s,continuation=null){
     terms.releaseClause=Math.ceil(Math.max((terms.fee+annual)*r.releaseInvestmentFactor,v.value*r.releaseMarketFactor));
     const raisedMax=b.maxWeekly*(1-db.dealRules.buyerYearsRisk*Math.max(0,years-db.rules.contractYears))/Math.pow(1+terms.annualRaisePercent/db.rules.scale,years-1);terms.weekly=Math.max(db.rules.minimumSalary,Math.min(weekly,Math.floor(raisedMax)));
     for(const f of db.dealFields)if(f.type==='number'||f.type==='money')terms[f.id]=clamp(terms[f.id],f.min,f.max);
-    return {terms,context:{valuation:v.value,cap:v.cap,potential:v.potential,need:b.need,urgent:b.urgent,fit:b.fit,finance:b.finance,environment:b.environment,coaching:b.coaching,role:b.role,position:b.position}};
+    return {terms,context:{valuation:v.value,cap:v.cap,potential:v.potential,need:b.need,urgent:b.urgent,fit:b.fit,finance:b.finance,environment:b.environment,coaching:b.coaching,role:b.role,position:b.position,lateCareer:b.lateCareer}};
   }
-  function offerMail(db,s,o){const c=indexes(db,s).clubs[o.club],r=o.terms,role=db.contractRoles.find(x=>x.id===r.role).name,summary=text(db,'offerTermSummary',{weekly:cash(db,r.weekly),years:r.years,role,position:r.position,bonus:cash(db,r.signingBonus),fee:cash(db,r.fee),arrival:text(db,'arrivalNearest')}),context=text(db,'offerContext',{value:cash(db,o.context.valuation),potential:Math.floor(o.context.cap),need:text(db,o.context.urgent?'offerUrgent':r.role==='prospect'?'offerDevelopment':'offerBalanced'),finance:cash(db,o.context.finance)});mail(db,s,{key:o.id,subject:text(db,'mailOfferSubject',{club:c.name}),body:text(db,'mailOfferBody',{club:c.name,summary,context,date:o.expiresDate}),from:c.name,offer:o.id,action:'offer'});}
+  function offerMail(db,s,o){const c=indexes(db,s).clubs[o.club],r=o.terms,role=db.contractRoles.find(x=>x.id===r.role).name,summary=text(db,'offerTermSummary',{weekly:cash(db,r.weekly),years:r.years,role,position:r.position,bonus:cash(db,r.signingBonus),fee:cash(db,r.fee),arrival:text(db,'arrivalNearest')}),context=text(db,'offerContext',{value:cash(db,o.context.valuation),potential:Math.floor(o.context.cap),need:text(db,o.context.urgent?'offerUrgent':r.role==='prospect'?'offerDevelopment':'offerBalanced'),finance:cash(db,o.context.finance)});mail(db,s,{key:o.id,subject:text(db,'mailOfferSubject',{club:c.name}),body:text(db,'mailOfferBody',{club:c.name,summary,context,date:o.expiresDate})+(o.context.lateCareer?' '+text(db,'lateCareerOfferBody'):''),from:c.name,offer:o.id,action:'offer'});}
   function addOffer(db,s,clubId,source='manual'){
     const old=s.offers.find(o=>o.club===clubId&&o.expiresDate>=s.date);if(old)return old.status==='declined'?null:old;if(s.pendingTransfer||s.offers.filter(o=>o.status!=='declined'&&o.expiresDate>=s.date).length>=db.offerRules.requestMaxOffers)return null;
-    const draft=offerTerms(db,s,clubId);if(!draft)return null;const c=indexes(db,s).clubs[clubId],o={id:`offer:${++s.offerSerial}`,club:clubId,weekly:draft.terms.weekly,years:draft.terms.years,terms:draft.terms,context:draft.context,status:'open',shortlisted:false,responseDeferred:false,source,extensions:0,createdDate:s.date,expiresDate:dateAdd(s.date,db.offerRules.defaultHoldDays)};
-    s.offerHistory||={};s.offerHistory[clubId]=s.date;if(source==='automatic')s.automaticOfferHistory[clubId]={date:s.date};s.offers.push(o);worldEvents(db,s,'eventInterest',{club:c.name,name:s.player.name},clubId);offerMail(db,s,o);return o;
+    const draft=offerTerms(db,s,clubId);if(!draft)return null;if(draft.context.lateCareer){const club=s.world.clubs[clubId];if(club.marqueeFundingSeason!==s.season){club.finance=Math.max(club.finance,draft.context.finance);club.marqueeFundingSeason=s.season;indexCache.delete(s.world);}}const c=indexes(db,s).clubs[clubId],o={id:`offer:${++s.offerSerial}`,club:clubId,weekly:draft.terms.weekly,years:draft.terms.years,terms:draft.terms,context:draft.context,status:'open',shortlisted:false,responseDeferred:false,source,extensions:0,createdDate:s.date,expiresDate:dateAdd(s.date,db.offerRules.defaultHoldDays)};
+    s.offerHistory||={};s.offerHistory[clubId]=s.date;if(source==='automatic'||source==='late-career')s.automaticOfferHistory[clubId]={date:s.date};s.offers.push(o);worldEvents(db,s,'eventInterest',{club:c.name,name:s.player.name},clubId);offerMail(db,s,o);return o;
   }
   function newClubGrace(db,s){
     const p=s.player,date=p.lastClubChangeDate||p.career.filter(e=>e.club===p.club&&['joined','promoted'].includes(e.type)).at(-1)?.date||p.contract.arrivalDate;
@@ -43492,9 +43807,10 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function refreshOffers(db,s){
     initializeSystems(db,s);expireDeals(db,s);const cfg=db.scoutingRules,p=s.player,window=activeWindow(db,s);if(newClubGrace(db,s)||s.pendingTransfer||!window&&!p.freeAgent)return;
     const clock=queueMarketReview(db,s),limit=p.freeAgent?cfg.freeMaxOffers:cfg.windowMaxOffers;if(!clock||clock.offers>=limit||clock.date>s.date)return;
-    const rng=random(hash(s.seed+':'+clock.key+':'+clock.date+':'+(++s.scoutingCycle))),chance=p.freeAgent?cfg.freeChance:Math.min(cfg.maxChance,cfg.baseChance+p.reputation*cfg.reputationChanceWeight);
+    const marqueePlayer=lateCareerQualified(db,s);
+    const rng=random(hash(s.seed+':'+clock.key+':'+clock.date+':'+(++s.scoutingCycle))),baseChance=p.freeAgent?cfg.freeChance:Math.min(cfg.maxChance,cfg.baseChance+p.reputation*cfg.reputationChanceWeight),chance=marqueePlayer?Math.max(baseChance,db.lateCareerOfferRules.chance):baseChance;
     if(rng()<chance&&s.offers.filter(o=>o.status==='open').length<db.rules.maxOffers){const candidates=Object.values(indexes(db,s).clubs).filter(c=>!c.national).map(c=>scoutingCandidate(db,s,c)).filter(Boolean);
-      for(let n=0;n<cfg.batchMax&&clock.offers<limit&&s.offers.filter(o=>o.status==='open').length<db.rules.maxOffers&&candidates.length;n++){let target=rng()*sum(candidates.map(c=>c.weight)),at=candidates.length-1;for(let i=0;i<candidates.length;i++){target-=candidates[i].weight;if(target<=0){at=i;break;}}const candidate=candidates.splice(at,1)[0];if(addOffer(db,s,candidate.club,'automatic'))clock.offers++;}
+      for(let n=0;n<cfg.batchMax&&clock.offers<limit&&s.offers.filter(o=>o.status==='open').length<db.rules.maxOffers&&candidates.length;n++){const pool=n===0&&marqueePlayer&&candidates.some(c=>c.lateCareer)?candidates.filter(c=>c.lateCareer):candidates;let target=rng()*sum(pool.map(c=>c.weight)),at=pool.length-1;for(let i=0;i<pool.length;i++){target-=pool[i].weight;if(target<=0){at=i;break;}}const candidate=candidates.splice(candidates.indexOf(pool[at]),1)[0];if(addOffer(db,s,candidate.club,candidate.lateCareer?'late-career':'automatic'))clock.offers++;}
     }s.lastOfferRefresh=s.date;clock.date=dateAdd(s.date,integer(rng,p.freeAgent?cfg.freeMinDays:cfg.reviewMinDays,p.freeAgent?cfg.freeMaxDays:cfg.reviewMaxDays));scheduleMarketReview(db,s);
   }
   function seekClub(db,s,clubId){
@@ -43730,7 +44046,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const language=key==='passing'&&p.country!==db.leagues.find(l=>l.id===indexes(db,state).clubs[p.club]?.league)?.country?d.languageFloor+t.language*d.languageWeight:1;
     const focus=person.id==='player'&&state.careerStories?.focus?.attribute===key&&state.careerStories.focus.from<=state.date&&state.careerStories.focus.until>=state.date?db.careerDecisionRules.focusMultiplier:1;
     const category=fixtureImportance(db,state,fixture),big=category.level>=db.matchImportanceRules.bigMatchLevel,importanceFactor=clamp(1-(1-category.multiplier)*(1-(big?clamp(earnedEffects.pressureShield||0,0,1):0))+(big?(earnedEffects.bigMatchBoost||0)-(earnedEffects.bigMatchPenalty||0):0),db.careerTraitRules.factorMin,db.careerTraitRules.factorMax),traitFactor=clamp((earnedEffects.execution??1)*(earnedEffects[key]??1),db.careerTraitRules.factorMin,db.careerTraitRules.factorMax);
-    const skill=clamp(person.stats[key]*psychology*fatigue*pressure*mental*adaptation*role*creativity*language*focus*importanceFactor*traitFactor*(person.id==='player'?matchIntent(db,state,fixture).execution[key]??1:1)*(person.id==='player'&&fixture?((style||playStyleMatchEffects(db,state,fixture)).execution[key]??1):1)*strategyExecution(db,state,person,key)*interviewExecution(db,state,person,key),db.rules.abilityMin,db.rules.abilityMax);
+    const skill=clamp(person.stats[key]*psychology*fatigue*pressure*mental*adaptation*role*creativity*language*focus*importanceFactor*traitFactor*(person.id==='player'?matchIntent(db,state,fixture).execution[key]??1:1)*(person.id==='player'&&fixture?((style||playStyleMatchEffects(db,state,fixture)).execution[key]??1):1)*strategyExecution(db,state,person,key)*interviewExecution(db,state,person,key)*(person.id==='player'?1+formModifier(state.player)*db.spotlightRules.executionWeight:1),db.rules.abilityMin,db.rules.abilityMax);
     return {skill,psychology,fatigue,pressure,adaptation,role,focus,importance:category.id,importanceFactor,traitFactor};
   }
   function matchContext(db,state,fixture,person,duration){const role=roleAssignment(db,state.player,state.player.club,state);return {position:person.position,roleFit:role.fit,manager:clone(state.world?.clubs[state.player.club]?.manager||{}),traits:clone(state.player.traits),adaptation:state.player.adaptation,fitness:state.player.fitness,actions:Object.fromEntries(db.attributes.map(a=>[a.id,effective(db,person,a.id,state,person.match.minutes,fixture)]))};}
@@ -43763,6 +44079,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const cfg=db.trainingProgramRules,program=s.trainingProgram,plan=program?.plan||{primary:s.training,...cfg.defaults},schedule=cfg.schedules.find(t=>t.id===plan.schedule),intensity=cfg.intensities.find(t=>t.id===plan.intensity),fixtures=myFixtures(s),offset=Math.max(0,daysBetween(db,program?.startedDate||s.date,date)),pattern=schedule.pattern[offset%schedule.pattern.length],zero=()=>Object.fromEntries(db.attributes.map(a=>[a.id,0]));
     let kind=pattern,focus=kind==='primary'?plan.primary:kind==='secondary'?plan.secondary:'role',factor=1,loadFactor=1;
     const latest=s.player.history.filter(r=>r.date<date&&r.stats.minutes>0).at(-1)?.date,planned=preview?fixtures.filter(f=>f.date<date&&daysBetween(db,f.date,date)<=schedule.recoveryDays).at(-1)?.date:null,last=[latest,planned].filter(Boolean).sort().at(-1);
+    if(vacationActive(s,date))return {date,kind:'vacation',focus:cfg.restTraining,exposure:zero(),load:0,recovery:0,work:false};
     if(s.player.injuryDays>0)kind='rehab';else if((program?.fatigue||0)>=cfg.veryHeavyFatigue||s.player.fitness<cfg.fitnessProtection)kind='protection';else if(fixtures.some(f=>f.date===date))kind='match';else if(last&&daysBetween(db,last,date)<=schedule.recoveryDays)kind='recovery';
     if(plan.primary===db.trainingProgramRules.restTraining&&!['rehab','protection','match'].includes(kind))kind='recovery';
     if(['rehab','protection','recovery','match'].includes(kind)||focus==='none'||focus===db.trainingProgramRules.restTraining)return {date,kind:['none',db.trainingProgramRules.restTraining].includes(focus)&&!['rehab','protection','match'].includes(kind)?'recovery':kind,focus:db.trainingProgramRules.restTraining,exposure:zero(),load:0,recovery:db.calendarRules.restDailyBonus+(kind==='rehab'?cfg.rehabRecovery:0),work:false};
@@ -43776,7 +44093,11 @@ function simulateWorldFixture(db,f,s,continuation=null){
     const preview={...s,player:{...s.player},trainingProgram:{...s.trainingProgram}},list=[];for(let day=db.trainingProgramRules.minimumDays;day<=db.trainingProgramRules.previewDays;day+=db.trainingProgramRules.minimumDays){const session=trainingSession(db,preview,dateAdd(s.date,day),true);list.push(session);preview.player.injuryDays=Math.max(0,preview.player.injuryDays-db.trainingProgramRules.minimumDays);updateTrainingCondition(db,preview,session);}return list;
   }
   function updateTrainingCondition(db,s,session){
-    const cfg=db.trainingProgramRules,p=s.player,program=s.trainingProgram;p.fitness=clamp(p.fitness+db.calendarRules.recoveryDaily+session.recovery-session.load/db.calendarRules.trainingUnitDays,0,db.rules.scale);
+    const cfg=db.trainingProgramRules,p=s.player,program=s.trainingProgram;
+    if(session.kind==='vacation'){const r=db.vacationRules;p.fitness=clamp(p.fitness-r.fitnessDailyCost,0,db.rules.scale);program.fatigue=Math.min(r.fatigueCeiling,Math.max(0,program.fatigue-r.fatigueDailyRecovery));p.vacationForm=clamp((p.vacationForm||0)-r.formDailyLoss,-r.formMaximumLoss,0);return;}
+    if(p.vacationForm)p.vacationForm=Math.min(0,p.vacationForm+db.vacationRules.formRecoveryDaily);
+    if(p.spotlightForm)p.spotlightForm=Math.sign(p.spotlightForm)*Math.max(0,Math.abs(p.spotlightForm)-db.spotlightRules.momentumDecayDaily);
+    p.fitness=clamp(p.fitness+db.calendarRules.recoveryDaily+session.recovery-session.load/db.calendarRules.trainingUnitDays,0,db.rules.scale);
     program.fatigue=clamp(program.fatigue+session.load*cfg.loadFatigue-(session.work?cfg.fatigueRecovery:cfg.restFatigueRecovery),0,db.rules.scale);
   }
   function trainingInjuryChance(db,s,session){
@@ -43789,7 +44110,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function advanceTrainingDays(db,s,endDate,offseason){
     initializeTrainingProgram(db,s);const cfg=db.trainingProgramRules,program=s.trainingProgram,p=s.player,c=db.calendarRules,start=s.date,elapsed=Math.max(0,daysBetween(db,start,endDate));
     // Every day earns its own exposure before a future plan can replace it.
-    for(let day=cfg.minimumDays;day<=elapsed;day+=cfg.minimumDays){s.date=dateAdd(start,day);careerIncome(db,s,p.contract.weekly*cfg.minimumDays/c.daysToWeeks,'salary');settleEconomy(db,s);const session=trainingSession(db,s,s.date);updateTrainingCondition(db,s,session);p.injuryDays=Math.max(0,p.injuryDays-cfg.minimumDays);p.injury=Math.ceil(p.injuryDays/c.injuryDaysPerWeek);npcMarketDay(db,s);
+    for(let day=cfg.minimumDays;day<=elapsed;day+=cfg.minimumDays){s.date=dateAdd(start,day);careerIncome(db,s,p.contract.weekly*cfg.minimumDays/c.daysToWeeks,'salary');settleEconomy(db,s);const departure=s.calendar.entries.find(e=>e.type==='vacation-start'&&!e.completed&&e.date===s.date);if(departure){departure.completed=true;processVacation(db,s,departure);}const session=trainingSession(db,s,s.date);updateTrainingCondition(db,s,session);p.injuryDays=Math.max(0,p.injuryDays-cfg.minimumDays);p.injury=Math.ceil(p.injuryDays/c.injuryDaysPerWeek);npcMarketDay(db,s);
       p.traitProgress.activeDays+=cfg.minimumDays;if(session.work)p.traitProgress.trainingDays+=cfg.minimumDays;reviewCareerTraits(db,s);
       const pending=program.pending;pending.days+=cfg.minimumDays;pending.workDays+=session.work?cfg.minimumDays:0;pending.recoveryDays+=session.work?0:cfg.minimumDays;for(const a of db.attributes){pending.exposure[a.id]+=session.exposure[a.id];if(session.exposure[a.id]>0)p.development.practice.last[a.id]=s.date;}
       if(session.focus==='role'&&session.work)p.trust=clamp(p.trust+cfg.roleTrustDaily,0,db.rules.scale);
@@ -44036,6 +44357,14 @@ function simulateWorldFixture(db,f,s,continuation=null){
     return old===undefined?base:old;
   }
   function upgradeDatabase(db,old){
+    for(const key of ['vacationRules','spotlightRules','lateCareerOfferRules'])old[key]??=clone(db[key]);old.trainingProgramRules??=clone(db.trainingProgramRules);old.ui.locationBrowser??=clone(db.ui.locationBrowser);
+    for(const league of db.leagues.filter(l=>db.lateCareerOfferRules.groups[0].leagues.includes(l.id)))if(!old.leagues.some(l=>l.id===league.id))old.leagues.push(clone(league));
+    for(const club of db.clubs.filter(c=>db.lateCareerOfferRules.groups[0].leagues.includes(c.league)))if(!old.clubs.some(c=>c.id===club.id))old.clubs.push(clone(club));
+    old.assessmentRules??=clone(db.assessmentRules);old.marketContextRules??=clone(db.marketContextRules);for(const id of db.lateCareerOfferRules.groups[0].leagues){old.assessmentRules.leagues[id]??=clone(db.assessmentRules.leagues[id]);old.marketContextRules.leagueFactors[id]??=db.marketContextRules.leagueFactors[id];}
+    old.economyRules??=clone(db.economyRules);old.economyRules.ledgerTypes.vacation??=db.economyRules.ledgerTypes.vacation;
+    if(!old.trainingProgramRules.sessionTypes.some(t=>t.id==='vacation'))old.trainingProgramRules.sessionTypes.push(clone(db.trainingProgramRules.sessionTypes.find(t=>t.id==='vacation')));
+    const group=old.ui.navigationGroups.find(g=>g.id==='economy');if(group&&!old.ui.navigationGroups.some(g=>g.views.includes('vacation')))group.views.push('vacation');
+    old.ui.locationBrowser.countryNames={...clone(db.ui.locationBrowser.countryNames),...old.ui.locationBrowser.countryNames};
     old.trainingProgramRules??=clone(db.trainingProgramRules);old.trainingProgramRules.injuryRisk??=clone(db.trainingProgramRules.injuryRisk);old.settings.contractMoneyInputDigits??=db.settings.contractMoneyInputDigits;old.settings.contractMoneyInputStep??=db.settings.contractMoneyInputStep;old.valueHistoryRules??=clone(db.valueHistoryRules);old.valueHistoryRules.windows??=clone(db.valueHistoryRules.windows);old.valueHistoryRules.afterDays??=db.valueHistoryRules.afterDays;old.retentionRules??=clone(db.retentionRules);old.ratingBalanceRules??=clone(db.ratingBalanceRules);for(const [key,previous] of Object.entries(db.ratingBalanceRules.previousWeights))if(old.engine.rating[key]===previous)old.engine.rating[key]=db.engine.rating[key];old.economyRules??=clone(db.economyRules);const puma=old.economyRules.commercial.find(x=>x.id==='local-boots'),updatedPuma=db.economyRules.commercial.find(x=>x.id==='local-boots');for(const [key,previous] of Object.entries(db.economyRules.pumaRewardUpgrade))if(puma[key]===previous)puma[key]=updatedPuma[key];old.economyRules.pumaRewardUpgrade??=clone(db.economyRules.pumaRewardUpgrade);for(const tab of db.ui.tabs.filter(t=>db.ui.navigationGroups.find(g=>g.id==='economy').views.includes(t.id)))if(!old.ui.tabs.some(t=>t.id===tab.id))old.ui.tabs.push(clone(tab));if(!old.ui.navigationGroups.some(g=>g.id==='economy'))old.ui.navigationGroups.push(clone(db.ui.navigationGroups.find(g=>g.id==='economy')));
     old.npcMarketRules??=clone(db.npcMarketRules);old.storageRules.maxAutosaveBytes??=db.storageRules.maxAutosaveBytes;for(const award of old.awardTypes||[])award.description??=db.awardTypes.find(a=>a.id===award.id)?.description;
     for(const key of ['strategyRules','opponentResponseRules','interviewRules','interviewQuestions','assessmentRules','starRules','marketContextRules','clubCultureRules','rivalryRules','leagueMetaRules'])old[key]??=clone(db[key]);
@@ -44096,11 +44425,11 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function nationalPool(db,s,team){
     return [...Object.values(s.world.rosters).flat().filter(p=>p.country===team.country&&!indexes(db,s).clubs[p.club]?.parent),...(s.nations.reserves[team.id]||[])];
   }
-  function nationalAssessment(db,s,team=nationalTeam(db,s.player.country)){
+  function nationalAssessment(db,s,team=nationalTeam(db,s.player.country),from=s.date,until=s.date){
     const p=s.player,r=db.nationalRules,c=r.selection;if(!team)return {eligible:false,reason:'nationalAbility',score:0,rank:0,cutoff:0,minutes:0,apps:0,rating:0};
     const recent=p.history.filter(h=>h.date>=dateAdd(s.date,-r.recentDays)&&h.stats.minutes>0),stats=totals(db,recent),view=nationalCandidateScore(db,s,team,p,recent),assessment=view.context,group=indexes(db).positions[p.position].group,pool=nationalPool(db,s,team).filter(n=>!n.injury&&!n.injuryDays&&indexes(db).positions[n.position].group===group),quota=r.positionQuotas[group];
     const ranked=pool.map(n=>({id:n.id,...nationalCandidateScore(db,s,team,n)})).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id)),cut=ranked[Math.min(quota-1,ranked.length-1)],cutAbility=cut?.ability||team.quality,cutoff=cut?.score||team.quality,abilityMinimum=Math.max(team.quality-c.teamAbilityGap,cutAbility-r.abilityGap),rank=ranked.filter(n=>n.score>view.score).length+1;
-    const unavailable=p.age<r.minimumAge||p.injury>0||p.injuryDays>0||p.fitness<r.minimumFitness,proven=assessment.effectiveApps>=r.minimumApps&&assessment.effectiveMinutes>=r.minimumMinutes,exceptional=view.ability>=cutAbility+c.exceptionalGap&&assessment.effectiveApps>=c.exceptionalApps&&assessment.effectiveMinutes>=c.exceptionalMinutes,competitive=view.ability>=abilityMinimum&&view.score>=cutoff&&rank<=quota,goodForm=proven&&assessment.rating>=r.formTarget&&view.ability>=cutAbility-r.formGap,coachLikes=(proven||exceptional)&&competitive,needed=pool.filter(n=>n.position===p.position).length<c.positionCover&&assessment.effectiveApps>=c.minimumNeedApps&&assessment.effectiveMinutes>=r.needMinutes&&view.ability>=cutAbility-r.needGap;
+    const unavailable=(s.vacations||[]).some(v=>['approved','active'].includes(v.status)&&v.start<=until&&v.end>=from)||p.age<r.minimumAge||p.injury>0||p.injuryDays>0||p.fitness<r.minimumFitness,proven=assessment.effectiveApps>=r.minimumApps&&assessment.effectiveMinutes>=r.minimumMinutes,exceptional=view.ability>=cutAbility+c.exceptionalGap&&assessment.effectiveApps>=c.exceptionalApps&&assessment.effectiveMinutes>=c.exceptionalMinutes,competitive=view.ability>=abilityMinimum&&view.score>=cutoff&&rank<=quota,goodForm=proven&&assessment.rating>=r.formTarget&&view.ability>=cutAbility-r.formGap,coachLikes=(proven||exceptional)&&competitive,needed=pool.filter(n=>n.position===p.position).length<c.positionCover&&assessment.effectiveApps>=c.minimumNeedApps&&assessment.effectiveMinutes>=r.needMinutes&&view.ability>=cutAbility-r.needGap;
     return {eligible:!unavailable&&competitive&&(goodForm||coachLikes||needed),reason:unavailable?'nationalUnavailable':!proven&&!exceptional&&!needed?'nationalUnproven':!competitive?'nationalAbility':goodForm?'nationalForm':coachLikes?'nationalCoach':needed?'nationalNeed':'nationalAbility',score:view.score,coach:view.coach,rank,cutoff,abilityMinimum,proven,minutes:stats.minutes,apps:stats.apps,rating:stats.rating,context:assessment};
   }
   function nationalOnDuty(s,date=s.date){return Boolean(s.nations?.camp&&s.nations.camp.from<=date&&date<=s.nations.camp.until);}
@@ -44133,7 +44462,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     // Existing club fixtures and completed reports are preserved during migration.
   }
   function selectNationalSquad(db,s,team,from,until,key){
-    const r=db.nationalRules,pool=nationalPool(db,s,team).filter(p=>!p.injury&&!p.injuryDays),baseAssessment=team.id===s.nations.team?nationalAssessment(db,s,team):null,refusal=baseAssessment?.eligible?nationalReleaseDecision(db,s,from,until,key):null,assessment=refusal?{...baseAssessment,eligible:false,reason:refusal.reason}:baseAssessment,selected=[];
+    const r=db.nationalRules,pool=nationalPool(db,s,team).filter(p=>!p.injury&&!p.injuryDays),baseAssessment=team.id===s.nations.team?nationalAssessment(db,s,team,from,until):null,refusal=baseAssessment?.eligible?nationalReleaseDecision(db,s,from,until,key):null,assessment=refusal?{...baseAssessment,eligible:false,reason:refusal.reason}:baseAssessment,selected=[];
     if(refusal&&!s.nations.releaseRefusals.some(row=>row.key===key))s.nations.releaseRefusals.push(refusal);
     for(const [group,quota] of Object.entries(r.positionQuotas)){
       const candidates=pool.filter(p=>indexes(db).positions[p.position].group===group).map(p=>({id:p.id,score:nationalCandidateScore(db,s,team,p).score})).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id));
@@ -44212,7 +44541,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
       t.stats??={};for(const side of ['home','away'])for(const p of result[side].players){if(!p.match.minutes)continue;const row=t.stats[p.id]??={id:p.id,name:p.name,team:f[side],apps:0,goals:0,assists:0,minutes:0};row.apps++;for(const key of ['goals','assists','minutes'])row[key]+=p.match[key];}
       const people=nationalPlayerIndex(s);for(const side of ['home','away'])for(const incident of result[side].injuries||[]){if(incident.id==='player'){if(!s.player.injury)applyInjury(db,s,s.player,db.dynamics.injuries.find(i=>i.id===incident.injury),random(hash(s.seed+':'+f.id+':injury')));}else{const npc=people.get(incident.id),injury=db.dynamics.injuries.find(i=>i.id===incident.injury);if(npc&&injury)npc.injury=injury.weeks;}}
       if(own){const stats=clone(result.player);personal={...clone(f),season:s.season,league:f.competition,club:s.nations.team,stats,appearance:result.appearance,result:clone(result),reactions:mediaReaction(db,ms,{...f,club:s.nations.team,stats,result})};personal.rolePerformance=rolePerformance(db,stats,result.context?.position||s.player.position);s.nations.history.push(personal);if(s.nations.suspension>0)s.nations.suspension--;s.nations.yellows+=stats.yellow;if(stats.red){s.nations.suspension=db.rules.redBanMatches;s.nations.yellows=Math.max(0,s.nations.yellows-stats.yellow);}else if(s.nations.yellows>=db.rules.yellowBanCount){s.nations.suspension=db.rules.redBanMatches;s.nations.yellows-=db.rules.yellowBanCount;}
-        s.nations.trust=clamp(s.nations.trust+(stats.minutes?(stats.rating-db.engine.selection.formCenter)*db.nationalRules.trustRatingWeight+db.nationalRules.trustMinutesBonus:0),0,db.rules.scale);s.player.reputation=clamp(s.player.reputation+(stats.minutes?(db.rules.reputationAppearance+stats.goals*db.rules.reputationGoal+stats.assists*db.rules.reputationAssist)*(personal.reactions?.context.exposure||1)*(personal.reactions?.context.quality||1):0),0,db.rules.scale);s.player.fitness=clamp(s.player.fitness-stats.minutes*db.rules.loadPerMinute*matchIntent(db,s,f).load*(personal.result.playStyle?.load??1),0,db.rules.scale);s.trainingProgram.fatigue=clamp(s.trainingProgram.fatigue+stats.minutes/db.rules.matchMinutes*db.trainingProgramRules.matchFatigue,0,db.rules.scale);if(stats.minutes)grow(db,s,stats.minutes,{...db.training.find(t=>t.id===s.training),growth:0});}
+        s.nations.trust=clamp(s.nations.trust+(stats.minutes?(stats.rating-db.engine.selection.formCenter)*db.nationalRules.trustRatingWeight+db.nationalRules.trustMinutesBonus:0),0,db.rules.scale);s.player.reputation=clamp(s.player.reputation+(stats.minutes?(db.rules.reputationAppearance+stats.goals*db.rules.reputationGoal+stats.assists*db.rules.reputationAssist)*(personal.reactions?.context.exposure||1)*(personal.reactions?.context.quality||1):0),0,db.rules.scale);s.player.fitness=clamp(s.player.fitness-stats.minutes*db.rules.loadPerMinute*matchIntent(db,s,f).load*(personal.result.playStyle?.load??1),0,db.rules.scale);s.trainingProgram.fatigue=clamp(s.trainingProgram.fatigue+stats.minutes/db.rules.matchMinutes*db.trainingProgramRules.matchFatigue,0,db.rules.scale);if(stats.minutes)grow(db,s,stats.minutes,{...db.training.find(t=>t.id===s.training),growth:0});applySpotlight(db,s,personal);}
       const keys=[...db.ui.teamFields.filter(f=>!f.derived).map(f=>f.id),...db.leaderboardRules.metrics,'goals','completed'];f.result={duration:result.duration,strategy:fixtureStrategy(result,f),...Object.fromEntries(['winner','penalties','extraTime','regulationDuration'].filter(k=>result[k]!==undefined).map(k=>[k,result[k]])),...Object.fromEntries(['home','away'].map(side=>[side,{club:f[side],stats:Object.fromEntries(keys.map(k=>[k,result[side].stats[k]]))}]))};
     }
     for(const t of Object.values(s.nations.tournaments))advanceNationalTournament(db,s,t);return personal;
@@ -44505,7 +44834,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function seasonClubRecords(db,s,season){
     const records=s.player.history.filter(r=>r.season===season),start=dateAdd(db.meta.initialDate,(season-1)*db.calendarRules.seasonDays),end=dateAdd(start,db.calendarRules.seasonDays-1),moves=s.player.career.filter(e=>e.date<=end).sort((a,b)=>a.date.localeCompare(b.date)),before=moves.filter(e=>e.date<start).at(-1),clubs=[...(before?[before.club]:[]),...moves.filter(e=>e.date>=start).map(e=>e.club),...records.map(r=>r.club)];
     if(season===s.season&&!s.player.freeAgent)clubs.push(s.player.club);
-    return [...new Set(clubs)].map(club=>({season,club,stats:totals(db,records.filter(r=>r.club===club))}));
+    return [...new Set(clubs)].map(club=>({season,club,stats:totals(db,records.filter(r=>r.club===club)),lastDate:[...moves.filter(e=>e.club===club).map(e=>e.date),...records.filter(r=>r.club===club).map(r=>r.date)].sort().at(-1)||start})).sort((a,b)=>b.lastDate.localeCompare(a.lastDate));
   }
   function postseasonMessageRelevant(db,s,m){
     const prefix=db.postseasonInboxRules.resultPrefix;if(!m.key?.startsWith(prefix))return true;
@@ -44545,7 +44874,67 @@ function simulateWorldFixture(db,f,s,continuation=null){
     for(const [key,value] of Object.entries(db.careerEventRules.previousIntervals))if(old.careerDecisionRules[key]===value)old.careerDecisionRules[key]=db.careerDecisionRules[key];
     for(const t of db.careerDecisions){const current=old.careerDecisions.find(x=>x.id===t.id);if(!current)old.careerDecisions.push(clone(t));else for(const key of ['topic','kind','requirements','weight','episode','success'])if(t[key]!==undefined)current[key]??=clone(t[key]);}
   }
-  return {playStyleDefaults,validPlayStyleBuild,playStyleEffects,setPlayStyleBuild,playStyleOpportunity,playStyleMatchEffects,trainingInjuryChance,trainingInjury,careerTraitFacts,careerTraitQualification,playerValueCheckpoints,trainingGrowthFactors,initializePlayerValueHistory,recordPlayerValue,retentionProposal,initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,initialWage,registeredPositions,positionAssessment,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
+  const formModifier=p=>(p.spotlightForm||0)+(p.vacationForm||0);
+  function currentForm(db,p){const recent=(p.history||[]).filter(r=>r.stats.minutes>0).slice(-db.rules.recentFormMatches);return clamp((recent.length?mean(recent.map(r=>r.stats.rating)):db.engine.selection.formCenter)+formModifier(p),db.engine.rating.min,db.engine.rating.max);}
+  const vacationActive=(s,date=s.date)=>(s.vacations||[]).some(v=>v.status==='active'&&date>=v.start&&date<=v.end);
+  function vacationQuote(db,s,destination,days){
+    const d=db.vacationRules.destinations.find(d=>d.id===destination),factor=db.vacationRules.lifestyleFactors[s.economy?.lifestyle||db.economyRules.defaultLifestyle];
+    return d&&Number.isInteger(days)&&days>=db.vacationRules.minimumDays&&days<=db.vacationRules.maximumDays?Math.round((d.travel+d.daily*days)*factor):null;
+  }
+  function vacationIssue(db,s,destination,start,days,ignoreId=null){
+    const r=db.vacationRules,cost=vacationQuote(db,s,destination,days);
+    if(cost===null||typeof start!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(start)||!Number.isFinite(Date.parse(start))||new Date(start).toISOString().slice(0,10)!==start)return 'vacationDenied';
+    const end=dateAdd(start,days-1),back=dateAdd(start,days),boundary=dateAdd(s.seasonStart,db.calendarRules.seasonDays);
+    if(start<dateAdd(s.date,ignoreId?0:r.leadDays)||back>boundary)return 'vacationDenied';
+    if((s.vacations||[]).some(v=>v.id!==ignoreId&&['approved','active'].includes(v.status)))return 'vacationBusy';
+    const overlaps=(from,until)=>from<=end&&until>=start;
+    const fixtures=Object.values(s.fixtures).flat().filter(f=>!f.result&&!f.historical&&[f.home,f.away].includes(s.player.club));
+    const national=nationalOwnFixtures(s).filter(f=>!f.result),camp=s.nations?.camp;
+    if(!s.player.freeAgent&&fixtures.some(f=>overlaps(f.date,f.date))||national.some(f=>overlaps(f.date,f.date))||camp&&overlaps(camp.from,camp.until)||s.pendingTransfer&&overlaps(s.pendingTransfer.arrivalDate,s.pendingTransfer.arrivalDate)||s.calendar.entries.some(e=>!e.completed&&e.type==='preseason'&&overlaps(e.date,e.date)))return 'vacationDenied';
+    if(s.economy.arrears>0||s.economy.cash<cost)return 'vacationFunds';return null;
+  }
+  function requestVacation(db,s,destination,start,days){
+    initializeEconomy(db,s);const issue=vacationIssue(db,s,destination,start,days);if(issue)return {ok:false,issue};
+    s.vacations||=[];s.vacationSerial=(s.vacationSerial||0)+1;const id='vacation:'+s.vacationSerial,end=dateAdd(start,days-1),returnDate=dateAdd(start,days),v={id,destination,start,end,returnDate,days,status:'approved',requested:s.date,cost:0,lifestyle:null};s.vacations.push(v);s.vacations=s.vacations.slice(-db.vacationRules.historyLimit);
+    const name=db.vacationRules.destinations.find(d=>d.id===destination).name;
+    for(const [type,date,label] of [['vacation-start',start,'vacationStart'],['vacation-end',returnDate,'vacationCompleted']])s.calendar.entries.push({id:id+':'+type,date,type,vacation:id,name:text(db,label)+' · '+name,description:'',priority:db.calendarRules.eventPriority,completed:false});
+    mail(db,s,{key:id+':approval',subject:text(db,'vacationApproved'),body:text(db,'vacationApprovalBody',{destination:name,start,end,days}),from:'mailCoach'});return {ok:true,id};
+  }
+  function cancelVacation(db,s,id){
+    const v=s.vacations?.find(v=>v.id===id&&v.status==='approved');if(!v)return false;v.status='cancelled';for(const e of s.calendar.entries)if(e.vacation===id)e.completed=true;return true;
+  }
+  function processVacation(db,s,event){
+    const v=s.vacations?.find(v=>v.id===event.vacation);if(!v)return;const destination=db.vacationRules.destinations.find(d=>d.id===v.destination).name;
+    if(event.type==='vacation-start'&&v.status==='approved'){
+      const issue=vacationIssue(db,s,v.destination,v.start,v.days,v.id),cost=vacationQuote(db,s,v.destination,v.days);
+      if(issue||!financeDebit(db,s,cost,'vacation',s.date,destination)){cancelVacation(db,s,v.id);mail(db,s,{key:v.id+':cancelled',subject:text(db,'vacationCancelled'),body:text(db,issue||'vacationFunds'),from:'mailCoach'});return;}
+      v.status='active';v.cost=cost;v.lifestyle=s.economy.lifestyle;s.player.fitness=clamp(s.player.fitness-db.vacationRules.travelFitnessCost,0,db.rules.scale);s.trainingProgram.fatigue=Math.min(s.trainingProgram.fatigue,db.vacationRules.fatigueCeiling);
+      mail(db,s,{key:v.id+':departure',subject:event.name,body:text(db,'vacationStartBody',{destination,cost:cash(db,cost)}),from:'mailSystem'});
+    }else if(event.type==='vacation-end'&&v.status==='active'){v.status='completed';mail(db,s,{key:v.id+':return',subject:event.name,body:text(db,'vacationReturnBody',{destination}),from:'mailCoach'});}
+  }
+  function clubCareerRecords(db,s){
+    const rows=[];for(const e of s.player.career.filter(e=>['joined','promoted'].includes(e.type)).slice().sort((a,b)=>a.date.localeCompare(b.date))){const last=rows.at(-1);if(last?.club===e.club)continue;if(last)last.end=e.date;rows.push({club:e.club,start:e.date,end:null});}
+    const last=rows.at(-1);if(last&&s.player.freeAgent)last.end=s.player.contract.expiresSeason<=s.season?dateAdd(db.meta.initialDate,(s.player.contract.expiresSeason-1)*db.calendarRules.seasonDays):s.date;
+    return rows.reverse().map(row=>({...row,period:row.start.slice(0,4)+'~'+(row.end?row.end.slice(0,4):'')}));
+  }
+  function spotlightImpact(db,s,record){
+    const r=db.spotlightRules,stats=record.stats;if(stats.minutes<r.minimumMinutes)return null;
+    const importance=fixtureImportance(db,s,record),context=performanceContext(db,s,s.player,[record],'media'),clubs=[record.home,record.away].map(id=>indexes(db,s).clubs[id]),high=clubs.every(c=>c?.reputation>=r.highReputation)&&context.exposure>=r.highExposure;
+    const decisive=record.decisive||db.matchImportanceRules.finalStages.includes(record.stage),level=Math.max(importance.level,decisive?r.minimumLevel:0,high?r.minimumLevel:0);
+    if(level<r.minimumLevel)return null;const sign=stats.rating>=r.excellentRating?1:stats.rating<=r.poorRating?-1:0;if(!sign)return null;
+    const severity=1+Math.abs(stats.rating-(sign>0?r.excellentRating:r.poorRating))*.25,visibility=Math.max(.5,context.exposure),reputation=sign*(r.reputationBase+level*r.reputationLevelWeight)*visibility*severity,mental=clamp(1-(s.player.traits.mental-db.dynamics.traitCenter)/db.rules.scale,.5,1.5),form=sign*r.formImpact*(1+level*.15)*mental;
+    return {level,reputation,form,text:text(db,sign>0?'spotlightRise':'spotlightFall',{name:s.player.name})};
+  }
+  function applySpotlight(db,s,record){
+    const impact=spotlightImpact(db,s,record);if(!impact)return null;const p=s.player,before=p.reputation,form=p.spotlightForm||0;
+    p.reputation=clamp(p.reputation+impact.reputation,0,db.rules.scale);p.spotlightForm=clamp(form+impact.form,-db.spotlightRules.maximumMomentum,db.spotlightRules.maximumMomentum);p.morale=clamp(p.morale+impact.form*3,0,db.rules.scale);
+    record.spotlight={...impact,reputation:p.reputation-before,form:p.spotlightForm-form};if(record.reactions){record.reactions.fans+=' '+impact.text;record.reactions.press+=' '+impact.text;}
+    mail(db,s,{key:'spotlight:'+record.id,subject:text(db,'spotlightTitle'),body:impact.text,from:'mailSystem'});return record.spotlight;
+  }
+  function lateCareerQualified(db,s){const r=db.lateCareerOfferRules,p=s.player;return p.age>=r.minimumAge&&p.reputation>=r.minimumReputation&&overall(db,p.stats)>=r.minimumAbility&&(p.history||[]).filter(h=>h.stats.minutes>0).length>=r.minimumApps;}
+  function lateCareerBuyer(db,s,c){const r=db.lateCareerOfferRules;if(c.national||c.parent||c.historical||c.id===s.player.club||!lateCareerQualified(db,s)||c.quality>overall(db,s.player.stats)+r.maximumAbilityGap)return null;return r.groups.find(g=>g.leagues.includes(c.league))||null;}
+
+  return {vacationActive,vacationQuote,vacationIssue,requestVacation,cancelVacation,clubCareerRecords,currentForm,applySpotlight,spotlightImpact,lateCareerQualified,lateCareerBuyer,playStyleDefaults,validPlayStyleBuild,playStyleEffects,setPlayStyleBuild,playStyleOpportunity,playStyleMatchEffects,trainingInjuryChance,trainingInjury,careerTraitFacts,careerTraitQualification,playerValueCheckpoints,trainingGrowthFactors,initializePlayerValueHistory,recordPlayerValue,retentionProposal,initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,initialWage,registeredPositions,positionAssessment,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
 })();
 </script>
 <script id="game-ui">
@@ -44676,6 +45065,7 @@ function validateDB(db,career=null){
     }
   };
   checkShape([DEFAULT_DB],db,'DB');const decay=db.growthRules.trainingDecay,history=db.valueHistoryRules;if(decay.overallEnd<=decay.overallStart||decay.overallPenalty<0||decay.overallPenalty>=1||decay.talentOverallShield<0||decay.talentOverallShield>1||decay.overallFloor<=0||decay.overallFloor>1||decay.ageSpan<=0||decay.ageFloor<=0||decay.ageFloor>1||['earlyTalentBonus','ageStrength','talentAgeStrength','talentAgePower'].some(k=>decay[k]<0)||!Array.isArray(history.windows)||history.windows.length!==2||new Set(history.windows).size!==2||history.windows.some(id=>!db.transferWindows.some(w=>w.id===id))||history.afterDays!==1||!Array.isArray(history.months)||history.months.length!==2||history.months[0]!==1||history.months[1]!==8||history.day!==1||!Number.isInteger(history.maxRecords)||history.maxRecords<2||!Number.isInteger(history.chart.ticks)||history.chart.ticks<1||history.chart.maxDateLabels<1||history.chart.width<=history.chart.left+history.chart.right||history.chart.height<=history.chart.top+history.chart.bottom)throw Error('growth/valueHistory rules');const retention=db.retentionRules;if(['matches','minimumMinutes','lookbackDays','minimumContractDays','offerDays','cooldownDays'].some(k=>!Number.isInteger(retention[k])||retention[k]<=0)||retention.minimumRating>db.engine.rating.max||retention.averageRating>db.engine.rating.max||retention.minimumWageFactor<=1||retention.targetWageFactor<retention.minimumWageFactor||retention.marketGrowthFactor<=1||retention.formRise<0)throw Error('retentionRules');const risk=db.trainingProgramRules.injuryRisk;if(!risk||!db.dynamics.injuries.some(i=>i.id===risk.injury)||!Number.isFinite(risk.maximumChance)||risk.maximumChance<0||risk.maximumChance>1||!Number.isFinite(risk.fatigueWeight)||risk.fatigueWeight<0||db.trainingProgramRules.intensities.some(i=>!Number.isFinite(risk.dailyChance[i.id])||risk.dailyChance[i.id]<0||risk.dailyChance[i.id]>risk.maximumChance))throw Error('training.injuryRisk');validateDevelopmentSystems(db);
+  validateVacationContent(db);
   const cfgCheckpoint=db.storageRules;if(cfgCheckpoint.presentationSlot===cfgCheckpoint.slot||cfgCheckpoint.presentationSlot===cfgCheckpoint.backupSlot||[db.meta.storageKey,cfgCheckpoint.backupKey].includes(cfgCheckpoint.presentationKey)||cfgCheckpoint.presentationMaxBytes<=0)throw Error('storageRules.presentation');
   const interactions=db.ui.interactions,infoIds=interactions.glossary.map(entry=>entry.id);
   if(interactions.tooltipWidthPixels<=0||interactions.tooltipInsetPixels<0||interactions.tooltipInsetPixels*2>=interactions.tooltipWidthPixels||interactions.tooltipDelayMs<0||interactions.tooltipLeaveMs<0||new Set(infoIds).size!==infoIds.length||infoIds.some(id=>!/^[-a-zA-Z0-9_]+$/.test(id))||interactions.glossary.some(entry=>new Set(entry.labels).size!==entry.labels.length))throw Error('ui.interactions');
@@ -44827,6 +45217,7 @@ function validateSave(envelope){
   if(!envelope||envelope.schema!==DEFAULT_DB.meta.schema||!envelope.state||!envelope.db)throw Error(t('invalidSave'));
   const s=envelope.state,p=s.player;if(!p||s.schema!==envelope.schema||!Number.isInteger(s.season)||s.season<1||!Number.isInteger(s.round)||s.round<0||!Number.isInteger(s.seed)||!/^\d{4}-\d{2}-\d{2}$/.test(s.date)||!Number.isFinite(Date.parse(s.date))||!Array.isArray(p.history)||!Array.isArray(p.career)||!Array.isArray(s.offers)||!Array.isArray(s.archives))throw Error(t('invalidSave'));
   const finite=(value,min,max)=>typeof value==='number'&&Number.isFinite(value)&&value>=min&&value<=max;
+  validateVacationSave(envelope.db,s);
   if(!s.fixtures||typeof s.fixtures!=='object'||!Object.values(s.fixtures).every(Array.isArray)||!Object.values(s.fixtures).some(x=>x.length))throw Error(t('invalidSave'));
   if(typeof p.name!=='string'||!p.name.trim()||p.name.length>envelope.db.profile.limits.nameMax||!p.contract||!finite(p.contract.weekly,0,Number.MAX_SAFE_INTEGER)||!Number.isInteger(p.contract.expiresSeason)||(!p.freeAgent&&p.contract.expiresSeason<s.season)||!envelope.db.profile.feet.some(f=>f.id===p.foot)||!envelope.db.routes.some(r=>r.id===p.route))throw Error(t('invalidSave'));
   for(const key of ['fitness','trust','morale','reputation'])if(!finite(p[key],0,envelope.db.rules.scale))throw Error(t('invalidSave'));
@@ -44900,6 +45291,20 @@ function validateSave(envelope){
   if(s.matchPresentation){const presentation=s.matchPresentation,record=s.matchPreparation?.preview||Core.nationalRecords(s).find(r=>r.id===presentation.reportId);if(!record?.result.preMatch||!envelope.db.matchBroadcast.phaseIds.includes(presentation.phase)||!Number.isInteger(presentation.cursor)||presentation.cursor<0||presentation.cursor>record.result.events.length+envelope.db.matchBroadcast.systemEventCount||typeof presentation.paused!=='boolean'||(presentation.phase==='finished'&&presentation.cursor!==record.result.events.length+envelope.db.matchBroadcast.systemEventCount))throw Error('matchPresentation');for(const side of ['home','away'])if(record.result[side].players.filter(person=>person.starter).length!==envelope.db.matchBroadcast.teamSize)throw Error('startingXI');for(const side of ['home','away']){const team=record.result[side];if(!team.tactic||!envelope.db.tactics.some(t=>t.id===team.tactic.id)||team.players.some(person=>typeof person.starter!=='boolean'||!Number.isInteger(person.number)||person.number<envelope.db.profile.limits.numberMin||person.number>envelope.db.profile.limits.numberMax))throw Error('broadcastLineup');}if(!envelope.db.positions.some(pos=>pos.id===record.result.preMatch.position)||!record.result.preMatch.manager||!record.result.preMatch.tactic)throw Error('lockerRoom');}
   validateWorldContextSave(db,s);validateStrategySave(db,s);validateGameplaySave(db,s);validatePlayStyleSave(db,s);validateNationalSave(db,s);validateDevelopmentSave(db,s);validateNpcMarketSave(db,s);validateEconomySave(db,s);validateDB(envelope.db,s);return true;
 }
+function validateVacationContent(db){
+ const r=db.vacationRules,p=db.spotlightRules,l=db.lateCareerOfferRules,positive=v=>Number.isFinite(v)&&v>0;
+ if(!r||!Number.isInteger(r.minimumDays)||!Number.isInteger(r.maximumDays)||r.minimumDays<1||r.maximumDays<r.minimumDays||r.maximumDays>db.calendarRules.seasonDays||!Number.isInteger(r.leadDays)||r.leadDays<1||!Number.isInteger(r.historyLimit)||r.historyLimit<1||!Array.isArray(r.destinations)||!r.destinations.length||new Set(r.destinations.map(d=>d.id)).size!==r.destinations.length||r.destinations.some(d=>typeof d.id!=='string'||typeof d.name!=='string'||!positive(d.travel)||!positive(d.daily))||db.economyRules.lifestyles.some(d=>!positive(r.lifestyleFactors[d.id]))||['fitnessDailyCost','travelFitnessCost','fatigueCeiling','fatigueDailyRecovery','formDailyLoss','formMaximumLoss','formRecoveryDaily'].some(k=>!positive(r[k])))throw Error('vacation.rules');
+ if(!p||Object.values(p).some(v=>!positive(v))||p.poorRating>=p.excellentRating||p.excellentRating>db.engine.rating.max||p.highExposure>1||p.minimumMinutes>db.rules.matchMinutes||!l||['minimumAge','minimumReputation','minimumAbility','minimumApps','maximumAbilityGap','chance','weight'].some(k=>!positive(l[k]))||l.chance>1||!Array.isArray(l.groups)||l.groups.some(g=>!g.id||!Array.isArray(g.leagues)||g.leagues.some(id=>!db.leagues.some(d=>d.id===id))||['minimumWeekly','wageMultiplier','currentWageMultiplier','finance'].some(k=>!positive(g[k]))))throw Error('spotlight/lateCareer.rules');
+}
+function validateVacationSave(db,s){
+ const r=db.vacationRules,date=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v;
+ for(const [key,min,max] of [['vacationForm',-r.formMaximumLoss,0],['spotlightForm',-db.spotlightRules.maximumMomentum,db.spotlightRules.maximumMomentum]])if(s.player[key]!==undefined&&(!Number.isFinite(s.player[key])||s.player[key]<min||s.player[key]>max))throw Error('vacation.form');
+ if(s.vacations===undefined)return;if(!Array.isArray(s.vacations)||s.vacations.length>r.historyLimit||!Number.isInteger(s.vacationSerial)||s.vacationSerial<0||new Set(s.vacations.map(v=>v.id)).size!==s.vacations.length||s.vacations.filter(v=>['approved','active'].includes(v.status)).length>1)throw Error('vacation.state');
+ for(const v of s.vacations){if(!/^vacation:\d+$/.test(v.id)||Number(v.id.split(':')[1])>s.vacationSerial||!r.destinations.some(d=>d.id===v.destination)||!Number.isInteger(v.days)||v.days<r.minimumDays||v.days>r.maximumDays||![v.start,v.end,v.returnDate,v.requested].every(date)||v.requested>s.date||v.start<=v.requested||v.end!==Core.dateAdd(v.start,v.days-1)||v.returnDate!==Core.dateAdd(v.start,v.days)||!['approved','active','completed','cancelled'].includes(v.status)||!Number.isFinite(v.cost)||v.cost<0||v.lifestyle!==null&&!db.economyRules.lifestyles.some(d=>d.id===v.lifestyle)||['active','completed'].includes(v.status)&&(v.cost<=0||!v.lifestyle)||v.status==='active'&&(s.date<v.start||s.date>v.returnDate)||v.status==='completed'&&s.date<v.returnDate)throw Error('vacation.record');
+  for(const type of ['vacation-start','vacation-end']){const event=s.calendar?.entries.find(e=>e.vacation===v.id&&e.type===type);if(['approved','active'].includes(v.status)&&(!event||event.date!==(type==='vacation-start'?v.start:v.returnDate)||event.completed!==(v.status==='active'&&type==='vacation-start')))throw Error('vacation.calendar');}
+ }
+}
+
 function validateEconomyContent(db,career=null){
  const r=db?.economyRules,base=DEFAULT_DB.economyRules,number=(v,min=0,max=Number.MAX_SAFE_INTEGER)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max,string=v=>typeof v==='string'&&v.trim().length>0;
  if(!r||Object.entries(base).some(([key,value])=>typeof value==='number'&&!number(r[key])))throw Error('DB.economyRules');
@@ -45304,13 +45709,13 @@ function competitionName(f){const league=idx().leagues[f.competition||f.league||
 
 function historyItems(records){if(!records.length)return `<div class="empty">${h(t('noMatches'))}</div>`;return records.slice().reverse().map(record=>{const result=matchOutcome(record),opponent=idx().clubs[record.home===record.club?record.away:record.home];return `<div class="history-item"><div class="result-badge ${result.class}">${h(result.label)} ${h(result.score)}</div><div><b>${clubLink(opponent.id)}</b><p>${h(record.date)} · ${h(competitionName(record))} · ${h(t(record.appearance))} · ${n(record.stats.minutes)}${h(t('minutesShort'))}</p></div><div class="row">${record.stats.minutes?`<span class="rating num">${n(record.stats.rating,1)}</span>`:badge(t('unused'))}${btn(t('matchDetails'),'report',`data-id="${h(record.id)}"`,'subtle small')}</div></div>`;}).join('');}
 function render(){if(screen!=='settings')pendingUiScale=null;hideInteractionTooltip();shellHeaderObserver?.disconnect();if(state){syncSeasonCalendar();Core.syncMarketState(DB,state);}applyTheme();if(calendarLoading){document.getElementById('app').innerHTML=`<main class="match-loading"><span class="match-loader" aria-hidden="true"></span><h1>${h(t('calendarAdvancing'))}</h1></main>`;return;}if(storageLoading){document.getElementById('app').innerHTML=`<main class="match-loading"><span class="match-loader" aria-hidden="true"></span><h1>${h(t('storageLoading'))}</h1></main>`;return;}if(state&&(matchLoading||state.matchPresentation)){renderMatchExperience();return;}if(!state){sectionCareer=null;renderOnboard();return;}rememberSectionVisit();const p=state.player,club=currentClub(),league=idx().leagues[club.league],tab=screen==='settings'?{label:t('settings')}:DB.ui.tabs.find(x=>x.id===screen)||DB.ui.tabs[0],finished=Core.seasonReady(state),responses=Core.pendingResponses(DB,state),decision=state.careerStories.pending;const interviewing=state.interviews.pending;document.title=`${DB.meta.title} — ${p.name}`;
-  document.getElementById('app').innerHTML=`<aside class="sidebar" id="sidebar"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(DB.meta.subtitle)}</small></div></div><div class="career-mini"><div class="row"><span class="avatar">${h(p.name.slice(0,1))}</span><div><b>${h(p.name)}</b><p>${h(p.position)} · ${n(p.age)}${h(t('ageUnit'))}</p></div></div><div class="divider"></div><p>${p.freeAgent?h(t('freeAgent')):clubLink(club.id)}</p></div><div class="nav-caption">${h(t('navigation'))}</div><nav class="nav" aria-label="${h(t('navigation'))}">${DB.ui.navigationGroups.map(x=>`<button type="button" data-action="tab" data-group="${h(x.id)}" data-tab="${h(x.views[0])}" class="${x.views.includes(screen)?'active':''}" ${x.views.includes(screen)?'aria-current="page"':''}><span class="nav-icon" aria-hidden="true">${interfaceSymbol(x.id,x.icon)}</span><span class="nav-label">${h(x.label)}</span>${x.views.includes('inbox')&&unreadCount()?badge(n(unreadCount()),'green'):''}</button>`).join('')}</nav><footer class="sidebar-footer">${h(DB.meta.title)} / v${h(DB.meta.version)}${btn(t('settings'),'tab','data-tab="settings"','subtle')}${btn(t('newCareer'),'new','','subtle')}</footer></aside><main class="shell"><header class="topbar"><div class="row topbar-heading"><div class="topbar-controls"><button type="button" class="mobile-menu" data-action="menu" aria-label="${h(t('navigation'))}">${interfaceSymbol('menu')}</button>${sectionHistoryControls()}</div><div class="topbar-context"><p class="career-date"><span>${leagueLink(league.id)}</span><span>${h(t('season',{n:state.season}))}</span><time datetime="${h(state.date)}">${h(state.date)}</time></p><div class="row wrap"><h2>${h(tab.label)}</h2>${fitnessGauge()}</div></div></div><div class="top-actions"><details class="header-tools"><summary>${h(t('pageTools'))}</summary><div>${btn(t('export'),'export','','subtle')}${btn(t('import'),'import','','subtle')}</div></details><span id="save-indicator" class="save-indicator" role="status" data-status="${h(storageStatus)}">${h(t(storageStatus))}</span>${btn(t('save'),'save')}${btn(interviewing?t('interviewAnswer'):decision?t('chooseDecision'):responses.length?t('respondRequired',{n:responses.length}):t(finished?'nextSeason':'continue'),interviewing?'interview-open':decision?'career-decision':responses.length?'respond-required':finished?'next-season':'advance','','primary')}</div></header><div class="content" data-screen="${h(screen)}">${sectionNavigation()}${!storageHealthy?`<div class="notice warning" style="margin-bottom:18px">${h(t('saveWarning'))}</div>`:''}${({settings:settings,dashboard:dashboard,calendar:calendar,inbox:inbox,fixtures:fixtures,statistics:statistics,team:team,market:market,training:trainingCenter,performance:performanceView,'training-history':trainingHistoryView,valuation:valuationView,legacy:legacyView,clubroom:clubroomView,interviews:interviewsView,career:career,world:world,news:news,nations:nations,finances:financesView,commercial:commercialView,investments:investmentsView,assets:assetsView,brands:brandsView,lifestyle:lifestyleView}[screen]||dashboard)()}</div></main>`;organizeView();if(screen==='market'&&!activeDeal)refreshAgentTargets();
+  document.getElementById('app').innerHTML=`<aside class="sidebar" id="sidebar"><div class="logo"><span class="logo-mark">XI</span><div>${h(DB.meta.title)}<small>${h(DB.meta.subtitle)}</small></div></div><div class="career-mini"><div class="row"><span class="avatar">${h(p.name.slice(0,1))}</span><div><b>${h(p.name)}</b><p>${h(p.position)} · ${n(p.age)}${h(t('ageUnit'))}</p></div></div><div class="divider"></div><p>${p.freeAgent?h(t('freeAgent')):clubLink(club.id)}</p></div><div class="nav-caption">${h(t('navigation'))}</div><nav class="nav" aria-label="${h(t('navigation'))}">${DB.ui.navigationGroups.map(x=>`<button type="button" data-action="tab" data-group="${h(x.id)}" data-tab="${h(x.views[0])}" class="${x.views.includes(screen)?'active':''}" ${x.views.includes(screen)?'aria-current="page"':''}><span class="nav-icon" aria-hidden="true">${interfaceSymbol(x.id,x.icon)}</span><span class="nav-label">${h(x.label)}</span>${x.views.includes('inbox')&&unreadCount()?badge(n(unreadCount()),'green'):''}</button>`).join('')}</nav><footer class="sidebar-footer">${h(DB.meta.title)} / v${h(DB.meta.version)}${btn(t('settings'),'tab','data-tab="settings"','subtle')}${btn(t('newCareer'),'new','','subtle')}</footer></aside><main class="shell"><header class="topbar"><div class="row topbar-heading"><div class="topbar-controls"><button type="button" class="mobile-menu" data-action="menu" aria-label="${h(t('navigation'))}">${interfaceSymbol('menu')}</button>${sectionHistoryControls()}</div><div class="topbar-context"><p class="career-date"><span>${leagueLink(league.id)}</span><span>${h(t('season',{n:state.season}))}</span><time datetime="${h(state.date)}">${h(state.date)}</time></p><div class="row wrap"><h2>${h(tab.label)}</h2>${fitnessGauge()}</div></div></div><div class="top-actions"><details class="header-tools"><summary>${h(t('pageTools'))}</summary><div>${btn(t('export'),'export','','subtle')}${btn(t('import'),'import','','subtle')}</div></details><span id="save-indicator" class="save-indicator" role="status" data-status="${h(storageStatus)}">${h(t(storageStatus))}</span>${btn(t('save'),'save')}${btn(interviewing?t('interviewAnswer'):decision?t('chooseDecision'):responses.length?t('respondRequired',{n:responses.length}):t(finished?'nextSeason':'continue'),interviewing?'interview-open':decision?'career-decision':responses.length?'respond-required':finished?'next-season':'advance','','primary')}</div></header><div class="content" data-screen="${h(screen)}">${sectionNavigation()}${!storageHealthy?`<div class="notice warning" style="margin-bottom:18px">${h(t('saveWarning'))}</div>`:''}${({settings:settings,dashboard:dashboard,calendar:calendar,inbox:inbox,fixtures:fixtures,statistics:statistics,team:team,market:market,training:trainingCenter,performance:performanceView,'training-history':trainingHistoryView,valuation:valuationView,legacy:legacyView,clubroom:clubroomView,interviews:interviewsView,career:career,world:world,news:news,nations:nations,finances:financesView,commercial:commercialView,investments:investmentsView,assets:assetsView,brands:brandsView,lifestyle:lifestyleView,vacation:vacationView}[screen]||dashboard)()}</div></main>`;organizeView();if(screen==='market'&&!activeDeal)refreshAgentTargets();
   fitShirtNames();maybeShowCareerMoment();
 }
 function baseDashboard(){const p=state.player,club=currentClub(),tot=Core.totals(DB,myHistory()),fixture=nextFixture(),chance=Core.selection(DB,state)*DB.rules.scale,comp=Core.competition(DB,p,p.club,state),dream=idx().clubs[p.dreamClub]||{name:t('undecided'),color:DB.profile.unspecifiedColor,quality:DB.rules.scale},fit=Core.suitability(DB,p),route=DB.routes.find(x=>x.id===p.route);return `<div class="welcome"><div class="eyebrow">${h(t('currentClub'))} / ${h(club.name)}</div><h1>${h(t('welcome',{name:p.name}))}</h1><p>${h(t('welcomeSub'))}</p></div><div class="cols"><div class="stack"><section class="card hero"><div class="hero-profile">${shirt(p.number,p.displayName||p.name)}<div>${badge(p.position)}<h2>${h(p.name)}</h2><p>${h(DB.countries.find(c=>c.id===p.country).name)} · ${n(p.age)}${h(t('ageUnit'))} · ${n(p.height)} cm</p><div style="margin-top:12px">${badge(club.parent?route.name:t('currentClub'),'pink')}</div></div></div><div class="hero-score"><span>${h(t('overall'))}</span><strong class="num">${abilityLabel(Core.overall(DB,p.stats))}</strong><p>${h(t('roleOverall'))} ${abilityLabel(fit)}</p></div></section><div class="kpi-grid">${kpi(t('apps'),`${tot.apps}`,`${t('starts')} ${tot.starts} · ${tot.minutes}${t('minutesShort')}`)}${kpi(t('goal'),n(tot.goals),`${t('xg')} ${n(tot.xg,2)}`)}${kpi(t('assist'),n(tot.assists),`${t('xa')} ${n(tot.xa,2)}`)}${kpi(t('avgRating'),tot.apps?n(tot.rating,2):t('noRating'),t('seasonStats'))}</div><section class="card"><div class="section-head"><h2>${h(t('coachReport'))}</h2>${badge(p.injury?t('injured',{n:p.injury}):p.suspension?t('suspended',{n:p.suspension}):t(chance>=DB.competitionRules.roleStarterChance?'roleStarter':chance>=DB.competitionRules.roleRotationChance?'roleRotation':'roleBackup'),p.injury||p.suspension?'red':'green')}</div><p class="small muted">${h(t('coachReportText',{competition:n(comp,1),chance:n(chance)}))}</p><div class="form-grid" style="margin-top:20px">${['trust','fitness','morale','reputation'].map(key=>`<div><div class="row between small" style="margin-bottom:7px"><span class="muted">${h(t(key))}</span><b class="num">${n(p[key])}/${DB.rules.scale}</b></div>${progress(p[key])}</div>`).join('')}</div>${p.fitness<DB.rules.minimumFitnessForSelection?`<div class="notice warning" style="margin-top:20px">${h(t('lowFitness'))}</div>`:''}</section><section class="card"><div class="section-head"><h2>${h(t('recentMatches'))}</h2>${btn(t('viewAll'),'tab','data-tab="fixtures"','subtle')}</div>${historyItems(myHistory().slice(-DB.rules.recentFormMatches))}</section></div><div class="stack"><section class="card"><div class="section-head"><h2>${h(t('nextFixture'))}</h2>${fixture?badge(t('round',{n:fixture.round+1})):badge(t('endSeason'),'pink')}</div>${fixture?`<p class="small muted">${h(competitionName(fixture))}</p>${fixtureCard(fixture)}<div class="divider"></div>${detail(t('selection'),`${n(chance)}% ${t('starter')}`)}${detail(t('fitness'),`${n(p.fitness)}/${DB.rules.scale}`)}`:`<div class="notice">${h(t('noFixture'))}</div>`}</section><section class="card"><div class="section-head"><h2>${h(t('training'))}</h2>${badge(abilityLabel(Core.suitability(DB,p)))}</div><div class="training-list">${DB.training.map(tr=>btn(tr.name,'training',`data-id="${h(tr.id)}" aria-pressed="${tr.id===state.training}"`,tr.id===state.training?'selected':'')).join('')}</div><p class="small muted" style="margin-top:12px">${h(DB.training.find(tr=>tr.id===state.training).description)}</p><div class="divider"></div><p class="small muted">${h(t('trainingHint'))}</p>${trainingProgress()}${quickAbilities()}</section><section class="card"><div class="section-head"><h2>${h(t('dream'))}</h2>${crest(dream)}</div><h3>${h(dream.name)}</h3><p class="small muted" style="margin:7px 0 15px">${h(t(p.dreamClub===DB.profile.unspecifiedId?'undecidedDream':'dreamHint'))}</p>${p.dreamClub===DB.profile.unspecifiedId?'':progress(fit,dream.quality)+`<div class="row between small" style="margin-top:10px"><span class="muted">${h(t('abilityGap'))}</span><b class="num">${n(Math.max(0,dream.quality-fit),1)}</b></div>`}</section></div></div>`;}
 function fixtures(){if(reportId){const record=Core.nationalRecords(state).find(x=>x.id===reportId);if(record)return report(record);}const league=currentClub().league,upcoming=Core.myFixtures(state).filter(f=>!f.result&&f.date>=state.date&&(fixtureCountryFilter==='all'||idx().leagues[f.competition]?.country===fixtureCountryFilter)&&(fixtureCompetition==='all'||f.competition===fixtureCompetition)),history=Core.nationalRecords(state).filter(f=>(fixtureCountryFilter==='all'||idx().leagues[f.league]?.country===fixtureCountryFilter)&&(fixtureCompetition==='all'||f.league===fixtureCompetition)),competitions=[...DB.leagues,...DB.nationalCompetitions].filter(l=>Core.myFixtures(state).some(f=>f.competition===l.id)||Core.nationalRecords(state).some(f=>f.league===l.id));return `<div class="tabs-inline">${btn(t('history'),'fixture-scope','data-scope="history"',fixtureScope==='history'?'selected':'')}${btn(t('schedule'),'fixture-scope','data-scope="schedule"',fixtureScope==='schedule'?'selected':'')}</div><div class="location-filters two-step"><label>${h(t('browseCountry'))}<select id="fixture-country" autocomplete="off" data-browse-country="${h(fixtureCountryFilter)}">${browseCountryOptions(competitions,fixtureCountryFilter,true)}</select></label><label>${h(t('competition'))}<select id="fixture-competition"><option value="all">${h(t('allCompetitions'))}</option>${browseLeagueOptions(competitions,fixtureCountryFilter,fixtureCompetition)}</select></label></div><section class="card"><div class="section-head"><h2>${h(t(fixtureScope==='history'?'history':'schedule'))}</h2>${badge(t('season',{n:state.season}))}</div>${fixtureScope==='history'?historyItems(history):upcoming.length?`<div class="table-wrap"><table><thead><tr>${['round','date','opponent','competition'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody>${upcoming.map(f=>`<tr><td>${n(f.round+1)}</td><td>${h(f.date)}</td><td>${h(idx().clubs[f.home===(f.ownClub||state.player.club)?f.away:f.home].name)} ${badge(t(f.home===(f.ownClub||state.player.club)?'home':'away'))}</td><td>${h(competitionName(f))}</td></tr>`).join('')}</tbody></table></div>`:`<div class="empty">${h(t('seasonFinished'))}</div>`}</section>`;}
 function baseReport(record){const result=record.result,s=record.stats,i=idx(),r=result.player;return `<div class="section-head"><div><div class="eyebrow">${h(t('round',{n:record.round+1}))} / ${h(i.leagues[record.league].name)}</div><h1>${h(t('matchReport'))}</h1></div>${btn(t('history'),'report-close')}</div><section class="card" style="margin-bottom:20px">${fixtureCard(record,result)}<div class="row between wrap">${badge(t(record.appearance),record.appearance==='starter'?'green':'pink')}<span class="small muted">${h(t('minutes'))}: ${n(s.minutes)} / ${n(result.duration)} · ${h(t('season',{n:record.season}))}</span>${s.minutes?`<span class="rating">${h(t('avgRating'))} ${n(s.rating,1)}</span>`:''}</div></section><div class="cols"><div class="stack"><section class="card"><div class="section-head"><h2>${h(t('playerStats'))}</h2>${badge(state.player.name)}</div>${s.minutes?`<div class="form-grid">${DB.ui.statGroups.map(group=>`<section><h3 class="small" style="margin-bottom:8px;color:var(--accent)">${h(group.name)}</h3><div class="table-wrap"><table><tbody>${group.fields.map(key=>{const f=DB.ui.statFields.find(f=>f.id===key);return `<tr><td>${infoLabel(f.label)}</td><td class="right num">${n(Core.metric(DB,s,key),f.digits)} ${h(f.unit||'')}</td></tr>`;}).join('')}</tbody></table></div></section>`).join('')}</div><p class="small muted" style="margin-top:14px">${h(t('statNote'))}</p>`:`<div class="empty">${h(t('unused'))}</div>`}</section><section class="card"><h2 style="margin-bottom:16px">${h(t('lineups'))}</h2>${['home','away'].map(side=>`<h3 style="margin:18px 0 8px">${h(i.clubs[record[side]].name)}</h3><div class="table-wrap"><table><thead><tr>${['player','position','minutes','goal','assist','avgRating'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody>${result[side].players.map(p=>`<tr class="${p.id==='player'?'highlight':''}"><td>${h(p.name)}</td><td>${h(p.position)}</td><td>${n(p.match.minutes)}</td><td>${n(p.match.goals)}</td><td>${n(p.match.assists)}</td><td>${p.match.minutes?n(p.match.rating,1):h(t('noRating'))}</td></tr>`).join('')}</tbody></table></div>`).join('')}</section></div><div class="stack"><section class="card"><h2 style="margin-bottom:20px">${h(t('teamStats'))}</h2><div class="stat-compare">${DB.ui.teamFields.map(f=>{const a=Core.metric(DB,result.home.stats,f.id),b=Core.metric(DB,result.away.stats,f.id),total=a+b;return `<div class="compare-row"><b class="num">${n(a,f.digits)}${h(f.unit||'')}</b><div class="compare-center"><span>${infoLabel(f.label)}</span><div class="compare-bars"><span style="width:${total?a/total*DB.rules.scale:DB.rules.scale/2}%"></span><span style="width:${total?b/total*DB.rules.scale:DB.rules.scale/2}%"></span></div></div><b class="num">${n(b,f.digits)}${h(f.unit||'')}</b></div>`;}).join('')}</div></section><section class="card"><div class="section-head"><h2>${h(t('events'))}</h2>${badge(result.events.length)}</div><div class="events">${result.events.map(event=>{const chance=DB.engine.shot.chances.find(c=>c.id===event.chance);return `<div class="event"><time>${event.minute}′</time><div><b>${h(t(event.type))}</b> · ${h(event.player)}${['subEvent','subInEvent','subOutEvent','injuryEvent'].includes(event.type)?`<p>${h(broadcastText(event,record,broadcastScore(record,[])))}</p>`:''}<p>${h(i.clubs[event.club].name)}${event.chance?` · ${h(chance?.name||t(event.chance))} · xG ${n(event.xg,2)}`:''}${event.assister?` · ${h(t('assist'))}: ${h(event.assister)}`:''}</p></div></div>`;}).join('')}</div></section></div></div>`;}
-function statistics(){const chosen=selectedStatsSeason??state.season,records=statsScope==='all'?state.player.history:state.player.history.filter(r=>r.season===chosen),stats=Core.totals(DB,records),recent=records.filter(r=>r.stats.minutes>0).slice(-DB.rules.recentFormMatches);return `<div class="card" style="margin-bottom:20px"><div class="row between wrap"><label>${h(t('seasonPick'))}<select id="stats-season-select">${Array.from({length:state.season},(_,i)=>i+1).reverse().map(season=>`<option value="${season}" ${season===chosen?'selected':''}>${h(seasonLabel(season))}</option>`).join('')}</select></label><div><h2>${h(statsScope==='all'?t('allCareer'):t('season',{n:chosen}))}</h2><p class="small muted">${h(t('seasonPeriod',{start:Core.dateAdd(DB.meta.initialDate,(chosen-1)*DB.calendarRules.seasonDays),end:Core.dateAdd(DB.meta.initialDate,chosen*DB.calendarRules.seasonDays-1)}))}</p></div></div></div><div class="tabs-inline">${state.seasonRecaps.some(r=>r.season===chosen)?btn(t('seasonReview'),'season-review',`data-season="${chosen}"`):''}${btn(t('seasonStats'),'stats-scope','data-scope="season"',statsScope==='season'?'selected':'')}${btn(t('allCareer'),'stats-scope','data-scope="all"',statsScope==='all'?'selected':'')}</div><div class="kpi-grid" style="margin-bottom:20px">${kpi(t('apps'),n(stats.apps),`${t('starts')} ${stats.starts}`)}${kpi(t('minutes'),n(stats.minutes),t('minutesShort'))}${kpi(t('goal'),n(stats.goals),`${t('assist')} ${stats.assists}`)}${kpi(t('avgRating'),stats.apps?n(stats.rating,2):t('noRating'),t('allCompetitions'))}</div><div class="cols equal"><section class="card"><div class="section-head"><h2>${h(t('recordSummary'))}</h2>${badge(t('databaseLabel'))}</div><div class="table-wrap"><table><tbody>${DB.ui.summaryFields.map(key=>{const field=DB.ui.statFields.find(f=>f.id===key);return `<tr><td>${infoLabel(field.label)}</td><td class="right num">${n(Core.metric(DB,stats,key),field.digits)} ${h(field.unit||'')}</td></tr>`;}).join('')}${detailTable(t('avgRating'),stats.apps?n(stats.rating,2):t('noRating'))}${detailTable(DB.ui.statFields.find(f=>f.id==='passAccuracy').label,`${n(Core.metric(DB,stats,'passAccuracy'),1)}%`)}</tbody></table></div></section><div class="stack"><section class="card"><h2 style="margin-bottom:18px">${h(t('per90'))}</h2>${stats.minutes?`<div class="detail-list">${DB.ui.per90Fields.map(key=>detail(DB.ui.statFields.find(f=>f.id===key).label,n(stats[key]*DB.rules.matchMinutes/stats.minutes,2))).join('')}</div>`:`<div class="empty">${h(t('noStats'))}</div>`}<p class="small muted" style="margin-top:18px">${h(t('statNote'))}</p></section></div></div>${seasonStatsSummary()}`;}
+function statistics(){const chosen=selectedStatsSeason??state.season,records=statsScope==='all'?state.player.history:state.player.history.filter(r=>r.season===chosen),stats=Core.totals(DB,records),recent=records.filter(r=>r.stats.minutes>0).slice(-DB.rules.recentFormMatches);return `<div class="card" style="margin-bottom:20px"><div class="row between wrap"><label>${h(t('seasonPick'))}<select id="stats-season-select">${Array.from({length:state.season},(_,i)=>i+1).reverse().map(season=>`<option value="${season}" ${season===chosen?'selected':''}>${h(seasonLabel(season))}</option>`).join('')}</select></label><div><h2>${h(statsScope==='all'?t('allCareer'):t('season',{n:chosen}))}</h2><p class="small muted">${h(t('seasonPeriod',{start:Core.dateAdd(DB.meta.initialDate,(chosen-1)*DB.calendarRules.seasonDays),end:Core.dateAdd(DB.meta.initialDate,chosen*DB.calendarRules.seasonDays-1)}))}</p></div></div></div><div class="tabs-inline">${state.seasonRecaps.some(r=>r.season===chosen)?btn(t('seasonReview'),'season-review',`data-season="${chosen}"`):''}${btn(t('seasonStats'),'stats-scope','data-scope="season"',statsScope==='season'?'selected':'')}${btn(t('allCareer'),'stats-scope','data-scope="all"',statsScope==='all'?'selected':'')}</div><div class="kpi-grid" style="margin-bottom:20px">${kpi(t('apps'),n(stats.apps),`${t('starts')} ${stats.starts}`)}${kpi(t('minutes'),n(stats.minutes),t('minutesShort'))}${kpi(t('goal'),n(stats.goals),`${t('assist')} ${stats.assists}`)}${kpi(t('avgRating'),stats.apps?n(stats.rating,2):t('noRating'),t('allCompetitions'))}</div><div class="cols equal"><section class="card"><div class="section-head"><h2>${h(t('recordSummary'))}</h2>${badge(t('databaseLabel'))}</div><div class="table-wrap"><table><tbody>${DB.ui.summaryFields.map(key=>{const field=DB.ui.statFields.find(f=>f.id===key);return `<tr><td>${infoLabel(field.label)}</td><td class="right num">${n(Core.metric(DB,stats,key),field.digits)} ${h(field.unit||'')}</td></tr>`;}).join('')}${detailTable(t('avgRating'),stats.apps?n(stats.rating,2):t('noRating'))}${detailTable(DB.ui.statFields.find(f=>f.id==='passAccuracy').label,`${n(Core.metric(DB,stats,'passAccuracy'),1)}%`)}</tbody></table></div></section><div class="stack"><section class="card"><h2 style="margin-bottom:18px">${h(t('per90'))}</h2>${stats.minutes?`<div class="detail-list">${DB.ui.per90Fields.map(key=>detail(DB.ui.statFields.find(f=>f.id===key).label,n(stats[key]*DB.rules.matchMinutes/stats.minutes,2))).join('')}</div>`:`<div class="empty">${h(t('noStats'))}</div>`}<p class="small muted" style="margin-top:18px">${h(t('statNote'))}</p></section></div></div>${seasonStatsSummary()}${clubCareerSummary()}`;}
 const detailTable=(label,value)=>`<tr><td>${h(label)}</td><td class="right num">${h(value)}</td></tr>`;
 function continentalResult(result,final=false){return !result?'':(result.aggregate?'<b>'+h(t('competitionAggregate',{home:result.aggregate[0],away:result.aggregate[1]}))+'</b> · ':'')+(result.extraTime?h(t('competitionExtraTime'))+' · ':'')+(result.penalties?h(t('competitionPenalties',{home:result.penalties[0],away:result.penalties[1]}))+' · ':'')+(result.winner?h(idx().clubs[result.winner].name)+' · '+h(t(final?'competitionWinner':'competitionAdvanced')):'');}
 function continentalBracket(id){
@@ -45526,7 +45931,7 @@ function playerValueHistoryCard(){
 }
 
 function career(){const p=state.player,c=p.contract;return pendingArrival()+`<div class="profile-grid"><section class="card"><div class="section-head"><div class="row">${shirt(p.number,p.displayName||p.name)}<div><h1>${h(p.name)}</h1><p class="small muted">${h(p.position)} · ${h(currentClub().name)}</p></div></div>${btn(t('recordSummary'),'tab','data-tab="statistics"','small')}</div>${playerStrengthsCard()}<div class="profile-facts">${detail(t('nationality'),DB.countries.find(x=>x.id===p.country).name)}${detail(t('age'),n(p.age))}${detail(t('height'),n(p.height)+' cm')}${detail(t('weight'),n(p.weight)+' kg')}${detail(t('foot'),DB.profile.feet.find(x=>x.id===p.foot).name)}${detail(t('displayName'),p.displayName||p.name)}</div><div class="divider"></div><h2>${h(t('development'))}</h2><div class="ability-grid">${DB.attributes.map(a=>`<div><div class="row between small"><span>${h(a.name)}</span><b>${abilityLabel(p.stats[a.id])} ${trainingMarker(a.id)}</b></div>${progress(p.stats[a.id])}</div>`).join('')}</div><p class="small muted">${h(t('growthHint'))}</p><details class="helper-details"><summary>${h(t('dream'))}</summary><div class="detail-list">${detail(t('preferredLeague'),wishName('league',p.preferredLeague))}${detail(t('dream'),wishName('club',p.dreamClub))}</div></details></section><div class="stack"><section class="card contract-summary"><div class="section-head"><h2>${h(t('contractLength'))}</h2>${p.freeAgent?badge(t('freeAgent')):btn(t('contractRenew'),'renew','','primary small')}</div><div class="profile-facts">${detail(t('weeklyWage'),money(c.weekly))}${detail(t('salaryAnnual'),money(c.weekly*DB.rules.annualSalaryWeeks))}${detail(t('remaining'),t('years',{n:c.expiresSeason-state.season}))}${detail(t('marketValue'),money(Core.marketValue(DB,p,state)))}${detail(t('starPower'),n(Core.starPower(DB,p,state),1))}${detail(t('contractPromise'),roleName(c.role))}${detail(t('contractPosition'),c.position)}</div><details class="helper-details"><summary>${h(t('contractDetails'))}</summary><div class="detail-list">${DB.dealFields.filter(f=>!['fee','weekly','years','role','position','upfrontPercent','installmentMonths','sellOnPercent','agentCommissionPercent','arrival'].includes(f.id)).map(f=>detail(f.name,f.type==='money'?money(c[f.id]):n(c[f.id]))).join('')}${detail(t('earned'),money(p.earned))}</div></details></section>${playerValueHistoryCard()}</div></div>`;}
-function report(record){const c=record.result.context,reactions=record.reactions;return playStyleReport(record)+strategyMatchCard(record)+roleMatchCard(record)+baseReport(record)+`<div class="cols equal" style="margin-top:20px"><section class="card"><h2>${h(t('fans'))}</h2><p class="reaction">${h(reactions?.fans||t('legacyReport'))}</p><div class="divider"></div><h2>${h(t('press'))}</h2><p class="reaction">${h(reactions?.press||t('legacyReport'))}</p></section><section class="card"><div class="section-head"><h2>${h(t('contextTitle'))}</h2>${c?badge(c.position):''}</div>${c?`<div class="detail-list">${detail(t('manager'),c.manager.name)}${detail(t('roleFit'),n(c.roleFit*DB.rules.scale,1)+'%')}${detail(t('fitness'),n(c.fitness,1))}${detail(t('adaptation'),n(c.adaptation,1))}</div><div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>${h(t('initialStats'))}</th><th>${h(t('quality'))}</th><th>${h(t('factorPsychology'))}</th><th>${h(t('factorFatigue'))}</th><th>${h(t('factorPressure'))}</th></tr></thead><tbody>${DB.attributes.map(a=>{const f=c.actions[a.id];return `<tr><td>${h(a.name)}</td><td class="num">${n(f.skill,1)}</td><td class="num">×${n(f.psychology,2)}</td><td class="num">×${n(f.fatigue,2)}</td><td class="num">×${n(f.pressure,2)}</td></tr>`;}).join('')}</tbody></table></div><p class="small muted" style="margin-top:14px">${h(t('contextHint'))}</p>`:`<p class="small muted">${h(t('legacyReport'))}</p>`}</section></div>`;}
+function report(record){const c=record.result.context,reactions=record.reactions;return spotlightCard(record)+playStyleReport(record)+strategyMatchCard(record)+roleMatchCard(record)+baseReport(record)+`<div class="cols equal" style="margin-top:20px"><section class="card"><h2>${h(t('fans'))}</h2><p class="reaction">${h(reactions?.fans||t('legacyReport'))}</p><div class="divider"></div><h2>${h(t('press'))}</h2><p class="reaction">${h(reactions?.press||t('legacyReport'))}</p></section><section class="card"><div class="section-head"><h2>${h(t('contextTitle'))}</h2>${c?badge(c.position):''}</div>${c?`<div class="detail-list">${detail(t('manager'),c.manager.name)}${detail(t('roleFit'),n(c.roleFit*DB.rules.scale,1)+'%')}${detail(t('fitness'),n(c.fitness,1))}${detail(t('adaptation'),n(c.adaptation,1))}</div><div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>${h(t('initialStats'))}</th><th>${h(t('quality'))}</th><th>${h(t('factorPsychology'))}</th><th>${h(t('factorFatigue'))}</th><th>${h(t('factorPressure'))}</th></tr></thead><tbody>${DB.attributes.map(a=>{const f=c.actions[a.id];return `<tr><td>${h(a.name)}</td><td class="num">${n(f.skill,1)}</td><td class="num">×${n(f.psychology,2)}</td><td class="num">×${n(f.fatigue,2)}</td><td class="num">×${n(f.pressure,2)}</td></tr>`;}).join('')}</tbody></table></div><p class="small muted" style="margin-top:14px">${h(t('contextHint'))}</p>`:`<p class="small muted">${h(t('legacyReport'))}</p>`}</section></div>`;}
 
 function npcMarketCard(){const m=state.world.npcMarket,rows=(m?.history||[]).slice().reverse();return '<section class="card npc-market"><h2>'+h(t('npcMarketTitle'))+'</h2><p class="small muted">'+h(t('npcMarketHint'))+'</p><div class="list-pane">'+(rows.length?rows.map(r=>'<article class="honour-row"><div><b>'+h(r.name)+'</b><p class="small muted">'+h(r.date)+' · '+h(seasonLabel(r.season))+'</p></div><div>'+clubLink(r.from)+' → '+clubLink(r.to)+'<p class="small muted">'+h(t('npcTransferFee'))+' '+money(r.fee)+' · '+h(t(r.reason))+'</p></div></article>').join(''):'<p class="notice">'+h(t('npcNoTransfers'))+'</p>')+'</div></section>';}
 function legacyWorld(){const w=state.world,i=idx(),players=Object.entries(w.rosters).flatMap(([club,list])=>list.map(p=>({...p,club}))),sorted=players.filter(p=>p.age<=DB.dynamics.worldProspectAge).sort((a,b)=>b.traits.potential-a.traits.potential),stars=players.slice().sort((a,b)=>Core.overall(DB,b.stats)-Core.overall(DB,a.stats)),leaders=worldScope==='prospects'?sorted:worldScope==='retired'?w.retired.slice().reverse():stars;return `<div class="welcome"><h1>${h(t('worldTitle'))}</h1><p>${h(t('worldHint'))}</p></div><div class="kpi-grid" style="margin-bottom:20px">${kpi(t('trend'),DB.dynamics.trends.find(x=>x.id===w.trend).name)}${kpi(t('player'),n(players.length),t('worldSeason',{n:state.season,players:players.length,retired:w.retired.length}))}${kpi(t('club'),n(Object.keys(w.clubs).length))}${kpi(t('retired'),n(w.retired.length))}</div><div class="cols"><div class="stack"><section class="card"><div class="section-head"><h2>${h(t('prospects'))}</h2>${badge(t('databaseLabel'))}</div><div class="tabs-inline">${DB.worldViews.map(v=>btn(v.name,'world-scope',`data-scope="${h(v.id)}"`,worldScope===v.id?'selected':'')).join('')}</div><label>${h(t('worldSearch'))}<input id="world-search" value="${h(worldQuery)}" placeholder="${h(t('worldSearchHint'))}"></label><div class="table-wrap" style="margin-top:16px"><table><thead><tr>${['player','club','age','position','identityStyle','overall','npcCap','npcMinutes','playerDetails'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody>${leaders.filter(p=>!worldQuery||(p.name+' '+i.clubs[p.club].name+' '+(p.position||'')).toLowerCase().includes(worldQuery.toLowerCase())).slice(0,DB.dynamics.worldTableLimit).map(p=>`<tr><td>${h(p.name)}</td><td>${h(i.clubs[p.club].name)}</td><td>${n(p.age)}</td><td>${h(p.position||t('retired'))}</td><td>${h(DB.identityStyles.find(x=>x.id===p.identityStyle)?.name||'—')}</td><td>${p.stats?abilityLabel(Core.overall(DB,p.stats)):'—'}</td><td>${p.traits?n(p.traits.potential,1):'—'}</td><td>${n(p.seasonMinutes??p.minutes)}</td><td>${p.stats?btn(t('playerDetails'),'npc-detail',`data-id="${h(p.id)}"`,'subtle small'):'—'}</td></tr>`).join('')}</tbody></table></div></section><section class="card"><h2>${h(t('worldClubs'))}</h2><div class="table-wrap world-manager-list" role="region" tabindex="0" aria-label="${h(t('worldClubs'))}"><table><thead><tr>${['club','competition','clubPrestige','quality','manager','tacticalFit','finance','environment'].map(k=>`<th>${h(t(k))}</th>`).join('')}</tr></thead><tbody>${Object.values(i.clubs).filter(c=>!c.national).map(c=>`<tr class="${c.id===state.player.club?'highlight':''}"><td>${h(c.name)}</td><td>${h(i.leagues[c.league].name)}</td><td>${h(clubTier(c))}</td><td>${n(c.quality,1)}</td><td>${h(c.manager.name)}</td><td>${h(Core.managerTactic(DB,state,c.id).name)}</td><td>${money(c.finance)}</td><td>${n(c.environment,1)}</td></tr>`).join('')}</tbody></table></div></section><section class="card"><h2>${h(t('seasonSnapshot'))}</h2>${w.snapshots.length?w.snapshots.slice().reverse().map(x=>`<div class="history-item"><b>${h(t('season',{n:x.season}))}</b><span>${h(DB.dynamics.trends.find(t=>t.id===x.trend).name)}</span><span>${h(x.leaders[0]?.name||'')} · ${n(x.leaders[0]?.goals||0)} ${h(t('goal'))}</span></div>`).join(''):`<p class="small muted">${h(t('noStats'))}</p>`}</section></div><section class="card"><div class="section-head"><h2>${h(t('worldEvents'))}</h2>${badge(w.events.length)}</div><div class="events">${w.events.slice(-DB.dynamics.worldVisibleEvents).reverse().map(e=>`<div class="event"><time>${h(e.date)}</time><div><b>${moneyText(e.text)}</b><p>${h(t('season',{n:e.season}))}</p></div></div>`).join('')}</div><p class="notice small" style="margin-top:18px">${h(t('deferred'))}</p></section></div>`;}
@@ -45724,7 +46129,7 @@ document.addEventListener('click',event=>{const b=event.target.closest('[data-ac
 }});
 
 let preferences={...DB.settings.defaults},pendingUiScale=null,selectedStatsSeason=null,worldSort={key:DB.settings.worldSortKey,direction:DB.settings.worldSortDirection};
-const seasonLabel=number=>{const year=Number(DB.meta.initialDate.slice(0,4))+Number(number)-1;return String(year).slice(-DB.settings.seasonDigits)+'-'+String(year+1).slice(-DB.settings.seasonDigits);};
+const seasonLabel=number=>{const year=Number(DB.meta.initialDate.slice(0,4))+Number(number)-1;return year+'~'+(year+1);};
 const abilityLabel=value=>n(Math.floor(value));
 const displayMoney=value=>{const unit=DB.settings.currencies.find(c=>c.id===preferences.currency)||DB.settings.currencies[0];return new Intl.NumberFormat(DB.meta.locale,{style:'currency',currency:unit.id,maximumFractionDigits:0}).format(value*unit.rate);};
 function displayCurrencyText(value){
@@ -45765,7 +46170,7 @@ function pendingArrival(){const pending=state.pendingTransfer;if(!pending)return
 function offerRolePlan(o){return t(o.context.urgent?'offerUrgent':o.terms.role==='prospect'?'offerDevelopment':'offerBalanced');}
 function offerActions(o){const deal=state.deals.find(d=>d.club===o.club&&d.sourceClub===state.player.club&&['negotiating','ready'].includes(d.status));return `<div class="offer-actions">${deal?btn(t('marketContinue'),'deal-open',`data-id="${h(deal.id)}"`,'primary'):btn(t('negotiationOpen'),'transfer',`data-club="${h(o.club)}"`,'primary')}${btn(t(o.shortlisted?'offerUnshortlist':'offerShortlist'),'offer-shortlist',`data-id="${h(o.id)}"`,o.shortlisted?'selected':'')}${btn(t('offerDecline'),'offer-decline',`data-id="${h(o.id)}"`)}${btn(t('offerDefer'),'offer-defer',`data-id="${h(o.id)}"`)}${o.extensions<DB.offerRules.maxExtensions?btn(t('offerExtend'),'offer-extend',`data-id="${h(o.id)}"`):''}</div>`;}
 function compareOffers(offers){return `<section class="card" style="margin-bottom:20px"><div class="section-head"><h2>${h(t('offerCompare'))}</h2>${badge(offers.length)}</div><p class="small muted" style="margin-bottom:16px">${h(t('offerCompareHint'))}</p><div class="table-wrap"><table><thead><tr>${DB.offerCompareColumns.map(c=>`<th>${h(t(c.label))}</th>`).join('')}<th>${h(t('negotiationOpen'))}</th></tr></thead><tbody>${offers.map(o=>`<tr class="${o.shortlisted?'highlight':''}">${DB.offerCompareColumns.map(c=>{const terms=o.terms,value=c.id==='club'?idx().clubs[o.club].name:c.id==='role'?roleName(terms.role):c.id==='arrival'?Core.arrivalPlan(DB,state,terms.arrival).date:c.id==='plan'?offerRolePlan(o):c.id==='expiresDate'?o.expiresDate:terms[c.id];return `<td>${c.type==='money'?money(value):c.type==='number'?n(value):h(value)}</td>`;}).join('')}<td>${btn(t('negotiationOpen'),'transfer',`data-club="${h(o.club)}"`,'small')}</td></tr>`).join('')}</tbody></table></div></section>`;}
-function offerCard(o){const c=idx().clubs[o.club],terms=o.terms;return `<article class="card offer-card"><div class="row between wrap"><div class="row">${crest(c)}<div><h3>${clubLink(c.id)}</h3><p>${h(idx().leagues[c.league].name)}</p></div></div>${badge(offerRolePlan(o),o.context.urgent?'pink':'green')}</div><div class="form-grid" style="margin-top:18px">${detail(t('weeklyWage'),money(terms.weekly))}${detail(t('contractLength'),t('years',{n:terms.years}))}${detail(t('contractPromise'),roleName(terms.role))}${detail(t('contractPosition'),terms.position)}${detail(t('fee'),money(terms.fee))}${detail(t('arrivalDate'),Core.arrivalPlan(DB,state,terms.arrival).date)}${DB.offerCardFields.map(id=>{const f=DB.dealFields.find(f=>f.id===id);return detail(f.name,f.type==='money'?money(terms[id]):n(terms[id]));}).join('')}</div><details style="margin-top:18px"><summary>${h(t('offerReasons'))}</summary><div class="detail-list" style="margin-top:14px">${detail(t('offerValuation'),money(o.context.valuation))}${detail(t('tacticalFit'),n(o.context.fit*DB.rules.scale)+'%')}${detail(t('offerCash'),money(o.context.finance))}${detail(t('offerEnvironment'),n(o.context.environment))}${detail(t('coaching'),n(o.context.coaching))}${detail(t('deadline'),o.expiresDate)}</div><p class="small muted" style="margin-top:12px">${h(t('offerTermsHint'))}</p></details>${offerActions(o)}</article>`;}
+function offerCard(o){const c=idx().clubs[o.club],terms=o.terms;return `<article class="card offer-card">${o.context.lateCareer?badge(t('lateCareerOffer'),'green'):''}<div class="row between wrap"><div class="row">${crest(c)}<div><h3>${clubLink(c.id)}</h3><p>${h(idx().leagues[c.league].name)}</p></div></div>${badge(offerRolePlan(o),o.context.urgent?'pink':'green')}</div><div class="form-grid" style="margin-top:18px">${detail(t('weeklyWage'),money(terms.weekly))}${detail(t('contractLength'),t('years',{n:terms.years}))}${detail(t('contractPromise'),roleName(terms.role))}${detail(t('contractPosition'),terms.position)}${detail(t('fee'),money(terms.fee))}${detail(t('arrivalDate'),Core.arrivalPlan(DB,state,terms.arrival).date)}${DB.offerCardFields.map(id=>{const f=DB.dealFields.find(f=>f.id===id);return detail(f.name,f.type==='money'?money(terms[id]):n(terms[id]));}).join('')}</div><details style="margin-top:18px"><summary>${h(t('offerReasons'))}</summary><div class="detail-list" style="margin-top:14px">${detail(t('offerValuation'),money(o.context.valuation))}${detail(t('tacticalFit'),n(o.context.fit*DB.rules.scale)+'%')}${detail(t('offerCash'),money(o.context.finance))}${detail(t('offerEnvironment'),n(o.context.environment))}${detail(t('coaching'),n(o.context.coaching))}${detail(t('deadline'),o.expiresDate)}</div><p class="small muted" style="margin-top:12px">${h(t('offerTermsHint'))}</p></details>${offerActions(o)}</article>`;}
 function market(){if(activeDeal){const d=state.deals.find(d=>d.id===activeDeal);if(d)return negotiation(d);activeDeal=null;}const p=state.player,club=currentClub(),open=Core.windowOpen(DB,state),all=state.offers.filter(o=>o.status==='open'&&o.expiresDate>=state.date),offers=all.filter(o=>offerScope==='all'||o.shortlisted).sort((a,b)=>Number(b.shortlisted)-Number(a.shortlisted)||b.terms.weekly-a.terms.weekly);return npcMarketCard()+marketContextCard()+`<div class="welcome row between wrap"><div><h1>${h(t('negotiations'))}</h1><p>${h(t('offerCompareHint'))}</p></div><div class="row wrap">${btn(t('agentCenter'),'agent-focus')}${badge(p.freeAgent?t('freeAgent'):t(open?'windowOpen':'windowClosed'),open?'green':'pink')}</div></div>${pendingArrival()}${Core.newClubGrace(DB,state)?`<div class="notice" style="margin-bottom:20px">${h(t('newClubGrace',{date:Core.newClubGrace(DB,state)}))}</div>`:''}<div class="kpi-grid" style="margin-bottom:20px">${kpi(t('marketValue'),money(Core.marketValue(DB,p,state)),p.freeAgent?t('freeAgent'):club.name)}${kpi(t('weeklyWage'),money(p.contract.weekly))}${kpi(t('reputation'),n(p.reputation,1))}${kpi(t('roleOverall'),abilityLabel(Core.suitability(DB,p)),p.position)}</div><div class="notice" style="margin-bottom:20px">${h(t(state.pendingTransfer?'arrivalBinding':'windowHint'))}</div><div class="cols equal" style="margin-bottom:20px">${contractDetails()}${agentCard()}</div><div class="tabs-inline">${btn(t('offerAll')+' · '+n(all.length),'offer-scope','data-scope="all"',offerScope==='all'?'selected':'')}${btn(t('offerShortlisted'),'offer-scope','data-scope="shortlist"',offerScope==='shortlist'?'selected':'')}</div>${offers.length?compareOffers(offers)+`<div class="offer-grid">${offers.map(offerCard).join('')}</div>`:`<section class="card empty">${h(t(offerScope==='shortlist'?'noShortlisted':'noOffers'))}</section>`}${club.parent&&!p.freeAgent&&!state.pendingTransfer?`<section class="card" style="margin:20px 0"><h2>${h(t('callupTitle'))}</h2><p class="small muted">${h(t('callupHint',{apps:DB.rules.callupApps,overall:DB.rules.callupOverall,trust:DB.rules.callupTrust}))}</p>${Core.canCallup(DB,state)?btn(t('callup'),'callup',`data-club="${h(club.parent)}"`,'primary'):''}</section>`:''}<section class="card" style="margin-top:20px"><h2>${h(t('negotiationHistory'))}</h2>${state.deals.length?`<div class="deal-list">${state.deals.slice().reverse().map(d=>`<article class="row between wrap"><div><b>${h(idx().clubs[d.club].name)}</b><p class="small muted">${h(d.createdDate)} · ${h(t(d.status))} · ${n(d.round)} / ${DB.dealRules.maxRounds}${d.status==='scheduled'?' · '+h(d.plannedArrival):''}</p></div>${btn(t('readMessage'),'deal-open',`data-id="${h(d.id)}"`)}</article>`).join('')}</div>`:`<div class="empty">${h(t('noNegotiations'))}</div>`}</section>`;}
 function arrivalPreview(d){const date=['completed','scheduled','failed','withdrawn'].includes(d.status)?d.plannedArrival:d.kind==='transfer'?Core.arrivalPlan(DB,state,d.terms.arrival).date:state.date;return `<div class="notice" style="margin-bottom:20px"><b>${h(t('arrivalDate'))} · ${h(date)}</b><p class="small muted">${h(t(d.kind==='transfer'?'arrivalHint':'contractImmediate'))}</p><p class="small muted">${d.kind==='transfer'?h(t('deferredOffer')):''}</p>${d.seller.freeAtArrival?`<p class="small muted">${h(t('arrivalNoSellerFee'))}</p>`:''}</div>`;}
 document.addEventListener('click',event=>{const b=event.target.closest('[data-action]');if(!b||b.disabled||!state)return;const action=b.dataset.action;if(action==='offer-scope'){offerScope=b.dataset.scope;render();return;}const actions={'offer-shortlist':'shortlist','offer-decline':'decline','offer-extend':'extend','offer-defer':'defer'};if(!actions[action])return;const ok=Core.offerAction(DB,state,b.dataset.id,actions[action]);persist();render();if(action==='offer-decline'&&ok)toast(t('offerDeclined'));if(action==='offer-extend'){const o=state.offers.find(o=>o.id===b.dataset.id);toast(t(ok?'offerExtended':'offerExtensionLimit',{date:o?.expiresDate}));}});
@@ -45952,14 +46357,14 @@ function worldSearchMatches(query,values){const normalized=value=>String(value||
 document.addEventListener('click',event=>{const button=event.target.closest('[data-action="world-integrated-search"]');if(!button)return;worldScope=DB.worldViews.find(v=>v.id!=='prospects'&&v.id!=='retired').id;worldCountryFilter=worldPlayerCountryFilter=worldLeagueFilter=worldPlayerLeagueFilter=worldClubFilter=worldPlayerClubFilter='all';render();document.getElementById(button.dataset.kind==='club'?'world-club-search':'world-search')?.focus({preventScroll:true});});
 
 function recentFormStatus(){
- const recent=state.player.history.filter(r=>r.stats.minutes>0).slice(-DB.rules.recentFormMatches),stats=Core.totals(DB,recent),percent=Core.clamp(stats.rating/DB.ui.formGauge.max*DB.rules.scale,0,DB.rules.scale);
- return '<div class="status-gauge form-gauge"><div class="row between small"><span>'+h(t('matchFormPercent'))+'</span><b>'+(recent.length?n(percent)+'%':h(t('noRating')))+'</b></div><progress max="'+DB.rules.scale+'" value="'+(recent.length?percent:0)+'" aria-label="'+h(t('matchFormPercent'))+'"></progress><p class="small muted">'+h(recent.length?DB.ui.formGauge.description:t('formNoEvidence'))+'</p></div>';
+ const recent=state.player.history.filter(r=>r.stats.minutes>0).slice(-DB.rules.recentFormMatches),stats=Core.totals(DB,recent),percent=Core.clamp(Core.currentForm(DB,state.player)/DB.ui.formGauge.max*DB.rules.scale,0,DB.rules.scale);
+ return '<div class="status-gauge form-gauge"><div class="row between small"><span>'+h(t('matchFormPercent'))+'</span><b>'+(recent.length?n(percent)+'%':h(t('noRating')))+'</b></div><progress max="'+DB.rules.scale+'" value="'+(recent.length?percent:0)+'" aria-label="'+h(t('matchFormPercent'))+'"></progress><p class="small muted">'+h((recent.length?DB.ui.formGauge.description:t('formNoEvidence'))+' '+t('formMomentumHint'))+'</p></div>';
 }
 
 function performanceView(){const p=state.player,recent=p.history.filter(r=>r.stats.minutes>0).slice(-DB.rules.recentFormMatches);return '<div class="welcome"><h1>'+h(t('performanceTitle'))+'</h1><p>'+h(t('performanceHint'))+'</p></div><div class="rework-grid"><section class="card performance-status">'+fitnessGauge('overview')+'<div class="divider"></div><div class="profile-facts">'+DB.ui.performanceStatusFields.map(key=>statusGauge(key,p[key])).join('')+recentFormStatus()+'</div><p class="small muted">'+h(t('coachReportText',{competition:abilityLabel(Core.competition(DB,p,p.club,state)),chance:n(Core.selection(DB,state)*DB.rules.scale)}))+'</p></section>'+careerPreparationCard()+'</div><section class="card recent-fixtures"><div class="section-head"><h2>'+h(t('recentMatches'))+'</h2>'+btn(t('viewAll'),'tab','data-tab="fixtures"','subtle small')+'</div>'+(recent.length?'<div class="rework-grid"><div><div class="sparkline" role="img" aria-label="'+h(recent.map(r=>r.date+': '+n(r.stats.rating,1)).join(', '))+'">'+recent.map(r=>'<div class="sparkbar" style="height:'+r.stats.rating/DB.engine.rating.max*DB.rules.scale+'%"><span>'+n(r.stats.rating,1)+'</span></div>').join('')+'</div><p class="small muted">'+h(t('ratingNote'))+'</p></div><div class="list-pane">'+historyItems(myHistory().slice(-DB.ui.dashboardRecentGames))+'</div></div>':'<p class="empty">'+h(t('noStats'))+'</p>')+'</section>';}
 function trainingHistoryView(){const program=state.trainingProgram,cfg=DB.trainingProgramRules;return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='training-history').label)+'</h1><p>'+h(t('trainingHistoryHint'))+'</p></div>'+`<div class="rework-grid"><section class="card"><div class="section-head"><h2>${h(t('trainingWeeklyReview'))}</h2></div><div class="rework-list">${program.history.length?program.history.slice().reverse().map(review=>`<article class="coach-review"><div class="row between wrap"><time class="small num">${h(review.date)}</time>${badge(t('trainingDays')+' '+n(review.workDays)+' · '+t('trainingRecoveryDays')+' '+n(review.recoveryDays))}</div><p class="small muted">${h(t('trainingReviewPlan'))} · ${h(trainingPlanText(review.plan))}</p><p>${h(t(review.fatigue>=cfg.heavyFatigue?'trainingReviewTired':review.workDays<=review.recoveryDays?'trainingReviewRecover':'trainingReviewGood'))}</p><div class="review-markers">${DB.attributes.map(a=>`<span>${h(a.name)} <strong class="${review.changes[a.id]>0?'positive':review.changes[a.id]<0?'negative':'muted'}">${review.changes[a.id]>0?'+':review.changes[a.id]<0?'−':'—'}</strong></span>`).join('')}</div></article>`).join(''):`<p class="empty">${h(t('trainingNoReviews'))}</p>`}</div></section><section class="card"><div class="section-head"><h2>${h(t('trainingSessionHistory'))}</h2></div><div class="rework-list">${program.sessions.length?program.sessions.slice().reverse().map(day=>`<div class="training-history-row"><time class="small num">${h(day.date)}</time><b>${h(cfg.sessionTypes.find(t=>t.id===day.kind).name)}</b><span class="small muted">${h([...DB.training,...cfg.secondaryOptions].find(t=>t.id===day.focus)?.name||t('trainingFocusNone'))}</span></div>`).join(''):`<p class="empty">${h(t('trainingNoSessions'))}</p>`}</div></section></div>`;}
 function valuationView(){return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='valuation').label)+'</h1><p>'+h(t('valuationHint'))+'</p></div>'+marketContextCard()+playerValueHistoryCard();}
-function legacyView(){const p=state.player;return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='legacy').label)+'</h1><p>'+h(t('legacyHint'))+'</p></div>'+honoursHero()+'<div class="rework-grid">'+`<section class="card"><h2>${h(t('careerHistory'))}</h2><div class="list-pane">${p.career.slice().reverse().map(entry=>`<div class="history-item"><span>${badge(t(entry.type))}</span><div><b>${h(idx().clubs[entry.club].name)}</b><p>${h(entry.date)}</p></div><span class="small muted">${h(t('season',{n:entry.season}))}</span></div>`).join('')}</div></section>`+careerTraitsCard()+'</div>'+episodeCard();}
+function legacyView(){const p=state.player;return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='legacy').label)+'</h1><p>'+h(t('legacyHint'))+'</p></div>'+honoursHero()+'<div class="rework-grid">'+`<section class="card"><h2>${h(t('careerHistory'))}</h2><div class="list-pane">${p.career.slice().reverse().map(entry=>`<div class="history-item"><span>${badge(t(entry.type))}</span><div><b>${h(idx().clubs[entry.club].name)}</b><p>${h(entry.date)}</p></div><span class="small muted">${h(t('season',{n:entry.season}))}</span></div>`).join('')}</div></section>`+careerTraitsCard()+'</div>'+clubCareerSummary()+episodeCard();}
 function clubroomView(){return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='clubroom').label)+'</h1><p>'+h(t('clubroomHint'))+'</p></div><div class="rework-grid">'+tacticsCard()+`<section class="card"><h2>${h(t('environment'))}</h2><div class="detail-list">${detail(t('clubPrestige'),clubTier(currentClub()))}${detail(t('prestigeValue'),n(currentClub().prestige,1))}${detail(t('finance'),money(state.world.clubs[state.player.club].finance))}${detail(t('environment'),n(state.world.clubs[state.player.club].environment,1))}${detail(t('trend'),DB.dynamics.trends.find(x=>x.id===state.world.trend).name)}</div><p class="small muted" style="margin-top:15px">${h(t('clubStandingHint'))}</p>${currentClub().scenarioNote?`<p class="notice small" style="margin-top:12px">${h(currentClub().scenarioNote)}</p>`:''}</section>`+'</div><div class="rework-grid">'+cultureCard(state.player.club)+captainCard()+'</div>';}
 function interviewsView(){return '<div class="welcome"><h1>'+h(DB.ui.tabs.find(v=>v.id==='interviews').label)+'</h1><p>'+h(t('interviewsHint'))+'</p></div>'+interviewJournal();}
 function financeButton(label,operation,id='',extra='',disabled=false){return btn(label,'finance-action',`data-operation="${h(operation)}" data-id="${h(id)}" ${extra} ${disabled?'disabled':''}`);}
@@ -45981,6 +46386,16 @@ function assetsView(){
 function brandsView(){
  const r=DB.economyRules,e=state.economy;return financeHead('brands')+`<section class="card"><h2>${h(t('brandHoldings'))}</h2><div class="offer-grid">${e.brands.map(b=>`<article class="card"><h3>${h(b.name)}</h3><p class="small muted">${h(r.brandTypes.find(d=>d.id===b.type).name)} · ${h(t('brandLevel',{n:b.level,max:r.brandMaxLevel}))}</p><div class="detail-list">${detail(t('brandEquity'),money(b.equity))}${detail(t('brandRevenue'),money(b.lastRevenue))}${detail(t('brandCost'),money(b.lastCost))}${detail(t('brandProfit'),money(b.profit))}${detail(t('brandMarketingUntil'),b.marketingUntil>state.date?b.marketingUntil:t('brandNoMarketing'))}</div><label>${h(t('brandStrategy'))}<select class="brand-strategy" data-id="${h(b.id)}">${r.brandStrategies.map(p=>`<option value="${h(p.id)}" ${p.id===b.strategy?'selected':''}>${h(p.name)}</option>`).join('')}</select></label><div class="row wrap" style="margin-top:12px">${financeButton(t('brandExpand',{amount:money(b.equity*r.brandExpansionCost)}),'brand-expand',b.id,'',b.level>=r.brandMaxLevel||e.arrears>0||e.cash<b.equity*r.brandExpansionCost)}${financeButton(t('brandMarketing',{amount:money(b.equity*r.marketingCost)}),'brand-marketing',b.id,'',e.arrears>0||e.cash<b.equity*r.marketingCost||b.lastMarketing&&Core.daysBetween(DB,b.lastMarketing,state.date)<r.periodDays)}${financeButton(t('brandSell',{amount:money(b.equity*r.brandSaleShare)}),'brand-sell',b.id)}</div></article>`).join('')||`<p class="empty">${h(t('brandNone'))}</p>`}</div></section><section class="card" style="margin-top:20px"><h2>${h(t('brandFound'))}</h2><p class="small muted">${h(t('brandFoundHint',{n:r.maxBrands,days:r.marketingDays,boost:n((r.marketingRevenueFactor-1)*DB.rules.scale)}))}</p><div class="offer-grid">${r.brandTypes.map(d=>`<article class="card"><h3>${h(d.name)}</h3><p>${h(d.description)}</p><div class="detail-list">${detail(t('brandCapital'),money(d.capital))}${detail(t('commercialReputation'),n(d.minReputation))}${detail(t('brandMargin'),n((1-d.productionShare)*DB.rules.scale)+'%')}${detail(t('brandOverhead'),n(d.overhead*DB.rules.scale,2)+'%')}</div><form class="finance-form" data-finance-form="brand" data-id="${h(d.id)}"><label>${h(t('brandName'))}<input name="name" maxlength="${r.brandNameLimit}" required></label><label>${h(t('brandStrategy'))}<select name="strategy">${r.brandStrategies.map(p=>`<option value="${h(p.id)}">${h(p.name)}</option>`).join('')}</select></label><button type="submit" ${e.arrears||e.cash<d.capital||state.player.reputation<d.minReputation||e.brands.length>=r.maxBrands?'disabled':''}>${h(t('brandLaunch'))}</button></form></article>`).join('')}</div><div class="divider"></div>${r.brandStrategies.map(p=>`<p class="small muted"><b>${h(p.name)}</b> · ${h(p.description)}</p>`).join('')}</section>`;
 }
+function clubCareerSummary(){return `<section class="card" style="margin-bottom:20px"><h2>${h(t('clubCareer'))}</h2><div class="table-wrap"><table><thead><tr><th>${h(t('clubCareerPeriod'))}</th><th>${h(t('club'))}</th></tr></thead><tbody>${Core.clubCareerRecords(DB,state).map(row=>`<tr><td class="num">${h(row.period)}</td><td>${clubLink(row.club)}</td></tr>`).join('')}</tbody></table></div></section>`;}
+function spotlightCard(record){const impact=record.spotlight,signed=value=>(value>=0?'+':'')+n(value,1);return impact?`<section class="card" style="margin-bottom:20px"><h2>${h(t('spotlightTitle'))}</h2><p>${h(impact.text)}</p><p class="small muted">${h(t('spotlightEffect',{reputation:signed(impact.reputation),form:signed(impact.form)}))}</p></section>`:'';}
+function vacationView(){
+ const r=DB.vacationRules,e=state.economy,active=(state.vacations||[]).some(v=>['approved','active'].includes(v.status)),start=Core.dateAdd(state.date,r.leadDays),boundary=Core.dateAdd(state.seasonStart,DB.calendarRules.seasonDays-r.minimumDays),lifestyle=DB.economyRules.lifestyles.find(d=>d.id===e.lifestyle);
+ return financeHead('vacation')+`<section class="card"><h2>${h(t('vacationApply'))}</h2><p class="small muted">${h(t('lifestyle'))} · ${h(lifestyle.name)}</p><form id="vacation-form"><div class="form-grid"><label>${h(t('vacationDestination'))}<select name="destination">${r.destinations.map(d=>`<option value="${h(d.id)}">${h(d.name)}</option>`).join('')}</select></label><label>${h(t('vacationDays'))}<input name="days" type="number" min="${r.minimumDays}" max="${r.maximumDays}" step="1" value="7" required></label><label>${h(t('vacationStart'))}<input name="start" type="date" min="${h(start)}" max="${h(boundary)}" value="${h(start)}" required></label><div>${detail(t('vacationCost'),`<span id="vacation-quote">${money(Core.vacationQuote(DB,state,r.destinations[0].id,7))}</span>`)}</div></div><button type="submit" class="primary" ${active||start>boundary?'disabled':''}>${h(t('vacationApply'))}</button><p id="vacation-error" class="form-error" role="status"></p></form><p class="notice">${h(t('vacationGuide'))}</p></section><section class="card" style="margin-top:20px"><h2>${h(t('vacationHistory'))}</h2><div class="rework-list">${(state.vacations||[]).slice().reverse().map(v=>`<article class="coach-review"><div class="row between wrap"><h3>${h(r.destinations.find(d=>d.id===v.destination).name)}</h3>${badge(t({approved:'vacationApproved',active:'vacationActive',completed:'vacationCompleted',cancelled:'vacationCancelled'}[v.status]))}</div><p>${h(v.start)} ~ ${h(v.end)} · ${n(v.days)}일</p><p class="small muted">${h(t('vacationCost'))} · ${money(v.cost||Core.vacationQuote(DB,state,v.destination,v.days))}</p>${v.status==='approved'?btn(t('vacationCancel'),'vacation-cancel',`data-id="${h(v.id)}"`):''}</article>`).join('')||`<p class="empty">${h(t('vacationNone'))}</p>`}</div></section>`;
+}
+document.addEventListener('input',event=>{const form=event.target.closest?.('#vacation-form');if(!form||!state)return;const quote=Core.vacationQuote(DB,state,form.elements.destination.value,Number(form.elements.days.value));document.getElementById('vacation-quote').textContent=quote===null?'—':displayMoney(quote);});
+document.addEventListener('submit',event=>{const form=event.target;if(form.id!=='vacation-form')return;event.preventDefault();if(!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation||!form.reportValidity())return;const result=Core.requestVacation(DB,state,form.elements.destination.value,form.elements.start.value,Number(form.elements.days.value));if(result.ok){persist();render();toast(t('vacationApproved'));}else document.getElementById('vacation-error').textContent=t(result.issue);});
+document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="vacation-cancel"]');if(!button||!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation)return;if(Core.cancelVacation(DB,state,button.dataset.id)){persist();render();toast(t('vacationCancelled'));}});
+
 function lifestyleView(){
  const r=DB.economyRules,e=state.economy,home=e.assets.find(a=>a.use==='personal');return financeHead('lifestyle')+`<section class="card"><h2>${h(t('lifestyleHousing'))}</h2><p>${h(home?r.assets.find(d=>d.id===home.definition).name:t('lifestyleRented'))}</p><p class="small muted">${h(t('lifestyleHousingHint'))}</p>${btn(t('assetHoldings'),'tab','data-tab="assets"')}</section><div class="offer-grid" style="margin-top:20px">${r.lifestyles.map(d=>`<article class="card"><h2>${h(d.name)}</h2><p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('lifestyleCost'),money(d.spending+(home?0:d.rent)))}${detail(t('lifestyleRecovery'),n(d.recovery))}${detail(t('lifestyleMorale'),n(d.morale))}</div>${financeButton(e.lifestyle===d.id?t('lifestyleSelected'):t('lifestyleSelect'),'lifestyle',d.id,'',e.lifestyle===d.id)}</article>`).join('')}</div><p class="notice" style="margin-top:20px">${h(t('lifestyleCostHint'))}</p>`;
 }

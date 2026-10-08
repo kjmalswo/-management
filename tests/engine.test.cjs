@@ -79,3 +79,45 @@ test('database edits and save imports reject broken references before changing s
   const expanded=C.clone(DB),source=expanded.clubs.find(c=>c.league==='kr-2');expanded.clubs.push({...source,id:'new-club',name:'새 클럽'});assert.ok(ctx.validation.validateDB(expanded,state));assert.equal(C.schedule(expanded,'kr-2',1,DB.meta.initialDate).length,expanded.clubs.filter(c=>c.league==='kr-2').length*(expanded.clubs.filter(c=>c.league==='kr-2').length-1));
   const roster=C.roster(DB,state.player.club);assert.equal(new Set(roster.map(p=>p.name)).size,roster.length);
 });
+
+test('season labels and club careers show full years, overlapping summer years and newest first',()=>{
+  const state=create();state.player.career=[{date:'2026-08-01',season:1,club:'kr1-0',type:'joined'},{date:'2028-07-10',season:2,club:'en1-0',type:'joined'},{date:'2028-08-01',season:3,club:'en1-0',type:'renewed'},{date:'2029-07-20',season:3,club:'us1-3',type:'joined'}];state.player.club='us1-3';
+  const rows=C.clubCareerRecords(DB,state);assert.deepEqual(normalize(rows.map(r=>r.period)),['2029~','2028~2029','2026~2028']);
+  vm.runInContext('const DB=DEFAULT_DB;'+ui.slice(ui.indexOf('const seasonLabel='),ui.indexOf('const abilityLabel='))+';globalThis.label=seasonLabel;',ctx);
+  assert.equal(ctx.label(1),'2026~2027');assert.equal(ctx.label(4),'2029~2030');
+  state.player.freeAgent=true;state.seasonStart='2030-08-01';state.player.contract.expiresSeason=5;state.season=5;assert.equal(C.clubCareerRecords(DB,state)[0].period,'2029~2030');
+});
+
+test('vacations charge the departure lifestyle and reduce fitness, fatigue and form without training',()=>{
+  const state=create();C.careerIncome(DB,state,100000,'salary');state.player.fitness=90;state.trainingProgram.fatigue=70;
+  const start=C.dateAdd(state.date,1),quote=C.vacationQuote(DB,state,'hawaii',7),approval=C.requestVacation(DB,state,'hawaii',start,7);assert.ok(approval.ok);assert.equal(state.economy.ledger.filter(l=>l.type==='vacation').length,0);
+  assert.ok(C.lifestyleChange(DB,state,'comfortable'));const charged=C.vacationQuote(DB,state,'hawaii',7);assert.equal(charged,quote*3);let count=0;
+  while(state.vacations[0].status!=='completed'){assert.ok(C.advance(DB,state));assert.ok(++count<20);if(C.vacationActive(state)){assert.equal(C.selection(DB,state),0);assert.equal(C.trainingSession(DB,state).kind,'vacation');}}
+  const v=state.vacations[0],sessions=state.trainingProgram.sessions.filter(day=>day.date>=v.start&&day.date<=v.end);assert.equal(sessions.length,7);assert.ok(sessions.every(day=>day.kind==='vacation'&&day.load===0));assert.equal(v.cost,charged);assert.equal(v.lifestyle,'comfortable');assert.equal(state.economy.ledger.filter(l=>l.type==='vacation').length,1);
+  assert.equal(state.economy.ledger.find(l=>l.type==='vacation').amount,-charged);assert.ok(state.player.fitness<90);assert.ok(state.trainingProgram.fatigue<=DB.vacationRules.fatigueCeiling);assert.ok(state.player.vacationForm<0);assert.ok(C.currentForm(DB,state.player)<DB.engine.selection.formCenter);assert.ok(ctx.validation.validateSave({schema:DB.meta.schema,db:DB,state}));
+});
+
+test('vacation approval rejects match conflicts, bad dates, missing funds and pre-season overruns',()=>{
+  const state=create();C.careerIncome(DB,state,100000,'salary');const fixture=C.myFixtures(state).find(f=>!f.national);assert.equal(C.requestVacation(DB,state,'nice',fixture.date,3).issue,'vacationDenied');
+  assert.equal(C.requestVacation(DB,state,'nice','2026-02-30',3).issue,'vacationDenied');assert.equal(C.requestVacation(DB,state,'nice',C.dateAdd(state.seasonStart,364),7).issue,'vacationDenied');
+  const poor=create();poor.economy.arrears=1;assert.equal(C.requestVacation(DB,poor,'tokyo',C.dateAdd(poor.date,1),7).issue,'vacationFunds');
+  const request=C.requestVacation(DB,state,'tokyo',C.dateAdd(state.date,1),7);assert.ok(request.ok);assert.ok(C.cancelVacation(DB,state,request.id));assert.ok(state.calendar.entries.filter(e=>e.vacation===request.id).every(e=>e.completed));
+  const another=C.requestVacation(DB,state,'rio',C.dateAdd(state.date,1),7);assert.ok(another.ok);const league=C.indexes(DB,state).clubs[state.player.club].league;state.fixtures[league].push({...C.clone(fixture),id:'late-conflict',date:C.dateAdd(state.date,2),result:null});let count=0;while(state.vacations.at(-1).status==='approved'){C.advance(DB,state);assert.ok(++count<10);}assert.equal(state.vacations.at(-1).status,'cancelled');assert.equal(state.economy.ledger.filter(l=>l.type==='vacation').length,0);
+});
+
+test('extreme spotlight performances swing reputation and real form; ordinary games do not',()=>{
+  const state=create();state.player.reputation=50;const row=rating=>({id:'spotlight:'+rating,date:state.date,season:1,league:'ucl',competition:'ucl',stage:'final',home:state.player.club,away:'en1-0',club:state.player.club,stats:{...C.createStats(DB),minutes:90,rating},result:{home:{stats:{goals:1}},away:{stats:{goals:0}}},reactions:{fans:'fans',press:'press'}});
+  const before=C.currentForm(DB,state.player),good=row(9.5),impact=C.applySpotlight(DB,state,good);assert.ok(impact.reputation>=8);assert.ok(state.player.reputation>50);assert.ok(C.currentForm(DB,state.player)>before);assert.ok(good.reactions.press.includes(state.player.name));
+  const poor=row(4.5),bad=C.applySpotlight(DB,state,poor);assert.ok(bad.reputation<-8);assert.ok(bad.form<0);assert.equal(C.spotlightImpact(DB,state,{...row(7),stage:'league'}),null);
+  const normal={...row(9.5),league:'kr-2',competition:'kr-2',stage:'league',home:'kr2-0',away:'kr2-1'};assert.equal(C.spotlightImpact(DB,state,normal),null);
+  const national={...row(4.5),id:'national-final',national:true,league:'world-cup',competition:'world-cup',home:'nt-kr',away:'nt-jp',club:'nt-kr'};assert.ok(C.applySpotlight(DB,state,national).reputation<0);
+});
+
+test('proven players aged 30+ receive funded Gulf and MLS offers with materially higher wages',()=>{
+  const state=create();state.player.age=33;state.player.reputation=70;state.player.stats=Object.fromEntries(DB.attributes.map(a=>[a.id,75]));state.player.contract.weekly=10000;state.player.freeAgent=true;
+  state.player.history=Array.from({length:12},(_,i)=>({id:'proof:'+i,date:C.dateAdd(state.date,-i),season:1,club:state.player.club,league:'en-1',home:state.player.club,away:'en1-0',stats:{...C.createStats(DB),minutes:90,rating:7.5}}));
+  assert.ok(C.lateCareerQualified(DB,state));for(const club of ['al-hilal','al-sadd','al-ain','us1-3']){const c=C.indexes(DB,state).clubs[club],candidate=C.scoutingCandidate(DB,state,c),limits=C.buyerLimits(DB,state,club);assert.ok(candidate?.lateCareer,club);assert.ok(limits.weekly>50000,club);}
+  C.refreshOffers(DB,state);for(let review=0;review<8&&!state.offers.some(o=>o.context.lateCareer);review++){state.date=state.marketReview.date;C.refreshOffers(DB,state);}const offer=state.offers.find(o=>o.context.lateCareer);assert.ok(offer);assert.equal(offer.source,'late-career');assert.ok(offer.terms.weekly>50000);assert.ok(offer.terms.signingBonus>0);assert.equal(state.world.clubs[offer.club].marqueeFundingSeason,state.season);
+  const deal=C.startDeal(DB,state,offer.club);assert.ok(deal);assert.ok(C.buyerLimits(DB,state,offer.club).maxWeekly>=offer.terms.weekly);
+  state.player.age=29;assert.equal(C.lateCareerQualified(DB,state),false);assert.equal(C.lateCareerBuyer(DB,state,C.indexes(DB,state).clubs['al-hilal']),null);
+});
