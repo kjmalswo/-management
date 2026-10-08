@@ -6,15 +6,15 @@ const validators=ui.slice(ui.indexOf('function validateDB('),ui.indexOf('functio
 vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)},Core=FootballCore,t=key=>key;${validators}${imports};globalThis.V={validateDB,validateSave,prepareImportedCareer};`,ctx);
 const uiFunction=name=>ui.slice(ui.indexOf('function '+name+'('),ui.indexOf('\nfunction ',ui.indexOf('function '+name+'(')+1));
 
-test('new-career rules validate and European default/alternative previews equal actual lower rookie contracts',()=>{
+test('new-career rules validate and European default/alternative previews equal actual monthly-band rookie contracts',()=>{
  ctx.V.validateDB(DB);assert.equal(JSON.parse(fs.readFileSync(path.join(__dirname,'../version.json'))).version,DB.meta.version);
  const r=DB.startingRouteRules.initialContract.europe;
  for(const club of DB.clubs.filter(c=>!c.historical&&c.quality<=europe.route.qualityMax&&DB.startingRouteRules.europeLeagues.includes(c.league))){
-  const wage=C.initialWage(DB,club.id,profile,'europe');assert.ok(wage>=DB.rules.minimumSalary&&wage<=r.maximumWeekly,club.id);assert.ok(wage<=C.wage(DB,club.id,profile,europe.route.salaryFactor),club.id);
+  const wage=C.initialWage(DB,club.id,profile,'europe'),monthly=wage*DB.rules.annualSalaryWeeks/r.monthsPerYear*DB.settings.currencies.find(c=>c.id==='KRW').rate;assert.ok(monthly>=r.minimumMonthlyKRW&&monthly<=r.maximumMonthlyKRW,club.id);
  }
  assert.equal(initial.player.contract.weekly,C.initialWage(DB,europe.club.id,profile,'europe'));
  const alternative=C.createCareer(DB,profile,'europe',europe.alternatives[1].id);assert.equal(alternative.player.contract.weekly,C.initialWage(DB,europe.alternatives[1].id,profile,'europe'));
- for(const route of offers.filter(o=>o.route.id!=='europe'))assert.equal(C.initialWage(DB,route.club.id,profile,route.route.id),C.wage(DB,route.club.id,profile,route.route.salaryFactor));
+ for(const route of offers.filter(o=>o.route.id!=='europe')){const rule=DB.startingRouteRules.initialContract[route.route.id],monthly=C.initialWage(DB,route.club.id,profile,route.route.id)*DB.rules.annualSalaryWeeks/rule.monthsPerYear*DB.settings.currencies.find(c=>c.id==='KRW').rate;assert.ok(monthly>=rule.minimumMonthlyKRW&&monthly<=rule.maximumMonthlyKRW);}
  const screen=vm.createContext({DB,draft:C.clone(profile),Core:{...C,startingOffers:()=>offers},h:String,t:key=>key,idx:()=>C.indexes(DB),creationSteps:()=>'',badge:()=>'',crest:()=>'',clubTier:()=>'',money:n=>'WAGE:'+n,detail:(key,value)=>key+':'+value,btn:(label,action,attributes)=>attributes,openModal:content=>screen.content=content});
  vm.runInContext(uiFunction('showContracts'),screen);screen.showContracts();
  const card=()=>screen.content.split('<article').find(s=>s.includes('data-starting-route="europe"'));
@@ -77,5 +77,5 @@ test('specialist and optional-role saves round-trip, old declared positions and 
  const legacyDB=C.clone(DB);legacyDB.meta.version='20.8.10';delete legacyDB.profile.optionalPositionId;delete legacyDB.profile.positionUsage;delete legacyDB.startingRouteRules.initialContract;
  s.player.secondaryPosition='LW';s.player.tertiaryPosition='AM';s.player.contract.weekly=9000;const old=ctx.V.prepareImportedCareer({schema:DB.meta.schema,db:legacyDB,state:s});assert.deepEqual(plain([old.state.player.position,old.state.player.secondaryPosition,old.state.player.tertiaryPosition]),['ST','LW','AM']);assert.equal(old.state.player.contract.weekly,9000);assert.equal(old.db.profile.optionalPositionId,'none');
  for(const mutate of [p=>p.position='none',p=>p.secondaryPosition='missing',p=>{p.secondaryPosition='none';p.tertiaryPosition='AM';}]){const bad=career();mutate(bad.player);assert.throws(()=>ctx.V.validateSave({schema:DB.meta.schema,db:DB,state:bad}));}
- const bad=C.clone(DB);bad.startingRouteRules.initialContract.europe.maximumWeekly=100;assert.throws(()=>ctx.V.validateDB(bad));
+ const bad=C.clone(DB);bad.startingRouteRules.initialContract.europe.maximumMonthlyKRW=100;assert.throws(()=>ctx.V.validateDB(bad));
 });

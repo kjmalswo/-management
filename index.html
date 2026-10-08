@@ -429,7 +429,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "meta": {
     "title": "FIRST XI",
     "subtitle": "PLAYER CAREER SIMULATOR",
-    "version": "20.9.0",
+    "version": "20.9.1",
     "schema": 13,
     "storageKey": "firstxi-career-v1",
     "dbStorageKey": "firstxi-database-v1",
@@ -19649,7 +19649,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "name": "유럽 변방 클럽",
       "difficulty": "보통",
       "tag": "pink",
-      "description": "유럽 무대에 신인 계약으로 도전하세요. 낮은 시작 급여에서 출발하며, 치열한 포지션 경쟁 속에서 실적으로 다음 계약을 준비합니다.",
+      "description": "해외 무대에서 커리어를 시작하세요. 신인 계약으로 합류해 포지션 경쟁과 실전 경험을 통해 다음 단계에 도전합니다.",
       "trust": 43,
       "selectionBonus": 0,
       "league": "pt-1",
@@ -21317,20 +21317,20 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "mailAgent": "에이전트",
       "mailClub": "구단 담당자",
       "mailSystem": "커리어 담당자",
-      "mailOfferSubject": "{club}의 영입 관심",
-      "mailOfferBody": "{club}의 구체적인 계약 초안입니다.\n{summary}\n{context}\n답변 기한: {date}. 다른 제안과 비교하거나 동시 협상할 수 있으며, 최종 서명이 있어야 계약이 확정됩니다.",
-      "mailCoachSubject": "이번 시즌 출전 계획",
-      "mailCoachBody": "이번 시즌은 {tactic} 전술로 간다. 네가 맡을 역할은 {position}이다. 훈련과 경기력을 보고 출전 기회를 판단하겠다. 계획에 대한 의견을 알려 줘.",
-      "mailManagerSubject": "신임 감독의 플랜",
-      "mailAgentSubject": "에이전트의 협상 조언",
-      "mailAgentBody": "구단은 이적료와 대체자, 영입 클럽은 총비용과 전술 수요를 봅니다. 높은 역할·보수·낮은 바이아웃을 모두 요구하면 합의가 어려워집니다. 마감 날짜를 확인하세요.",
+      "mailOfferSubject": "{club} 영입 제안 및 계약 조건 안내",
+      "mailOfferBody": "{club}에서 영입 의사를 전달하며 아래와 같이 계약 조건을 제안했습니다.\n\n{summary}\n\n검토 참고사항\n{context}\n\n회신 기한은 {date}입니다. 조건 검토 후 협상 진행 여부를 알려 주시기 바랍니다. 최종 계약은 관계 구단의 합의와 선수의 서명이 완료된 뒤 확정됩니다.",
+      "mailCoachSubject": "시즌 운영 계획 및 선수 역할 안내",
+      "mailCoachBody": "이번 시즌의 기본 전술은 {tactic}이며, 선수의 예상 역할은 {position}입니다.\n\n선발 여부와 출전 시간은 훈련 성과, 경기력, 선수단 경쟁 상황을 종합해 결정하겠습니다. 아래에서 계획에 대한 의견을 회신해 주시기 바랍니다.",
+      "mailManagerSubject": "신임 감독의 시즌 운영 계획",
+      "mailAgentSubject": "계약 협상 검토 의견",
+      "mailAgentBody": "현재 협상 조건에 대한 검토 의견을 전달드립니다.\n\n소속 구단은 이적료와 대체 선수 확보를, 영입 구단은 총 계약 비용과 선수단 내 역할을 우선 검토하고 있습니다. 보수와 역할, 바이아웃 조건을 함께 높이면 합의가 어려울 수 있습니다. 제안별 회신 기한을 확인하고 우선순위를 정해 주시기 바랍니다.",
       "mailCalendarSubject": "{name}",
       "mailCalendarBody": "{description}",
-      "mailResponseSubject": "{club} 협상 답변 · {round}차",
-      "mailMedicalSubject": "메디컬 심사 결과",
-      "mailCoachAccept": "계획을 이해해 줘서 고맙습니다. 준비와 훈련을 지켜보겠습니다.",
-      "mailCoachAsk": "출전 기회를 요청한 점을 이해합니다. 전술 궁합과 경쟁 상황이 좋아지면 기회를 검토하겠습니다.",
-      "mailCoachDemand": "요구한 역할은 경기력으로 증명해야 합니다. 반복적인 요구만으로 역할을 보장할 수는 없습니다.",
+      "mailResponseSubject": "{club} 계약 협상 회신 ({round}차)",
+      "mailMedicalSubject": "메디컬 검사 결과 안내",
+      "mailCoachAccept": "시즌 운영 계획에 대한 회신을 확인했습니다. 훈련과 경기 준비에 집중해 주시기 바랍니다. 준비 과정과 경기력을 바탕으로 출전 기회를 검토하겠습니다.",
+      "mailCoachAsk": "출전 기회에 대한 요청을 확인했습니다. 최근 훈련 성과와 전술 적합성, 포지션 경쟁 상황을 검토하겠습니다. 기회를 얻었을 때 준비된 모습을 보여 주시기 바랍니다.",
+      "mailCoachDemand": "역할 확대에 대한 의견을 확인했습니다. 다만 출전 시간과 선수단 내 역할을 사전에 보장하기는 어렵습니다. 지속적인 경기력과 훈련 성과를 바탕으로 다시 검토하겠습니다.",
       "negotiations": "이적 · 계약 협상",
       "negotiationHint": "현 구단·영입 구단·선수·에이전트가 모두 동의해야 합니다. 합의는 보장되지 않으며 기한과 예산, 대체자·전술 수요, 메디컬이 함께 작용합니다.",
       "negotiationOpen": "협상 시작",
@@ -21377,14 +21377,14 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "buyerBonusReject": "영입 구단: 보너스가 급여 예산에 비해 높습니다.",
       "agentFeeReject": "에이전트: 제안한 수수료로는 협상 지원 조건에 합의하기 어렵습니다.",
       "agentTrustReject": "에이전트: 반복된 무리한 요구로 신뢰가 부족합니다.",
-      "negotiationAccepted": "각 당사자가 합의했습니다. 다른 오퍼와 비교한 뒤 최종 서명하면 선택한 합류일에 계약이 적용됩니다.",
+      "negotiationAccepted": "계약 조건에 대해 관계 당사자의 합의가 완료되었습니다. 내용을 검토한 뒤 최종 서명을 진행해 주시기 바랍니다. 계약은 합의된 합류일에 적용됩니다.",
       "negotiationCounter": "각 당사자의 답변과 조정 제안을 확인하세요.",
-      "negotiationDeadline": "이적기간 또는 제안 기한이 지나 협상이 종료되었습니다.",
+      "negotiationDeadline": "회신 기한 또는 등록 기간이 종료되어 이번 협상을 마감했습니다.",
       "negotiationLimit": "반복된 제안에도 간극이 해소되지 않아 협상이 결렬되었습니다.",
       "negotiationInvalid": "조건의 값과 선택지를 확인하세요.",
       "negotiationNotReady": "당사자 합의·메디컬·현금 여력과 합류 예약 여부를 확인하세요.",
-      "medicalBlocked": "부상 또는 낮은 체력으로 메디컬 승인이 보류되었습니다.",
-      "medicalPassed": "현재 건강 상태로 메디컬을 통과했습니다.",
+      "medicalBlocked": "메디컬 검사 결과 현재 부상 상태 또는 신체 컨디션에 대한 추가 확인이 필요해 승인을 보류했습니다.",
+      "medicalPassed": "메디컬 검사 결과 계약 진행에 필요한 건강 기준을 충족했습니다.",
       "askPermission": "현 구단에 이적 허가 상담",
       "requestTransfer": "공식 이적 요청",
       "agentMediation": "에이전트에게 조정 요청",
@@ -21394,7 +21394,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "agentSelect": "에이전트 선택",
       "agentSeek": "관심 클럽 접촉 요청",
       "agentTarget": "접촉할 클럽",
-      "agentDeclined": "{club}이 현재 영입을 진행하지 않기로 했습니다. 구단 수준·역할·재정과 시장 수요를 다시 비교하세요.",
+      "agentDeclined": "{club}에서 검토 결과 현재 영입 절차를 진행하지 않겠다는 의사를 전달했습니다. 다른 구단의 선수단 수요와 계약 조건을 확인해 대안을 검토하겠습니다.",
       "agentInterest": "에이전트가 구단 접촉을 시작했습니다. 회신을 기다려 주세요.",
       "contractDetails": "현재 계약 세부사항",
       "contractPromise": "계약상 역할",
@@ -21402,7 +21402,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "contractBonus": "계약금 · 수당 · 조항",
       "contractRenew": "현 구단과 재계약 협상",
       "freeAgent": "자유계약 · 무소속",
-      "contractExpiredMail": "계약이 만료되어 자유계약 상태가 되었습니다. 경기에는 출전하지 않으며 에이전트를 통해 새 계약을 찾을 수 있습니다.",
+      "contractExpiredMail": "현 계약이 만료되어 자유계약 선수로 전환되었습니다. 새 계약과 선수 등록이 완료되기 전까지 공식 경기에 출전할 수 없습니다. 에이전트와 향후 진로를 상의해 주시기 바랍니다.",
       "termsCounter": "당사자 조정안 적용",
       "contractSigned": "계약을 체결했습니다.",
       "transferFeeBudget": "이적료와 당장 지급액",
@@ -21412,12 +21412,12 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "readMessage": "메시지 읽기",
       "transferRequestRisk": "요청과 중재는 협상 여지를 만들지만 신뢰·관계에 비용이 있습니다.",
       "remainingAbilityHint": "남은 점수 안에서 각 능력치를 조절하세요.",
-      "clubOptionSubject": "구단의 계약 연장 옵션 행사",
-      "clubOptionBody": "구단이 계약서의 연장 옵션을 행사했습니다. 옵션 기간만큼 현 계약이 연장됩니다.",
+      "clubOptionSubject": "구단 계약 연장 옵션 행사 안내",
+      "clubOptionBody": "구단이 현 계약에 명시된 연장 옵션을 행사했습니다. 계약 기간은 해당 옵션에 정해진 기간만큼 연장됩니다.",
       "promiseReview": "출전 약속 이행 점검",
-      "promiseReviewBody": "약속 역할의 목표 출전 비중은 {expected}%, 실제 비중은 {actual}%입니다. 출전은 감독의 결정이므로 보장되지 않으며 약속과 차이가 사기에 영향을 줍니다.",
+      "promiseReviewBody": "계약상 선수 역할에 따른 출전 비중을 검토했습니다. 목표 비중은 {expected}%, 실제 비중은 {actual}%입니다.\n\n선발과 출전 시간은 감독의 경기 운영 판단에 따라 결정됩니다. 역할과 출전 기회에 대한 의견은 구단과 협의해 주시기 바랍니다.",
       "agentConsult": "에이전트 상담 · 신뢰 회복",
-      "agentConsultBody": "요구 조건과 커리어 계획을 검토했습니다. 무리한 동시 요구를 줄이고 다음 답변을 기다리는 것도 협상의 일부입니다.",
+      "agentConsultBody": "요청하신 계약 조건과 커리어 계획을 검토했습니다. 우선순위가 높은 조건을 중심으로 협상안을 조정하는 것을 권합니다. 구단의 다음 회신을 확인한 뒤 후속 대응을 논의하겠습니다.",
       "dealCapacity": "동시에 진행할 수 있는 협상 수 또는 제안 유효기간을 확인하세요.",
       "dealFresh": "다른 구단과 계약했으므로 이전 협상은 철회되었습니다.",
       "contractYearsEnd": "시즌 {n} 시작에 만료",
@@ -21464,7 +21464,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "offerUnshortlist": "관심 표시 해제",
       "offerDecline": "이 제안 거절",
       "offerExtend": "답변 기한 연장 요청",
-      "offerExtended": "구단이 답변 기한을 {date}까지 연장했습니다.",
+      "offerExtended": "구단과 협의해 회신 기한을 {date}까지 연장했습니다. 변경된 기한 내에 협상 진행 여부를 알려 주시기 바랍니다.",
       "offerExtensionLimit": "이 제안의 추가 연장이 어렵습니다.",
       "offerDeclined": "제안을 거절했습니다. 다른 오퍼는 유지됩니다.",
       "offerAll": "모든 유효 오퍼",
@@ -21488,10 +21488,10 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "arrivalHint": "지연 합류 계약에 서명해도 합류일까지 현 팀·급여·출전 기록을 유지합니다. 새 계약과 계약금은 등록일부터 적용됩니다.",
       "arrivalBuyerReject": "영입 구단: 당장의 전력 보강이 필요해 시즌 종료까지 기다리기 어렵습니다.",
       "scheduled": "서명 완료 · 합류 예약",
-      "arrivalReserved": "{club} 합류 계약에 서명했습니다. {date}까지 현 소속팀에서 뛰며 기존 급여를 받습니다.",
-      "arrivalRegistered": "{club}에 등록했습니다. 새 계약과 급여가 오늘부터 적용됩니다.",
-      "arrivalMedicalDelay": "예정 합류일의 부상·체력이 메디컬 기준에 미달해 등록을 연기했습니다. 새 예정일은 {date}입니다.",
-      "arrivalCancelled": "메디컬 지연이 반복되어 합류 계약이 해제되었습니다. 예약한 클럽 자금은 반환됩니다.",
+      "arrivalReserved": "{club} 합류 계약에 서명이 완료되었습니다. {date}까지는 현 소속 구단에서 활동하며 기존 계약의 급여를 지급받습니다.",
+      "arrivalRegistered": "{club} 선수 등록이 완료되었습니다. 새 계약과 급여 조건은 오늘부터 적용됩니다.",
+      "arrivalMedicalDelay": "합류 예정일의 메디컬 기준을 충족하지 못해 선수 등록을 연기했습니다. 변경된 예정일은 {date}입니다.",
+      "arrivalCancelled": "메디컬 승인 지연으로 합류 계약이 해제되었습니다. 구단이 확보했던 계약 자금은 반환 처리됩니다.",
       "arrivalPending": "합류 예약 계약",
       "arrivalBinding": "서명한 합류 예약은 한 구단과만 유지됩니다. 새로운 협상은 등록 완료 또는 예약 해제 후 가능합니다.",
       "arrivalSign": "서명 · {date} 합류 예약",
@@ -21569,7 +21569,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "broadcastSpeedValue": "{speed}배 · {seconds}초 간격",
       "calendarAdvancing": "일정을 진행하고 있습니다",
       "calendarProgressFailure": "일정을 진행하지 못했습니다. 다시 시도해 주세요.",
-      "agentContactQueued": "{club}에 접촉했습니다. {date}에 회신을 확인합니다.",
+      "agentContactQueued": "{club}에 영입 가능 여부를 문의했습니다. {date}에 회신 내용을 확인해 전달드리겠습니다.",
       "marketAwaiting": "회신 대기 · {date}",
       "marketClosed": "종료된 제안",
       "marketOfferOpen": "검토 가능한 제안",
@@ -21594,8 +21594,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "responseHint": "응답이 필요한 메시지를 먼저 확인하세요. 제안은 협상·거절·보류 중 선택할 수 있습니다.",
       "offerDefer": "나중에 검토",
       "offerDeferred": "보류 중",
-      "renewalInvitation": "재계약 의사 확인",
-      "renewalInvitationBody": "{club}과의 계약 만료가 가까워졌습니다. 재계약 협상을 시작하거나 이번 계약을 마치고 떠날지 응답해주세요.",
+      "renewalInvitation": "계약 만료 예정 및 재계약 의사 확인",
+      "renewalInvitationBody": "{club}과의 현 계약이 만료될 예정입니다.\n\n재계약 협상을 진행할 의사가 있는지 회신해 주시기 바랍니다. 협상을 진행하지 않을 경우 현 계약은 정해진 만료일까지 유지됩니다.",
       "renewalDecline": "재계약하지 않기",
       "marketReview": "에이전트 소식",
       "scorers": "득점 순위",
@@ -21676,7 +21676,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "reviewNoMatches": "출전 기록이 없습니다.",
       "reviewNotReady": "전체 시즌 일정이 끝나면 최종 결산이 열립니다.",
       "reviewPage": "{page} / {total}",
-      "negotiationNextWindow": "협상은 계속됩니다. 합의 시 다음 등록 가능일은 {date}입니다.",
+      "negotiationNextWindow": "계약 협상은 계속 진행됩니다. 합의가 완료될 경우 다음 등록 가능일은 {date}입니다.",
       "reviewBaseline": "기록 시작 {date}",
       "reviewLeaders": "상위 {n}명",
       "reviewNoGoals": "아직 순위 기록이 없습니다.",
@@ -21730,8 +21730,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "honoursSince": "{date} 이후 기록한 경기부터 수상·우승 기록을 집계합니다.",
       "honoursAll": "전체 수상 경력",
       "honoursWorld": "세계 수상 결과",
-      "honoursBody": "{season} · {competition} · {name}",
-      "honoursMail": "{name} 수상",
+      "honoursBody": "{season} 시즌 {competition}의 {name} 수상을 알려드립니다. 선수의 활약에 축하를 전합니다.",
+      "honoursMail": "{name} 수상 안내",
       "honoursModel": "게임 내 시즌 경기 기록·포지션 활약·대회 수준·우승을 종합해 선정합니다.",
       "honoursPartial": "업데이트 이후 기록만 반영된 시즌입니다.",
       "honoursGoal": "{date} · {minute}분 · {club} · xG {xg}",
@@ -21799,7 +21799,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "agentTermsHint": "추천 조건은 수정 가능한 초안이며 제출해야 효력이 생깁니다.",
       "agentRelationship": "구단 협상 관계",
       "agentRelationshipHint": "반복된 과도한 요구는 구단 관계를 소모합니다. 회신 대기·메디컬 재검사는 소모하지 않습니다.",
-      "agentRelationshipEnded": "반복된 무리한 요구로 구단이 협상을 중단했습니다.",
+      "agentRelationshipEnded": "협상 조건에 대한 입장 차이를 좁히지 못해 구단이 협상 중단 의사를 전달했습니다.",
       "agentFirmCost": "강경 협상 지시로 에이전트 신뢰를 사용했습니다.",
       "agentBriefFrozen": "회신 대기 중이거나 합의된 협상은 지시를 바꿀 수 없습니다.",
       "trainingCenter": "훈련 센터",
@@ -21830,8 +21830,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "trainingReviewGood": "계획대로 훈련을 소화했습니다. 연속적인 연습이 중요합니다.",
       "trainingReviewTired": "누적 피로로 효율이 낮아졌습니다. 강도를 낮추거나 경기 준비 주기를 고려하세요.",
       "trainingReviewRecover": "이번 기간은 회복·재활 비중이 높았습니다. 체력을 먼저 관리하세요.",
-      "trainingReviewSubject": "28일 훈련 평가",
-      "trainingReviewMail": "개인 발전 계획을 {days}일 운영했습니다. 훈련 센터에서 성장 방향과 피로, 경기 전후 회복 기록을 검토하세요. 현재 계획은 다음 주기에도 이어집니다.",
+      "trainingReviewSubject": "개인 훈련 계획 정기 평가",
+      "trainingReviewMail": "개인 발전 계획의 {days}일 운영 결과를 전달드립니다.\n\n훈련 센터에서 성장 방향과 누적 피로, 경기 전후 회복 상태를 확인해 주시기 바랍니다. 별도 변경이 없으면 현 계획을 다음 주기에도 유지합니다.",
       "trainingSessionHistory": "최근 실제 훈련",
       "trainingNoSessions": "아직 진행한 훈련이 없습니다.",
       "trainingRoleGoal": "포지션 핵심 능력",
@@ -21859,14 +21859,14 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "careerTraits": "커리어 특성",
       "careerTraitsHint": "매년 실제 경기·훈련 기록을 평가합니다. 특성별 조건을 모두 충족한 경우에만 최대 2개를 획득하며, 조건을 충족하지 않으면 획득하지 않습니다.",
       "careerTraitsEmpty": "아직 획득한 커리어 특성이 없습니다.",
-      "traitAcquired": "새로운 커리어 특성",
-      "traitAcquiredBody": "{name} · {description}\n획득 계기: {reason}",
+      "traitAcquired": "선수 정기 평가: 커리어 특성",
+      "traitAcquiredBody": "선수의 최근 활동을 검토해 다음 특성을 확인했습니다.\n\n{name}\n{description}\n\n평가 근거: {reason}",
       "traitPositive": "긍정",
       "traitNegative": "부정",
       "captainHierarchy": "주장단",
       "captainHistory": "주장 경력",
-      "captainAppointment": "주장단 선임",
-      "captainAppointmentBody": "{club}의 {rank}에 선임되었습니다.",
+      "captainAppointment": "주장단 선임 안내",
+      "captainAppointmentBody": "코칭스태프 검토를 거쳐 {club}의 {rank}으로 선임되었음을 알려드립니다. 선수단의 소통과 경기 준비에 책임감을 갖고 함께해 주시기 바랍니다.",
       "captainNone": "주장단에 포함되지 않았습니다.",
       "captainHint": "나이·소속 기간·프로의식·멘탈·성격과 신뢰의 기본 자격을 충족한 선수만 주장단에 선임합니다. 스타성·실력·이전 주장 경력은 기본 자격을 대신하지 않습니다. 등록 시점에 검토하며 부상·결장 때는 경기에서만 완장을 대신합니다.",
       "percentage": "{value}%",
@@ -21894,9 +21894,9 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "nationalForm": "최근 구단의 좋은 폼",
       "nationalCoach": "감독의 전술·잠재력 평가",
       "nationalNeed": "해당 포지션의 보강 필요",
-      "nationalSelectedBody": "{team}에 소집되었습니다. 이유: {reason}. 기간 {from} ~ {until}. 구단 계약과 소속팀은 유지됩니다.",
-      "nationalOmittedBody": "{team}의 이번 소집에서 제외되었습니다. {reason}",
-      "nationalReturnedBody": "대표팀 일정을 마치고 구단에 복귀했습니다. A매치 {caps}경기 · {goals}골 · {assists}도움.",
+      "nationalSelectedBody": "{team}의 이번 대표팀 명단에 선발되었음을 알려드립니다.\n\n소집 기간: {from} ~ {until}\n선발 검토 내용: {reason}\n\n소집 일정에 맞춰 대표팀에 합류해 주시기 바랍니다. 구단 소속과 현 계약은 유지됩니다.",
+      "nationalOmittedBody": "{team}의 이번 소집 명단에 포함되지 않았음을 알려드립니다.\n\n검토 의견: {reason}\n\n구단에서 준비를 이어가며 다음 소집 기회를 기다려 주시기 바랍니다.",
+      "nationalReturnedBody": "대표팀 일정이 종료되어 구단으로 복귀했음을 확인합니다.\n\n대표팀 누적 기록: A매치 {caps}경기, {goals}골, {assists}도움\n\n회복 상태를 확인한 뒤 팀 훈련에 합류해 주시기 바랍니다.",
       "nationalCamp": "대표팀 소집 · {name}",
       "nationalMatchDay": "A매치 · {name}",
       "nationalTournamentStart": "대표팀 대회 개막 · {name}",
@@ -21932,7 +21932,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "nationalScoutingHint": "최근 출전·폼, 포지션 경쟁, 감독의 선호와 가용 자원을 함께 평가합니다.",
       "nationalDataNote": "114개 대표팀의 수치는 공개 랭킹·대회 성과를 참고한 게임용 추정치입니다. 감독·선수는 생성 인물이며 유니폼은 대표색의 근사치입니다. 예선·네이션스 리그와 개최 일정은 지원 규모에 맞춘 게임 모델입니다.",
       "nationalQualificationNote": "월드컵은 지역 미니 예선의 순위로 48개국을 선발합니다. 실제 지역별 예선·개최국 자동 진출·대륙간 플레이오프를 그대로 재현하지 않습니다.",
-      "nationalTrophyBody": "{name}에서 {team}이 우승했습니다.",
+      "nationalTrophyBody": "{name}에서 {team}이 우승했습니다. 선수단과 함께 이룬 성과를 축하드립니다.",
       "nationalHomeKit": "홈 유니폼",
       "nationalAwayKit": "대체 유니폼",
       "nationalGroupRank": "조 순위",
@@ -21950,9 +21950,9 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "nationalClubRefusal": "구단이 차출을 거부했습니다.",
       "nationalRefusalImportant": "구단이 가까운 중요 경기를 앞두고 차출을 거부했습니다.",
       "nationalRefusalFitness": "구단이 체력 보호를 위해 차출을 거부했습니다.",
-      "nationalRefusalBody": "{team} 소집 검토 결과: {reason} 이번 소집에는 참여하지 않고 구단에서 준비합니다.",
+      "nationalRefusalBody": "{team} 소집 참여 여부에 대한 검토 결과를 전달드립니다.\n\n{reason}\n\n이번 소집에는 참여하지 않고 구단에서 훈련과 회복을 진행할 예정입니다.",
       "nationalInjuryWithdrawal": "부상으로 대표팀 소집에서 제외되었습니다.",
-      "nationalInjuryBody": "부상 회복을 위해 대표팀 소집을 마치고 구단으로 복귀합니다.",
+      "nationalInjuryBody": "부상 회복을 위해 대표팀 소집을 해제하고 구단 복귀를 결정했습니다. 구단 의료진과 회복 일정을 협의해 주시기 바랍니다.",
       "nationalProjected": "예상 대표팀 명단",
       "nationalProjectedHint": "소집 전에는 가용 선수의 실력과 폼에 따른 예상 명단을 표시합니다. 실제 소집 때 부상·경쟁·차출 상황을 다시 평가합니다.",
       "nationalSquadInfo": "대표팀 선수단 프로필",
@@ -22103,8 +22103,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "financeSource": "입출금 항목",
       "financeAmount": "금액",
       "financeNoLedger": "아직 입출금이 없습니다.",
-      "financeStatement": "개인 경제 정산",
-      "financeStatementBody": "{date} 정산: 상업·자산·투자·브랜드 수입 {income}, 운영·생활 지출 {spent}. 사용 가능한 현금 {cash}, 미납금 {arrears}. 자세한 내역은 자산·라이프 메뉴에서 확인하세요.",
+      "financeStatement": "개인 수입·지출 정산 안내",
+      "financeStatementBody": "{date} 기준 개인 재무 정산 내역을 전달드립니다.\n\n기간 수입: {income}\n기간 지출: {spent}\n사용 가능한 현금: {cash}\n미납금: {arrears}\n\n세부 거래 내역은 자산·라이프에서 확인해 주시기 바랍니다.",
       "financeDays": "{n}일",
       "financeFee": "매수·매도 수수료",
       "financeDone": "개인 경제에 반영하고 저장했습니다.",
@@ -22209,8 +22209,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "lifestyleSelected": "현재 생활 수준",
       "lifestyleSelect": "이 생활 수준 선택",
       "lifestyleCostHint": "현금이 부족한 유지비·생활비·사업 적자는 미납금으로 쌓입니다. 미납 상태에서는 생활 수준의 회복 효과가 중단되고 사기가 감소합니다. 자산 매각이나 다음 수입으로 자동 상환할 수 있습니다. 생활 수준·거주 변경은 변경 이후의 일수부터 적용합니다.",
-      "commercialPaidMail": "{date}: 콘텐츠 의무를 완료해 {amount}를 지급했습니다. 자산·라이프 메뉴에서 다음 기간 촬영 의무를 확인하세요.",
-      "commercialMissedMail": "{date}: 콘텐츠 의무를 완료하지 않아 이번 기간 보수는 지급하지 않습니다. 연속 미이행 {misses}/{max}.",
+      "commercialPaidMail": "{date} 기준 계약상 콘텐츠 의무 이행을 확인해 보수 {amount}를 지급했습니다. 다음 기간의 촬영·콘텐츠 일정을 확인해 주시기 바랍니다.",
+      "commercialMissedMail": "{date} 기준 계약상 콘텐츠 의무가 이행되지 않아 해당 기간의 보수 지급을 보류합니다. 연속 미이행 횟수는 {misses}/{max}입니다. 계약 유지 조건을 확인해 주시기 바랍니다.",
       "playerStrengths": "내 선수의 유형·특장점",
       "playerStrengthsCurrent": "현재 능력치 기준",
       "playerStrengthsHint": "최고 능력치와 {gap}점 이내인 능력치를 모두 특장점으로 표시합니다. 내 능력치 사이의 상대적인 장점이며 성장에 따라 달라집니다.",
@@ -22218,8 +22218,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "assetPriceReferenceHint": "구매 총액은 수수료를 포함합니다. 실물 상품의 공개 가격 조건과 부동산의 게임 설정 가격은 각 상품의 가격 기준을 확인하세요. 보유 후 평가액은 별도로 변동합니다.",
       "moneyInputInvalid": "숫자와 소수점으로 금액을 입력하세요.",
       "moneyInputRange": "금액은 {min} ~ {max} 범위로 입력하세요.",
-      "retentionInvitation": "구단의 개선된 재계약 제안",
-      "retentionInvitationBody": "{club}이 최근 꾸준한 활약과 가치 상승을 평가해 선수와 함께하고 싶어 합니다. 최근 5경기 평균 평점 {rating}. 제안 주급 {weekly}, 계약금 {signing}, 충성 보너스 {loyalty}, 계약 기간 {years}년입니다. {until}까지 재계약 협상을 시작하거나 거절할 수 있습니다. 협상과 메디컬을 마친 뒤 직접 서명해야 계약이 바뀝니다.",
+      "retentionInvitation": "처우 개선 및 재계약 제안",
+      "retentionInvitationBody": "{club}은 최근의 꾸준한 활약을 높이 평가하며 장기적인 동행을 희망하고 있습니다. 최근 5경기 평균 평점은 {rating}입니다.\n\n제안 주급: {weekly}\n계약금: {signing}\n충성 보너스: {loyalty}\n계약 기간: {years}년\n\n{until}까지 협상 진행 여부를 회신해 주시기 바랍니다. 변경된 계약은 협상과 메디컬을 마치고 최종 서명한 뒤 적용됩니다.",
       "valueHistoryTitle": "선수 몸값 추이",
       "valueHistorySchedule": "여름·겨울 이적시장 마감 직후 기록",
       "valueHistoryHint": "게임 시작·업데이트 적용 시점의 몸값부터 기록하고 이후 여름·겨울 이적시장이 닫힌 다음 날의 몸값을 자동 기록합니다. 과거의 실제 몸값을 알 수 없어 이전 기록을 추정하지 않습니다.",
@@ -22233,8 +22233,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "traitReason": "획득 계기",
       "traitLegacyReason": "이전 버전에서 획득한 특성입니다. 당시의 구체적인 획득 근거는 저장되어 있지 않습니다.",
       "traitEvidencePeriod": "{from} ~ {until}: {cause}",
-      "trainingInjurySubject": "훈련 중 부상",
-      "trainingInjuryBody": "{date} · {intensity} 강도 훈련 중 {injury}이 발생했습니다. 회복에 {days}일이 필요합니다. 재활 중에는 훈련 중 부상 추첨을 하지 않습니다.",
+      "trainingInjurySubject": "훈련 중 부상 및 회복 일정 안내",
+      "trainingInjuryBody": "{date}에 진행한 {intensity} 강도의 훈련 중 {injury}이 발생했습니다. 예상 회복 기간은 {days}일입니다.\n\n회복 기간에는 의료진의 지침에 따라 재활을 진행해 주시기 바랍니다.",
       "uiSizeApply": "적용하기",
       "uiSizeApplied": "인터페이스 크기를 적용했습니다.",
       "buildTitle": "플레이 스타일 빌드",
@@ -22273,7 +22273,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "managerVersatileHint": "등록한 포지션별 숙련도와 경쟁을 평가합니다. 소화 가능한 자리가 많고 적응력이 좋을수록 교체 활용 폭이 넓어지며 유연한 감독이 이를 더 높게 평가합니다.",
       "positionCoverage": "현재 전술에서 경쟁 가능한 추가 포지션",
       "positionNoSlot": "현재 전술에 등록 포지션이 없어 출전 배치 불가",
-      "startingSalaryHint": "첫 계약은 신인 급여 기준입니다. 구단을 바꾸면 해당 제안의 급여가 갱신되며, 표시된 금액으로 계약합니다.",
+      "startingSalaryHint": "월 환산 보수는 자국 하부·해외 변방 클럽 약 250만~270만 원, 명문 유스 약 100만~300만 원입니다. 리그 수준과 구단 여건에 따라 달라지며, 선택한 제안의 주급으로 계약합니다.",
       "vacation": "휴가",
       "vacationHint": "목적지와 기간을 선택해 구단에 휴가를 신청합니다. 시즌 종료 후에는 다음 프리시즌 전까지 여행할 수 있습니다.",
       "vacationDestination": "휴가지",
@@ -22289,13 +22289,13 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "vacationFunds": "휴가 비용을 지불할 현금이 부족하거나 미납금이 있습니다.",
       "vacationBusy": "이미 승인된 휴가가 있습니다.",
       "vacationGuide": "승인된 휴가는 달력의 출발·복귀 일정으로 진행됩니다. 출발할 때 생활 관리 수준에 따른 비용을 지불하며, 여행 중 훈련을 쉽니다. 체력과 경기력은 떨어지고 피로도는 매우 낮아집니다. 복귀 후 훈련으로 경기 감각을 회복하세요.",
-      "vacationApprovalBody": "{destination} 휴가를 승인했습니다. {start}부터 {end}까지 {days}일이며 복귀 후 팀 훈련에 합류하세요.",
-      "vacationStartBody": "{destination}로 출발했습니다. 현재 생활 수준에 따라 {cost}를 지출했습니다.",
-      "vacationReturnBody": "{destination} 휴가에서 돌아왔습니다. 피로는 낮아졌지만 체력과 경기 감각을 회복할 훈련이 필요합니다.",
+      "vacationApprovalBody": "{destination} 휴가 신청이 승인되었습니다.\n\n승인 기간: {start} ~ {end} ({days}일)\n\n복귀일을 준수하고 복귀 후 팀 훈련에 합류해 주시기 바랍니다.",
+      "vacationStartBody": "{destination} 휴가 일정이 시작되었습니다. 현재 생활 관리 수준에 따른 여행 비용 {cost}가 결제되었습니다.",
+      "vacationReturnBody": "{destination} 휴가를 마치고 복귀했음을 확인했습니다. 휴식으로 피로는 줄었으나 체력과 경기 감각 회복이 필요합니다. 코칭스태프와 훈련 일정을 확인해 주시기 바랍니다.",
       "vacationHistory": "휴가 내역",
       "vacationNone": "아직 신청한 휴가가 없습니다.",
       "vacationSeasonEnd": "시즌 종료 후 휴가 안내",
-      "vacationSeasonEndBody": "리그 시즌이 끝났습니다. 자산·라이프의 휴가에서 목적지와 기간을 고르세요. 남은 토너먼트·대표팀 일정을 마친 뒤 다음 프리시즌 전에 복귀할 수 있습니다.",
+      "vacationSeasonEndBody": "리그 시즌 종료에 따라 휴가 신청 일정을 안내드립니다.\n\n남은 토너먼트와 대표팀 일정에 지장이 없는 기간을 선택하고, 다음 프리시즌 전에 복귀해 주시기 바랍니다. 신청은 자산·라이프의 휴가 메뉴에서 진행할 수 있습니다.",
       "vacationCancel": "휴가 취소",
       "clubCareer": "클럽 경력",
       "clubCareerPeriod": "소속 기간",
@@ -22305,7 +22305,31 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "spotlightEffect": "평판 {reputation} · 폼 {form}",
       "formMomentumHint": "주목 경기의 반응과 휴가 후 경기 감각이 현재 폼에 반영됩니다.",
       "lateCareerOffer": "스타 영입 · 고액 오퍼",
-      "lateCareerOfferBody": "30대 선수의 경험과 명성을 높이 평가한 스타 영입 제안입니다. 구단의 특별 영입 예산이 주급과 계약금에 반영됐습니다."
+      "lateCareerOfferBody": "구단은 선수의 풍부한 경험과 경기 운영 능력을 높이 평가하며 영입을 희망하고 있습니다. 특별 영입 예산을 반영한 보수와 계약금 조건을 함께 제안드립니다.",
+      "salaryMonthly": "월 환산 급여",
+      "valueHistorySpacing": "평가 기록을 같은 간격으로 표시합니다. 실제 평가일은 각 점과 기록 내역에서 확인할 수 있습니다.",
+      "spendingTitle": "개인 소비·컨디션 관리",
+      "spendingHint": "급여로 식단·회복·심리 관리와 일상 서비스를 이용하세요. 선택한 기간의 비용을 한 번 결제하며 자동으로 재결제하지 않습니다.",
+      "spendingBuy": "이용 시작",
+      "spendingActive": "이용 중",
+      "spendingCategoryBusy": "같은 항목 이용 중",
+      "spendingUntil": "이용 종료일",
+      "spendingCost": "선결제 비용",
+      "spendingDuration": "이용 기간",
+      "spendingDays": "{days}일 이용",
+      "spendingRecovery": "하루 체력 회복",
+      "spendingFatigue": "하루 훈련 피로 감소",
+      "spendingMorale": "하루 사기 회복",
+      "spendingImmediate": "결제 후 사기 회복",
+      "spendingInjury": "훈련 중 부상 위험 감소",
+      "spendingEmpty": "이용 중인 개인 서비스가 없습니다.",
+      "spendingHistory": "개인 소비 내역",
+      "spendingRules": "같은 분야는 한 항목만 이용할 수 있습니다. 현금이 부족하거나 미납금이 있으면 결제할 수 없습니다. 체력·피로·사기 효과는 이용 다음 날부터 적용하며, 휴가 중에는 적용하지 않습니다. 능력치와 잠재력은 구매로 오르지 않습니다.",
+      "mailTrainingStaff": "선수 지원·훈련 담당",
+      "playStyleSetupSubject": "[응답 필요] 개인 플레이 스타일 등록",
+      "playStyleSetupBody": "구단 합류를 환영합니다.\n\n개인 훈련과 경기 준비를 위해 플레이 스타일을 등록해 주시기 바랍니다. 훈련 센터에서 주도 스타일, 공을 가졌을 때, 공이 없을 때의 세 항목을 확인한 뒤 적용을 눌러 주세요. 균형 스타일을 그대로 확정해도 됩니다.\n\n등록을 마친 뒤 일정을 진행할 수 있습니다. 플레이 스타일은 이후에도 훈련 센터에서 자유롭게 변경할 수 있습니다.",
+      "playStyleSetupOpen": "훈련 센터에서 등록",
+      "playStyleSetupHint": "첫 등록을 마치려면 스타일을 확인하고 적용을 눌러 주세요. 균형 스타일로 시작해도 됩니다."
     },
     "statFields": [
       {
@@ -25754,21 +25778,21 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "type": "preseason",
       "offset": 0,
       "name": "프리시즌 · 팀 합류",
-      "description": "감독의 계획을 듣고 훈련·경기력과 이적 선택을 준비합니다."
+      "description": "프리시즌 팀 합류 일정입니다. 코칭스태프와 시즌 운영 계획을 확인하고 팀 훈련을 준비해 주시기 바랍니다."
     },
     {
       "id": "kickoff",
       "type": "kickoff",
       "offset": 14,
       "name": "시즌 개막",
-      "description": "경쟁과 전술에 따라 시즌의 역할이 정해집니다."
+      "description": "정규 시즌이 개막합니다. 경기 일정과 개인 컨디션을 확인해 주시기 바랍니다."
     },
     {
       "id": "summerDeadline",
       "type": "deadline",
       "offset": 30,
       "name": "여름 이적시장 마감",
-      "description": "서명·구단 합의·메디컬이 완료되지 않은 이적 협상은 종료됩니다."
+      "description": "여름 이적시장 등록 기간이 종료됩니다. 진행 중인 계약의 합의·메디컬·서명 일정을 확인해 주시기 바랍니다."
     },
     {
       "id": "breakSeptember",
@@ -25776,7 +25800,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "offset": 34,
       "end": 43,
       "name": "9월 네셔널 매치 브레이크",
-      "description": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다."
+      "description": "국가대표 소집 기간입니다. 소집 명단에 포함된 선수는 대표팀 일정에 참여하며, 그 외 선수는 구단 훈련과 회복 일정을 따릅니다."
     },
     {
       "id": "breakOctober",
@@ -25784,7 +25808,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "offset": 69,
       "end": 78,
       "name": "10월 네셔널 매치 브레이크",
-      "description": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다."
+      "description": "국가대표 소집 기간입니다. 소집 명단에 포함된 선수는 대표팀 일정에 참여하며, 그 외 선수는 구단 훈련과 회복 일정을 따릅니다."
     },
     {
       "id": "breakNovember",
@@ -25792,7 +25816,7 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "offset": 104,
       "end": 113,
       "name": "11월 네셔널 매치 브레이크",
-      "description": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다."
+      "description": "국가대표 소집 기간입니다. 소집 명단에 포함된 선수는 대표팀 일정에 참여하며, 그 외 선수는 구단 훈련과 회복 일정을 따릅니다."
     },
     {
       "id": "boxing",
@@ -25800,21 +25824,21 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "offset": 146,
       "end": 153,
       "name": "박싱 데이 · 연말 밀집 일정",
-      "description": "짧은 경기 간격이 이어집니다. 체력 관리와 회복 훈련에 신경 쓰세요."
+      "description": "연말 밀집 경기 일정이 예정되어 있습니다. 회복 훈련과 컨디션 관리에 유의해 주시기 바랍니다."
     },
     {
       "id": "winterOpen",
       "type": "window",
       "offset": 153,
       "name": "겨울 이적시장 개장",
-      "description": "중간 점검을 바탕으로 관심 클럽과 협상할 수 있습니다."
+      "description": "겨울 이적시장이 시작됩니다. 필요할 경우 에이전트와 이적 또는 재계약 계획을 검토해 주시기 바랍니다."
     },
     {
       "id": "winterDeadline",
       "type": "deadline",
       "offset": 183,
       "name": "겨울 이적시장 마감",
-      "description": "구단 간 합의와 개인 조건만으로는 부족합니다. 마감 전 등록과 서명을 끝내야 합니다."
+      "description": "겨울 이적시장 등록 기간이 종료됩니다. 등록에 필요한 계약 절차가 기한 내 완료되었는지 확인해 주시기 바랍니다."
     },
     {
       "id": "breakMarch",
@@ -25822,21 +25846,21 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "offset": 237,
       "end": 247,
       "name": "3월 네셔널 매치 브레이크",
-      "description": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다."
+      "description": "국가대표 소집 기간입니다. 소집 명단에 포함된 선수는 대표팀 일정에 참여하며, 그 외 선수는 구단 훈련과 회복 일정을 따릅니다."
     },
     {
       "id": "runIn",
       "type": "runin",
       "offset": 266,
       "name": "시즌 막판 · 순위 경쟁",
-      "description": "승강과 감독의 평가, 새 계약의 필요성을 확인합니다."
+      "description": "시즌 막바지 순위 경쟁이 진행됩니다. 남은 경기와 계약 일정을 확인하고 경기 준비에 집중해 주시기 바랍니다."
     },
     {
       "id": "seasonClose",
       "type": "seasonclose",
       "offset": 302,
       "name": "리그 시즌 종료 · 평가",
-      "description": "세계 순위와 출전 약속을 돌아보고 다음 시즌 계약을 준비합니다."
+      "description": "리그 시즌 정기 평가를 진행합니다. 개인 출전 기록과 선수 역할을 검토하고 다음 시즌 계획을 확인해 주시기 바랍니다."
     },
     {
       "id": "breakJune",
@@ -25844,14 +25868,14 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "offset": 307,
       "end": 317,
       "name": "6월 네셔널 매치 브레이크",
-      "description": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다."
+      "description": "국가대표 소집 기간입니다. 소집 명단에 포함된 선수는 대표팀 일정에 참여하며, 그 외 선수는 구단 훈련과 회복 일정을 따릅니다."
     },
     {
       "id": "end",
       "type": "seasonend",
       "offset": 364,
       "name": "다음 시즌 준비",
-      "description": "시즌 결산 뒤 새 세계 일정으로 넘어갑니다. 만료 계약은 자유계약 상태가 됩니다."
+      "description": "시즌 결산과 다음 시즌 준비 일정입니다. 만료 예정 계약과 선수 등록 상태를 확인해 주시기 바랍니다."
     }
   ],
   "agents": [
@@ -26172,15 +26196,15 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
   "inboxReplies": [
     {
       "id": "accept",
-      "name": "계획을 받아들이고 준비한다"
+      "name": "운영 계획에 동의합니다"
     },
     {
       "id": "ask",
-      "name": "출전 기회를 요청한다"
+      "name": "출전 기회를 검토해 주십시오"
     },
     {
       "id": "demand",
-      "name": "더 중요한 역할을 요구한다"
+      "name": "더 중요한 역할을 맡고 싶습니다"
     }
   ],
   "mailFilters": [
@@ -26922,15 +26946,64 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "leagueWeight": 1
     },
     "initialContract": {
+      "domestic": {
+        "monthsPerYear": 12,
+        "marketReference": 1500,
+        "marketSpan": 4,
+        "financeReference": 20000000,
+        "financeSpan": 4,
+        "qualityMinimum": 40,
+        "qualityMaximum": 80,
+        "marketWeight": 0.4,
+        "qualityWeight": 0.3,
+        "financeWeight": 0.25,
+        "abilityWeight": 0.05,
+        "minimumMonthlyKRW": 2500000,
+        "maximumMonthlyKRW": 2700000
+      },
       "europe": {
-        "baseWeekly": 350,
-        "minimumWeekly": 200,
-        "maximumWeekly": 500,
-        "leagueReference": 1500,
-        "leagueExponent": 0.12,
-        "abilityFloor": 0.8,
-        "abilityCeiling": 1.15,
-        "prestigeCap": 0.1
+        "monthsPerYear": 12,
+        "marketReference": 1500,
+        "marketSpan": 4,
+        "financeReference": 20000000,
+        "financeSpan": 4,
+        "qualityMinimum": 40,
+        "qualityMaximum": 80,
+        "marketWeight": 0.4,
+        "qualityWeight": 0.3,
+        "financeWeight": 0.25,
+        "abilityWeight": 0.05,
+        "minimumMonthlyKRW": 2500000,
+        "maximumMonthlyKRW": 2700000
+      },
+      "academy": {
+        "monthsPerYear": 12,
+        "marketReference": 1500,
+        "marketSpan": 4,
+        "financeReference": 20000000,
+        "financeSpan": 4,
+        "qualityMinimum": 40,
+        "qualityMaximum": 80,
+        "marketWeight": 0.4,
+        "qualityWeight": 0.3,
+        "financeWeight": 0.25,
+        "abilityWeight": 0.05,
+        "minimumMonthlyKRW": 1000000,
+        "maximumMonthlyKRW": 3000000
+      }
+    },
+    "contractUpgrade": {
+      "previous": {
+        "europe": {
+          "baseWeekly": 350,
+          "minimumWeekly": 200,
+          "maximumWeekly": 500,
+          "leagueReference": 1500,
+          "leagueExponent": 0.12,
+          "abilityFloor": 0.8,
+          "abilityCeiling": 1.15,
+          "prestigeCap": 0.1
+        }
       }
     }
   },
@@ -42084,8 +42157,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "id": "simple",
         "name": "실속 있는 선수 생활",
         "description": "공동 주거·집밥·기본 관리. 첫 커리어부터 선택되는 생활 수준입니다.",
-        "rent": 1000,
-        "spending": 800,
+        "rent": 600,
+        "spending": 400,
         "morale": 0,
         "recovery": 0
       },
@@ -42133,7 +42206,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "brandProfit": "브랜드 운영 이익",
       "brandLoss": "브랜드 운영 적자",
       "living": "생활비",
-      "vacation": "휴가 비용"
+      "vacation": "휴가 비용",
+      "personalSpending": "개인 생활 소비"
     },
     "catalogUpgrade": {
       "assetNames": {
@@ -42241,6 +42315,164 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "upfront": 400,
       "payment": 150,
       "goalBonus": 15
+    },
+    "personalSpending": {
+      "historyLimit": 60,
+      "legacySimpleCost": {
+        "rent": 1000,
+        "spending": 800
+      },
+      "limits": {
+        "recoveryDaily": 0.45,
+        "fatigueDaily": 0.55,
+        "moraleDaily": 0.2,
+        "minimumInjuryFactor": 0.85
+      },
+      "categories": [
+        {
+          "id": "nutrition",
+          "name": "식단 관리"
+        },
+        {
+          "id": "recovery",
+          "name": "회복 관리"
+        },
+        {
+          "id": "wellbeing",
+          "name": "심리 관리"
+        },
+        {
+          "id": "mobility",
+          "name": "이동·일상 지원"
+        },
+        {
+          "id": "equipment",
+          "name": "개인 장비"
+        },
+        {
+          "id": "leisure",
+          "name": "여가·가족 시간"
+        }
+      ],
+      "items": [
+        {
+          "id": "meal-plan",
+          "category": "nutrition",
+          "name": "스포츠 식단 배송",
+          "description": "훈련 일정에 맞춘 식사와 간식으로 규칙적인 식습관을 유지합니다.",
+          "cost": 120,
+          "days": 30,
+          "recoveryDaily": 0.12,
+          "fatigueDaily": 0.08,
+          "moraleDaily": 0,
+          "injuryFactor": 1,
+          "moraleImmediate": 0
+        },
+        {
+          "id": "personal-chef",
+          "category": "nutrition",
+          "name": "개인 셰프·영양 상담",
+          "description": "개인 영양 상담과 맞춤 식단을 함께 이용합니다. 식단 배송과 중복 적용되지 않습니다.",
+          "cost": 1200,
+          "days": 30,
+          "recoveryDaily": 0.2,
+          "fatigueDaily": 0.15,
+          "moraleDaily": 0,
+          "injuryFactor": 1,
+          "moraleImmediate": 0
+        },
+        {
+          "id": "sports-massage",
+          "category": "recovery",
+          "name": "스포츠 마사지·회복 케어",
+          "description": "정기적인 근육 관리로 훈련 후 회복을 돕고 피로를 줄입니다.",
+          "cost": 160,
+          "days": 30,
+          "recoveryDaily": 0.18,
+          "fatigueDaily": 0.12,
+          "moraleDaily": 0,
+          "injuryFactor": 0.95,
+          "moraleImmediate": 0
+        },
+        {
+          "id": "recovery-team",
+          "category": "recovery",
+          "name": "개인 회복 코치",
+          "description": "회복 루틴과 컨디션을 꾸준히 관리합니다. 부상 치료나 구단 메디컬을 대체하지 않습니다.",
+          "cost": 900,
+          "days": 30,
+          "recoveryDaily": 0.28,
+          "fatigueDaily": 0.3,
+          "moraleDaily": 0,
+          "injuryFactor": 0.92,
+          "moraleImmediate": 0
+        },
+        {
+          "id": "mental-coaching",
+          "category": "wellbeing",
+          "name": "스포츠 심리 상담",
+          "description": "경기와 경쟁에서 느끼는 부담을 정리하고 안정적으로 일상을 이어갑니다.",
+          "cost": 100,
+          "days": 30,
+          "recoveryDaily": 0,
+          "fatigueDaily": 0.04,
+          "moraleDaily": 0.1,
+          "injuryFactor": 1,
+          "moraleImmediate": 0
+        },
+        {
+          "id": "daily-support",
+          "category": "mobility",
+          "name": "이동·가사 지원",
+          "description": "훈련장 이동과 일상 업무의 부담을 줄여 휴식 시간을 확보합니다.",
+          "cost": 90,
+          "days": 30,
+          "recoveryDaily": 0,
+          "fatigueDaily": 0.12,
+          "moraleDaily": 0.04,
+          "injuryFactor": 1,
+          "moraleImmediate": 0
+        },
+        {
+          "id": "fitted-boots",
+          "category": "equipment",
+          "name": "맞춤 축구화·인솔 관리",
+          "description": "발에 맞는 장비와 정기 점검으로 훈련 중 불편과 부담을 줄입니다.",
+          "cost": 200,
+          "days": 90,
+          "recoveryDaily": 0,
+          "fatigueDaily": 0.04,
+          "moraleDaily": 0,
+          "injuryFactor": 0.97,
+          "moraleImmediate": 0
+        },
+        {
+          "id": "family-evening",
+          "category": "leisure",
+          "name": "가족·친구와 식사",
+          "description": "가까운 사람들과 시간을 보내며 기분을 환기합니다.",
+          "cost": 50,
+          "days": 7,
+          "recoveryDaily": 0,
+          "fatigueDaily": 0.06,
+          "moraleDaily": 0,
+          "injuryFactor": 1,
+          "moraleImmediate": 1.5
+        },
+        {
+          "id": "hobby-lessons",
+          "category": "leisure",
+          "name": "취미·문화 활동",
+          "description": "음악·사진·문화 활동으로 축구 밖의 일상을 즐깁니다. 같은 여가 항목과 중복 적용되지 않습니다.",
+          "cost": 180,
+          "days": 14,
+          "recoveryDaily": 0,
+          "fatigueDaily": 0.1,
+          "moraleDaily": 0,
+          "injuryFactor": 1,
+          "moraleImmediate": 3
+        }
+      ]
     }
   },
   "retentionRules": {
@@ -42288,7 +42520,8 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
       "ticks": 4,
       "maxDateLabels": 5,
       "labelGap": 10,
-      "pointRadius": 4
+      "pointRadius": 4,
+      "minimumPointSpacing": 85
     }
   },
   "playStyleRules": {
@@ -42738,6 +42971,86 @@ JSON으로 유지한다. 엔진 수치: rules / engine, 콘텐츠: countries / l
         "finance": 90000000
       }
     ]
+  },
+  "communicationRules": {
+    "previousLabels": {
+      "mailCoachSubject": "이번 시즌 출전 계획",
+      "mailManagerSubject": "신임 감독의 플랜",
+      "mailCoachBody": "이번 시즌은 {tactic} 전술로 간다. 네가 맡을 역할은 {position}이다. 훈련과 경기력을 보고 출전 기회를 판단하겠다. 계획에 대한 의견을 알려 줘.",
+      "mailCoachAccept": "계획을 이해해 줘서 고맙습니다. 준비와 훈련을 지켜보겠습니다.",
+      "mailCoachAsk": "출전 기회를 요청한 점을 이해합니다. 전술 궁합과 경쟁 상황이 좋아지면 기회를 검토하겠습니다.",
+      "mailCoachDemand": "요구한 역할은 경기력으로 증명해야 합니다. 반복적인 요구만으로 역할을 보장할 수는 없습니다.",
+      "mailOfferSubject": "{club}의 영입 관심",
+      "mailOfferBody": "{club}의 구체적인 계약 초안입니다.\n{summary}\n{context}\n답변 기한: {date}. 다른 제안과 비교하거나 동시 협상할 수 있으며, 최종 서명이 있어야 계약이 확정됩니다.",
+      "mailResponseSubject": "{club} 협상 답변 · {round}차",
+      "mailMedicalSubject": "메디컬 심사 결과",
+      "mailAgentSubject": "에이전트의 협상 조언",
+      "mailAgentBody": "구단은 이적료와 대체자, 영입 클럽은 총비용과 전술 수요를 봅니다. 높은 역할·보수·낮은 바이아웃을 모두 요구하면 합의가 어려워집니다. 마감 날짜를 확인하세요.",
+      "agentConsultBody": "요구 조건과 커리어 계획을 검토했습니다. 무리한 동시 요구를 줄이고 다음 답변을 기다리는 것도 협상의 일부입니다.",
+      "agentDeclined": "{club}이 현재 영입을 진행하지 않기로 했습니다. 구단 수준·역할·재정과 시장 수요를 다시 비교하세요.",
+      "agentContactQueued": "{club}에 접촉했습니다. {date}에 회신을 확인합니다.",
+      "offerExtended": "구단이 답변 기한을 {date}까지 연장했습니다.",
+      "renewalInvitation": "재계약 의사 확인",
+      "renewalInvitationBody": "{club}과의 계약 만료가 가까워졌습니다. 재계약 협상을 시작하거나 이번 계약을 마치고 떠날지 응답해주세요.",
+      "retentionInvitation": "구단의 개선된 재계약 제안",
+      "retentionInvitationBody": "{club}이 최근 꾸준한 활약과 가치 상승을 평가해 선수와 함께하고 싶어 합니다. 최근 5경기 평균 평점 {rating}. 제안 주급 {weekly}, 계약금 {signing}, 충성 보너스 {loyalty}, 계약 기간 {years}년입니다. {until}까지 재계약 협상을 시작하거나 거절할 수 있습니다. 협상과 메디컬을 마친 뒤 직접 서명해야 계약이 바뀝니다.",
+      "contractExpiredMail": "계약이 만료되어 자유계약 상태가 되었습니다. 경기에는 출전하지 않으며 에이전트를 통해 새 계약을 찾을 수 있습니다.",
+      "clubOptionSubject": "구단의 계약 연장 옵션 행사",
+      "clubOptionBody": "구단이 계약서의 연장 옵션을 행사했습니다. 옵션 기간만큼 현 계약이 연장됩니다.",
+      "promiseReviewBody": "약속 역할의 목표 출전 비중은 {expected}%, 실제 비중은 {actual}%입니다. 출전은 감독의 결정이므로 보장되지 않으며 약속과 차이가 사기에 영향을 줍니다.",
+      "negotiationDeadline": "이적기간 또는 제안 기한이 지나 협상이 종료되었습니다.",
+      "negotiationAccepted": "각 당사자가 합의했습니다. 다른 오퍼와 비교한 뒤 최종 서명하면 선택한 합류일에 계약이 적용됩니다.",
+      "negotiationNextWindow": "협상은 계속됩니다. 합의 시 다음 등록 가능일은 {date}입니다.",
+      "agentRelationshipEnded": "반복된 무리한 요구로 구단이 협상을 중단했습니다.",
+      "medicalBlocked": "부상 또는 낮은 체력으로 메디컬 승인이 보류되었습니다.",
+      "medicalPassed": "현재 건강 상태로 메디컬을 통과했습니다.",
+      "arrivalRegistered": "{club}에 등록했습니다. 새 계약과 급여가 오늘부터 적용됩니다.",
+      "arrivalReserved": "{club} 합류 계약에 서명했습니다. {date}까지 현 소속팀에서 뛰며 기존 급여를 받습니다.",
+      "arrivalMedicalDelay": "예정 합류일의 부상·체력이 메디컬 기준에 미달해 등록을 연기했습니다. 새 예정일은 {date}입니다.",
+      "arrivalCancelled": "메디컬 지연이 반복되어 합류 계약이 해제되었습니다. 예약한 클럽 자금은 반환됩니다.",
+      "trainingReviewSubject": "28일 훈련 평가",
+      "trainingReviewMail": "개인 발전 계획을 {days}일 운영했습니다. 훈련 센터에서 성장 방향과 피로, 경기 전후 회복 기록을 검토하세요. 현재 계획은 다음 주기에도 이어집니다.",
+      "trainingInjurySubject": "훈련 중 부상",
+      "trainingInjuryBody": "{date} · {intensity} 강도 훈련 중 {injury}이 발생했습니다. 회복에 {days}일이 필요합니다. 재활 중에는 훈련 중 부상 추첨을 하지 않습니다.",
+      "captainAppointment": "주장단 선임",
+      "captainAppointmentBody": "{club}의 {rank}에 선임되었습니다.",
+      "traitAcquired": "새로운 커리어 특성",
+      "traitAcquiredBody": "{name} · {description}\n획득 계기: {reason}",
+      "honoursMail": "{name} 수상",
+      "honoursBody": "{season} · {competition} · {name}",
+      "nationalSelectedBody": "{team}에 소집되었습니다. 이유: {reason}. 기간 {from} ~ {until}. 구단 계약과 소속팀은 유지됩니다.",
+      "nationalOmittedBody": "{team}의 이번 소집에서 제외되었습니다. {reason}",
+      "nationalReturnedBody": "대표팀 일정을 마치고 구단에 복귀했습니다. A매치 {caps}경기 · {goals}골 · {assists}도움.",
+      "nationalTrophyBody": "{name}에서 {team}이 우승했습니다.",
+      "nationalRefusalBody": "{team} 소집 검토 결과: {reason} 이번 소집에는 참여하지 않고 구단에서 준비합니다.",
+      "nationalInjuryBody": "부상 회복을 위해 대표팀 소집을 마치고 구단으로 복귀합니다.",
+      "financeStatement": "개인 경제 정산",
+      "financeStatementBody": "{date} 정산: 상업·자산·투자·브랜드 수입 {income}, 운영·생활 지출 {spent}. 사용 가능한 현금 {cash}, 미납금 {arrears}. 자세한 내역은 자산·라이프 메뉴에서 확인하세요.",
+      "commercialPaidMail": "{date}: 콘텐츠 의무를 완료해 {amount}를 지급했습니다. 자산·라이프 메뉴에서 다음 기간 촬영 의무를 확인하세요.",
+      "commercialMissedMail": "{date}: 콘텐츠 의무를 완료하지 않아 이번 기간 보수는 지급하지 않습니다. 연속 미이행 {misses}/{max}.",
+      "vacationApprovalBody": "{destination} 휴가를 승인했습니다. {start}부터 {end}까지 {days}일이며 복귀 후 팀 훈련에 합류하세요.",
+      "vacationStartBody": "{destination}로 출발했습니다. 현재 생활 수준에 따라 {cost}를 지출했습니다.",
+      "vacationReturnBody": "{destination} 휴가에서 돌아왔습니다. 피로는 낮아졌지만 체력과 경기 감각을 회복할 훈련이 필요합니다.",
+      "vacationSeasonEndBody": "리그 시즌이 끝났습니다. 자산·라이프의 휴가에서 목적지와 기간을 고르세요. 남은 토너먼트·대표팀 일정을 마친 뒤 다음 프리시즌 전에 복귀할 수 있습니다.",
+      "lateCareerOfferBody": "30대 선수의 경험과 명성을 높이 평가한 스타 영입 제안입니다. 구단의 특별 영입 예산이 주급과 계약금에 반영됐습니다.",
+      "startingSalaryHint": "첫 계약은 신인 급여 기준입니다. 구단을 바꾸면 해당 제안의 급여가 갱신되며, 표시된 금액으로 계약합니다."
+    },
+    "previousCalendar": {
+      "preseason": "감독의 계획을 듣고 훈련·경기력과 이적 선택을 준비합니다.",
+      "kickoff": "경쟁과 전술에 따라 시즌의 역할이 정해집니다.",
+      "summerDeadline": "서명·구단 합의·메디컬이 완료되지 않은 이적 협상은 종료됩니다.",
+      "breakSeptember": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다.",
+      "breakOctober": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다.",
+      "breakNovember": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다.",
+      "boxing": "짧은 경기 간격이 이어집니다. 체력 관리와 회복 훈련에 신경 쓰세요.",
+      "winterOpen": "중간 점검을 바탕으로 관심 클럽과 협상할 수 있습니다.",
+      "winterDeadline": "구단 간 합의와 개인 조건만으로는 부족합니다. 마감 전 등록과 서명을 끝내야 합니다.",
+      "breakMarch": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다.",
+      "runIn": "승강과 감독의 평가, 새 계약의 필요성을 확인합니다.",
+      "seasonClose": "세계 순위와 출전 약속을 돌아보고 다음 시즌 계약을 준비합니다.",
+      "breakJune": "구단 휴식기에 최근 활약·감독 평가·포지션 수요로 국가대표를 소집합니다. 소집 선수는 A매치에 참여하고 나머지 선수는 훈련·회복을 이어갑니다.",
+      "end": "시즌 결산 뒤 새 세계 일정으로 넘어갑니다. 만료 계약은 자유계약 상태가 됩니다."
+    }
   }
 }
 </script>
@@ -43094,9 +43407,9 @@ const FootballCore = (() => {
 
   // Personal finances live beside the player: football earnings remain cumulative.
   function initializeEconomy(db,s){
-    if(s.economy!==undefined)return s.economy;
+    if(s.economy!==undefined){s.economy.personalSpending??={active:[],history:[]};return s.economy;}
     const r=db.economyRules,opening=s.player.earned+r.initialCash;
-    s.economy={revision:r.revision,cash:opening,arrears:0,income:opening,spent:0,statementIncome:opening,statementSpent:0,serial:0,lastSettlement:s.date,lastLivingDate:s.date,livingAccrued:0,moraleAccrued:0,recoveryAccrued:0,lifestyle:r.defaultLifestyle,contracts:[],contractHistory:[],lastSigned:{},assets:[],investments:[],brands:[],ledger:[]};
+    s.economy={revision:r.revision,cash:opening,arrears:0,income:opening,spent:0,statementIncome:opening,statementSpent:0,serial:0,lastSettlement:s.date,lastLivingDate:s.date,livingAccrued:0,moraleAccrued:0,recoveryAccrued:0,lifestyle:r.defaultLifestyle,personalSpending:{active:[],history:[]},contracts:[],contractHistory:[],lastSigned:{},assets:[],investments:[],brands:[],ledger:[]};
     if(opening)financeRecord(db,s,'opening',opening,s.date);return s.economy;
   }
   function financeRecord(db,s,type,amount,date=s.date,name=''){
@@ -43182,6 +43495,40 @@ const FootballCore = (() => {
     if(action==='sell'){settleBrandBalance(db,s,b,s.date);financeCredit(db,s,b.equity*r.brandSaleShare,'brandSell',s.date,b.name);e.brands=e.brands.filter(x=>x!==b);return true;}return false;
   }
   function settleBrandBalance(db,s,b,date){const profit=b.pendingRevenue-b.pendingCost;b.lastRevenue=b.pendingRevenue;b.lastCost=b.pendingCost;b.pendingRevenue=0;b.pendingCost=0;b.profit+=profit;if(profit>=0)financeCredit(db,s,profit,'brandProfit',date,b.name);else financeDebit(db,s,-profit,'brandLoss',date,b.name,true);}
+  function personalSpendingEffects(db,s,date=s.date){
+    const rule=db.economyRules.personalSpending,limit=rule.limits,out={recoveryDaily:0,fatigueDaily:0,moraleDaily:0,injuryFactor:1};
+    for(const row of s.economy?.personalSpending?.active||[]){
+      if(row.start>=date||row.until<date)continue;const item=rule.items.find(d=>d.id===row.definition);if(!item)continue;
+      for(const key of ['recoveryDaily','fatigueDaily','moraleDaily'])out[key]+=item[key];out.injuryFactor*=item.injuryFactor;
+    }
+    for(const key of ['recoveryDaily','fatigueDaily','moraleDaily'])out[key]=Math.min(limit[key],out[key]);out.injuryFactor=Math.max(limit.minimumInjuryFactor,out.injuryFactor);return out;
+  }
+  function buyPersonalSpending(db,s,id){
+    if(s.matchPresentation)return false;const item=db.economyRules.personalSpending.items.find(d=>d.id===id),e=initializeEconomy(db,s);if(!item)return false;
+    const active=e.personalSpending.active.filter(row=>row.until>=s.date);
+    if(active.some(row=>db.economyRules.personalSpending.items.find(d=>d.id===row.definition)?.category===item.category)||!financeDebit(db,s,item.cost,'personalSpending',s.date,item.name))return false;
+    const row={id:'spending:'+ ++e.serial,definition:id,start:s.date,until:dateAdd(s.date,item.days),cost:item.cost};e.personalSpending.active=[...active,row];e.personalSpending.history.push(clone(row));e.personalSpending.history=e.personalSpending.history.slice(-db.economyRules.personalSpending.historyLimit);s.player.morale=clamp(s.player.morale+item.moraleImmediate,0,db.rules.scale);return true;
+  }
+  function playStyleSetupMail(db,s){
+    if(s.player.playStyleSetupComplete!==false)return;
+    mail(db,s,{key:'play-style-setup',subject:text(db,'playStyleSetupSubject'),body:text(db,'playStyleSetupBody'),from:text(db,'mailTrainingStaff'),fromRole:'coach',action:'play-style'});
+  }
+  const communicationCache=new WeakMap();
+  function communicationText(db,value){
+    if(typeof value!=='string')return value;let templates=communicationCache.get(db);
+    if(!templates){
+      const escape=text=>text.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');templates=[];
+      for(const [key,previous] of Object.entries(db.communicationRules.previousLabels)){
+        if(typeof previous!=='string'||previous===db.ui.labels[key])continue;const names=[],tokens=previous.split(/(\{\w+\})/g),pattern=tokens.map(token=>{if(!/^\{\w+\}$/.test(token))return escape(token);const name=token.slice(1,-1);names.push(name);return key==='honoursBody'&&name==='season'?'(\\d+)':'([\\s\\S]*?)';}).join('');
+        templates.push({pattern:new RegExp('^'+pattern+'$'),names,current:db.ui.labels[key],specificity:previous.replace(/\{\w+\}/g,'').length});
+      }
+      for(const [id,previous] of Object.entries(db.communicationRules.previousCalendar)){const current=db.calendarEvents.find(e=>e.id===id)?.description;if(current&&current!==previous)templates.push({pattern:new RegExp('^'+escape(previous)+'$'),names:[],current,specificity:previous.length});}
+      templates.sort((a,b)=>b.specificity-a.specificity);
+      communicationCache.set(db,templates);
+    }
+    for(const entry of templates){const match=value.match(entry.pattern);if(!match)continue;const vars=Object.fromEntries(entry.names.map((key,i)=>[key,match[i+1]]));return entry.current.replace(/\{(\w+)\}/g,(_,key)=>vars[key]??'');}return value;
+  }
+
   function lifestyleChange(db,s,id){if(!db.economyRules.lifestyles.some(x=>x.id===id))return false;s.economy.lifestyle=id;return true;}
   function settleEconomy(db,s){
     const e=initializeEconomy(db,s),r=db.economyRules;
@@ -43221,16 +43568,16 @@ const FootballCore = (() => {
 
   function createCareer(db,profile,routeId,clubId) {
     const route=db.routes.find(x=>x.id===routeId),r=db.rules;
-    const p={...clone(profile),club:clubId,route:routeId,trust:route.trust,fitness:r.startingFitness,morale:r.startingMorale,reputation:r.startingReputation,injury:0,suspension:0,yellows:0,earned:0,history:[],growthBaseline:clone(profile.stats),career:[{season:1,date:db.meta.initialDate,club:clubId,type:'joined'}],contract:{weekly:initialWage(db,clubId,profile,routeId),expiresSeason:1+r.contractYears,initial:true}};
+    const p={...clone(profile),club:clubId,route:routeId,playStyleSetupComplete:false,trust:route.trust,fitness:r.startingFitness,morale:r.startingMorale,reputation:r.startingReputation,injury:0,suspension:0,yellows:0,earned:0,history:[],growthBaseline:clone(profile.stats),career:[{season:1,date:db.meta.initialDate,club:clubId,type:'joined'}],contract:{weekly:initialWage(db,clubId,profile,routeId),expiresSeason:1+r.contractYears,initial:true}};
     const state={schema:db.meta.schema,seed:hash(`${db.meta.seed}:${profile.startingSeed??0}:${p.name}:${p.country}:${p.position}`),season:1,round:0,date:db.meta.initialDate,seasonStart:db.meta.initialDate,player:p,training:db.training[0].id,fixtures:{},offers:[],archives:[]};
     p.displayName=String(p.displayName||p.name).trim()||p.name;initializePlayer(db,p,state);ensureWorld(db,state);state.fixtures=worldFixtures(db,1,state.date,state);initializeSystems(db,state);return state;
   }
   function wage(db,clubId,p,factor=1,state=null) { const idx=indexes(db,state),club=idx.clubs[clubId],league=idx.leagues[club.league]; return Math.max(db.rules.minimumSalary,Math.round(league.salaryBase*Math.pow(suitability(db,p)/club.quality,db.rules.wagePower)*factor*(1+(club.prestige||0)*db.social.prestigeSalaryWeight))); }
   function initialWage(db,clubId,p,routeId){
-    const route=db.routes.find(r=>r.id===routeId),regular=wage(db,clubId,p,route.salaryFactor),rule=db.startingRouteRules.initialContract[routeId];
-    if(!rule)return regular;
-    const club=indexes(db).clubs[clubId],league=indexes(db).leagues[club.league],ability=clamp(Math.pow(suitability(db,p)/club.quality,db.rules.wagePower),rule.abilityFloor,rule.abilityCeiling),market=Math.pow(league.salaryBase/rule.leagueReference,rule.leagueExponent),prestige=1+Math.min(rule.prestigeCap,(club.prestige||0)*db.social.prestigeSalaryWeight);
-    return Math.max(db.rules.minimumSalary,Math.min(regular,Math.round(clamp(rule.baseWeekly*ability*market*prestige,rule.minimumWeekly,rule.maximumWeekly))));
+    const rule=db.startingRouteRules.initialContract[routeId],idx=indexes(db),club=idx.clubs[clubId],marketClub=idx.clubs[club.parent]||club,league=idx.leagues[marketClub.league],rate=db.settings.currencies.find(c=>c.id==='KRW').rate;
+    const market=clamp(.5+Math.log2(league.salaryBase/rule.marketReference)/rule.marketSpan,0,1),quality=clamp((marketClub.quality-rule.qualityMinimum)/(rule.qualityMaximum-rule.qualityMinimum),0,1),finance=clamp(.5+Math.log10(Math.max(1,marketClub.finance||1)/rule.financeReference)/rule.financeSpan,0,1),ability=clamp((overall(db,p.stats)-db.rules.initialOverallMin)/Math.max(1,db.rules.initialOverallMax-db.rules.initialOverallMin),0,1);
+    const score=market*rule.marketWeight+quality*rule.qualityWeight+finance*rule.financeWeight+ability*rule.abilityWeight,monthly=rule.minimumMonthlyKRW+(rule.maximumMonthlyKRW-rule.minimumMonthlyKRW)*score,toWeekly=amount=>amount/rate*rule.monthsPerYear/db.rules.annualSalaryWeeks;
+    return clamp(Math.round(toWeekly(monthly)),Math.ceil(toWeekly(rule.minimumMonthlyKRW)),Math.floor(toWeekly(rule.maximumMonthlyKRW)));
   }
   const squadMeanCache=new WeakMap();
   function squadOverall(db,clubId,s=null){
@@ -43532,6 +43879,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     if(!s)return [];const p=s.player,items=[],club=s.world.clubs[p.club];
     for(const d of s.deals.filter(d=>dealLive(d)&&!d.awaiting&&d.deadline>=s.date&&d.sourceClub===p.club)){const m=s.inbox.filter(m=>responseDeal(s,m)?.id===d.id).at(-1);if(m)items.push(m);}
     for(const m of s.inbox){if(items.includes(m))continue;if(m.action==='offer'){const o=s.offers.find(o=>o.id===m.offer);if(o?.status==='open'&&o.expiresDate>=s.date&&!o.responseDeferred&&!responseDeal(s,m)&&s.inbox.filter(x=>x.offer===o.id).at(-1)?.id===m.id)items.push(m);}
+      else if(m.action==='play-style'&&!m.answered&&p.playStyleSetupComplete===false)items.push(m);
       else if(m.reply==='coach'&&!m.answered&&!p.freeAgent&&(!m.fromClub||m.fromClub===p.club)&&(m.key?m.key==='coach:'+s.season+':'+p.club+':'+club.manager.id:m.from===club.manager.name&&m.date>=club.manager.appointmentDate))items.push(m);
       else if(m.action==='renewal'&&!m.answered&&!p.freeAgent&&!s.pendingTransfer&&m.fromClub===p.club&&m.contractExpiry===p.contract.expiresSeason&&(!m.retentionTerms||m.retentionUntil>=s.date)&&!s.deals.some(d=>d.kind==='renewal'&&dealLive(d)))items.push(m);
     }return items.sort((a,b)=>a.date.localeCompare(b.date)||a.id.localeCompare(b.id));
@@ -43604,7 +43952,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   }
   function normalizeInbox(db,s){
     const oldKeys=!s.coachPlanKeys;s.coachPlanKeys||={};const seen=new Map(),inbox=[];
-    for(const m of s.inbox){if(!postseasonMessageRelevant(db,s,m))continue;m.fromRole??=senderRole(db,s,m);if(m.fromRole==='coach'&&m.key?.startsWith('coach:'))m.fromClub??=m.key.split(':')[2];
+    for(const m of s.inbox){if(!postseasonMessageRelevant(db,s,m))continue;m.subject=communicationText(db,m.subject);m.body=communicationText(db,m.body);m.fromRole??=senderRole(db,s,m);if(m.fromRole==='coach'&&m.key?.startsWith('coach:'))m.fromClub??=m.key.split(':')[2];
       if(oldKeys&&m.reply==='coach'){const season=m.key?.startsWith('coach:')?m.key.split(':')[1]:s.season,key=`${season}:${m.from}:${m.body}`,prior=seen.get(key);if(prior){prior.read||=m.read;prior.answered||=m.answered;continue;}seen.set(key,m);}
       inbox.push(m);
     }s.inbox=inbox;
@@ -43671,7 +44019,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   }
 
   function initializeSystems(db,s,legacy=false){
-    initializePlayStyle(db,s);initializeEconomy(db,s);initializeCareerStories(db,s);initializeCompetitionStats(db,s);initializeAwards(db,s);s.continentalBrackets??={};initializePostseason(db,s);s.automaticOfferHistory??=Object.fromEntries(Object.entries(s.offerHistory||{}).map(([club,date])=>[club,{date}]));s.marketReview??=null;s.inbox||=[];s.inboxSerial??=0;s.deals||=[];s.dealSerial??=0;s.offerSerial??=0;s.agent||={id:db.agents[0].id,trust:db.agents[0].trust};s.agentContacts||={};s.agentInquiries||=[];s.offerHistory||={};s.scoutingCycle??=0;s.worldTickSerial??=0;s.pendingTransfer??=null;
+    initializePlayStyle(db,s);initializeEconomy(db,s);initializeCareerStories(db,s);initializeCompetitionStats(db,s);initializeAwards(db,s);s.continentalBrackets??={};initializePostseason(db,s);s.automaticOfferHistory??=Object.fromEntries(Object.entries(s.offerHistory||{}).map(([club,date])=>[club,{date}]));s.marketReview??=null;s.inbox||=[];s.inboxSerial??=0;playStyleSetupMail(db,s);s.deals||=[];s.dealSerial??=0;s.offerSerial??=0;s.agent||={id:db.agents[0].id,trust:db.agents[0].trust};s.agentContacts||={};s.agentInquiries||=[];s.offerHistory||={};s.scoutingCycle??=0;s.worldTickSerial??=0;s.pendingTransfer??=null;
     const p=s.player;p.development.practice??={since:s.date,last:{}};p.displayName??=p.name;p.injuryDays??=p.injury*db.calendarRules.injuryDaysPerWeek;p.freeAgent??=false;p.contract={...clone(db.dealDefaults),role:db.contractRoles.at(-1).id,position:p.position,agentCommissionPercent:db.agents[0].commission,...p.contract};
     if(!s.calendar)buildCalendar(db,s,legacy);initializeTrainingProgram(db,s);initializeAgentSystem(db,s);initializeCareerIdentity(db,s);initializeNations(db,s);initializeCaptainRegistration(db,s);initializeNpcMarket(db,s);
     for(const o of s.offers){o.id||=`offer:${++s.offerSerial}`;o.expiresDate||=dateAdd(s.date,db.dealRules.interestDays);}
@@ -43703,7 +44051,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
     for(const d of s.deals)if(['negotiating','ready'].includes(d.status)&&d.deadline<s.date){d.status='failed';d.awaiting=false;d.medicalWaiting=false;d.medicalDeferred=false;dealLog(db,s,d,'negotiationDeadline');mail(db,s,{subject:text(db,'mailResponseSubject',{club:indexes(db,s).clubs[d.club].name,round:d.round}),body:text(db,'negotiationDeadline'),deal:d.id,action:'deal'});}
   }
   function advance(db,s){
-    if(s.matchPreparation)return false;
+    if(s.player.playStyleSetupComplete===false||s.matchPreparation)return false;
     if(s.interviews?.pending)resolveInterview(db,s,db.interviewRules.defaultOption,true);
     if(s.trainingProgram&&s.trainingProgram.plan.primary!==s.training&&db.training.some(t=>t.id===s.training))setTrainingPlan(db,s,{...s.trainingProgram.plan,primary:s.training,secondary:s.trainingProgram.plan.secondary===s.training?db.trainingProgramRules.defaults.secondary:s.trainingProgram.plan.secondary});ensureWorld(db,s);initializeSystems(db,s);advancePostseason(db,s);if(s.careerStories.pending)resolveCareerDecision(db,s,db.careerDecisionRules.defaultOption,true);queueCareerDecision(db,s);const event=nextCalendar(s);if(!event)return false;
     const p=s.player,c=db.calendarRules;
@@ -44097,11 +44445,12 @@ function simulateWorldFixture(db,f,s,continuation=null){
     if(session.kind==='vacation'){const r=db.vacationRules;p.fitness=clamp(p.fitness-r.fitnessDailyCost,0,db.rules.scale);program.fatigue=Math.min(r.fatigueCeiling,Math.max(0,program.fatigue-r.fatigueDailyRecovery));p.vacationForm=clamp((p.vacationForm||0)-r.formDailyLoss,-r.formMaximumLoss,0);return;}
     if(p.vacationForm)p.vacationForm=Math.min(0,p.vacationForm+db.vacationRules.formRecoveryDaily);
     if(p.spotlightForm)p.spotlightForm=Math.sign(p.spotlightForm)*Math.max(0,Math.abs(p.spotlightForm)-db.spotlightRules.momentumDecayDaily);
-    p.fitness=clamp(p.fitness+db.calendarRules.recoveryDaily+session.recovery-session.load/db.calendarRules.trainingUnitDays,0,db.rules.scale);
-    program.fatigue=clamp(program.fatigue+session.load*cfg.loadFatigue-(session.work?cfg.fatigueRecovery:cfg.restFatigueRecovery),0,db.rules.scale);
+    const spending=personalSpendingEffects(db,s,session.date||s.date);
+    p.fitness=clamp(p.fitness+db.calendarRules.recoveryDaily+session.recovery-session.load/db.calendarRules.trainingUnitDays+spending.recoveryDaily,0,db.rules.scale);p.morale=clamp(p.morale+spending.moraleDaily,0,db.rules.scale);
+    program.fatigue=clamp(program.fatigue+session.load*cfg.loadFatigue-(session.work?cfg.fatigueRecovery:cfg.restFatigueRecovery)-spending.fatigueDaily,0,db.rules.scale);
   }
   function trainingInjuryChance(db,s,session){
-    const r=db.trainingProgramRules.injuryRisk;if(!session.work||s.player.injuryDays>0||s.player.injury>0)return 0;const base=r.dailyChance[s.trainingProgram.plan.intensity]||0;return Math.min(r.maximumChance,base*(1+s.trainingProgram.fatigue/db.rules.scale*r.fatigueWeight)*(traitEffects(db,s.player).injury??1));
+    const r=db.trainingProgramRules.injuryRisk;if(!session.work||s.player.injuryDays>0||s.player.injury>0)return 0;const base=r.dailyChance[s.trainingProgram.plan.intensity]||0;return Math.min(r.maximumChance,base*(1+s.trainingProgram.fatigue/db.rules.scale*r.fatigueWeight)*(traitEffects(db,s.player).injury??1)*personalSpendingEffects(db,s,session.date||s.date).injuryFactor);
   }
   function trainingInjury(db,s,session){
     const chance=trainingInjuryChance(db,s,session),rng=random(hash(s.seed+':training-injury:'+s.date));if(chance<=0||rng()>=chance)return null;const cfg=db.trainingProgramRules.injuryRisk,injury=db.dynamics.injuries.find(i=>i.id===cfg.injury);applyInjury(db,s,s.player,injury,rng);Object.assign(s.player.development.injuries.at(-1),{source:'training',intensity:s.trainingProgram.plan.intensity});mail(db,s,{key:'training-injury:'+s.date,subject:text(db,'trainingInjurySubject'),body:text(db,'trainingInjuryBody',{date:s.date,intensity:db.trainingProgramRules.intensities.find(i=>i.id===s.trainingProgram.plan.intensity).name,injury:injury.name,days:s.player.injuryDays}),from:'mailCoach'});return injury.id;
@@ -44564,8 +44913,8 @@ function simulateWorldFixture(db,f,s,continuation=null){
     for(const key of ['load','longPassShare','passAccuracyDelta'])out[key]=clamp(out[key],limits[key+'Min'],limits[key+'Max']);
     return out;
   }
-  function initializePlayStyle(db,s){s.player.playStyleBuild??=playStyleDefaults(db);}
-  function setPlayStyleBuild(db,s,build){if(s.matchPresentation||!validPlayStyleBuild(db,build,s.player.position))return false;s.player.playStyleBuild=clone(build);return true;}
+  function initializePlayStyle(db,s){s.player.playStyleBuild??=playStyleDefaults(db);s.player.playStyleSetupComplete??=true;}
+  function setPlayStyleBuild(db,s,build){if(s.matchPresentation||!validPlayStyleBuild(db,build,s.player.position))return false;s.player.playStyleBuild=clone(build);s.player.playStyleSetupComplete=true;for(const m of s.inbox||[])if(m.action==='play-style'){m.answered=true;m.read=true;}return true;}
   function playStyleMatchEffects(db,s,fixture){return s?.matchPlan?.playStyle&&s.matchPlan.fixture===fixture?.id?s.matchPlan.playStyle:playStyleEffects(db,s?.player.playStyleBuild,s?.player.position);}
   function playStyleOpportunity(style,person,key){return person.id==='player'?(style?.opportunity[key]??1):1;}
 
@@ -44869,6 +45218,10 @@ function simulateWorldFixture(db,f,s,continuation=null){
     event.vars={...context.vars,...(event.episode?{episode:db.careerEpisodes.find(e=>e.id===story.activeEpisode.chain).name}:{})};event.name=textTemplate(template.name,event.vars);event.description=textTemplate(template.description,event.vars);story.pending={id:event.id,template:event.template,date:s.date,season:s.season,vars:clone(event.vars),episode:event.episode||null};return story.pending;
   }
   function upgradeCareerEventsDatabase(db,old){
+    old.communicationRules??=clone(db.communicationRules);old.economyRules.personalSpending??=clone(db.economyRules.personalSpending);old.economyRules.ledgerTypes.personalSpending??=db.economyRules.ledgerTypes.personalSpending;old.valueHistoryRules.chart.minimumPointSpacing??=db.valueHistoryRules.chart.minimumPointSpacing;
+    const simple=old.economyRules.lifestyles.find(d=>d.id==='simple');for(const [key,value] of Object.entries(db.economyRules.personalSpending.legacySimpleCost))if(simple?.[key]===value)simple[key]=db.economyRules.lifestyles.find(d=>d.id==='simple')[key];
+    for(const [key,previous] of Object.entries(db.communicationRules.previousLabels))if(old.ui.labels[key]===previous)old.ui.labels[key]=db.ui.labels[key];for(const event of old.calendarEvents)if(event.description===db.communicationRules.previousCalendar[event.id])event.description=db.calendarEvents.find(d=>d.id===event.id).description;
+    old.startingRouteRules.contractUpgrade??=clone(db.startingRouteRules.contractUpgrade);old.startingRouteRules.initialContract??={};for(const [id,rule] of Object.entries(db.startingRouteRules.initialContract))if(!old.startingRouteRules.initialContract[id]||JSON.stringify(old.startingRouteRules.initialContract[id])===JSON.stringify(db.startingRouteRules.contractUpgrade.previous[id]))old.startingRouteRules.initialContract[id]=clone(rule);
     old.profile.optionalPositionId??=db.profile.optionalPositionId;old.profile.positionUsage??=clone(db.profile.positionUsage);old.startingRouteRules??=clone(db.startingRouteRules);old.startingRouteRules.initialContract??=clone(db.startingRouteRules.initialContract);
     old.careerEventRules??=clone(db.careerEventRules);old.careerEpisodes??=clone(db.careerEpisodes);old.postseasonInboxRules??=clone(db.postseasonInboxRules);old.ui.reviewGrowthDisplay??=clone(db.ui.reviewGrowthDisplay);old.startingRouteRules??=clone(db.startingRouteRules);if(old.ui.labels.reviewGrowthHint===db.ui.reworkLegacyLabels.reviewGrowthHint)old.ui.labels.reviewGrowthHint=db.ui.labels.reviewGrowthHint;old.startingRouteRules.diversity??=clone(db.startingRouteRules.diversity);for(const league of db.startingRouteRules.europeLeagues)if(!old.startingRouteRules.europeLeagues.includes(league))old.startingRouteRules.europeLeagues.push(league);for(const t of old.careerDecisions){t.topic??=db.careerEventRules.legacyTopics[t.id]||db.careerEventRules.defaultTopic;t.kind??='standalone';t.requirements??=[];t.weight??=1;}
     for(const [key,value] of Object.entries(db.careerEventRules.previousIntervals))if(old.careerDecisionRules[key]===value)old.careerDecisionRules[key]=db.careerDecisionRules[key];
@@ -44934,7 +45287,7 @@ function simulateWorldFixture(db,f,s,continuation=null){
   function lateCareerQualified(db,s){const r=db.lateCareerOfferRules,p=s.player;return p.age>=r.minimumAge&&p.reputation>=r.minimumReputation&&overall(db,p.stats)>=r.minimumAbility&&(p.history||[]).filter(h=>h.stats.minutes>0).length>=r.minimumApps;}
   function lateCareerBuyer(db,s,c){const r=db.lateCareerOfferRules;if(c.national||c.parent||c.historical||c.id===s.player.club||!lateCareerQualified(db,s)||c.quality>overall(db,s.player.stats)+r.maximumAbilityGap)return null;return r.groups.find(g=>g.leagues.includes(c.league))||null;}
 
-  return {vacationActive,vacationQuote,vacationIssue,requestVacation,cancelVacation,clubCareerRecords,currentForm,applySpotlight,spotlightImpact,lateCareerQualified,lateCareerBuyer,playStyleDefaults,validPlayStyleBuild,playStyleEffects,setPlayStyleBuild,playStyleOpportunity,playStyleMatchEffects,trainingInjuryChance,trainingInjury,careerTraitFacts,careerTraitQualification,playerValueCheckpoints,trainingGrowthFactors,initializePlayerValueHistory,recordPlayerValue,retentionProposal,initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,initialWage,registeredPositions,positionAssessment,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
+  return {personalSpendingEffects,buyPersonalSpending,communicationText,vacationActive,vacationQuote,vacationIssue,requestVacation,cancelVacation,clubCareerRecords,currentForm,applySpotlight,spotlightImpact,lateCareerQualified,lateCareerBuyer,playStyleDefaults,validPlayStyleBuild,playStyleEffects,setPlayStyleBuild,playStyleOpportunity,playStyleMatchEffects,trainingInjuryChance,trainingInjury,careerTraitFacts,careerTraitQualification,playerValueCheckpoints,trainingGrowthFactors,initializePlayerValueHistory,recordPlayerValue,retentionProposal,initializeEconomy,economySummary,commercialOffers,commercialTerms,signCommercial,commercialDelivery,commercialCancelFee,cancelCommercial,assetPrice,buyAsset,sellAsset,assetUse,investMoney,redeemInvestment,foundBrand,brandAction,lifestyleChange,settleEconomy,careerIncome,postseasonMessageRelevant,careerEventContext,careerTemplateEligible,careerEpisodeProgress,activateCareerDecision,template:textTemplate,initializeNpcMarket,npcContract,npcMarketValue,npcSaleAssessment,npcBuyerAssessment,npcMarketDay,seasonClubRecords,advanceIdleCalendar,nationalCandidateScore,interviewOption,mediaReaction,initializeWorldContext,performanceContext,starProfile,clubCulture,cultureReaction,cultureDecision,rivalryContext,coachCapability,leagueMeta,tacticalAdvantage,recordWorldContext,rivalryTransfer,reviewManager,simulateWorldFixture,coachStrategy,initializeStrategy,strategicMatchState,strategyAssignment,opponentResponse,strategyOpportunity,strategyExecution,strategyLive,strategySummary,interviewExecution,queueInterview,resolveInterview,preMatchInterview,interviewAfterAdvance,coachQuote,matchIntent,matchIntentOpportunity,prepareNextMatch,commitPreparedMatch,initializeCaptainRegistration,registerCaptains,nationalReleaseDecision,reconcileNationalInjury,nationalSquadView,nationalTeam,nationalAssessment,nationalOnDuty,nationalFixtures,nationalOwnFixtures,nationalRecords,nationalPlayerIndex,nationalPool,nationalTable,initializeNations,startNationalTournament,processNationalCamp,playNationalDay,advanceNationalTournament,resolveNationalPenalties,nationalMatchState,rolePerformance,traitEffects,fixtureImportance,initializeCareerIdentity,reviewCareerTraits,careerEvidence,captainCandidates,captainHierarchy,matchCaptain,playerDealTerms,negotiateClubTerms,validTrainingPlan,initializeTrainingProgram,setTrainingPlan,trainingSession,trainingLoad,trainingPreview,advanceTrainingDays,recommendedTrainingPlan,initializeAgentSystem,setAgentMandate,cancelAgentInquiry,changeAgent,contactAssessment,agentContactIssue,consultAgent,setDealBrief,agentNegotiationSupport,recommendedDealTerms,squadOverall,offerAbilityFit,settleAwards,recordAwardGoals,initializePostseason,advancePostseason,applyPromotionOutcomes,postseasonAggregate,needsPlayoffExtraTime,resolvePlayoffResult,promotionEligible,resolveCareerDecision,queueCareerDecision,seasonReviewReady,captureSeasonReview,waitForMedical,dealSubmissionIssue,invalidTermFields,pendingResponses,renewalInvitation,leaders,scoutingCandidate,newClubGrace,competitionMembers,myFixtures,advanceContinental,syncMarketState,normalizeCareerSave,senderRole,valuation,arrivalPlan,offerAction,sellerLimits,resolveArrival,nextCalendar,seasonReady,activeWindow,initializeSystems,startDeal,submitDeal,interactDeal,signDeal,seekClub,replyCoach,mail,validTerms,buyerLimits,upgradeDatabase,deriveGrowthType,clubCountry,characterTrait,applyClubPolicy,localizeWorld,emitNews,initializePlayer,ensureWorld,roleAssignment,managerTactic,effective,starPower,upgradeSave,grow,trainingStatus,worldEvents,clone,clamp,sum,mean,hash,random,dateAdd,indexes,overall,suitability,createStats,metric,roster,competition,selection,schedule,createCareer,startingOffers,initialWage,registeredPositions,positionAssessment,simulate,standings,totals,totalRounds,windowOpen,advance,marketValue,wage,canCallup,nextSeason,refreshOffers};
 })();
 </script>
 <script id="game-ui">
@@ -45168,7 +45521,9 @@ function validateDevelopmentSave(db,s){
 }
 
 function validateCareerEventsContent(db){
- const usage=db.profile.positionUsage,initial=db.startingRouteRules.initialContract.europe;if(!db.profile.optionalPositionId||db.positions.some(p=>p.id===db.profile.optionalPositionId)||!usage||usage.maximumCoverageGap<0||usage.competitionWeight<0||usage.competitionWeight>1||usage.adaptabilityFloor<0||usage.adaptabilityFloor>=db.rules.scale||Object.values(usage.benchBonus).some(v=>!Number.isFinite(v)||v<0||v>1)||!initial||initial.minimumWeekly<db.rules.minimumSalary||initial.maximumWeekly<initial.minimumWeekly||initial.baseWeekly<initial.minimumWeekly||initial.baseWeekly>initial.maximumWeekly||initial.leagueReference<=0||initial.leagueExponent<0||initial.leagueExponent>1||initial.abilityFloor<=0||initial.abilityCeiling<initial.abilityFloor||initial.prestigeCap<0||initial.prestigeCap>1)throw Error('startingCareer.rules');
+ const usage=db.profile.positionUsage;if(!db.profile.optionalPositionId||db.positions.some(p=>p.id===db.profile.optionalPositionId)||!usage||usage.maximumCoverageGap<0||usage.competitionWeight<0||usage.competitionWeight>1||usage.adaptabilityFloor<0||usage.adaptabilityFloor>=db.rules.scale||Object.values(usage.benchBonus).some(v=>!Number.isFinite(v)||v<0||v>1))throw Error('startingCareer.rules');
+ for(const route of db.routes){const r=db.startingRouteRules.initialContract[route.id],weights=r&&r.marketWeight+r.qualityWeight+r.financeWeight+r.abilityWeight;if(!r||r.minimumMonthlyKRW<=0||r.maximumMonthlyKRW<r.minimumMonthlyKRW||r.monthsPerYear!==12||r.marketReference<=0||r.marketSpan<=0||r.financeReference<=0||r.financeSpan<=0||r.qualityMaximum<=r.qualityMinimum||Math.abs(weights-1)>Number.EPSILON*db.rules.scale||['marketWeight','qualityWeight','financeWeight','abilityWeight'].some(k=>r[k]<0)||!db.settings.currencies.some(c=>c.id==='KRW'))throw Error('startingContract.rules');}
+ if(!Number.isFinite(db.valueHistoryRules.chart.minimumPointSpacing)||db.valueHistoryRules.chart.minimumPointSpacing<60)throw Error('valueHistory.spacing');
  const diversity=db.startingRouteRules.diversity;if(!diversity||!Number.isInteger(diversity.alternatives)||diversity.alternatives<1||['minimumFitWeight','fitExponent','preferenceCap','maximumSquadGap','leagueWeight'].some(k=>!Number.isFinite(diversity[k])||diversity[k]<=0)||db.startingRouteRules.europeLeagues.some(id=>!db.leagues.some(l=>l.id===id&&l.senior)))throw Error('startingOffers.diversity');const r=db.careerEventRules,ids=new Set(db.careerDecisions.map(t=>t.id));if(!r||!db.postseasonInboxRules?.resultPrefix||['revision','templateCooldownDays','topicCooldownDays','recentTopics','retryDays','contextMatches','contextDays','congestedMatches','episodeCooldownDays','episodeHistoryLimit'].some(k=>!Number.isInteger(r[k])||r[k]<=0)||!Array.isArray(db.careerEpisodes)||new Set(db.careerEpisodes.map(e=>e.id)).size!==db.careerEpisodes.length)throw Error('careerEvents.rules');
  for(const t of db.careerDecisions){if(!r.topics.includes(t.topic)||!['standalone','episode-start','episode-outcome'].includes(t.kind)||!Number.isFinite(t.weight)||t.weight<=0||!Array.isArray(t.requirements)||t.requirements.some(v=>!r.facts.includes(v.field)||!r.operators.includes(v.op)||typeof v.value!==r.factTypes?.[v.field]||['gte','lte'].includes(v.op)&&!Number.isFinite(v.value))||t.episode&&!db.careerEpisodes.some(e=>e.id===t.episode)||t.options.some(o=>o.episode&&!db.careerEpisodes.some(e=>e.id===o.episode)))throw Error('careerEvents.template');}
  for(const e of db.careerEpisodes)if(!e.id||!e.name||!e.description||!ids.has(e.success)||!ids.has(e.failure)||[e.success,e.failure].some(id=>{const t=db.careerDecisions.find(t=>t.id===id);return t.kind!=='episode-outcome'||t.episode!==e.id;})||!Number.isInteger(e.durationDays)||e.durationDays<=0||!Number.isInteger(e.minApps)||e.minApps<0||!Number.isInteger(e.finishApps)||e.finishApps<e.minApps||!Array.isArray(e.targets)||!e.targets.length||e.targets.some(t=>!db.ui.statFields.some(f=>f.id===t.field)||!Number.isFinite(t.value)||t.value<=0))throw Error('careerEpisodes.content');
@@ -45307,6 +45662,7 @@ function validateVacationSave(db,s){
 
 function validateEconomyContent(db,career=null){
  const r=db?.economyRules,base=DEFAULT_DB.economyRules,number=(v,min=0,max=Number.MAX_SAFE_INTEGER)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max,string=v=>typeof v==='string'&&v.trim().length>0;
+ const personal=r.personalSpending;if(!personal||!Number.isInteger(personal.historyLimit)||personal.historyLimit<1||new Set(personal.categories.map(c=>c.id)).size!==personal.categories.length||new Set(personal.items.map(d=>d.id)).size!==personal.items.length||personal.items.some(d=>!personal.categories.some(c=>c.id===d.category)||!string(d.name)||!string(d.description)||!number(d.cost,1)||!Number.isInteger(d.days)||d.days<1||d.days>365||['recoveryDaily','fatigueDaily','moraleDaily','moraleImmediate'].some(k=>!number(d[k],0,5))||!number(d.injuryFactor,.8,1))||['recoveryDaily','fatigueDaily','moraleDaily'].some(k=>!number(personal.limits[k],0,1))||!number(personal.limits.minimumInjuryFactor,.8,1))throw Error('economy.personalSpending');
  if(!r||Object.entries(base).some(([key,value])=>typeof value==='number'&&!number(r[key])))throw Error('DB.economyRules');
  for(const key of ['revision','periodDays','offerDays','ledgerLimit','historyLimit','maxContracts','maxMisses','maxBrands','brandNameLimit','brandMaxLevel'])if(!Number.isInteger(r[key])||r[key]<1)throw Error('DB.economyRules.'+key);
  if(r.periodDays>db.calendarRules.seasonDays||r.offerDays<r.periodDays||r.moneyStep<=0||r.minimumAssetValue<=0||r.brandDemandMin<=0||r.brandDemandMax<r.brandDemandMin||r.brandAudienceBase<=0||r.brandInitialEquity>1||r.brandSaleShare>1||r.assetPurchaseFee>1||r.assetSaleFee>=1||r.vacancyChance>1)throw Error('DB.economyRules.range');
@@ -45325,6 +45681,9 @@ function validateEconomyContent(db,career=null){
 function validateEconomySave(db,s){
  const e=s.economy,r=db.economyRules,num=(v,min=0)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=Number.MAX_SAFE_INTEGER,date=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v,ref=(group,id)=>r[group].some(d=>d.id===id),past=v=>date(v)&&v<=s.date;
  if(!e||e.revision!==r.revision||!Number.isInteger(e.serial)||e.serial<0||!['cash','arrears','income','spent','statementIncome','statementSpent','livingAccrued','moraleAccrued','recoveryAccrued'].every(k=>num(e[k]))||e.statementIncome>e.income||e.statementSpent>e.spent||!past(e.lastSettlement)||!past(e.lastLivingDate)||!ref('lifestyles',e.lifestyle))throw Error('economy.balance');
+ const usage=e.personalSpending,rule=r.personalSpending;if(!usage||!Array.isArray(usage.active)||!Array.isArray(usage.history)||usage.active.length>rule.categories.length||usage.history.length>rule.historyLimit)throw Error('economy.personalSpending');
+ for(const row of [...usage.active,...usage.history]){const item=rule.items.find(d=>d.id===row.definition);if(!item||!/^spending:\d+$/.test(row.id)||Number(row.id.split(':')[1])>e.serial||!past(row.start)||!date(row.until)||row.until!==Core.dateAdd(row.start,item.days)||!num(row.cost)||row.cost<=0)throw Error('economy.personalSpending.entry');}
+ if(new Set(usage.history.map(row=>row.id)).size!==usage.history.length||new Set(usage.active.filter(row=>row.until>=s.date).map(row=>rule.items.find(d=>d.id===row.definition).category)).size!==usage.active.filter(row=>row.until>=s.date).length)throw Error('economy.personalSpending.duplicate');
  const difference=e.income-e.spent-e.cash+e.arrears;if(Math.abs(difference)>Number.EPSILON*Math.max(1,e.income,e.spent)*db.rules.scale)throw Error('economy.accounting');
  for(const key of ['contracts','contractHistory','assets','investments','brands','ledger'])if(!Array.isArray(e[key]))throw Error('economy.'+key);
  if(e.contracts.length>r.maxContracts||e.contractHistory.length>r.historyLimit||e.brands.length>r.maxBrands||e.ledger.length>r.ledgerLimit)throw Error('economy.limits');
@@ -45378,6 +45737,7 @@ function validatePlayStyleContent(db){
  }
 }
 function validatePlayStyleSave(db,s){
+ if(typeof s.player.playStyleSetupComplete!=='boolean')throw Error('playStyle.setup');
  if(!Core.validPlayStyleBuild(db,s.player.playStyleBuild))throw Error('playStyle.build');
  for(const record of [...s.player.history,...Core.nationalRecords(s)]){const style=record.result?.playStyle;if(!style)continue;
   const factor=value=>Number.isFinite(value)&&value>=.25&&value<=4,delta=value=>Number.isFinite(value)&&Math.abs(value)<=1;
@@ -45697,7 +46057,7 @@ function showContracts(){
  const offers=Core.startingOffers(DB,draft);draft.startingClubSelections??={};
  openModal(creationSteps("contract")+'<h2 id="dialog-title">'+h(t('chooseContract'))+'</h2><p>'+h(t('chooseContractDescription'))+'</p><p class="small muted">'+h(t('startingAlternativesHint'))+' '+h(t('startingSalaryHint'))+'</p><div class="club-cards">'+offers.map(({route,club,alternatives})=>{
   club=alternatives.find(c=>c.id===draft.startingClubSelections[route.id])||club;draft.startingClubSelections[route.id]=club.id;
-  return '<article class="card club-card"><div class="row between"><div class="eyebrow">'+h(route.name)+'</div>'+badge(t('difficulty')+' '+route.difficulty,route.tag)+'</div><label class="starting-club-picker">'+h(t('startingAlternatives'))+'<select data-starting-route="'+h(route.id)+'" aria-label="'+h(t('startingAlternativesLabel',{route:route.name}))+'">'+alternatives.map(c=>'<option value="'+h(c.id)+'"'+(c.id===club.id?' selected':'')+'>'+h(c.name)+' · '+h(idx().leagues[c.league].name)+'</option>').join('')+'</select></label><div class="row">'+crest(club)+'<div><h3>'+h(club.name)+'</h3><p>'+h(idx().leagues[club.league].name)+'</p></div></div><p>'+h(route.description)+'</p><div class="detail-list">'+detail(t('weeklyWage'),money(Core.initialWage(DB,club.id,draft,route.id)))+detail(t('contractLength'),t('years',{n:DB.rules.contractYears}))+detail(t('trust'),route.trust+'/'+DB.rules.scale)+detail(t('clubPrestige'),clubTier(club))+'</div><div class="notice">'+h(route.promise)+'</div>'+btn(t('sign'),'sign','data-route="'+h(route.id)+'" data-club="'+h(club.id)+'"','primary')+'</article>';
+  return '<article class="card club-card"><div class="row between"><div class="eyebrow">'+h(route.name)+'</div>'+badge(t('difficulty')+' '+route.difficulty,route.tag)+'</div><label class="starting-club-picker">'+h(t('startingAlternatives'))+'<select data-starting-route="'+h(route.id)+'" aria-label="'+h(t('startingAlternativesLabel',{route:route.name}))+'">'+alternatives.map(c=>'<option value="'+h(c.id)+'"'+(c.id===club.id?' selected':'')+'>'+h(c.name)+' · '+h(idx().leagues[c.league].name)+'</option>').join('')+'</select></label><div class="row">'+crest(club)+'<div><h3>'+h(club.name)+'</h3><p>'+h(idx().leagues[club.league].name)+'</p></div></div><p>'+h(route.description)+'</p><div class="detail-list">'+detail(t('weeklyWage'),money(Core.initialWage(DB,club.id,draft,route.id)))+detail(t('salaryMonthly'),money(Core.initialWage(DB,club.id,draft,route.id)*DB.rules.annualSalaryWeeks/DB.startingRouteRules.initialContract[route.id].monthsPerYear))+detail(t('contractLength'),t('years',{n:DB.rules.contractYears}))+detail(t('trust'),route.trust+'/'+DB.rules.scale)+detail(t('clubPrestige'),clubTier(club))+'</div><div class="notice">'+h(route.promise)+'</div>'+btn(t('sign'),'sign','data-route="'+h(route.id)+'" data-club="'+h(club.id)+'"','primary')+'</article>';
  }).join('')+'</div><div class="dialog-actions">'+btn(t('personalityBack'),'personality-back')+'</div>');
 }
 function currentClub(){return idx().clubs[state.player.club];}
@@ -45773,7 +46133,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
   case 'info-open':openInfo(button.dataset.kind,button.dataset.id);break;
   case 'info-back':{infoTrail.pop();const previous=infoTrail.at(-1);if(previous)openInfo(previous.kind,previous.id,false);break;}
   case 'info-route':navigateInfo(button.dataset.kind,button.dataset.id);break;
-  case 'sign':activeMail=null;activeDeal=null;selectedStatsSeason=null;state=Core.createCareer(DB,draft,button.dataset.route,button.dataset.club);screen='dashboard';reportId=null;closeModal();persist();render();window.scrollTo({top:0});break;
+  case 'sign':activeMail=null;activeDeal=null;selectedStatsSeason=null;state=Core.createCareer(DB,draft,button.dataset.route,button.dataset.club);screen='inbox';mailScope='action';activeMail=state.inbox.find(m=>m.action==='play-style')?.id||null;reportId=null;closeModal();persist();render();window.scrollTo({top:0});break;
   case 'section-back':moveSectionHistory(-1);break;
   case 'section-forward':moveSectionHistory(1);break;
   case 'tab':screen=button.dataset.tab;reportId=null;activeDeal=null;render();window.scrollTo({top:0});break;
@@ -45923,11 +46283,21 @@ function playerStrengthsCard(compact=false){
  const profile=playerStrengthProfile();return `<section class="player-strengths ${compact?'compact':''}" aria-label="${h(t('playerStrengths'))}"><div class="row between wrap"><div><p class="eyebrow">${h(t('playerStrengths'))}</p><h2>${h(profile.type)}</h2></div>${badge(t('playerStrengthsCurrent'))}</div><div class="player-strength-chips">${profile.strengths.map(a=>`<span class="player-strength-chip"><b>${h(a.name)}</b><strong class="num">${abilityLabel(a.value)}</strong></span>`).join('')}</div>${compact?'':`<p class="small">${h(profile.descriptions.join(DB.ui.playerStrengths.descriptionSeparator))}</p><p class="small muted">${h(t('playerStrengthsHint',{gap:profile.gap}))}</p>`}</section>`;
 }
 
+function personalSpendingCard(){
+ const rule=DB.economyRules.personalSpending,usage=state.economy.personalSpending,active=usage.active.filter(row=>row.until>=state.date);
+ const effects=item=>[item.recoveryDaily?detail(t('spendingRecovery'),'+'+n(item.recoveryDaily,2)):'',item.fatigueDaily?detail(t('spendingFatigue'),n(item.fatigueDaily,2)):'',item.moraleDaily?detail(t('spendingMorale'),'+'+n(item.moraleDaily,2)):'',item.moraleImmediate?detail(t('spendingImmediate'),'+'+n(item.moraleImmediate,1)):'',item.injuryFactor<1?detail(t('spendingInjury'),n((1-item.injuryFactor)*DB.rules.scale,0)+'%'):''].join('');
+ return `<section class="card" style="margin-top:20px"><h2>${h(t('spendingTitle'))}</h2><p class="small muted">${h(t('spendingHint'))}</p><div class="notice small" style="margin-top:12px">${active.length?active.map(row=>h(rule.items.find(d=>d.id===row.definition).name)+' · '+h(t('spendingUntil'))+' '+h(row.until)).join('<br>'):h(t('spendingEmpty'))}</div><div class="offer-grid" style="margin-top:18px">${rule.items.map(item=>{const current=active.find(row=>rule.items.find(d=>d.id===row.definition).category===item.category),locked=!!current||state.economy.arrears>0||state.economy.cash<item.cost;return `<article class="card"><p class="eyebrow">${h(rule.categories.find(c=>c.id===item.category).name)}</p><h3>${h(item.name)}</h3><p class="small muted">${h(item.description)}</p><div class="detail-list">${detail(t('spendingCost'),money(item.cost))}${detail(t('spendingDuration'),t('spendingDays',{days:item.days}))}${effects(item)}</div>${financeButton(current?.definition===item.id?t('spendingActive'):current?t('spendingCategoryBusy'):t('spendingBuy'),'personal-spending',item.id,'',locked)}</article>`;}).join('')}</div><p class="small muted" style="margin-top:16px">${h(t('spendingRules'))}</p><details class="helper-details"><summary>${h(t('spendingHistory'))}</summary><div class="table-wrap"><table><thead><tr><th>${h(t('date'))}</th><th>${h(t('spendingTitle'))}</th><th>${h(t('spendingCost'))}</th><th>${h(t('spendingUntil'))}</th></tr></thead><tbody>${usage.history.slice().reverse().map(row=>`<tr><td>${h(row.start)}</td><td>${h(rule.items.find(d=>d.id===row.definition).name)}</td><td>${money(row.cost)}</td><td>${h(row.until)}</td></tr>`).join('')}</tbody></table></div></details></section>`;
+}
+function playerValueChartLayout(records,cfg){
+ const chartWidth=Math.max(cfg.width,cfg.left+cfg.right+Math.max(0,records.length-1)*cfg.minimumPointSpacing),width=chartWidth-cfg.left-cfg.right,height=cfg.height-cfg.top-cfg.bottom,maximum=Math.max(1,...records.map(row=>row.value));
+ return {chartWidth,width,height,maximum,points:records.map((row,i)=>({x:cfg.left+(records.length>1?i/(records.length-1):0)*width,y:cfg.top+(1-row.value/maximum)*height}))};
+}
+
 function playerValueHistoryCard(){
- const history=state.playerValueHistory,r=DB.valueHistoryRules,cfg=r.chart,records=history.records,first=records[0],last=records.at(-1),peak=Math.max(...records.map(x=>x.value)),maximum=Math.max(1,peak),start=Date.parse(first.date+'T00:00:00Z'),span=Math.max(1,Date.parse(last.date+'T00:00:00Z')-start),width=cfg.width-cfg.left-cfg.right,height=cfg.height-cfg.top-cfg.bottom;
- const point=record=>({x:cfg.left+(Date.parse(record.date+'T00:00:00Z')-start)/span*width,y:cfg.top+(1-record.value/maximum)*height}),points=records.map(point),ticks=Array.from({length:cfg.ticks+1},(_,i)=>({value:maximum*i/cfg.ticks,y:cfg.top+height-height*i/cfg.ticks})),stride=Math.max(1,Math.ceil(records.length/cfg.maxDateLabels));
+ const history=state.playerValueHistory,r=DB.valueHistoryRules,cfg=r.chart,records=history.records,first=records[0],last=records.at(-1),peak=Math.max(...records.map(x=>x.value)),layout=playerValueChartLayout(records,cfg),{maximum,width,height,chartWidth,points}=layout;
+ const ticks=Array.from({length:cfg.ticks+1},(_,i)=>({value:maximum*i/cfg.ticks,y:cfg.top+height-height*i/cfg.ticks}));
  const next=[state.seasonStart,Core.dateAdd(state.seasonStart,DB.calendarRules.seasonDays)].flatMap(seasonStart=>Core.playerValueCheckpoints(DB,{seasonStart})).map(x=>x.date).filter(date=>date>state.date).sort()[0];
- return `<section class="card player-value-history"><div class="section-head"><h2>${h(t('valueHistoryTitle'))}</h2>${badge(t('valueHistorySchedule'))}</div><div class="form-grid" style="margin-top:16px">${detail(t('valueHistoryFirst'),money(first.value))}${detail(t('valueHistoryLatest'),money(last.value))}${detail(t('valueHistoryPeak'),money(peak))}${detail(t('valueHistoryNext'),next)}</div><div class="value-chart-scroll"><svg class="value-history-chart" viewBox="0 0 ${cfg.width} ${cfg.height}" role="img" aria-label="${h(t('valueHistoryTitle'))}"><title>${h(t('valueHistoryTitle'))}</title><desc>${h(records.map(x=>x.date+': '+money(x.value)).join('; '))}</desc>${ticks.map(tick=>`<line class="chart-grid" x1="${cfg.left}" y1="${tick.y}" x2="${cfg.width-cfg.right}" y2="${tick.y}"/><text class="chart-label" text-anchor="end" x="${cfg.left-cfg.labelGap}" y="${tick.y}" dominant-baseline="middle">${h(money(peak?tick.value:0))}</text>`).join('')}<polyline class="chart-line" fill="none" points="${points.map(p=>p.x+','+p.y).join(' ')}"/>${records.map((record,i)=>`<circle class="chart-dot" cx="${points[i].x}" cy="${points[i].y}" r="${cfg.pointRadius}"><title>${h(record.date+' · '+money(record.value))}</title></circle>${i%stride===0||i===records.length-1?`<text class="chart-label" x="${points[i].x}" y="${cfg.height-cfg.labelGap}" text-anchor="${i===records.length-1?'end':'start'}">${h(record.date.slice(0,7))}</text>`:''}`).join('')}</svg></div>${records.length===1?`<p class="notice">${h(t('valueHistoryWaiting'))}</p>`:''}<details class="helper-details"><summary>${h(t('valueHistoryAll'))}</summary><div class="table-wrap"><table><thead><tr><th>${h(t('date'))}</th><th>${h(t('marketValue'))}</th></tr></thead><tbody>${records.slice().reverse().map(record=>`<tr><td>${h(record.date)}${record.kind==='initial'?' · '+h(t('valueHistoryInitial')):''}</td><td class="num">${money(record.value)}</td></tr>`).join('')}</tbody></table></div></details></section>`;
+ return `<section class="card player-value-history"><div class="section-head"><h2>${h(t('valueHistoryTitle'))}</h2>${badge(t('valueHistorySchedule'))}</div><div class="form-grid" style="margin-top:16px">${detail(t('valueHistoryFirst'),money(first.value))}${detail(t('valueHistoryLatest'),money(last.value))}${detail(t('valueHistoryPeak'),money(peak))}${detail(t('valueHistoryNext'),next)}</div><div class="value-chart-scroll"><svg class="value-history-chart" viewBox="0 0 ${chartWidth} ${cfg.height}" style="min-width:${chartWidth}px" role="img" aria-label="${h(t('valueHistoryTitle'))}"><title>${h(t('valueHistoryTitle'))}</title><desc>${h(records.map(x=>x.date+': '+money(x.value)).join('; '))}</desc>${ticks.map(tick=>`<line class="chart-grid" x1="${cfg.left}" y1="${tick.y}" x2="${chartWidth-cfg.right}" y2="${tick.y}"/><text class="chart-label" text-anchor="end" x="${cfg.left-cfg.labelGap}" y="${tick.y}" dominant-baseline="middle">${h(money(peak?tick.value:0))}</text>`).join('')}<polyline class="chart-line" fill="none" points="${points.map(p=>p.x+','+p.y).join(' ')}"/>${records.map((record,i)=>`<circle class="chart-dot" cx="${points[i].x}" cy="${points[i].y}" r="${cfg.pointRadius}"><title>${h(record.date+' · '+money(record.value))}</title></circle><text class="chart-label" x="${points[i].x}" y="${cfg.height-cfg.labelGap}" text-anchor="middle">${h(record.date.slice(0,7))}</text>`).join('')}</svg></div><p class="small muted">${h(t('valueHistorySpacing'))}</p>${records.length===1?`<p class="notice">${h(t('valueHistoryWaiting'))}</p>`:''}<details class="helper-details"><summary>${h(t('valueHistoryAll'))}</summary><div class="table-wrap"><table><thead><tr><th>${h(t('date'))}</th><th>${h(t('marketValue'))}</th></tr></thead><tbody>${records.slice().reverse().map(record=>`<tr><td>${h(record.date)}${record.kind==='initial'?' · '+h(t('valueHistoryInitial')):''}</td><td class="num">${money(record.value)}</td></tr>`).join('')}</tbody></table></div></details></section>`;
 }
 
 function career(){const p=state.player,c=p.contract;return pendingArrival()+`<div class="profile-grid"><section class="card"><div class="section-head"><div class="row">${shirt(p.number,p.displayName||p.name)}<div><h1>${h(p.name)}</h1><p class="small muted">${h(p.position)} · ${h(currentClub().name)}</p></div></div>${btn(t('recordSummary'),'tab','data-tab="statistics"','small')}</div>${playerStrengthsCard()}<div class="profile-facts">${detail(t('nationality'),DB.countries.find(x=>x.id===p.country).name)}${detail(t('age'),n(p.age))}${detail(t('height'),n(p.height)+' cm')}${detail(t('weight'),n(p.weight)+' kg')}${detail(t('foot'),DB.profile.feet.find(x=>x.id===p.foot).name)}${detail(t('displayName'),p.displayName||p.name)}</div><div class="divider"></div><h2>${h(t('development'))}</h2><div class="ability-grid">${DB.attributes.map(a=>`<div><div class="row between small"><span>${h(a.name)}</span><b>${abilityLabel(p.stats[a.id])} ${trainingMarker(a.id)}</b></div>${progress(p.stats[a.id])}</div>`).join('')}</div><p class="small muted">${h(t('growthHint'))}</p><details class="helper-details"><summary>${h(t('dream'))}</summary><div class="detail-list">${detail(t('preferredLeague'),wishName('league',p.preferredLeague))}${detail(t('dream'),wishName('club',p.dreamClub))}</div></details></section><div class="stack"><section class="card contract-summary"><div class="section-head"><h2>${h(t('contractLength'))}</h2>${p.freeAgent?badge(t('freeAgent')):btn(t('contractRenew'),'renew','','primary small')}</div><div class="profile-facts">${detail(t('weeklyWage'),money(c.weekly))}${detail(t('salaryAnnual'),money(c.weekly*DB.rules.annualSalaryWeeks))}${detail(t('remaining'),t('years',{n:c.expiresSeason-state.season}))}${detail(t('marketValue'),money(Core.marketValue(DB,p,state)))}${detail(t('starPower'),n(Core.starPower(DB,p,state),1))}${detail(t('contractPromise'),roleName(c.role))}${detail(t('contractPosition'),c.position)}</div><details class="helper-details"><summary>${h(t('contractDetails'))}</summary><div class="detail-list">${DB.dealFields.filter(f=>!['fee','weekly','years','role','position','upfrontPercent','installmentMonths','sellOnPercent','agentCommissionPercent','arrival'].includes(f.id)).map(f=>detail(f.name,f.type==='money'?money(c[f.id]):n(c[f.id]))).join('')}${detail(t('earned'),money(p.earned))}</div></details></section>${playerValueHistoryCard()}</div></div>`;}
@@ -46024,7 +46394,7 @@ function calendar(){
 }
 function mailActionable(m){return Core.pendingResponses(DB,state).some(item=>item.id===m.id);}
 function openRequiredResponse(){const pending=Core.pendingResponses(DB,state);if(!pending.length)return;screen='inbox';mailScope='action';activeMail=pending[0].id;pending[0].read=true;reportId=null;activeDeal=null;persist();render();window.scrollTo({top:0});}
-function inbox(){const selected=state.inbox.find(m=>m.id===activeMail&&Core.postseasonMessageRelevant(DB,state,m)),list=state.inbox.filter(m=>Core.postseasonMessageRelevant(DB,state,m)).filter(m=>mailScope==='all'||mailScope==='unread'&&!m.read||mailScope==='action'&&mailActionable(m)).slice().reverse();return `<div class="welcome row between wrap"><div><h1>${h(t('inbox'))}</h1><p>${h(t('mailUnread'))} ${n(unreadCount())}</p></div>${btn(t('mailMarkAll'),'mail-all')}</div><div class="tabs-inline">${DB.mailFilters.map(x=>btn(x.name,'mail-filter',`data-id="${h(x.id)}"`,mailScope===x.id?'selected':'')).join('')}</div><div class="cols equal"><section class="card mail-list">${list.length?list.map(m=>`<button type="button" class="mail-item ${m.read?'':'unread'} ${activeMail===m.id?'selected':''}" data-action="mail-open" data-id="${h(m.id)}"><span class="row between wrap"><span>${h(mailSender(m))}</span><time>${h(m.date)}</time></span><strong>${h(m.subject)}</strong><span class="row wrap">${!m.read?badge(t('mailUnread'),'green'):''}${mailActionable(m)?badge(t('mailAction'),'pink'):''}${mailMarketStatus(m)}</span></button>`).join(''):`<div class="empty">${h(t('mailEmpty'))}</div>`}</section><section class="card mail-detail">${selected?`<div class="eyebrow">${h(mailSender(selected))} · ${h(selected.date)}</div><h2>${h(selected.subject)}</h2>${mailMarketStatus(selected)}<p class="mail-body">${moneyText(selected.body).replace(/\n/g,'<br>')}</p><div class="row wrap">${selected.action==='offer'&&state.offers.some(o=>o.id===selected.offer&&o.status==='open'&&o.expiresDate>=state.date)&&!mailMarketDeal(selected)?btn(t('negotiationOpen'),'mail-offer',`data-id="${h(selected.offer)}"`,'primary'):''}${mailMarketDeal(selected)?btn(t('marketContinue'),'deal-open',`data-id="${h(mailMarketDeal(selected).id)}"`,'primary'):''}${selected.action==='renewal'&&mailActionable(selected)?`${btn(t('contractRenew'),'renewal-response',`data-id="${h(selected.id)}" data-choice="renew"`,'primary')}${btn(t('renewalDecline'),'renewal-response',`data-id="${h(selected.id)}" data-choice="decline"`)}`:''}${selected.action==='offer'&&state.offers.some(o=>o.id===selected.offer&&o.status==='open')&&!mailMarketDeal(selected)?`${btn(t('offerDecline'),'offer-decline',`data-id="${h(selected.offer)}"`)}${btn(t('offerDefer'),'offer-defer',`data-id="${h(selected.offer)}"`)}`:''}${selected.reply==='coach'&&mailActionable(selected)?DB.inboxReplies.map(r=>btn(r.name,'coach-reply',`data-id="${h(selected.id)}" data-reply="${h(r.id)}"`)).join(''):''}</div>`:`<div class="empty">${h(t('mailOpen'))}</div>`}</section></div>`;}
+function inbox(){const selected=state.inbox.find(m=>m.id===activeMail&&Core.postseasonMessageRelevant(DB,state,m)),list=state.inbox.filter(m=>Core.postseasonMessageRelevant(DB,state,m)).filter(m=>mailScope==='all'||mailScope==='unread'&&!m.read||mailScope==='action'&&mailActionable(m)).slice().reverse();return `<div class="welcome row between wrap"><div><h1>${h(t('inbox'))}</h1><p>${h(t('mailUnread'))} ${n(unreadCount())}</p></div>${btn(t('mailMarkAll'),'mail-all')}</div><div class="tabs-inline">${DB.mailFilters.map(x=>btn(x.name,'mail-filter',`data-id="${h(x.id)}"`,mailScope===x.id?'selected':'')).join('')}</div><div class="cols equal"><section class="card mail-list">${list.length?list.map(m=>`<button type="button" class="mail-item ${m.read?'':'unread'} ${activeMail===m.id?'selected':''}" data-action="mail-open" data-id="${h(m.id)}"><span class="row between wrap"><span>${h(mailSender(m))}</span><time>${h(m.date)}</time></span><strong>${h(m.subject)}</strong><span class="row wrap">${!m.read?badge(t('mailUnread'),'green'):''}${mailActionable(m)?badge(t('mailAction'),'pink'):''}${mailMarketStatus(m)}</span></button>`).join(''):`<div class="empty">${h(t('mailEmpty'))}</div>`}</section><section class="card mail-detail">${selected?`<div class="eyebrow">${h(mailSender(selected))} · ${h(selected.date)}</div><h2>${h(selected.subject)}</h2>${mailMarketStatus(selected)}<p class="mail-body">${moneyText(selected.body).replace(/\n/g,'<br>')}</p><div class="row wrap">${selected.action==='play-style'&&mailActionable(selected)?btn(t('playStyleSetupOpen'),'play-style-open','','primary'):''}${selected.action==='offer'&&state.offers.some(o=>o.id===selected.offer&&o.status==='open'&&o.expiresDate>=state.date)&&!mailMarketDeal(selected)?btn(t('negotiationOpen'),'mail-offer',`data-id="${h(selected.offer)}"`,'primary'):''}${mailMarketDeal(selected)?btn(t('marketContinue'),'deal-open',`data-id="${h(mailMarketDeal(selected).id)}"`,'primary'):''}${selected.action==='renewal'&&mailActionable(selected)?`${btn(t('contractRenew'),'renewal-response',`data-id="${h(selected.id)}" data-choice="renew"`,'primary')}${btn(t('renewalDecline'),'renewal-response',`data-id="${h(selected.id)}" data-choice="decline"`)}`:''}${selected.action==='offer'&&state.offers.some(o=>o.id===selected.offer&&o.status==='open')&&!mailMarketDeal(selected)?`${btn(t('offerDecline'),'offer-decline',`data-id="${h(selected.offer)}"`)}${btn(t('offerDefer'),'offer-defer',`data-id="${h(selected.offer)}"`)}`:''}${selected.reply==='coach'&&mailActionable(selected)?DB.inboxReplies.map(r=>btn(r.name,'coach-reply',`data-id="${h(selected.id)}" data-reply="${h(r.id)}"`)).join(''):''}</div>`:`<div class="empty">${h(t('mailOpen'))}</div>`}</section></div>`;}
 function contractDetails(){const p=state.player,c=p.contract;return `<section class="card"><div class="section-head"><h2>${h(t('contractDetails'))}</h2>${badge(p.freeAgent?t('freeAgent'):currentClub().name,'green')}</div><div class="form-grid">${detail(t('weeklyWage'),money(c.weekly))}${detail(t('remaining'),t('contractYearsEnd',{n:c.expiresSeason}))}${detail(t('contractPromise'),roleName(c.role))}${detail(t('contractPosition'),c.position)}${DB.dealFields.filter(f=>!['fee','weekly','years','role','position','upfrontPercent','installmentMonths','sellOnPercent','agentCommissionPercent','arrival'].includes(f.id)).map(f=>detail(f.name,f.type==='money'?money(c[f.id]):n(c[f.id]))).join('')}</div><p class="small muted" style="margin-top:16px">${h(t('dealBudgetNote'))}</p>${p.freeAgent?'':`<div class="creation-actions">${btn(t('contractRenew'),'renew','','primary')}</div>`}</section>`;}
 let agentPane='strategy',agentClubQuery='',agentLeagueFilter='all',agentTarget=null;
 function trainingPlanText(plan){return t('trainingCycleSummary',{primary:DB.training.find(t=>t.id===plan.primary).name,secondary:[...DB.training,...DB.trainingProgramRules.secondaryOptions].find(t=>t.id===plan.secondary).name,intensity:DB.trainingProgramRules.intensities.find(t=>t.id===plan.intensity).name,schedule:DB.trainingProgramRules.schedules.find(t=>t.id===plan.schedule).name});}
@@ -46043,13 +46413,13 @@ function playStyleChanges(style){
 }
 function playStyleBuilder(){
  const selected=state.player.playStyleBuild||Core.playStyleDefaults(DB),style=Core.playStyleEffects(DB,selected,state.player.position);
- return '<section class="card play-style-builder"><div class="section-head"><div><p class="eyebrow">'+h(t('buildEyebrow'))+'</p><h2>'+h(t('buildTitle'))+'</h2></div>'+badge(t('buildPlayerOnly'),'pink')+'</div><p class="small muted">'+h(t('buildHint'))+'</p><div class="play-style-equipped"><span class="small muted">'+h(t('buildEquipped'))+'</span>'+playStyleSummary(style)+'</div><details class="play-style-editor"><summary>'+h(t('buildEdit'))+'</summary><form id="play-style-form"><div class="play-style-slots">'+DB.playStyleRules.slots.map(slot=>'<fieldset class="play-style-slot"><legend>'+h(slot.name)+'</legend><p class="small muted">'+h(slot.description)+'</p><div class="play-style-options">'+slot.options.map(option=>{const available=!option.positions.length||option.positions.includes(state.player.position);return '<label class="play-style-option '+(selected[slot.id]===option.id?'selected':'')+' '+(available?'':'unavailable')+'"><input type="radio" name="'+h(slot.id)+'" value="'+h(option.id)+'" '+(selected[slot.id]===option.id?'checked':'')+' '+(available?'':'disabled')+'><span class="play-style-option-body"><span class="row">'+interfaceSymbol(option.icon)+'<strong>'+h(option.name)+'</strong></span><span class="small">'+h(option.description)+'</span>'+(!available?'<span class="small">'+h(t('buildPositionRequired',{positions:option.positions.join(' / ')}))+'</span>':'')+'</span></label>';}).join('')+'</div></fieldset>').join('')+'</div><section class="play-style-preview" aria-live="polite"><h3>'+h(t('buildPreview'))+'</h3><div id="play-style-preview">'+playStyleChanges(style)+'</div></section><p class="small muted">'+h(t('buildRulesHint'))+'</p><div class="row wrap"><button type="submit" class="primary" id="play-style-apply" disabled>'+h(t('buildApply'))+'</button>'+btn(t('buildReset'),'play-style-reset')+'</div><p id="play-style-message" class="small muted" role="status"></p></form></details></section>';
+ return '<section class="card play-style-builder"><div class="section-head"><div><p class="eyebrow">'+h(t('buildEyebrow'))+'</p><h2>'+h(t('buildTitle'))+'</h2></div>'+badge(t('buildPlayerOnly'),'pink')+'</div><p class="small muted">'+h(t('buildHint'))+'</p>'+(state.player.playStyleSetupComplete?'':'<p class="notice">'+h(t('playStyleSetupHint'))+'</p>')+'<div class="play-style-equipped"><span class="small muted">'+h(t('buildEquipped'))+'</span>'+playStyleSummary(style)+'</div><details class="play-style-editor" '+(state.player.playStyleSetupComplete?'':'open')+'><summary>'+h(t('buildEdit'))+'</summary><form id="play-style-form"><div class="play-style-slots">'+DB.playStyleRules.slots.map(slot=>'<fieldset class="play-style-slot"><legend>'+h(slot.name)+'</legend><p class="small muted">'+h(slot.description)+'</p><div class="play-style-options">'+slot.options.map(option=>{const available=!option.positions.length||option.positions.includes(state.player.position);return '<label class="play-style-option '+(selected[slot.id]===option.id?'selected':'')+' '+(available?'':'unavailable')+'"><input type="radio" name="'+h(slot.id)+'" value="'+h(option.id)+'" '+(selected[slot.id]===option.id?'checked':'')+' '+(available?'':'disabled')+'><span class="play-style-option-body"><span class="row">'+interfaceSymbol(option.icon)+'<strong>'+h(option.name)+'</strong></span><span class="small">'+h(option.description)+'</span>'+(!available?'<span class="small">'+h(t('buildPositionRequired',{positions:option.positions.join(' / ')}))+'</span>':'')+'</span></label>';}).join('')+'</div></fieldset>').join('')+'</div><section class="play-style-preview" aria-live="polite"><h3>'+h(t('buildPreview'))+'</h3><div id="play-style-preview">'+playStyleChanges(style)+'</div></section><p class="small muted">'+h(t('buildRulesHint'))+'</p><div class="row wrap"><button type="submit" class="primary" id="play-style-apply" '+(state.player.playStyleSetupComplete?'disabled':'')+'>'+h(t('buildApply'))+'</button>'+btn(t('buildReset'),'play-style-reset')+'</div><p id="play-style-message" class="small muted" role="status"></p></form></details></section>';
 }
 function refreshPlayStyleDraft(form){
  const build=Object.fromEntries(new FormData(form)),valid=Core.validPlayStyleBuild(DB,build,state.player.position);
  for(const label of form.querySelectorAll('.play-style-option'))label.classList.toggle('selected',label.querySelector('input').checked);
  document.getElementById('play-style-preview').innerHTML=playStyleChanges(Core.playStyleEffects(DB,build,state.player.position));
- document.getElementById('play-style-apply').disabled=!valid||DB.playStyleRules.slots.every(slot=>build[slot.id]===state.player.playStyleBuild[slot.id]);
+ document.getElementById('play-style-apply').disabled=!valid||state.player.playStyleSetupComplete&&DB.playStyleRules.slots.every(slot=>build[slot.id]===state.player.playStyleBuild[slot.id]);
  document.getElementById('play-style-message').textContent=valid?t('buildDraft'):t('buildInvalid');
 }
 document.addEventListener('change',event=>{const form=event.target.closest?.('#play-style-form');if(form&&state)refreshPlayStyleDraft(form);});
@@ -46110,6 +46480,7 @@ function openDeal(club,kind='transfer'){const deal=Core.startDeal(DB,state,club,
 document.addEventListener('submit',event=>{if(event.target.id!=='deal-form')return;event.preventDefault();validateMoneyInputs(event.target);if(!event.target.reportValidity())return;const form=new FormData(event.target),currentDeal=state.deals.find(d=>d.id===event.target.dataset.id),terms=Object.fromEntries(DB.dealFields.map(f=>[f.id,f.group==='seller'?currentDeal.terms[f.id]:f.type==='role'||f.type==='position'||f.type==='arrival'?String(form.get(f.id)||DB.dealDefaults.arrival):(f.type==='money'?moneyInputNumber(form.get(f.id))/currencyRate():Number(form.get(f.id)))]));const id=event.target.dataset.id,deal=state.deals.find(d=>d.id===id),before=deal?.status,issue=Core.dealSubmissionIssue(DB,state,id,terms);if(Core.submitDeal(DB,state,id,terms)){persist();render();toast(t('negotiationWait'));}else{if(deal?.status!==before){persist();render();}toast(t(issue?.key||'negotiationInvalid',issue||{}));}});
 
 document.addEventListener('click',event=>{const b=event.target.closest('[data-action]');if(!b||b.disabled||!state)return;const id=b.dataset.id,deal=state.deals.find(d=>d.id===id);switch(b.dataset.action){
+ case 'play-style-open':screen='training';render();document.querySelector('.play-style-editor').open=true;document.getElementById('play-style-form').scrollIntoView({block:'start'});break;
  case 'mail-filter':mailScope=id;render();break;
  case 'mail-all':state.inbox.forEach(m=>m.read=true);persist();render();break;
  case 'mail-open':{activeMail=id;const m=state.inbox.find(m=>m.id===id);if(m)m.read=true;persist();render();break;}
@@ -46390,19 +46761,19 @@ function clubCareerSummary(){return `<section class="card" style="margin-bottom:
 function spotlightCard(record){const impact=record.spotlight,signed=value=>(value>=0?'+':'')+n(value,1);return impact?`<section class="card" style="margin-bottom:20px"><h2>${h(t('spotlightTitle'))}</h2><p>${h(impact.text)}</p><p class="small muted">${h(t('spotlightEffect',{reputation:signed(impact.reputation),form:signed(impact.form)}))}</p></section>`:'';}
 function vacationView(){
  const r=DB.vacationRules,e=state.economy,active=(state.vacations||[]).some(v=>['approved','active'].includes(v.status)),start=Core.dateAdd(state.date,r.leadDays),boundary=Core.dateAdd(state.seasonStart,DB.calendarRules.seasonDays-r.minimumDays),lifestyle=DB.economyRules.lifestyles.find(d=>d.id===e.lifestyle);
- return financeHead('vacation')+`<section class="card"><h2>${h(t('vacationApply'))}</h2><p class="small muted">${h(t('lifestyle'))} · ${h(lifestyle.name)}</p><form id="vacation-form"><div class="form-grid"><label>${h(t('vacationDestination'))}<select name="destination">${r.destinations.map(d=>`<option value="${h(d.id)}">${h(d.name)}</option>`).join('')}</select></label><label>${h(t('vacationDays'))}<input name="days" type="number" min="${r.minimumDays}" max="${r.maximumDays}" step="1" value="7" required></label><label>${h(t('vacationStart'))}<input name="start" type="date" min="${h(start)}" max="${h(boundary)}" value="${h(start)}" required></label><div>${detail(t('vacationCost'),`<span id="vacation-quote">${money(Core.vacationQuote(DB,state,r.destinations[0].id,7))}</span>`)}</div></div><button type="submit" class="primary" ${active||start>boundary?'disabled':''}>${h(t('vacationApply'))}</button><p id="vacation-error" class="form-error" role="status"></p></form><p class="notice">${h(t('vacationGuide'))}</p></section><section class="card" style="margin-top:20px"><h2>${h(t('vacationHistory'))}</h2><div class="rework-list">${(state.vacations||[]).slice().reverse().map(v=>`<article class="coach-review"><div class="row between wrap"><h3>${h(r.destinations.find(d=>d.id===v.destination).name)}</h3>${badge(t({approved:'vacationApproved',active:'vacationActive',completed:'vacationCompleted',cancelled:'vacationCancelled'}[v.status]))}</div><p>${h(v.start)} ~ ${h(v.end)} · ${n(v.days)}일</p><p class="small muted">${h(t('vacationCost'))} · ${money(v.cost||Core.vacationQuote(DB,state,v.destination,v.days))}</p>${v.status==='approved'?btn(t('vacationCancel'),'vacation-cancel',`data-id="${h(v.id)}"`):''}</article>`).join('')||`<p class="empty">${h(t('vacationNone'))}</p>`}</div></section>`;
+ return financeHead('vacation')+`<section class="card"><h2>${h(t('vacationApply'))}</h2><p class="small muted">${h(t('lifestyle'))} · ${h(lifestyle.name)}</p><form id="vacation-form"><div class="form-grid"><label>${h(t('vacationDestination'))}<select name="destination">${r.destinations.map(d=>`<option value="${h(d.id)}">${h(d.name)}</option>`).join('')}</select></label><label>${h(t('vacationDays'))}<input name="days" type="number" min="${r.minimumDays}" max="${r.maximumDays}" step="1" value="7" required></label><label>${h(t('vacationStart'))}<input name="start" type="date" min="${h(start)}" max="${h(boundary)}" value="${h(start)}" required></label><div>${`<div class="row between"><span>${infoLabel(t('vacationCost'))}</span><b class="num"><span id="vacation-quote" aria-live="polite">${money(Core.vacationQuote(DB,state,r.destinations[0].id,7))}</span></b></div>`}</div></div><button type="submit" class="primary" ${active||start>boundary?'disabled':''}>${h(t('vacationApply'))}</button><p id="vacation-error" class="form-error" role="status"></p></form><p class="notice">${h(t('vacationGuide'))}</p></section><section class="card" style="margin-top:20px"><h2>${h(t('vacationHistory'))}</h2><div class="rework-list">${(state.vacations||[]).slice().reverse().map(v=>`<article class="coach-review"><div class="row between wrap"><h3>${h(r.destinations.find(d=>d.id===v.destination).name)}</h3>${badge(t({approved:'vacationApproved',active:'vacationActive',completed:'vacationCompleted',cancelled:'vacationCancelled'}[v.status]))}</div><p>${h(v.start)} ~ ${h(v.end)} · ${n(v.days)}일</p><p class="small muted">${h(t('vacationCost'))} · ${money(v.cost||Core.vacationQuote(DB,state,v.destination,v.days))}</p>${v.status==='approved'?btn(t('vacationCancel'),'vacation-cancel',`data-id="${h(v.id)}"`):''}</article>`).join('')||`<p class="empty">${h(t('vacationNone'))}</p>`}</div></section>`;
 }
 document.addEventListener('input',event=>{const form=event.target.closest?.('#vacation-form');if(!form||!state)return;const quote=Core.vacationQuote(DB,state,form.elements.destination.value,Number(form.elements.days.value));document.getElementById('vacation-quote').textContent=quote===null?'—':displayMoney(quote);});
 document.addEventListener('submit',event=>{const form=event.target;if(form.id!=='vacation-form')return;event.preventDefault();if(!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation||!form.reportValidity())return;const result=Core.requestVacation(DB,state,form.elements.destination.value,form.elements.start.value,Number(form.elements.days.value));if(result.ok){persist();render();toast(t('vacationApproved'));}else document.getElementById('vacation-error').textContent=t(result.issue);});
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="vacation-cancel"]');if(!button||!state||storageLoading||matchLoading||calendarLoading||state.matchPresentation)return;if(Core.cancelVacation(DB,state,button.dataset.id)){persist();render();toast(t('vacationCancelled'));}});
 
 function lifestyleView(){
- const r=DB.economyRules,e=state.economy,home=e.assets.find(a=>a.use==='personal');return financeHead('lifestyle')+`<section class="card"><h2>${h(t('lifestyleHousing'))}</h2><p>${h(home?r.assets.find(d=>d.id===home.definition).name:t('lifestyleRented'))}</p><p class="small muted">${h(t('lifestyleHousingHint'))}</p>${btn(t('assetHoldings'),'tab','data-tab="assets"')}</section><div class="offer-grid" style="margin-top:20px">${r.lifestyles.map(d=>`<article class="card"><h2>${h(d.name)}</h2><p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('lifestyleCost'),money(d.spending+(home?0:d.rent)))}${detail(t('lifestyleRecovery'),n(d.recovery))}${detail(t('lifestyleMorale'),n(d.morale))}</div>${financeButton(e.lifestyle===d.id?t('lifestyleSelected'):t('lifestyleSelect'),'lifestyle',d.id,'',e.lifestyle===d.id)}</article>`).join('')}</div><p class="notice" style="margin-top:20px">${h(t('lifestyleCostHint'))}</p>`;
+ const r=DB.economyRules,e=state.economy,home=e.assets.find(a=>a.use==='personal');return financeHead('lifestyle')+`<section class="card"><h2>${h(t('lifestyleHousing'))}</h2><p>${h(home?r.assets.find(d=>d.id===home.definition).name:t('lifestyleRented'))}</p><p class="small muted">${h(t('lifestyleHousingHint'))}</p>${btn(t('assetHoldings'),'tab','data-tab="assets"')}</section><div class="offer-grid" style="margin-top:20px">${r.lifestyles.map(d=>`<article class="card"><h2>${h(d.name)}</h2><p class="small muted">${h(d.description)}</p><div class="detail-list">${detail(t('lifestyleCost'),money(d.spending+(home?0:d.rent)))}${detail(t('lifestyleRecovery'),n(d.recovery))}${detail(t('lifestyleMorale'),n(d.morale))}</div>${financeButton(e.lifestyle===d.id?t('lifestyleSelected'):t('lifestyleSelect'),'lifestyle',d.id,'',e.lifestyle===d.id)}</article>`).join('')}</div><p class="notice" style="margin-top:20px">${h(t('lifestyleCostHint'))}</p>`+personalSpendingCard();
 }
 function financeResult(ok){if(ok){persist();render();toast(t('financeDone'));}else toast(t('financeFailed'));}
 function handleFinanceAction(button){
  const id=button.dataset.id,op=button.dataset.operation;let result=false;
- switch(op){case 'sign':result=Core.signCommercial(DB,state,id,commercialPackage);break;case 'deliver':result=Core.commercialDelivery(DB,state,id);break;case 'cancel':result=Core.cancelCommercial(DB,state,id);break;case 'asset-buy':result=Core.buyAsset(DB,state,id);break;case 'asset-sell':result=Core.sellAsset(DB,state,id);break;case 'asset-use':result=Core.assetUse(DB,state,id,button.dataset.use);break;case 'redeem':result=Core.redeemInvestment(DB,state,id,Number(button.dataset.share));break;case 'lifestyle':result=Core.lifestyleChange(DB,state,id);break;case 'brand-expand':case 'brand-marketing':case 'brand-sell':result=Core.brandAction(DB,state,id,op.slice('brand-'.length));break;}
+ switch(op){case 'sign':result=Core.signCommercial(DB,state,id,commercialPackage);break;case 'deliver':result=Core.commercialDelivery(DB,state,id);break;case 'cancel':result=Core.cancelCommercial(DB,state,id);break;case 'asset-buy':result=Core.buyAsset(DB,state,id);break;case 'asset-sell':result=Core.sellAsset(DB,state,id);break;case 'asset-use':result=Core.assetUse(DB,state,id,button.dataset.use);break;case 'redeem':result=Core.redeemInvestment(DB,state,id,Number(button.dataset.share));break;case 'lifestyle':result=Core.lifestyleChange(DB,state,id);break;case 'personal-spending':result=Core.buyPersonalSpending(DB,state,id);break;case 'brand-expand':case 'brand-marketing':case 'brand-sell':result=Core.brandAction(DB,state,id,op.slice('brand-'.length));break;}
  financeResult(result);
 }
 function investmentAmountInBase(form,value){const unit=DB.settings.currencies.find(c=>c.id===form.dataset.currency);return unit?Number((moneyInputNumber(value)/unit.rate).toPrecision(15)):NaN;}
