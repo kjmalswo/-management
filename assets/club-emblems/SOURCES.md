@@ -1,9 +1,11 @@
 # Club emblem sources
 
-96 real club emblems for the five top-flight leagues represented in FIRST XI. Youth clubs share their parent club emblem.
+Actual club emblems cover all 559 first and reserve teams and their 540 youth teams in FIRST XI. All assets have an intrinsic 139 × 181 display area with transparent background and preserved proportions.
 
-Source: [luukhopman/football-logos](https://github.com/luukhopman/football-logos), 2026/2027 catalog, pinned revision [`2a3978f0b4730645c205d855a4bda54c161183e9`](https://github.com/luukhopman/football-logos/tree/2a3978f0b4730645c205d855a4bda54c161183e9).
+- Existing 96 PNG originals: [luukhopman/football-logos](https://github.com/luukhopman/football-logos), pinned revision `2a3978f0b4730645c205d855a4bda54c161183e9`. These files and embedded bytes are unchanged.
+- New SVG emblems: [JoseArroyave/football-logos](https://github.com/JoseArroyave/football-logos), pinned revision `cbfed1c638150a67e5d4b207793837c17c96d89b`. Upstream files identify [football-logos.cc](https://football-logos.cc/) as their source.
+- FC Südtirol: [FootyLogos.com](https://www.footylogos.com/logos/fc-suditrol).
 
-All PNG originals are 139 × 181 pixels with an alpha channel and transparent background. Originals are copied without recoloring, stretching or redrawing. `manifest.json` records each club identity, source URL and Git blob hash. The same bytes are embedded in `index.html` for single-file and offline use.
+SVG changes set intrinsic width, height and preserveAspectRatio only. Club artwork, colours, paths and original viewBox are preserved. `manifest.json` records each identity, source URL, original blob hash and normalized asset hash. Every same asset is embedded in `index.html` for single-file offline use. Reserve sides use their parent club identity; youth sides resolve their parent without duplicate image files.
 
 Club names and emblems belong to their respective clubs and rights holders. Source availability does not transfer ownership of those marks.
