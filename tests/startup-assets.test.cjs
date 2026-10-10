@@ -9,7 +9,9 @@ test('startup reaches the profile screen with the embedded cover and small favic
  const window={addEventListener(){},matchMedia:()=>({matches:false}),screen:{width:1920,height:1080},scrollTo(){}};
  const context=vm.createContext({document,window,localStorage:{getItem:()=>null,setItem(){},removeItem(){}},crypto:require('node:crypto').webcrypto,navigator:{maxTouchPoints:0,userAgent:'startup regression'},location:{protocol:'file:',href:'file:///index.html'},MutationObserver:class{observe(){}disconnect(){}},ResizeObserver:class{observe(){}disconnect(){}},matchMedia:window.matchMedia,setTimeout,clearTimeout,setInterval:()=>1,clearInterval(){},queueMicrotask,URL,Intl,TextEncoder,TextDecoder,Blob,Response,CompressionStream,DecompressionStream,AbortController});
  vm.runInContext(section('game-engine')+'\n'+section('game-ui').replace('startAppUpdateChecks();bootGame();','startAppUpdateChecks();globalThis.bootPromise=bootGame();'),context);
+ assert.match(element('app').innerHTML,/class="logo title-logo title-logo-loading"/);
  await context.bootPromise;
  assert.match(element('app').innerHTML,/id="profile-form"/);assert.match(element('app').innerHTML,/<img src="data:image\/webp;base64,/);assert.doesNotMatch(element('app').innerHTML,/match-loading/);
+ assert.match(element('app').innerHTML,/class="logo title-logo"/);assert.match(element('app').innerHTML,/alt="FBC 27"/);assert.doesNotMatch(element('app').innerHTML,/logo-mark/);
  const icon=html.match(/<link rel="icon"[^>]*href="data:image\/png;base64,([^"]+)"/);assert.ok(icon);const bytes=Buffer.from(icon[1],'base64');assert.equal(bytes.readUInt32BE(16),64);assert.equal(bytes.readUInt32BE(20),64);
 });
