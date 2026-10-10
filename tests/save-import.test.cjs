@@ -66,7 +66,7 @@ test('an exported new career imports without requiring every tactic to share wei
   assert.ok(!Object.hasOwn(loaded.db.dynamics.trends.find(t=>t.id==='possession').weights,'speed'));
 });
 test('a played match and paused commentary survive export/import without duplicate records',()=>{
-  const saved=create();let result;
+  const saved=create();C.setPlayStyleBuild(DB,saved.state,C.playStyleDefaults(DB));let result;
   for(let step=0;step<100&&!result?.report;step++)result=C.advance(DB,saved.state);
   assert.ok(result?.report,'a real scheduled match was played');
   saved.state.matchPresentation={reportId:result.report.id,phase:'live',cursor:2,paused:true};
