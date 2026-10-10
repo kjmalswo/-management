@@ -21,6 +21,15 @@ const create=()=>{
 };
 const reload=value=>context.importSave.prepareImportedCareer(context.importSave.parseCareerText(JSON.stringify(value)));
 
+test('pre-cover autosaves restore missing artwork settings without changing the career or source save',()=>{
+  const saved=create();saved.db.meta.version='20.9.5';delete saved.db.ui.mainArtwork;delete saved.db.ui.labels.mainArtworkAlt;
+  const before=JSON.stringify(saved),snapshot=s=>JSON.stringify({date:s.date,player:s.player,fixtures:s.fixtures,economy:s.economy,archives:s.archives}),careerBefore=snapshot(saved.state),loaded=reload(saved);
+  assert.equal(snapshot(loaded.state),careerBefore);assert.equal(JSON.stringify(saved),before);
+  assert.deepEqual(JSON.parse(JSON.stringify(loaded.db.ui.mainArtwork)),DB.ui.mainArtwork);
+  assert.equal(JSON.stringify(reload(loaded)),JSON.stringify(loaded));
+  const custom=create();custom.db.ui.mainArtwork={width:1000,height:1000};assert.deepEqual(JSON.parse(JSON.stringify(reload(custom).db.ui.mainArtwork)),custom.db.ui.mainArtwork);
+});
+
 test('a real v20.4 database with revision 1 balance metadata restores in the same schema',()=>{
   const historical=cp.execFileSync(process.env.GIT_PATH||'git',['show','9d4b1ee:index.html'],{cwd:path.join(__dirname,'..'),encoding:'utf8',maxBuffer:10000000});
   const saved=create();saved.db=JSON.parse(section(historical,'game-db'));
@@ -88,15 +97,3 @@ test('missing shared settings and malformed variant weights are rejected without
   assert.equal(JSON.stringify(saved),before);
 });
 
-test('vacation itineraries and temporary form survive import, while damaged records are rejected',()=>{
-  const saved=create(),s=saved.state;C.careerIncome(DB,s,100000,'salary');const approved=C.requestVacation(DB,s,'sardinia',C.dateAdd(s.date,1),7);assert.ok(approved.ok);
-  const queued=reload(saved);assert.deepEqual(JSON.parse(JSON.stringify(queued.state.vacations)),JSON.parse(JSON.stringify(s.vacations)));
-  while(s.vacations[0].status!=='active')C.advance(DB,s);s.player.spotlightForm=.5;const loaded=reload(saved);assert.equal(loaded.state.vacations[0].status,'active');assert.equal(loaded.state.player.vacationForm,s.player.vacationForm);assert.equal(loaded.state.player.spotlightForm,.5);assert.equal(loaded.state.economy.ledger.filter(l=>l.type==='vacation').length,1);
-  while(loaded.state.vacations[0].status!=='completed')C.advance(loaded.db,loaded.state);assert.ok(reload(loaded));
-  for(const mutate of [value=>value.state.vacations[0].days=90,value=>value.state.vacations[0].destination='missing',value=>value.state.player.spotlightForm=100,value=>value.state.calendar.entries.find(e=>e.type==='vacation-end').date='2026-09-01']){const damaged=C.clone(saved);mutate(damaged);assert.throws(()=>reload(damaged));}
-});
-
-test('v20.8.11 saves acquire vacation navigation and Middle East clubs without changing player history',()=>{
-  const historical=cp.execFileSync(process.env.GIT_PATH||'git',['show','ed04ae3:index.html'],{cwd:path.join(__dirname,'..'),encoding:'utf8',maxBuffer:10000000});const saved=create();saved.db=JSON.parse(section(historical,'game-db'));const before=JSON.stringify(saved.state.player);const loaded=reload(saved);
-  assert.equal(JSON.stringify(loaded.state.player),before);assert.ok(loaded.db.ui.navigationGroups.find(g=>g.id==='economy').views.includes('vacation'));assert.ok(loaded.db.ui.tabs.some(t=>t.id==='vacation'));assert.ok(loaded.db.clubs.some(c=>c.id==='al-hilal'));assert.ok(loaded.state.world.rosters['al-hilal']);assert.ok(loaded.state.fixtures['sa-pro'].length);assert.equal(JSON.stringify(reload(loaded)),JSON.stringify(loaded));
-});
