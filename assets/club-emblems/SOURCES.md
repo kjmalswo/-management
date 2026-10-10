@@ -1,6 +1,6 @@
 # Club emblem sources
 
-Actual club emblems cover all 559 first and reserve teams and their 540 youth teams in FIRST XI. All assets have an intrinsic 139 × 181 display area with transparent background and preserved proportions.
+Actual club emblems cover all 559 first and reserve teams and their 540 youth teams in Football Career 27. All assets have an intrinsic 139 × 181 display area with transparent background and preserved proportions.
 
 - Existing 96 PNG originals: [luukhopman/football-logos](https://github.com/luukhopman/football-logos), pinned revision `2a3978f0b4730645c205d855a4bda54c161183e9`. These files and embedded bytes are unchanged.
 - New SVG emblems: [JoseArroyave/football-logos](https://github.com/JoseArroyave/football-logos), pinned revision `cbfed1c638150a67e5d4b207793837c17c96d89b`. Upstream files identify [football-logos.cc](https://football-logos.cc/) as their source.

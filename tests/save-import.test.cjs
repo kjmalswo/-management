@@ -12,7 +12,7 @@ vm.runInContext(section(html,'game-engine')+';globalThis.Core=FootballCore;',con
 const ui=section(html,'game-ui');
 const validators=ui.slice(ui.indexOf('function validateDB('),ui.indexOf('function toast('));
 const importFunctions=ui.slice(ui.indexOf('function prepareImportedCareer('),ui.indexOf('async function restoreCareer('));
-vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)};const Core=FootballCore;const t=key=>key;${validators}${importFunctions};globalThis.importSave={prepareImportedCareer,parseCareerText};`,context);
+vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)};const Core=FootballCore;const t=key=>key;${validators}${importFunctions};globalThis.importSave={prepareImportedCareer,parseCareerText,upgradePresentationDatabase};`,context);
 const C=context.Core;
 const create=()=>{
   const profile={...C.clone(DB.profile.defaults),name:'저장 검증 선수',displayName:'김',stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial]))};
@@ -20,6 +20,15 @@ const create=()=>{
   return {schema:DB.meta.schema,db:C.clone(DB),state:C.createCareer(DB,profile,offer.route.id,offer.club.id)};
 };
 const reload=value=>context.importSave.prepareImportedCareer(context.importSave.parseCareerText(JSON.stringify(value)));
+
+test('legacy site branding migrates without changing saved storage identifiers or custom text',()=>{
+  const saved=C.clone(DB);saved.meta.version='20.9.10';saved.meta.title='FIRST XI';saved.ui.labels.invalidSave='올바른 FIRST XI 저장 파일이 아닙니다.';saved.ui.labels.mainArtworkAlt='FBC 27 · 경기장에서 뛰는 축구선수';saved.rules.exportFilename='first-xi-career.json';saved.rules.dbFilename='first-xi-database.json';
+  const locations=db=>JSON.stringify({career:db.meta.storageKey,database:db.meta.dbStorageKey,settings:db.settings.storageKey,storage:db.storageRules}),before=locations(saved),updated=context.importSave.upgradePresentationDatabase(saved);
+  assert.equal(updated.meta.title,'Football Career 27');assert.equal(updated.ui.labels.invalidSave,DB.ui.labels.invalidSave);assert.equal(updated.ui.labels.mainArtworkAlt,DB.ui.labels.mainArtworkAlt);assert.equal(updated.rules.exportFilename,DB.rules.exportFilename);assert.equal(updated.rules.dbFilename,DB.rules.dbFilename);assert.equal(locations(updated),before);
+  const once=JSON.stringify(updated);assert.equal(JSON.stringify(context.importSave.upgradePresentationDatabase(updated)),once);
+  const custom=C.clone(DB);custom.meta.title='나의 축구 커리어';custom.ui.labels.invalidSave='사용자 안내';custom.ui.labels.mainArtworkAlt='사용자 이미지';custom.rules.exportFilename='my-save.json';custom.rules.dbFilename='my-db.json';context.importSave.upgradePresentationDatabase(custom);
+  assert.equal(custom.meta.title,'나의 축구 커리어');assert.equal(custom.ui.labels.invalidSave,'사용자 안내');assert.equal(custom.ui.labels.mainArtworkAlt,'사용자 이미지');assert.equal(custom.rules.exportFilename,'my-save.json');assert.equal(custom.rules.dbFilename,'my-db.json');
+});
 
 test('pre-cover autosaves restore missing artwork settings without changing the career or source save',()=>{
   const saved=create();saved.db.meta.version='20.9.5';delete saved.db.ui.mainArtwork;delete saved.db.ui.labels.mainArtworkAlt;

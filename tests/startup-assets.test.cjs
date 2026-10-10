@@ -12,6 +12,7 @@ test('startup reaches the profile screen with the embedded cover and small favic
  assert.match(element('app').innerHTML,/class="logo title-logo title-logo-loading"/);
  await context.bootPromise;
  assert.match(element('app').innerHTML,/id="profile-form"/);assert.match(element('app').innerHTML,/<img src="data:image\/webp;base64,/);assert.doesNotMatch(element('app').innerHTML,/match-loading/);
- assert.match(element('app').innerHTML,/class="logo title-logo"/);assert.match(element('app').innerHTML,/alt="FBC 27"/);assert.doesNotMatch(element('app').innerHTML,/logo-mark/);
+ assert.match(element('app').innerHTML,/class="logo title-logo"/);assert.match(element('app').innerHTML,/alt="Football Career 27"/);assert.doesNotMatch(element('app').innerHTML,/logo-mark/);
+ assert.match(html,/<title>Football Career 27 — 축구선수 커리어<\/title>/);
  const icon=html.match(/<link rel="icon"[^>]*href="data:image\/png;base64,([^"]+)"/);assert.ok(icon);const bytes=Buffer.from(icon[1],'base64');assert.equal(bytes.readUInt32BE(16),64);assert.equal(bytes.readUInt32BE(20),64);
 });
