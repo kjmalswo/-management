@@ -42,7 +42,7 @@ test('advertising pays only after delivery and repeated missed duties terminate 
 });
 test('assets debit full purchase cost, have prorated rent/upkeep and one occupied home',()=>{
  const db=C.clone(DB);db.economyRules.vacancyChance=0;const s=create(DB.economyRules.assets.find(a=>a.id==='apartment').price*3),earned=s.player.earned;days(db,s,29);
- const a=C.buyAsset(db,s,'apartment'),b=C.buyAsset(db,s,'apartment');assert.ok(a&&b);assert.ok(C.assetUse(db,s,a.id,'personal'));
+ const a=C.buyAsset(db,s,'apartment'),b=C.buyAsset(db,s,'apartment');assert.ok(a&&b);assert.equal(a.use,'collection');assert.equal(b.use,'collection');assert.ok(C.assetUse(db,s,b.id,'rental'));assert.ok(C.assetUse(db,s,a.id,'personal'));
  const before=s.economy.cash;days(db,s,1);near(before-s.economy.cash,DB.economyRules.lifestyles[0].spending+DB.economyRules.lifestyles[0].rent*29/30+120*2/30-450/30);
  assert.ok(C.assetUse(db,s,b.id,'personal'));assert.equal(a.use,'rental');assert.equal(b.use,'personal');assert.equal(s.player.earned,earned);
  const cash=s.economy.cash,value=a.value*(1-db.economyRules.assetSaleFee);assert.ok(C.sellAsset(db,s,a.id));near(s.economy.cash,cash+value);assert.ok(validate(s));
