@@ -6,6 +6,16 @@ vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)},Core=FootballCore,t=key=
 const options=p=>C.positionRoleOptions(DB,p),roleOption=(p,id)=>options(p).find(option=>option.role.id===id);
 let initial;const career=()=>{initial??=C.createCareer(DB,profile({positionRole:'deep-lying-forward'}),'domestic','kr2-0');return C.clone(initial);};
 
+test('initial build guidance is shown after signing, stays informational and is never resent on resume',()=>{
+ new vm.Script(engine);new vm.Script(ui);assert.equal(DB.meta.version,JSON.parse(fs.readFileSync(path.join(__dirname,'../version.json'))).version);
+ const p=profile({positionRole:'deep-lying-forward'}),s=career(),guidance=()=>s.inbox.filter(mail=>mail.key==='position-role-build-info');
+ assert.equal(guidance().length,1);const message=guidance()[0];assert.equal(message.date,s.date);assert.equal(message.fromRole,'coach');assert.equal(message.action,null);assert.equal(message.reply,null);assert.equal(message.read,false);assert.match(message.body,/딥라잉 포워드/);assert.match(message.body,/훈련센터/);assert.match(message.body,/자유롭게 수정/);assert.equal(s.player.playStyleSetupComplete,true);assert.equal(s.inbox.some(mail=>mail.action==='play-style'&&!mail.answered),false);
+ const signStart=ui.indexOf("  case 'sign':"),signEnd=ui.indexOf('\n  case ',signStart+1),screen=vm.createContext({DB,Core:{...C,createCareer:()=>s},draft:p,button:{dataset:{route:'domestic',club:'kr2-0'}},closeModal(){},persist(){},render(){},window:{scrollTo(){}}});
+ vm.runInContext(`let state=null,activeMail=null,activeDeal=null,selectedStatsSeason=null,screen='',mailScope='action',reportId=null;switch('sign'){${ui.slice(signStart,signEnd)}}globalThis.Q={screen,mailScope,activeMail};`,screen);assert.equal(screen.Q.screen,'inbox');assert.equal(screen.Q.mailScope,'all');assert.equal(screen.Q.activeMail,message.id);
+ assert.equal(C.setPlayStyleBuild(DB,s,C.playStyleDefaults(DB)),true);const build=JSON.stringify(s.player.playStyleBuild);C.normalizeCareerSave(DB,s);C.normalizeCareerSave(DB,s);assert.equal(guidance().length,1);assert.equal(JSON.stringify(s.player.playStyleBuild),build);
+ s.inbox=s.inbox.filter(mail=>mail.key!=='position-role-build-info');C.normalizeCareerSave(DB,s);assert.equal(guidance().length,0,'existing careers must not receive a new-game notice retroactively');
+});
+
 test('role catalog, script syntax and release agree; only requested primary positions receive roles',()=>{
  new vm.Script(engine);new vm.Script(ui);ctx.V.validateDB(C.clone(DB));assert.equal(DB.meta.version,JSON.parse(fs.readFileSync(path.join(__dirname,'../version.json'))).version);
  assert.ok(Buffer.byteLength(html)<25*1024*1024,'keep the single-file deployment within its asset size limit');

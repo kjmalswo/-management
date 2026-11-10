@@ -1,4 +1,8 @@
-# Football Career 27 — 축구선수 커리어 시뮬레이터 v21.1.0
+# Football Career 27 — 축구선수 커리어 시뮬레이터 v21.1.1
+
+v21.1.1은 역할을 선택해 새 게임을 시작하면 초기 빌드가 구성되었으며 훈련센터에서 자유롭게 수정할 수 있다는 안내 메일을 한 번 보냅니다. 시작 직후 해당 메일을 표시하며, 필수 설정 요청이나 기존 커리어에 대한 재발송은 추가하지 않습니다. 안내 문구는 `ui.labels.positionRoleBuildMailSubject`·`positionRoleBuildMailBody`에서 편집합니다.
+
+검증: `node --test --test-name-pattern='initial build guidance' tests/position-roles.test.cjs`.
 
 v21.1.0은 신규 선수 생성에 **프로필 → 성격 → 포지션 역할 → 시작 팀** 단계를 추가합니다. ST 7종, LW/RW 5종, AM 5종, CM 6종, DM 6종, LB/RB 5종, CB 5종, GK 3종 중 현재 주 포지션의 역할을 고릅니다. 초기 능력치·선수 DNA(선천적 특성 포함)·신체·주발·부 포지션 연계를 각각 50%·25%·10%·7%·8%로 평가해 상위 3개와 추천 근거를 먼저 표시하며, 나머지 역할도 직접 선택할 수 있습니다. 적합도는 현재 프로필과의 조합 점수이며 성공 확률이 아닙니다.
 
