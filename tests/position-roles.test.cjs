@@ -10,11 +10,11 @@ test('role catalog, script syntax and release agree; only requested primary posi
  new vm.Script(engine);new vm.Script(ui);ctx.V.validateDB(C.clone(DB));assert.equal(DB.meta.version,JSON.parse(fs.readFileSync(path.join(__dirname,'../version.json'))).version);
  assert.ok(Buffer.byteLength(html)<25*1024*1024,'keep the single-file deployment within its asset size limit');
  assert.deepEqual(DB.creationSteps.map(step=>step.id),['profile','personality','position-role','contract']);
- for(const [position,count] of [['ST',7],['LW',5],['RW',5],['AM',5],['CM',6]]){
+ for(const [position,count] of [['ST',7],['LW',5],['RW',5],['AM',5],['CM',6],['DM',6],['LB',5],['RB',5],['CB',5],['GK',3]]){
   const p=profile({position}),ranked=options(p);assert.equal(ranked.length,count);assert.equal(new Set(ranked.map(option=>option.role.id)).size,count);
   for(const [index,option] of ranked.entries()){assert.ok(Number.isFinite(option.score)&&option.score>=0&&option.score<=100);if(index)assert.ok(ranked[index-1].score>=option.score);assert.ok(option.role.positions.includes(position));assert.equal(C.validPlayStyleBuild(DB,option.role.build,position),true);}
  }
- for(const position of ['DM','LB','RB','CB','GK'])assert.equal(options(profile({position,secondaryPosition:'ST'})).length,0,'secondary positions must not unlock a primary role');
+ assert.equal(options(profile({position:'unknown',secondaryPosition:'ST'})).length,0,'secondary positions must not unlock a primary role');
  assert.deepEqual(plain(options(profile())),plain(options(profile())),'recommendations are deterministic');
 });
 
@@ -31,6 +31,14 @@ test('recommendations respond to actual skills, body, DNA, secondary positions a
   assert.ok(roleOption(wing,'winger').score>roleOption({...wing,foot:inverted},'winger').score);
   assert.ok(roleOption({...wing,foot:inverted},'inside-forward').score>roleOption(wing,'inside-forward').score);
   assert.equal(roleOption({...wing,foot:'both'},'inside-forward').components.foot,100);
+ }
+ for(const position of ['LB','RB']){
+  const natural=position==='LB'?'left':'right',inverted=natural==='left'?'right':'left',p=profile({position,foot:natural});
+  assert.ok(roleOption(p,'wing-back').score>roleOption({...p,foot:inverted},'wing-back').score);
+  assert.ok(roleOption({...p,foot:inverted},'inverted-full-back').score>roleOption(p,'inverted-full-back').score);
+ }
+ for(const [position,id] of [['DM','dm-deep-lying-playmaker'],['CB','ball-playing-defender'],['GK','ball-playing-keeper']]){
+  const p=profile({position});assert.ok(roleOption({...p,stats:{...p.stats,passing:85}},id).score>roleOption({...p,stats:{...p.stats,passing:40}},id).score);
  }
  const press=roleOption(base,'pressing-forward').components.dna;assert.ok(roleOption({...base,traits:{...base.traits,injuryProneness:100}},'pressing-forward').components.dna<press);
 });
@@ -68,8 +76,17 @@ test('creation actions put roles between personality and contracts, retain manua
  assert.match(functionText('showContracts'),/positionRoleBack/);assert.match(functionText('showContracts'),/position-role-back/);
 });
 
-test('unsupported primary positions can continue without a role, and role screen escapes player-controlled text',async()=>{
- const screen=screenHarness(profile({position:'GK',secondaryPosition:'none',positionRole:'poacher',name:'<img src=x onerror=alert(1)>'}));await screen.click('personality-next');assert.equal(screen.Q.draft().positionRole,undefined);assert.match(screen.app.innerHTML,/GK의 세부 역할은 준비 중/);assert.doesNotMatch(screen.app.innerHTML,/data-action="position-role-select"|data-action="position-role-next" disabled|<img src=x/);assert.match(screen.app.innerHTML,/&lt;img/);await screen.click('position-role-next');assert.equal(screen.Q.modal(),'contracts');
+test('goalkeepers choose their own three roles, cannot select an outfield role, and player-controlled text is escaped',async()=>{
+ const screen=screenHarness(profile({position:'GK',secondaryPosition:'none',positionRole:'poacher',name:'<img src=x onerror=alert(1)>'}));await screen.click('personality-next');assert.equal(screen.Q.draft().positionRole,undefined);assert.equal((screen.app.innerHTML.match(/data-action="position-role-select"/g)||[]).length,3);assert.doesNotMatch(screen.app.innerHTML,/<img src=x|id="role-others"/);assert.match(screen.app.innerHTML,/&lt;img/);assert.match(screen.app.innerHTML,/data-action="position-role-next" disabled/);await screen.click('position-role-select','poacher');assert.equal(screen.Q.draft().positionRole,undefined);await screen.click('position-role-select','sweeper-keeper');assert.equal(screen.Q.draft().positionRole,'sweeper-keeper');await screen.click('position-role-next');assert.equal(screen.Q.modal(),'contracts');
+});
+
+test('DM, both fullbacks, CB and GK create a playable career with the chosen role and a valid, bounded build',()=>{
+ for(const position of ['DM','LB','RB','CB','GK']){
+  const p=profile({position}),role=options(p)[0].role;p.positionRole=role.id;const s=C.createCareer(DB,p,'domestic','kr2-0');
+  assert.equal(s.player.positionRole,role.id);assert.equal(s.player.playStyleSetupComplete,true);assert.deepEqual(plain(s.player.playStyleBuild),role.build);assert.deepEqual(plain(s.player.stats),p.stats);assert.equal((s.inbox||[]).some(m=>m.action==='play-style'&&!m.answered),false);
+  const effects=C.playStyleEffects(DB,s.player.playStyleBuild,position),limits=DB.playStyleRules.limits;for(const choice of effects.choices)assert.equal(choice.active,true);assert.ok(effects.load>=limits.loadMin&&effects.load<=limits.loadMax);
+  if(position==='GK'){const loaded=ctx.V.prepareImportedCareer({schema:DB.meta.schema,db:C.clone(DB),state:s});assert.equal(loaded.state.player.positionRole,role.id);assert.deepEqual(plain(loaded.state.player.playStyleBuild),role.build);}
+ }
 });
 
 test('manual roles seed the existing play style without changing ability, and survive export/import without reapplying defaults',()=>{

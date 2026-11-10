@@ -13,7 +13,8 @@ const ui=section('game-ui');
 const validators=ui.slice(ui.indexOf('function validateDB('),ui.indexOf('function toast('));
 vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)};const Core=FootballCore;const t=key=>key;${validators};globalThis.validation={validateDB,validateSave};`,ctx);
 const profile=(position=DB.profile.defaults.position)=>({...C.clone(DB.profile.defaults),position,stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial]))});
-const create=(route='domestic',position)=>{const p=profile(position),o=C.startingOffers(DB,p).find(o=>o.route.id===route);return C.createCareer(DB,p,route,o.club.id);};
+// Calendar progress requires the same explicit style confirmation as the UI.
+const create=(route='domestic',position)=>{const p=profile(position),o=C.startingOffers(DB,p).find(o=>o.route.id===route),state=C.createCareer(DB,p,route,o.club.id);assert.ok(C.setPlayStyleBuild(DB,state,C.playStyleDefaults(DB)));return state;};
 const normalize=value=>JSON.parse(JSON.stringify(value));
 function verifyReport(result){
   for(const [side,other] of [['home','away'],['away','home']]){
@@ -54,6 +55,7 @@ test('calibrated aggregate football output and coherent player/team records',()=
 });
 test('calendar advances a complete season and records league/cup results coherently',()=>{
   const state=C.createCareer(DB,profile(),'domestic','en1-0'),league='en-1';let count=0,reports=0;
+  assert.ok(C.setPlayStyleBuild(DB,state,C.playStyleDefaults(DB)));
   while(C.nextCalendar(state)){const previous=state.date,result=C.advance(DB,state);assert.ok(state.date>=previous);if(result.report){reports++;verifyReport(result.report.result);}assert.ok(++count<500);}
   assert.ok(C.seasonReady(state));assert.equal(C.standings(DB,state,league).length,20);assert.ok(C.standings(DB,state,league).every(t=>t.played===38));assert.equal(state.player.history.length,reports);
   for(const id of ['ucl','uel','uecl']){const matches=state.fixtures[id];assert.equal(matches.filter(f=>f.stage==='final').length,1);assert.ok(matches.at(-1).result.winner);for(const f of matches.filter(f=>f.result.penalties))assert.equal(f.result.winner,f.result.penalties[0]>f.result.penalties[1]?f.home:f.away);}
@@ -70,7 +72,7 @@ test('actual arrival starts the offer grace period; renewals and free agents rem
   const renewed=create();renewed.date=C.dateAdd(renewed.date,DB.offerRules.newClubGraceDays);renewed.player.contract.arrivalDate=renewed.date;renewed.player.career.push({season:renewed.season,date:renewed.date,club:renewed.player.club,type:'renewed'});assert.equal(C.newClubGrace(DB,renewed),null);
 });
 test('database edits and save imports reject broken references before changing state',()=>{
-  const state=create();while(!state.player.history.length)C.advance(DB,state);const envelope={schema:DB.meta.schema,db:C.clone(DB),state:C.clone(state)};
+  const state=create();let count=0;while(!state.player.history.length){assert.ok(C.advance(DB,state));assert.ok(++count<500);}const envelope={schema:DB.meta.schema,db:C.clone(DB),state:C.clone(state)};
   assert.ok(ctx.validation.validateDB(DB));assert.ok(ctx.validation.validateSave(envelope));
   const invalidState=C.clone(envelope);delete invalidState.state.player.history[0].result.home.players[0].match;assert.throws(()=>ctx.validation.validateSave(invalidState));
   const invalidDB=C.clone(DB);invalidDB.clubs=invalidDB.clubs.filter(c=>c.id!==state.player.club);assert.throws(()=>ctx.validation.validateDB(invalidDB,state));
