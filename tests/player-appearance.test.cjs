@@ -9,7 +9,10 @@ const DB=JSON.parse(section('game-db')),art=JSON.parse(section('player-art')),ui
 const views=ui.slice(ui.indexOf('let playerArtReady;'),ui.indexOf('function renderProfile()'));
 const fields=DB.profile.appearance.fields;
 const t=(key,values={})=>(DB.ui.labels[key]||key).replace(/\{(\w+)\}/g,(_,name)=>values[name]??'');
-const optionMarkup=(field,index)=>`${field.options[index].name} <span class="appearance-count">(${index+1}/${field.options.length})</span>`;
+const optionMarkup=(field,index)=>{
+ const name=field.options[index].name;
+ return `<span class="appearance-option" title="${name}">${name}</span> <span class="appearance-count">(${index+1}/${field.options.length})</span>`;
+};
 
 test('all selectors wrap independently and map to real sprite layers or dye channels',()=>{
  const draft={appearance:{}},output={};
