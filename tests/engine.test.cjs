@@ -47,6 +47,35 @@ test('deterministic detailed reports, every position and availability restrictio
     state.player.fitness=DB.rules.minimumFitnessForSelection-1;assert.equal(C.simulate(DB,f,state).player.minutes,0);
   }
 });
+test('position builds change the actual keeper actions, commentary and ratings',()=>{
+  const db=C.clone(DB),state=create('domestic','GK'),club=state.player.club;
+  const fixture=Object.values(state.fixtures).flat().find(f=>f.home===club||f.away===club);
+  Object.assign(db.engine.selection,{minStart:1,maxStart:1,goalkeeperFullMatchChance:1});
+  for(const chance of db.engine.shot.chances)chance.weight=Number(chance.id==='header');
+  db.engine.shot.penaltyChance=0;
+  db.matchPerformanceRules.stops.cover.chance=0;
+  db.matchPerformanceRules.stops.claim.chance=.62;
+  const normal=C.simulate(db,fixture,state);
+  const keeperBuild={identity:'box-keeper',onBall:'driven-release',offBall:'claim-crosses'};
+  assert.ok(C.setPlayStyleBuild(db,state,keeperBuild));
+  const result=C.simulate(db,fixture,state);
+  assert.equal(result.preMatch.position,'GK');
+  assert.ok(result.player.minutes>=db.rules.matchMinutes);
+  assert.ok(result.playStyle.actionFactors.claim>1&&result.playStyle.longPassShare>0);
+  assert.notDeepEqual(normalize(result.player),normalize(normal.player));
+  const claims=result.events.filter(event=>event.playerId==='player'&&event.type==='claimEvent');
+  assert.ok(claims.length>0);
+  assert.equal(claims.length,result.playerPerformance.actions.claim.success);
+  assert.ok(result.player.clearances>=claims.length);
+  for(const claim of claims)assert.ok(!result.events.some(event=>event.minute===claim.minute&&typeof event.xg==='number'));
+  assert.ok(new Set(result.events.map(event=>event.playerRating).filter(Number.isFinite)).size>1);
+  assert.equal(result.playerPerformance.rating,result.player.rating);
+  const keeperIntents=C.matchIntentOptions(db,'GK').map(option=>option.id);
+  assert.ok(keeperIntents.includes('keeper-sweep')&&!keeperIntents.includes('finish'));
+  assert.ok(C.matchIntentOptions(db,'CB').some(option=>option.id==='step-up'));
+  assert.ok(C.matchIntentOptions(db,'CM').some(option=>option.id==='progress'));
+  verifyReport(result);
+});
 test('calibrated aggregate football output and coherent player/team records',()=>{
   const calibration=DB.calibration,base=create(),league=C.indexes(DB).clubs[base.player.club].league,fixture=base.fixtures[league][0];let shots=0,goals=0,passes=0,completed=0;
   for(let i=0;i<calibration.samples;i++){const result=C.simulate(DB,{...fixture,id:`calibration:${i}`});verifyReport(result);for(const side of ['home','away']){shots+=result[side].stats.shots;goals+=result[side].stats.goals;passes+=result[side].stats.passes;completed+=result[side].stats.completed;}}

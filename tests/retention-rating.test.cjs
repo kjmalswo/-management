@@ -21,7 +21,18 @@ test('old DB gains retention rules and default rating weights while custom weigh
  const custom=clone(DB);custom.engine.rating.goal=.9;custom.engine.rating.assist=.6;C.upgradeDatabase(DB,custom);assert.equal(custom.engine.rating.goal,.9);assert.equal(custom.engine.rating.assist,.6);
 });
 test('actual rating calculation gives braces and hat tricks greater impact and retains penalties and the cap',()=>{
- const line=engine.split('\n').find(line=>line.includes('for(const person of teams[side].players){const s=person.match;'));
- function rate(goals,assists=0,red=0,db=DB){const stats=C.createStats(db);Object.assign(stats,{minutes:90,goals,assists,red});const person={position:'ST',match:stats},context=vm.createContext({db,e:db.engine,r:db.rules,idx:C.indexes(db),teams:[{players:[person],stats:{goals:4}},{stats:{goals:0}}],side:0,clamp:C.clamp,rolePerformance:()=>({score:0})});vm.runInContext(line,context);return stats.rating;}
+ function rate(goals,assists=0,red=0,db=DB){const stats={...C.createStats(db),minutes:90,goals,assists,red};return C.matchRating(db,stats,'ST',{}, {goalsFor:4,goalsAgainst:0}).rating;}
  assert.ok(rate(2)>=8.4);assert.ok(rate(3)>=9.5);assert.ok(rate(0,2)>rate(0)+1.4);assert.equal(rate(10),10);assert.ok(rate(2,0,1)<rate(2));const old=clone(DB);old.engine.rating.goal=.64;old.engine.rating.assist=.41;assert.ok(Math.abs(rate(2)-rate(2,0,0,old)-.82)<1e-9);assert.ok(Math.abs(rate(0,2)-rate(0,2,0,old)-.68)<1e-9);
+});
+test('strong matches without goals or assists outrank a goal with poor all-around play',()=>{
+ const stats=values=>({...C.createStats(DB),minutes:90,...values});
+ const midfield=C.matchRating(DB,stats({passes:70,completed:65,longPasses:12,keyPasses:4,xa:1.1,duels:8,duelsWon:7}),'CM',{actions:{progress:{success:4,attempts:5}}});
+ const defense=C.matchRating(DB,stats({tackles:7,tacklesWon:6,interceptions:5,clearances:6,duels:11,duelsWon:10}),'CB',{actions:{cover:{success:2,attempts:3},block:{success:2,attempts:2}}});
+ const keeper=C.matchRating(DB,stats({passes:24,completed:21,saves:6,conceded:1}),'GK',{goalsPrevented:1.45,actions:{claim:{success:2,attempts:2}}});
+ const poor=C.matchRating(DB,stats({goals:1,passes:28,completed:13,bigChancesMissed:3,duels:7,duelsWon:1}),'ST',{actions:{progress:{success:0,attempts:3}}});
+ const routine=C.matchRating(DB,stats({passes:24,completed:21,saves:6,conceded:1}),'GK',{goalsPrevented:.15});
+ for(const assessment of [midfield,defense,keeper])assert.ok(assessment.rating>=8,assessment.rating);
+ assert.ok(poor.rating<DB.engine.rating.base);
+ assert.ok(keeper.rating>routine.rating+1);
+ assert.equal(C.matchRating(DB,C.createStats(DB),'CB').rating,0);
 });

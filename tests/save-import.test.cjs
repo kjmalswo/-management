@@ -82,7 +82,24 @@ test('a played match and paused commentary survive export/import without duplica
   const loaded=reload(saved);
   assert.equal(loaded.state.player.history.length,saved.state.player.history.length);
   assert.equal(loaded.state.player.history[0].result.home.stats.goals,result.report.result.home.stats.goals);
+  assert.deepEqual(JSON.parse(JSON.stringify(loaded.state.player.history[0].result.playerPerformance)),JSON.parse(JSON.stringify(result.report.result.playerPerformance)));
   assert.deepEqual(JSON.parse(JSON.stringify(loaded.state.matchPresentation)),saved.state.matchPresentation);
+});
+test('new positional rules upgrade an older catalog and preserve edited choices',()=>{
+  const previous=C.clone(DB),counts={identity:7,onBall:5,offBall:5};
+  previous.meta.version='21.2.3';
+  delete previous.matchPerformanceRules;
+  previous.matchIntentRules.options=previous.matchIntentRules.options.filter(option=>!option.actionFactors);
+  for(const slot of previous.playStyleRules.slots)slot.options=slot.options.slice(0,counts[slot.id]);
+  previous.playStyleRules.slots[0].options[1].name='사용자 지정 빌드';
+  const updated=context.importSave.upgradePresentationDatabase(previous);
+  assert.deepEqual(JSON.parse(JSON.stringify(updated.matchPerformanceRules)),DB.matchPerformanceRules);
+  assert.equal(updated.matchIntentRules.options.length,DB.matchIntentRules.options.length);
+  assert.equal(updated.playStyleRules.slots[0].options[1].name,'사용자 지정 빌드');
+  for(const stock of DB.playStyleRules.slots){
+    const slot=updated.playStyleRules.slots.find(slot=>slot.id===stock.id);
+    assert.deepEqual(Array.from(slot.options,option=>option.id),stock.options.map(option=>option.id));
+  }
 });
 test('legacy schema 8 export upgrades while preserving player and contract',()=>{
   const saved=create();saved.schema=saved.state.schema=saved.db.meta.schema=8;delete saved.db.uniformRules.nameWidth;

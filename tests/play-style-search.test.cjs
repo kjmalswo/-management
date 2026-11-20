@@ -12,7 +12,15 @@ test('scripts parse, release versions agree and the renamed locker choice is in 
 
 test('all slot combinations respect caps and tradeoffs; position restrictions and invalid selections are enforced',()=>{
  const defaults=C.playStyleDefaults(DB);assert.deepEqual(plain(defaults),{identity:'balanced',onBall:'balanced',offBall:'balanced'});const neutral=C.playStyleEffects(DB,defaults);assert.ok([...Object.values(neutral.opportunity),...Object.values(neutral.execution),neutral.load].every(value=>value===1));assert.equal(neutral.longPassShare,0);assert.equal(neutral.passAccuracyDelta,0);
- for(const identity of DB.playStyleRules.slots[0].options)for(const onBall of DB.playStyleRules.slots[1].options)for(const offBall of DB.playStyleRules.slots[2].options){const build={identity:identity.id,onBall:onBall.id,offBall:offBall.id},effects=C.playStyleEffects(DB,build,'GK'),limits=DB.playStyleRules.limits;assert.equal(C.validPlayStyleBuild(DB,build,'GK'),true);for(const [category,values] of [['opportunity',effects.opportunity],['execution',effects.execution]])for(const value of Object.values(values))assert.ok(Number.isFinite(value)&&value>=limits[category+'Min']&&value<=limits[category+'Max']);assert.ok(effects.load>=limits.loadMin&&effects.load<=limits.loadMax);}
+ for(const identity of DB.playStyleRules.slots[0].options)for(const onBall of DB.playStyleRules.slots[1].options)for(const offBall of DB.playStyleRules.slots[2].options){
+  const build={identity:identity.id,onBall:onBall.id,offBall:offBall.id},effects=C.playStyleEffects(DB,build,'GK'),limits=DB.playStyleRules.limits;
+  const allowed=[identity,onBall,offBall].every(option=>!option.positions.length||option.positions.includes('GK'));
+  assert.equal(C.validPlayStyleBuild(DB,build,'GK'),allowed);
+  for(const [category,values] of [['opportunity',effects.opportunity],['opportunity',effects.actionFactors],['execution',effects.execution]])for(const value of Object.values(values))assert.ok(Number.isFinite(value)&&value>=limits[category+'Min']&&value<=limits[category+'Max']);
+  assert.ok(effects.load>=limits.loadMin&&effects.load<=limits.loadMax);
+ }
+ const allowedSlots=Object.fromEntries(DB.positions.map(pos=>[pos.id,DB.playStyleRules.slots.map(slot=>slot.options.filter(option=>!option.positions.length||option.positions.includes(pos.id)).length)]));
+ assert.ok(Object.values(allowedSlots).every(counts=>counts.every(count=>count>=7)));
  assert.equal(C.validPlayStyleBuild(DB,{...defaults,identity:'sweeper'},'ST'),false);assert.equal(C.validPlayStyleBuild(DB,{...defaults,identity:'sweeper'},'GK'),true);assert.equal(C.playStyleEffects(DB,{...defaults,identity:'sweeper'},'ST').choices[0].active,false);
  for(const build of [null,[],{identity:'finisher'}, {...defaults,onBall:'unknown'},{...defaults,extra:'balanced'}])assert.equal(C.validPlayStyleBuild(DB,build),false);
  const offense=C.playStyleEffects(DB,offensive),defense=C.playStyleEffects(DB,defensive);assert.ok(offense.opportunity.shotWeight>1&&offense.opportunity.passWeight<1&&offense.load>1);assert.ok(defense.opportunity.defenseWeight>1&&defense.opportunity.shotWeight<1);assert.equal(C.playStyleOpportunity(offense,{id:'npc'},'shotWeight'),1);

@@ -6,6 +6,6 @@ Actual club emblems cover all 559 first and reserve teams and their 540 youth te
 - New SVG emblems: [JoseArroyave/football-logos](https://github.com/JoseArroyave/football-logos), pinned revision `cbfed1c638150a67e5d4b207793837c17c96d89b`. Upstream files identify [football-logos.cc](https://football-logos.cc/) as their source.
 - FC Südtirol: [FootyLogos.com](https://www.footylogos.com/logos/fc-suditrol).
 
-SVG changes set intrinsic width, height and preserveAspectRatio only. Club artwork, colours, paths and original viewBox are preserved. `manifest.json` records each identity, source URL, original blob hash and normalized asset hash. Every same asset is embedded in `index.html` for single-file offline use. Reserve sides use their parent club identity; youth sides resolve their parent without duplicate image files.
+SVG normalization sets intrinsic width, height and preserveAspectRatio. Leicester City uses an expanded viewBox to fit the full crest. `manifest.json` records each identity, source URL, original blob hash and normalized asset hash. The same assets are embedded in `index.html` for single-file offline use. Reserve and youth sides resolve their parent club emblem.
 
 Club names and emblems belong to their respective clubs and rights holders. Source availability does not transfer ownership of those marks.
