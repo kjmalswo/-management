@@ -19,6 +19,28 @@ test('invalid tooltip geometry, duplicate IDs and malformed descriptions are rej
 test('explicit user-edited explanations survive presentation migration',()=>{
  const db=clone();db.ui.interactions.glossary.find(entry=>entry.id==='xg').description='사용자가 작성한 기대득점 설명';const updated=context.API.upgradePresentationDatabase(db);assert.equal(updated.ui.interactions.glossary.find(entry=>entry.id==='xg').description,'사용자가 작성한 기대득점 설명');assert.doesNotThrow(()=>context.API.validateDB(updated));
 });
+test('club and national reputation resolve to their own tooltips even with the same label as player reputation',()=>{
+ const previous=clone(),ids=['club-reputation','national-reputation'];
+ previous.meta.version='21.2.0';
+ previous.ui.labels.nationalReputation=previous.ui.labels.reputation;
+ previous.ui.interactions.glossary=previous.ui.interactions.glossary.filter(entry=>!ids.includes(entry.id));
+ const playerEntry=previous.ui.interactions.glossary.find(entry=>entry.id==='reputation');
+ playerEntry.description='사용자가 작성한 선수 명성 설명';
+ const updated=context.API.upgradePresentationDatabase(previous);
+ assert.equal(updated.ui.labels.nationalReputation,DB.ui.labels.nationalReputation);
+ const labels=vm.createContext({DB:updated,h:String,t:key=>updated.ui.labels[key]});
+ const labelSource=ui.slice(ui.indexOf('function infoLabel('),ui.indexOf('const clubLink='));
+ const tooltipSource=ui.slice(ui.indexOf('function tooltipText('),ui.indexOf('function hideInteractionTooltip('));
+ vm.runInContext(labelSource+tooltipSource,labels);
+ assert.match(labels.infoLabel(updated.ui.labels.reputation),/data-id="reputation"/);
+ for(const id of ['reputation',...ids]){
+  const markup=labels.infoLabel(updated.ui.labels.reputation,id);
+  assert.ok(markup.includes('data-id="'+id+'"'));
+  const entry=id==='reputation'?playerEntry:DB.ui.interactions.glossary.find(entry=>entry.id===id);
+  assert.equal(labels.tooltipText({dataset:{action:'info-open',kind:'term',id}}),entry.description);
+ }
+ assert.doesNotThrow(()=>context.API.validateDB(updated));
+});
 test('legacy storage gains separate commentary checkpoint locations',()=>{
  const db=clone();for(const key of ['presentationSlot','presentationKey','presentationFormat','presentationMaxBytes'])delete db.storageRules[key];db.meta.version='17.1.0';const updated=context.API.upgradePresentationDatabase(db);assert.equal(updated.storageRules.presentationSlot,DB.storageRules.presentationSlot);assert.equal(updated.storageRules.presentationKey,DB.storageRules.presentationKey);assert.doesNotThrow(()=>context.API.validateDB(updated));
 });
