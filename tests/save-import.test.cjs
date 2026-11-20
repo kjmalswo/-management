@@ -122,3 +122,28 @@ test('saved appearance choices survive import and pre-portrait saves acquire the
   assert.equal(legacy.state.player.height,197);
   assert.equal(legacy.state.player.weight,92);
 });
+
+test('pre-expansion appearance databases gain the new presets once and preserve custom choices',()=>{
+  const previous=C.clone(DB);
+  previous.meta.version='21.2.1';
+  for(const field of previous.profile.appearance.fields)field.options=field.options.filter(option=>!option.addedIn);
+  const skin=previous.profile.appearance.fields.find(field=>field.id==='skin');
+  const removed=skin.options.pop();
+  skin.options[0].name='사용자 피부색';
+  const custom={id:'olive',name:'사용자 올리브',colors:[...skin.options[0].colors]};
+  skin.options.push(custom);
+
+  const upgraded=context.importSave.upgradePresentationDatabase(previous);
+  const fields=upgraded.profile.appearance.fields;
+  assert.equal(upgraded.meta.version,DB.meta.version);
+  for(const stock of DB.profile.appearance.fields){
+    const field=fields.find(item=>item.id===stock.id);
+    const expected=stock.options.filter(option=>field.id!=='skin'||option.id!==removed.id).map(option=>option.id);
+    assert.deepEqual(Array.from(field.options,option=>option.id).sort(),expected.sort());
+  }
+  assert.equal(skin.options[0].name,'사용자 피부색');
+  assert.equal(skin.options.find(option=>option.id===custom.id),custom);
+  const once=JSON.stringify(fields);
+  context.importSave.upgradePresentationDatabase(upgraded);
+  assert.equal(JSON.stringify(upgraded.profile.appearance.fields),once);
+});

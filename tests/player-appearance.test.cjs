@@ -16,8 +16,11 @@ test('all selectors wrap independently and map to real sprite layers or dye chan
  const screen=vm.createContext({DB,draft,t,h:String,document:{getElementById:()=>output}});
  vm.runInContext(views+'\nrefreshPlayerPortrait=()=>{};',screen);
  const png=fs.readFileSync(path.join(__dirname,'../assets/player/appearance.png'));
+ const previousCounts={skin:7,haircut:6,hair:7,eyebrows:4,brow:7,eyes:4,iris:6,nose:4,mouth:4,face:4,sleeves:2,hem:2,boot:7};
  assert.equal(art.src,'data:image/png;base64,'+png.toString('base64'));
  for(const field of fields){
+  assert.equal(field.options.length,Math.ceil(previousCounts[field.id]*1.5),field.id);
+  assert.equal(new Set(field.options.map(option=>option.tile??option.colors.join(','))).size,field.options.length,field.id);
   assert.equal(screen.appearanceOption(field,{}).id,field.options[0].id);
   for(const option of field.options){
    if(option.colors)option.colors.forEach((color,i)=>assert.ok(art.inks[field.id+i]&&/^[a-f0-9]{6}$/i.test(color)));
@@ -102,7 +105,7 @@ test('body proportions share a baseline and face view draws only the selected fa
  assert.ok(body(short)[3]<body(base)[3]&&body(base)[3]<body(tall)[3]);
  assert.ok(body(light)[2]<body(base)[2]&&body(base)[2]<body(heavy)[2]);
  assert.equal(body(short)[1]+body(short)[3],body(tall)[1]+body(tall)[3]);
- assert.deepEqual(base.layers.slice(0,3).map(layer=>layer.slice(0,4)),[art.tiles.athlete,art.tiles.long,art.tiles.loose]);
+ assert.deepEqual(base.layers.slice(0,3).map(layer=>layer.slice(0,4)),[art.tiles.athlete,art.tiles.threeQuarter,art.tiles.halfTuck]);
  assert.deepEqual(base.color,[221,230,243,255]);
  const club={color:'#2168ac',secondaryColor:'#ffcd52'};
  assert.deepEqual(draw(DB.profile.defaults,'full',club).color,[33,104,172,255]);
