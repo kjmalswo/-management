@@ -14,8 +14,8 @@ const validators=ui.slice(ui.indexOf('function validateDB('),ui.indexOf('functio
 const importFunctions=ui.slice(ui.indexOf('function prepareImportedCareer('),ui.indexOf('async function restoreCareer('));
 vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)};const Core=FootballCore;const t=key=>key;${validators}${importFunctions};globalThis.importSave={prepareImportedCareer,parseCareerText,upgradePresentationDatabase};`,context);
 const C=context.Core;
-const create=()=>{
-  const profile={...C.clone(DB.profile.defaults),name:'저장 검증 선수',displayName:'김',stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial]))};
+const create=(overrides={})=>{
+  const profile={...C.clone(DB.profile.defaults),name:'저장 검증 선수',displayName:'김',stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial])),...overrides};
   const offer=C.startingOffers(DB,profile)[0];
   return {schema:DB.meta.schema,db:C.clone(DB),state:C.createCareer(DB,profile,offer.route.id,offer.club.id)};
 };
@@ -106,3 +106,19 @@ test('missing shared settings and malformed variant weights are rejected without
   assert.equal(JSON.stringify(saved),before);
 });
 
+test('saved appearance choices survive import and pre-portrait saves acquire the art catalog',()=>{
+  const fields=DB.profile.appearance.fields;
+  const selected=Object.fromEntries(fields.map(field=>[field.id,field.options.at(-1).id]));
+  const saved=create({appearance:selected,height:197,weight:92});
+  const loaded=reload(saved);
+  assert.deepEqual(JSON.parse(JSON.stringify(loaded.state.player.appearance)),selected);
+  assert.equal(loaded.state.player.height,197);
+  assert.equal(loaded.state.player.weight,92);
+
+  delete saved.db.profile.appearance;
+  delete saved.state.player.appearance;
+  const legacy=reload(saved);
+  assert.deepEqual(JSON.parse(JSON.stringify(legacy.db.profile.appearance)),DB.profile.appearance);
+  assert.equal(legacy.state.player.height,197);
+  assert.equal(legacy.state.player.weight,92);
+});
