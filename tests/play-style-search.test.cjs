@@ -20,7 +20,7 @@ test('all slot combinations respect caps and tradeoffs; position restrictions an
   assert.ok(effects.load>=limits.loadMin&&effects.load<=limits.loadMax);
  }
  const allowedSlots=Object.fromEntries(DB.positions.map(pos=>[pos.id,DB.playStyleRules.slots.map(slot=>slot.options.filter(option=>!option.positions.length||option.positions.includes(pos.id)).length)]));
- assert.ok(Object.values(allowedSlots).every(counts=>counts.every(count=>count>=7)));
+ assert.ok(Object.values(allowedSlots).every(counts=>counts.every(count=>count>=6)));
  assert.equal(C.validPlayStyleBuild(DB,{...defaults,identity:'sweeper'},'ST'),false);assert.equal(C.validPlayStyleBuild(DB,{...defaults,identity:'sweeper'},'GK'),true);assert.equal(C.playStyleEffects(DB,{...defaults,identity:'sweeper'},'ST').choices[0].active,false);
  for(const build of [null,[],{identity:'finisher'}, {...defaults,onBall:'unknown'},{...defaults,extra:'balanced'}])assert.equal(C.validPlayStyleBuild(DB,build),false);
  const offense=C.playStyleEffects(DB,offensive),defense=C.playStyleEffects(DB,defensive);assert.ok(offense.opportunity.shotWeight>1&&offense.opportunity.passWeight<1&&offense.load>1);assert.ok(defense.opportunity.defenseWeight>1&&defense.opportunity.shotWeight<1);assert.equal(C.playStyleOpportunity(offense,{id:'npc'},'shotWeight'),1);
@@ -40,6 +40,36 @@ test('custom builds round-trip; old saves gain only neutral defaults and stock w
  const old=C.clone(saved);delete old.db.playStyleRules;delete old.state.player.playStyleBuild;old.db.meta.version='20.8.9';old.db.matchIntentRules.options.find(option=>option.id==='bold').name='과감한 판단을 시도한다';const oldState=JSON.stringify(old.state),upgraded=ctx.V.prepareImportedCareer(old),player={...upgraded.state.player};delete player.playStyleBuild;assert.deepEqual(plain(player),plain(old.state.player));assert.equal(JSON.stringify(upgraded.state.fixtures),JSON.stringify(old.state.fixtures));assert.equal(upgraded.state.date,old.state.date);assert.deepEqual(plain(upgraded.state.player.playStyleBuild),plain(C.playStyleDefaults(DB)));assert.equal(upgraded.db.matchIntentRules.options.find(option=>option.id==='bold').name,'과감한 플레이를 자주 시도한다');assert.equal(JSON.stringify(old.state),oldState);assert.ok(upgraded.state.player.history.every(record=>!record.result.playStyle));
  old.db.matchIntentRules.options.find(option=>option.id==='bold').name='사용자 지정 문구';assert.equal(ctx.V.prepareImportedCareer(old).db.matchIntentRules.options.find(option=>option.id==='bold').name,'사용자 지정 문구');
  for(const mutate of [value=>value.state.player.playStyleBuild.onBall='missing',value=>delete value.state.player.playStyleBuild.offBall,value=>value.db.playStyleRules.slots[0].options[0].load=1.1,value=>value.db.playStyleRules.slots[0].options[1].execution.shooting=Infinity]){const broken=C.clone(saved);mutate(broken);const snapshot=JSON.stringify(broken);assert.throws(()=>ctx.V.prepareImportedCareer(broken));assert.equal(JSON.stringify(broken),snapshot);}
+});
+
+test('retired build options disappear from the catalog and older careers use the slot defaults',()=>{
+ const removed={identity:['channel-forward','half-space-maker'],offBall:['run-behind']};
+ const db=C.clone(DB),state=career();
+ db.meta.version='21.4.0';
+ delete db.playStyleRules.retiredOptions;
+ for(const slot of db.playStyleRules.slots){
+  const neutral=slot.options.find(option=>option.id===slot.default);
+  for(const id of removed[slot.id]||[]){
+   assert.ok(slot.options.every(option=>option.id!==id));
+   slot.options.push({...C.clone(neutral),id});
+  }
+  if(slot.id==='offBall'){
+   slot.default='run-behind';
+   neutral.load=1.05;
+  }
+ }
+ const role=db.positionRoleRules.roles.find(role=>role.positions.includes('ST'));
+ role.build.identity='half-space-maker';
+ assert.equal(C.setPlayStyleBuild(db,state,{identity:'channel-forward',onBall:'one-touch',offBall:'run-behind'}),true);
+ const saved={schema:DB.meta.schema,db,state},before=JSON.stringify(saved);
+ const loaded=ctx.V.prepareImportedCareer(saved);
+ assert.deepEqual(plain(loaded.state.player.playStyleBuild),{identity:'balanced',onBall:'one-touch',offBall:'balanced'});
+ assert.equal(loaded.db.positionRoleRules.roles.find(item=>item.id===role.id).build.identity,'balanced');
+ for(const slot of loaded.db.playStyleRules.slots){
+  for(const id of removed[slot.id]||[])assert.ok(slot.options.every(option=>option.id!==id));
+ }
+ assert.ok(loaded.db.playStyleRules.slots.find(slot=>slot.id==='offBall').options.some(option=>option.id==='run'));
+ assert.equal(JSON.stringify(saved),before);
 });
 
 function searchHarness(){
