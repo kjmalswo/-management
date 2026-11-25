@@ -16,10 +16,78 @@ test('new-career rules validate and European default/alternative previews equal 
  const alternative=C.createCareer(DB,profile,'europe',europe.alternatives[1].id);assert.equal(alternative.player.contract.weekly,C.initialWage(DB,europe.alternatives[1].id,profile,'europe'));
  for(const route of offers.filter(o=>o.route.id!=='europe')){const rule=DB.startingRouteRules.initialContract[route.route.id],monthly=C.initialWage(DB,route.club.id,profile,route.route.id)*DB.rules.annualSalaryWeeks/rule.monthsPerYear*DB.settings.currencies.find(c=>c.id==='KRW').rate;assert.ok(monthly>=rule.minimumMonthlyKRW&&monthly<=rule.maximumMonthlyKRW);}
  const screen=vm.createContext({DB,draft:C.clone(profile),Core:{...C,startingOffers:()=>offers},h:String,t:key=>key,idx:()=>C.indexes(DB),creationSteps:()=>'',badge:()=>'',crest:()=>'',clubTier:()=>'',money:n=>'WAGE:'+n,detail:(key,value)=>key+':'+value,btn:(label,action,attributes)=>attributes,openModal:content=>screen.content=content});
- vm.runInContext(uiFunction('showContracts'),screen);screen.showContracts();
+ vm.runInContext(uiFunction('startingContractDetails')+'\n'+uiFunction('showContracts'),screen);screen.showContracts();
  const card=()=>screen.content.split('<article').find(s=>s.includes('data-starting-route="europe"'));
  assert.ok(card().includes('weeklyWage:WAGE:'+initial.player.contract.weekly));assert.ok(card().includes('data-club="'+europe.club.id+'"'));
  screen.draft.startingClubSelections.europe=europe.alternatives[1].id;screen.showContracts();assert.ok(card().includes('weeklyWage:WAGE:'+alternative.player.contract.weekly));assert.ok(card().includes('data-club="'+alternative.player.club+'"'));
+});
+
+test('custom starts accept the full ability range and save a chosen senior club',()=>{
+ const statsAt=value=>Object.fromEntries(DB.attributes.map(a=>[a.id,value]));
+ const custom={...profile,customMode:true,stats:statsAt(DB.rules.abilityMax)};
+ const weak={...custom,stats:statsAt(DB.rules.abilityMin)};
+ assert.ok(C.validInitialStats(DB,custom));
+ assert.ok(C.validInitialStats(DB,weak));
+ assert.equal(C.validInitialStats(DB,{...custom,customMode:false}),false);
+ assert.equal(C.validInitialStats(DB,{...weak,customMode:false}),false);
+ const clubs=C.customStartingClubs(DB),selected=clubs.find(c=>c.name==='레알 마드리드'),youth=clubs.find(c=>c.parent===selected.id);
+ assert.ok(clubs.every(c=>!c.historical&&!c.national));
+ assert.equal(C.customStartingRoute(DB,selected),'domestic');
+ assert.equal(C.customStartingRoute(DB,youth),'academy');
+ assert.throws(()=>C.createCareer(DB,custom,'domestic',DB.nationalTeams[0].id),/customStart/);
+ assert.throws(()=>C.createCareer(DB,{...custom,stats:statsAt(DB.rules.abilityMax+1)},'domestic',selected.id),/customStart/);
+ const s=C.createCareer(DB,custom,'europe',selected.id);
+ assert.equal(s.player.club,selected.id);
+ assert.equal(s.player.route,'domestic');
+ assert.equal(s.player.contract.weekly,C.initialWage(DB,selected.id,custom,'domestic'));
+ assert.ok(s.fixtures[selected.league].some(f=>f.home===selected.id||f.away===selected.id));
+ const loaded=ctx.V.prepareImportedCareer({schema:DB.meta.schema,db:DB,state:s});
+ assert.equal(loaded.state.player.customMode,true);
+ assert.equal(loaded.state.player.club,selected.id);
+ assert.deepEqual(plain(loaded.state.player.stats),custom.stats);
+});
+
+test('custom team search uses the supported teams and resets a selection outside the filters',()=>{
+ const selection={country:'all',league:'all',query:'레스터',club:''},picker={},preview={replaceChildren(){this.innerHTML='';}};
+ const options=(rows,selected)=>rows.map(row=>'<option value="'+row.id+'"'+(row.id===selected?' selected':'')+'>'+row.name+'</option>').join('');
+ const screen=vm.createContext({DB,draft:{...C.clone(profile),customMode:true,customStart:selection},Core:C,h:String,t:key=>key,idx:()=>C.indexes(DB),
+  options,document:{getElementById:id=>id==='custom-start-club'?picker:preview,addEventListener(){}},
+  crest:()=>'',startingContractDetails:()=>'',btn:(_label,_action,data)=>data});
+ vm.runInContext(uiFunction('worldSearchMatches')+'\n'+uiFunction('browseClubOptions')+'\n'+uiFunction('refreshCustomStart'),screen);
+ screen.refreshCustomStart();
+ assert.match(picker.innerHTML,/레스터 시티 ·/);
+ assert.match(picker.innerHTML,/레스터 시티 유스/);
+ selection.league='en-2';
+ selection.club='en-2-2026-9';
+ screen.refreshCustomStart();
+ assert.match(picker.innerHTML,/value="en-2-2026-9" selected/);
+ assert.match(preview.innerHTML,/data-club="en-2-2026-9"/);
+ selection.query='결과 없는 구단 이름';
+ screen.refreshCustomStart();
+ assert.equal(selection.club,'');
+ assert.equal(picker.disabled,true);
+ assert.equal(preview.innerHTML,'');
+});
+
+test('the custom mode switch restores the draft for each mode',()=>{
+ const draft=C.clone(profile),regular=plain(draft.stats);
+ let change;
+ const document={addEventListener(type,listener){if(type==='change')change=listener;}};
+ const screen=vm.createContext({draft,document,updateDraft:()=>{}});
+ const start=ui.indexOf("document.addEventListener('change',event=>{\n const input=event.target;");
+ const end=ui.indexOf("document.addEventListener('submit'",start);
+ vm.runInContext(ui.slice(start,end),screen);
+ const target={id:'profile-custom-mode',checked:true,dataset:{},closest:()=>true};
+ change({target});
+ assert.equal(draft.customMode,true);
+ draft.stats.speed=DB.rules.abilityMax;
+ target.checked=false;
+ change({target});
+ assert.equal(draft.customMode,false);
+ assert.deepEqual(plain(draft.stats),regular);
+ target.checked=true;
+ change({target});
+ assert.equal(draft.stats.speed,DB.rules.abilityMax);
 });
 
 test('optional-position form clears and disables tertiary, re-enables it without inventing a role, and preserves a valid primary during swaps',()=>{
