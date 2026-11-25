@@ -1,4 +1,8 @@
-# Football Career 27 — 축구선수 커리어 시뮬레이터 v21.4.1
+# Football Career 27 — 축구선수 커리어 시뮬레이터 v21.5.0
+
+v21.5.0에서는 다음 경기의 대회색이 상단 바, 내비게이션, 진행 버튼과 다음 경기 카드에 표시됩니다. 상단에서 대회명을 확인할 수 있고, 중계 중에는 해당 경기의 색이 유지됩니다. 예정된 경기가 없으면 선택한 라이트·다크 테마로 돌아갑니다.
+
+대회별 주요색과 보조색은 `game-db`의 `leagues`와 `nationalCompetitions`에서 `color`, `secondaryColor`로 편집합니다. 디지털 브랜드 가이드와 대회 사이트의 색상값을 우선 사용했고, 별도 색상표를 확보하지 못한 대회는 로고에서 두 색을 골랐습니다. 유스와 승강전은 해당 리그의 색을 따릅니다. J1·J2·J3는 2026/27시즌 공식 흑백 체계를 공유합니다. [프리미어리그 스타일시트](https://www.premierleague.com/resources/v1.58.6/styles/screen.css) · [UEFA 챔피언스리그 스타일시트](https://www.uefa.com/CompiledAssets/UefaCom/css/competitions/uefachampionsleague/base.css) · [UEFA 유로파리그 스타일시트](https://www.uefa.com/CompiledAssets/UefaCom/css/competitions/uefaeuropaleague/base.css) · [UEFA 컨퍼런스리그 스타일시트](https://www.uefa.com/CompiledAssets/UefaCom/css/competitions/uefaeuropaconferenceleague/base.css) · [K리그 CI](https://www.kleague.com/about/ci.do) · [J리그 브랜드 가이드](https://brand.jleague.jp/en/visual-identity/color/system/) · [대회 로고 자료](https://football-logos.cc/)
 
 v21.4.1은 플레이스타일 빌드의 채널 침투형, 하프스페이스 메이커, 수비 뒤 침투를 삭제합니다. 기존 커리어에서 삭제된 스타일을 사용 중이면 해당 슬롯을 균형 유지로 전환합니다.
 

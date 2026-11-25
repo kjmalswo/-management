@@ -84,11 +84,51 @@ test('20.9.11 saves get new defaults while paid terms, custom prices, custom pal
 });
 
 test('theme and reordered navigation preferences survive reload and unknown or duplicate menu IDs are sanitized',()=>{
- let stored=null;const view=screen(base),listeners={};view.document={addEventListener:(event,listener)=>(listeners[event]??=[]).push(listener),querySelector:()=>null,documentElement:{style:{setProperty(){}}},body:{style:{}}};view.localStorage={getItem:()=>stored,setItem:(_,value)=>stored=value};view.DEFAULT_DB=DB;view.options=()=>'';view.applyLayout=()=>{};view.positionUpdateNotice=()=>{};view.toast=()=>{};view.render=()=>{};
+ let stored=null;const view=screen(base),listeners={};view.document={addEventListener:(event,listener)=>(listeners[event]??=[]).push(listener),querySelector:()=>null,documentElement:{toggleAttribute(){},style:{setProperty(){}}},body:{style:{}}};view.localStorage={getItem:()=>stored,setItem:(_,value)=>stored=value};view.DEFAULT_DB=DB;view.options=()=>'';view.applyLayout=()=>{};view.positionUpdateNotice=()=>{};view.toast=()=>{};view.render=()=>{};
  const start=ui.indexOf('let preferences='),end=ui.indexOf('function seasonStatsSummary()',start);delete view.preferences;vm.runInContext(ui.slice(start,end).split('\n').filter(line=>!line.startsWith('const displayMoney=')).join('\n')+';globalThis.P={orderedNavigationGroups,reorderCareerNavigation,savePreferences,loadPreferences,settings,get:()=>preferences,set:value=>preferences=value};',view);
  assert.equal(view.P.get().theme,'light');assert.ok(view.P.settings().includes('aria-pressed="true"'));assert.ok(view.P.reorderCareerNavigation('economy','overview'));view.P.get().theme='dark';view.P.savePreferences();view.P.set({...DB.settings.defaults});view.P.loadPreferences();assert.equal(view.P.get().theme,'dark');assert.equal(view.P.orderedNavigationGroups()[0].id,'economy');assert.equal(view.P.reorderCareerNavigation('missing','overview'),false);
  const saved=JSON.parse(stored);saved.navigationOrder=['economy','economy','missing','overview'];saved.theme='invalid';stored=JSON.stringify(saved);view.P.loadPreferences();assert.equal(view.P.get().theme,'light');assert.equal(view.P.orderedNavigationGroups().length,DB.ui.navigationGroups.length);assert.deepEqual(plain(view.P.get().navigationOrder),['economy','overview']);
  vm.runInContext(uiFunction('applyTheme'),view);view.applyTheme();assert.equal(view.document.documentElement.style.colorScheme,'light');view.P.get().theme='dark';view.applyTheme();assert.equal(view.document.documentElement.style.colorScheme,'dark');
+});
+
+test('matchday themes follow the player calendar, broadcast, selection and display mode',()=>{
+ const s=career(),club=s.player.club,today=s.date,tomorrow=C.dateAdd(today,1);
+ const match=(id,date)=>({id,date,home:club,away:'opponent',result:null});
+ s.fixtures={'en-1':[match('domestic',today)],ucl:[match('continental',tomorrow)]};
+ s.nations.camp=null;s.nations.tournaments={};
+ const view=screen(s),properties={},flags={};
+ view.document={documentElement:{style:{setProperty:(k,v)=>properties[k]=v},toggleAttribute:(k,v)=>flags[k]=v},querySelector:()=>null,body:{style:{}}};
+ Object.assign(view,{applyLayout(){},positionUpdateNotice(){}});
+ for(const name of ['nextFixture','presentationRecord','matchThemeCompetition','kitInk','applyTheme'])vm.runInContext(uiFunction(name),view);
+ function paint(id){
+  const c=view.matchThemeCompetition();assert.equal(c?.id,id);view.applyTheme(c);
+  assert.equal(flags['data-competition-theme'],Boolean(id));
+  if(id){assert.equal(properties['--match-main'],c.color);assert.equal(properties['--match-sub'],c.secondaryColor);}
+ }
+ paint('en-1');assert.equal(properties['--match-main'],'#37003C');
+ s.fixtures['en-1'][0].result={};paint('ucl');assert.equal(properties['--match-sub'],'#FFFFFF');
+ s.matchPresentation={reportId:'domestic'};s.player.history.push({id:'domestic',date:today,league:'en-1'});paint('en-1');
+ s.matchPresentation=null;s.player.freeAgent=true;paint(undefined);
+ s.nations.team='national';s.nations.callups=[{from:today,until:tomorrow,selected:true}];
+ s.nations.tournaments={friendly:{fixtures:[{...match('intl',today),home:'national',national:true,competition:'euro'}]}};
+ view.preferences.theme='dark';paint('euro');assert.equal(view.document.documentElement.style.colorScheme,'dark');
+ s.nations.callups[0].selected=false;paint(undefined);assert.equal(properties['--accent'],DB.ui.themeModes.dark.accent);
+});
+
+test('competition colors migrate for all leagues and national competitions and preserve edited values',()=>{
+ const db=C.clone(DB);
+ for(const c of [...db.leagues,...db.nationalCompetitions]){delete c.color;delete c.secondaryColor;}
+ db.leagues[0].color='#123456';
+ const migrate=ui.slice(ui.indexOf('function upgradePresentationDatabase('),ui.indexOf('async function restoreCareer('));
+ const view=vm.createContext({DEFAULT_DB:DB,Core:C,db});
+ vm.runInContext(imports.slice(imports.indexOf('function upgradeSectionNavigation('),imports.indexOf('function upgradePresentationDatabase('))+migrate+';upgradePresentationDatabase(db);',view);
+ assert.equal(db.leagues[0].color,'#123456');
+ for(const key of ['leagues','nationalCompetitions'])for(const c of db[key]){
+  const stock=DB[key].find(original=>original.id===c.id);
+  assert.equal(c.secondaryColor,stock.secondaryColor);
+  if(c!==db.leagues[0])assert.equal(c.color,stock.color);
+ }
+ ctx.V.validateDB(db);
 });
 
 test('Space triggers the current schedule action once and respects typing, popup, composition and loading; Escape closes modal and menus',()=>{
