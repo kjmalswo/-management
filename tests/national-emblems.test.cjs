@@ -22,6 +22,17 @@ test('association assets take precedence where national-kit symbols differ',()=>
  for(const [code,source] of [['CH','Swiss_Football_Association'],['TR','Turkish_Football_Federation'],['VN','Vietnam_Football_Federation'],['PL','Polish_Football_Association'],['HU','Hungarian_Football_Federation'],['ID','aseanfootball.org']])assert.ok(manifest.teams.find(t=>t.country===code).sourceURL.includes(source));
 });
 
+test('bundled club marks match the normalized files and their manifest hashes',()=>{
+ const records=JSON.parse(fs.readFileSync(path.join(root,'assets/club-emblems/manifest.json'),'utf8')).clubs;
+ for(const record of records){
+  const bytes=fs.readFileSync(path.join(root,record.path));
+  const [type,payload]=clubs.clubs[record.id].src.split(/,(.*)/s);
+  const bundled=type.endsWith(';base64')?Buffer.from(payload,'base64'):Buffer.from(decodeURIComponent(payload));
+  assert.equal(bundled.compare(bytes),0,record.id);
+  assert.equal(gitHash(bytes),record.sha,record.id);
+ }
+});
+
 test('every competition resolves to a club-sized offline mark and the next match shows the opponent',()=>{
  const ui=section('game-ui'),assets=JSON.parse(section('competition-emblem-assets'));
  for(const competition of [...DB.leagues,...DB.nationalCompetitions]){
@@ -31,12 +42,20 @@ test('every competition resolves to a club-sized offline mark and the next match
   const dimensions=data.readUInt32LE(21);
   assert.equal((dimensions&0x3fff)+1,clubs.width);
   assert.equal(((dimensions>>>14)&0x3fff)+1,clubs.height);
+  assert.equal((dimensions>>>28)&1,1,competition.id);
  }
+ assert.equal(assets.aliases['post-fr12'],'fr-1');
+ assert.equal(assets.aliases['post-fr23'],'fr-ligue2');
  const teams={home:{name:'홈팀'},away:{name:'원정팀'}};
- const view=vm.createContext({COMPETITION_EMBLEMS:assets,CLUB_EMBLEM_ASSETS:clubs,h:String,t:()=>'',idx:()=>({clubs:teams}),crest:club=>club.name,state:{player:{club:'home'},nations:{team:'away'}}});
+ const view=vm.createContext({COMPETITION_EMBLEMS:assets,CLUB_EMBLEM_ASSETS:clubs,h:String,t:()=>'',idx:()=>({clubs:teams}),clubEmblem:()=>clubs.clubs['en1-0'],state:{player:{club:'home'},nations:{team:'away'}}});
+ vm.runInContext(ui.slice(ui.indexOf('function crestImage('),ui.indexOf('function entityLink(')),view);
  vm.runInContext(ui.slice(ui.indexOf('function competitionCrest('),ui.indexOf('function fixtureCard(')),view);
  const fixture={home:'home',away:'away'},competition=DB.leagues.find(c=>c.id==='ucl');
- assert.match(view.nextMatchBadge(fixture,competition),/title="원정팀"/);
+ const badge=view.nextMatchBadge(fixture,competition);
+ assert.match(badge,/title="원정팀"/);
+ assert.equal(badge.match(/class="crest crest-image"/g).length,2);
+ assert.equal(badge.match(/width="139" height="181"/g).length,2);
+ assert.doesNotMatch(badge,/\bstyle=/);
  assert.match(view.nextMatchBadge({...fixture,national:true},competition),/title="홈팀"/);
  assert.equal(view.nextMatchBadge(null,null),'');
 });

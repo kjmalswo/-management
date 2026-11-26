@@ -38,9 +38,10 @@
       "path": "assets/club-emblems/en1-2.png",
       "sourcePath": "logos/England - Premier League/Liverpool FC.png",
       "url": "https://raw.githubusercontent.com/luukhopman/football-logos/2a3978f0b4730645c205d855a4bda54c161183e9/logos/England%20-%20Premier%20League/Liverpool%20FC.png",
-      "sha": "654691d267680a6683fe58c55619de0684185404",
-      "transparentPixels": 10100,
-      "borderVisiblePixels": 206
+      "sha": "b1aae07f327a457fb4cee2756741efc2b324a651",
+      "transparentPixels": 11324,
+      "borderVisiblePixels": 0,
+      "sourceSha": "654691d267680a6683fe58c55619de0684185404"
     },
     {
       "id": "en1-3",
@@ -110,9 +111,10 @@
       "path": "assets/club-emblems/tottenham.png",
       "sourcePath": "logos/England - Premier League/Tottenham Hotspur.png",
       "url": "https://raw.githubusercontent.com/luukhopman/football-logos/2a3978f0b4730645c205d855a4bda54c161183e9/logos/England%20-%20Premier%20League/Tottenham%20Hotspur.png",
-      "sha": "319fef3bdd51435c92dd8a3c35ce8014b88cd1ae",
-      "transparentPixels": 15687,
-      "borderVisiblePixels": 58
+      "sha": "f8989fa34015cd054fc5781d003d380ee782295c",
+      "transparentPixels": 15226,
+      "borderVisiblePixels": 0,
+      "sourceSha": "319fef3bdd51435c92dd8a3c35ce8014b88cd1ae"
     },
     {
       "id": "en-1-2026-9",
@@ -278,9 +280,10 @@
       "path": "assets/club-emblems/es1-2.png",
       "sourcePath": "logos/Spain - LaLiga/Atlético de Madrid.png",
       "url": "https://raw.githubusercontent.com/luukhopman/football-logos/2a3978f0b4730645c205d855a4bda54c161183e9/logos/Spain%20-%20LaLiga/Atl%C3%A9tico%20de%20Madrid.png",
-      "sha": "7398c88ac9e34f7bb7df9207802bffe07db5d560",
-      "transparentPixels": 11066,
-      "borderVisiblePixels": 44
+      "sha": "2cfd56dd8bdb8a13a0b19aa9d754916c2b39fe03",
+      "transparentPixels": 3059,
+      "borderVisiblePixels": 0,
+      "sourceSha": "7398c88ac9e34f7bb7df9207802bffe07db5d560"
     },
     {
       "id": "es1-3",
@@ -290,9 +293,10 @@
       "path": "assets/club-emblems/es1-3.png",
       "sourcePath": "logos/Spain - LaLiga/Real Sociedad.png",
       "url": "https://raw.githubusercontent.com/luukhopman/football-logos/2a3978f0b4730645c205d855a4bda54c161183e9/logos/Spain%20-%20LaLiga/Real%20Sociedad.png",
-      "sha": "b1d8bcdf54803231b466a3b698549eecd55270d2",
-      "transparentPixels": 7805,
-      "borderVisiblePixels": 189
+      "sha": "7b080b21f3375ec22282b70948c06bca9fca73c1",
+      "transparentPixels": 6173,
+      "borderVisiblePixels": 0,
+      "sourceSha": "b1d8bcdf54803231b466a3b698549eecd55270d2"
     },
     {
       "id": "es1-4",
@@ -326,9 +330,10 @@
       "path": "assets/club-emblems/es-1-2026-6.png",
       "sourcePath": "logos/Spain - LaLiga/Athletic Bilbao.png",
       "url": "https://raw.githubusercontent.com/luukhopman/football-logos/2a3978f0b4730645c205d855a4bda54c161183e9/logos/Spain%20-%20LaLiga/Athletic%20Bilbao.png",
-      "sha": "624b9ea0c3115b4c2326726934401a4cf05f5de0",
-      "transparentPixels": 10543,
-      "borderVisiblePixels": 113
+      "sha": "73b3bac605c9334011fc990019a330f611622eb0",
+      "transparentPixels": 6629,
+      "borderVisiblePixels": 0,
+      "sourceSha": "624b9ea0c3115b4c2326726934401a4cf05f5de0"
     },
     {
       "id": "es-1-2026-7",
@@ -386,9 +391,10 @@
       "path": "assets/club-emblems/es-1-2026-11.png",
       "sourcePath": "logos/Spain - LaLiga/Málaga CF.png",
       "url": "https://raw.githubusercontent.com/luukhopman/football-logos/2a3978f0b4730645c205d855a4bda54c161183e9/logos/Spain%20-%20LaLiga/M%C3%A1laga%20CF.png",
-      "sha": "4cfbf6eca31f9af03656ab939ec455afa07e9433",
-      "transparentPixels": 11652,
-      "borderVisiblePixels": 91
+      "sha": "f65ba4542789c8a2f3a4e638b115694f8b27bf87",
+      "transparentPixels": 7677,
+      "borderVisiblePixels": 0,
+      "sourceSha": "4cfbf6eca31f9af03656ab939ec455afa07e9433"
     },
     {
       "id": "es-1-2026-12",
@@ -422,9 +428,10 @@
       "path": "assets/club-emblems/es-1-2026-14.png",
       "sourcePath": "logos/Spain - LaLiga/Deportivo A Coruña.png",
       "url": "https://raw.githubusercontent.com/luukhopman/football-logos/2a3978f0b4730645c205d855a4bda54c161183e9/logos/Spain%20-%20LaLiga/Deportivo%20A%20Coru%C3%B1a.png",
-      "sha": "16c57d3baaa40bbc48d7604e32a8729b35e3b3b8",
-      "transparentPixels": 12677,
-      "borderVisiblePixels": 72
+      "sha": "c326ee43d5c54ea34b9aa50e9ba3c13df477a7d1",
+      "transparentPixels": 5738,
+      "borderVisiblePixels": 0,
+      "sourceSha": "16c57d3baaa40bbc48d7604e32a8729b35e3b3b8"
     },
     {
       "id": "es-1-2026-15",
@@ -2684,8 +2691,8 @@
       "sourcePath": "logos/england/Leicester.svg",
       "sourceSha": "dfd49a6fe69b2890f78758374c966e9a2529b3d1",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/england/Leicester.svg",
-      "sha": "46e9a8ca1032f1048a834e1ddb16bd74bce3770e",
-      "transparentPixels": 11694,
+      "sha": "e3c8cb682c5dbca5d7fba9971444a492e87d2f78",
+      "transparentPixels": 10232,
       "format": "SVG"
     },
     {
@@ -2759,8 +2766,8 @@
       "sourcePath": "logos/england/Notts_County.svg",
       "sourceSha": "00071ef4fd41ae56756beab7b0a969f42270db3f",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/england/Notts_County.svg",
-      "sha": "aed0a6d74d2380396903c7f7c47ced6f1fb17919",
-      "transparentPixels": 9110,
+      "sha": "c79ea72bf9a32734aca343b327c3a09a6b028236",
+      "transparentPixels": 6081,
       "format": "SVG"
     },
     {
@@ -4274,8 +4281,8 @@
       "sourcePath": "logos/germany/Freiburg.svg",
       "sourceSha": "015d023de9d08b70253a965fb851ddbc8f81caa0",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/germany/Freiburg.svg",
-      "sha": "e30301b772c170551e4c8825ac7d0ebad88afdb3",
-      "transparentPixels": 9240,
+      "sha": "8e73713b3054487526208d2461fcdf21ecaf6699",
+      "transparentPixels": 7306,
       "format": "SVG"
     },
     {
@@ -5759,8 +5766,8 @@
       "sourcePath": "logos/portugal/FC_Porto.svg",
       "sourceSha": "8a2932066a62bbd55bc4fefa81cd9d004b30996d",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/portugal/FC_Porto.svg",
-      "sha": "58603c8b0a200967cef16fa3a472f6694acb1c79",
-      "transparentPixels": 14690,
+      "sha": "6b632023b139fe1683311385bf09abff432aa1f6",
+      "transparentPixels": 7882,
       "format": "SVG"
     },
     {
@@ -5819,8 +5826,8 @@
       "sourcePath": "logos/portugal/Famalicao.svg",
       "sourceSha": "4c823a4a09f2c247800f3e3abe30a4141e2feb71",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/portugal/Famalicao.svg",
-      "sha": "a75a758efd97c2776037ce2f643cd5df9c79009b",
-      "transparentPixels": 12664,
+      "sha": "a9a2317b04b9936668256f9a0b28508e4b040d21",
+      "transparentPixels": 11641,
       "format": "SVG"
     },
     {
@@ -5864,8 +5871,8 @@
       "sourcePath": "logos/portugal/Alverca.svg",
       "sourceSha": "cdc36256433a36dc0e2cc05218eeb41f65359c4c",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/portugal/Alverca.svg",
-      "sha": "3cc88dcdd6eef0a47d5a09bcb499f1299b6725c7",
-      "transparentPixels": 14298,
+      "sha": "3545a82e7b89a5f9d0de0e32789d34e3c125741c",
+      "transparentPixels": 6473,
       "format": "SVG"
     },
     {
@@ -6074,8 +6081,8 @@
       "sourcePath": "logos/portugal/FC_Porto.svg",
       "sourceSha": "8a2932066a62bbd55bc4fefa81cd9d004b30996d",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/portugal/FC_Porto.svg",
-      "sha": "58603c8b0a200967cef16fa3a472f6694acb1c79",
-      "transparentPixels": 14690,
+      "sha": "6b632023b139fe1683311385bf09abff432aa1f6",
+      "transparentPixels": 7882,
       "format": "SVG"
     },
     {
@@ -6254,8 +6261,8 @@
       "sourcePath": "logos/brazil/São_Paulo.svg",
       "sourceSha": "f010a00499a4571679f9cb48094f2e76cbc76769",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/brazil/S%C3%A3o_Paulo.svg",
-      "sha": "8cd5cc0ecc87c24763900310197f4c97962363a6",
-      "transparentPixels": 12981,
+      "sha": "cf864afb4d87a76157efba8672b5c387f157b5a7",
+      "transparentPixels": 12015,
       "format": "SVG"
     },
     {
@@ -6734,8 +6741,8 @@
       "sourcePath": "logos/brazil/Juventude.svg",
       "sourceSha": "9091e0167319c69ae81c248303831c8faed72d2d",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/brazil/Juventude.svg",
-      "sha": "6f4eea8695e28eb468dc0d719840eb46d7f14ef3",
-      "transparentPixels": 15872,
+      "sha": "b23380cfcacad896564cbeeef74eba3862776adb",
+      "transparentPixels": 9828,
       "format": "SVG"
     },
     {
@@ -7679,8 +7686,8 @@
       "sourcePath": "logos/usa/Sacramento_Republic_FC.svg",
       "sourceSha": "e54f55d3b60b3b847a3cb3187642fb7e32bfe083",
       "url": "https://raw.githubusercontent.com/JoseArroyave/football-logos/cbfed1c638150a67e5d4b207793837c17c96d89b/logos/usa/Sacramento_Republic_FC.svg",
-      "sha": "7dc89a641bfc8aa717b2a9dff0998fcdd96dbdb9",
-      "transparentPixels": 7837,
+      "sha": "a057ff387ae4e5e97d9d414c0d8d89d806097e4d",
+      "transparentPixels": 5108,
       "format": "SVG"
     },
     {
