@@ -47,12 +47,12 @@ test('every competition resolves to a club-sized offline mark and the next match
  assert.equal(assets.aliases['post-fr12'],'fr-1');
  assert.equal(assets.aliases['post-fr23'],'fr-ligue2');
  const teams={home:{name:'홈팀'},away:{name:'원정팀'}};
- const view=vm.createContext({COMPETITION_EMBLEMS:assets,CLUB_EMBLEM_ASSETS:clubs,h:String,t:()=>'',idx:()=>({clubs:teams}),clubEmblem:()=>clubs.clubs['en1-0'],state:{player:{club:'home'},nations:{team:'away'}}});
+ const view=vm.createContext({COMPETITION_EMBLEMS:assets,CLUB_EMBLEM_ASSETS:clubs,h:String,t:()=>DB.ui.labels.nextFixture,competitionName:()=> '챔피언스리그 · 리그 페이즈',idx:()=>({clubs:teams}),clubEmblem:()=>clubs.clubs['en1-0'],state:{player:{club:'home'},nations:{team:'away'}}});
  vm.runInContext(ui.slice(ui.indexOf('function crestImage('),ui.indexOf('function entityLink(')),view);
  vm.runInContext(ui.slice(ui.indexOf('function competitionCrest('),ui.indexOf('function fixtureCard(')),view);
  const fixture={home:'home',away:'away'},competition=DB.leagues.find(c=>c.id==='ucl');
  const badge=view.nextMatchBadge(fixture,competition);
- assert.match(badge,/title="원정팀"/);
+ assert.match(badge,/<b>다음 경기:<\/b>.*title="원정팀".*\|.*챔피언스리그 · 리그 페이즈/s);
  assert.equal(badge.match(/class="crest crest-image"/g).length,2);
  assert.equal(badge.match(/width="139" height="181"/g).length,2);
  assert.doesNotMatch(badge,/\bstyle=/);

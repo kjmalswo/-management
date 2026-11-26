@@ -3,7 +3,7 @@ const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8'),section=
 vm.runInContext(engine+';globalThis.C=FootballCore;',ctx);const C=ctx.C,plain=x=>JSON.parse(JSON.stringify(x)),profile={...C.clone(DB.profile.defaults),name:'시작 계약 검증',startingSeed:73,stats:Object.fromEntries(DB.attributes.map(a=>[a.id,a.initial]))},offers=C.startingOffers(DB,profile),europe=offers.find(o=>o.route.id==='europe');
 const initial=C.createCareer(DB,profile,'europe',europe.club.id),career=()=>C.clone(initial);
 const validators=ui.slice(ui.indexOf('function validateDB('),ui.indexOf('function toast(')),imports=ui.slice(ui.indexOf('function prepareImportedCareer('),ui.indexOf('async function restoreCareer('));
-vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)},Core=FootballCore,t=key=>key;${validators}${imports};globalThis.V={validateDB,validateSave,prepareImportedCareer};`,ctx);
+vm.runInContext(`const DEFAULT_DB=${JSON.stringify(DB)},Core=FootballCore,t=key=>key;${validators}${imports};globalThis.V={validateDB,validateSave,prepareImportedCareer,upgradePresentationDatabase};`,ctx);
 const uiFunction=name=>ui.slice(ui.indexOf('function '+name+'('),ui.indexOf('\nfunction ',ui.indexOf('function '+name+'(')+1));
 
 test('new-career rules validate and European default/alternative previews equal actual monthly-band rookie contracts',()=>{
@@ -47,26 +47,55 @@ test('custom starts accept the full ability range and save a chosen senior club'
  assert.deepEqual(plain(loaded.state.player.stats),custom.stats);
 });
 
-test('custom team search uses the supported teams and resets a selection outside the filters',()=>{
- const selection={country:'all',league:'all',query:'레스터',club:''},picker={},preview={replaceChildren(){this.innerHTML='';}};
+test('custom team search suggests substring matches as the user types and selects a starting contract',()=>{
+ const selection={country:'all',league:'all',query:'',club:''},picker={focus(){this.focused=true;}},preview={replaceChildren(){this.innerHTML='';}},results={};
+ const search={id:'custom-start-search',value:'',isConnected:true},handlers={};
+ const nodes={'custom-start-club':picker,'custom-start-details':preview,'custom-start-suggestions':results,'custom-start-search':search};
  const options=(rows,selected)=>rows.map(row=>'<option value="'+row.id+'"'+(row.id===selected?' selected':'')+'>'+row.name+'</option>').join('');
  const screen=vm.createContext({DB,draft:{...C.clone(profile),customMode:true,customStart:selection},Core:C,h:String,t:key=>key,idx:()=>C.indexes(DB),
-  options,document:{getElementById:id=>id==='custom-start-club'?picker:preview,addEventListener(){}},
+  options,document:{getElementById:id=>nodes[id],addEventListener(type,listener){handlers[type]=listener;}},
   crest:()=>'',startingContractDetails:()=>'',btn:(_label,_action,data)=>data});
- vm.runInContext(uiFunction('worldSearchMatches')+'\n'+uiFunction('browseClubOptions')+'\n'+uiFunction('refreshCustomStart'),screen);
- screen.refreshCustomStart();
+ const functions=['worldSearchMatches','customStartMatches','updateCustomStartSuggestions','refreshCustomStart','chooseCustomStartClub'];
+ const searchHandlers=ui.slice(ui.indexOf('const searchCompositions='),ui.indexOf('function refreshWorldSearchResults('));
+ vm.runInContext(functions.map(uiFunction).join('\n')+'\n'+searchHandlers,screen);
+ const emit=(type,extra={})=>handlers[type]({target:search,...extra});
+ search.value='스터';emit('input');
  assert.match(picker.innerHTML,/레스터 시티 ·/);
- assert.match(picker.innerHTML,/레스터 시티 유스/);
+ assert.match(results.innerHTML,/레스터 시티 유스/);
+ assert.equal(results.hidden,false);
  selection.league='en-2';
- selection.club='en-2-2026-9';
  screen.refreshCustomStart();
+ assert.doesNotMatch(results.innerHTML,/레스터 시티 유스/);
+ screen.chooseCustomStartClub('en-2-2026-9');
+ assert.equal(search.value,'레스터 시티');
+ assert.equal(results.hidden,true);
+ assert.ok(picker.focused);
  assert.match(picker.innerHTML,/value="en-2-2026-9" selected/);
  assert.match(preview.innerHTML,/data-club="en-2-2026-9"/);
- selection.query='결과 없는 구단 이름';
- screen.refreshCustomStart();
+ emit('compositionstart');
+ search.value='결과 없는 구단 이름';emit('input',{isComposing:true});
+ assert.match(results.innerHTML,/customStartNoMatches/);
+ assert.equal(selection.club,'en-2-2026-9');
+ emit('compositionend');
  assert.equal(selection.club,'');
  assert.equal(picker.disabled,true);
  assert.equal(preview.innerHTML,'');
+ search.value='';emit('input');
+ assert.equal(results.hidden,true);
+ assert.equal(picker.disabled,false);
+});
+
+test('older catalogs gain style-only hair names and the new custom mode hint',()=>{
+ const old=C.clone(DB);
+ old.meta.version='21.6.1';
+ const hair=old.profile.appearance.fields.find(field=>field.id==='haircut');
+ hair.options.find(option=>option.id==='ronaldo02').name='호나우두 · 반달 앞머리';
+ hair.options.find(option=>option.id==='son').name='사용자 지정 이름';
+ old.ui.labels.customModeHint='초기 능력치와 시작 팀을 직접 설정합니다.';
+ ctx.V.upgradePresentationDatabase(old);
+ assert.equal(hair.options.find(option=>option.id==='ronaldo02').name,'반달 앞머리');
+ assert.equal(hair.options.find(option=>option.id==='son').name,'사용자 지정 이름');
+ assert.equal(old.ui.labels.customModeHint,'초기 능력치 수치 제한이 해제되며, 시작 팀을 직접 설정합니다.');
 });
 
 test('the custom mode switch restores the draft for each mode',()=>{
