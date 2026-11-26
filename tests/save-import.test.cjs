@@ -78,8 +78,14 @@ test('a played match and paused commentary survive export/import without duplica
   const saved=create();C.setPlayStyleBuild(DB,saved.state,C.playStyleDefaults(DB));let result;
   for(let step=0;step<100&&!result?.report;step++)result=C.advance(DB,saved.state);
   assert.ok(result?.report,'a real scheduled match was played');
+  // v21.5 recorded positional highlights but shipped without their report labels.
+  const event={minute:3,type:'turnoverEvent',club:result.report.club,player:saved.state.player.name,playerId:'player'};
+  saved.db.meta.version='21.5.0';delete saved.db.ui.labels[event.type];
+  saved.state.player.history[0].result.events.push(event);
   saved.state.matchPresentation={reportId:result.report.id,phase:'live',cursor:2,paused:true};
   const loaded=reload(saved);
+  assert.deepEqual(JSON.parse(JSON.stringify(loaded.state.player.history[0].result.events.at(-1))),event);
+  assert.equal(loaded.db.ui.labels[event.type],DB.ui.labels[event.type]);
   assert.equal(loaded.state.player.history.length,saved.state.player.history.length);
   assert.equal(loaded.state.player.history[0].result.home.stats.goals,result.report.result.home.stats.goals);
   assert.deepEqual(JSON.parse(JSON.stringify(loaded.state.player.history[0].result.playerPerformance)),JSON.parse(JSON.stringify(result.report.result.playerPerformance)));
@@ -163,4 +169,23 @@ test('pre-expansion appearance databases gain the new presets once and preserve 
   const once=JSON.stringify(fields);
   context.importSave.upgradePresentationDatabase(upgraded);
   assert.equal(JSON.stringify(upgraded.profile.appearance.fields),once);
+});
+
+test('the file picker accepts career JSON and compressed browser backups up to the autosave limit',async()=>{
+ const cfg=DB.storageRules;
+ assert.equal(cfg.maxImportBytes,cfg.maxAutosaveBytes);
+ const saved=create(),expected=saved.state.player.name;
+ const previous=saved.db.profile.appearance.fields.find(f=>f.id==='haircut');
+ previous.options=previous.options.filter(o=>o.addedIn!=='21.6.0');
+ saved.db.meta.version='21.5.0';
+ const raw=JSON.stringify(saved);
+ const view=vm.createContext({Blob,Response,DecompressionStream,atob,DEFAULT_DB:DB,parseCareerText:context.importSave.parseCareerText,prepareImportedCareer:context.importSave.prepareImportedCareer});
+ vm.runInContext(ui.slice(ui.indexOf('async function decodeCareer('),ui.indexOf('async function localCareerRecord('))+ui.slice(ui.indexOf('async function readCareerFile('),ui.indexOf("document.getElementById('save-input').addEventListener")),view);
+ const zipped=require('node:zlib').gzipSync(raw).toString('base64');
+ for(const file of [new Blob([raw]),new Blob([JSON.stringify({format:cfg.backupFormat,encoding:'gzip',payload:zipped})])]){
+  const loaded=await view.readCareerFile(file);
+  assert.equal(loaded.state.player.name,expected);
+  assert.equal(loaded.db.profile.appearance.fields.find(f=>f.id==='haircut').options.length,27);
+ }
+ await assert.rejects(view.readCareerFile({size:cfg.maxImportBytes+1}),/saveImportTooLarge/);
 });

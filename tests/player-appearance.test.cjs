@@ -22,7 +22,7 @@ test('all selectors wrap independently and map to real sprite layers or dye chan
  const previousCounts={skin:7,haircut:6,hair:7,eyebrows:4,brow:7,eyes:4,iris:6,nose:4,mouth:4,face:4,sleeves:2,hem:2,boot:7};
  assert.equal(art.src,'data:image/png;base64,'+png.toString('base64'));
  for(const field of fields){
-  assert.equal(field.options.length,Math.ceil(previousCounts[field.id]*1.5),field.id);
+  assert.equal(field.options.length,field.id==='haircut'?27:Math.ceil(previousCounts[field.id]*1.5),field.id);
   assert.equal(new Set(field.options.map(option=>option.tile??option.colors.join(','))).size,field.options.length,field.id);
   assert.equal(screen.appearanceOption(field,{}).id,field.options[0].id);
   for(const option of field.options){

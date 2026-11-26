@@ -32,3 +32,16 @@ test('season review freezes all league tables and leaders before promotion, and 
   C.advancePostseason(DB,s);for(let pass=0;pass<30&&Object.values(s.postseason.competitions).some(t=>t.status!=='complete');pass++){for(const t of Object.values(s.postseason.competitions))for(const f of s.fixtures[t.competition]||[])if(!f.result){f.result={duration:90,home:{stats:{goals:0}},away:{stats:{goals:0}}};C.resolvePlayoffResult(DB,s,f,f.result);C.advanceTrainingDays(DB,s,[s.date,f.date].sort().at(-1),false);}C.advancePostseason(DB,s);}
   for(const e of s.calendar.entries)e.completed=true;s.calendar.ended=true;assert.equal(C.seasonReviewReady(DB,s),true);const review=C.captureSeasonReview(DB,s);assert.equal(review.final,true);assert.equal(review.choices.length,s.careerStories.history.length);assert.deepEqual(plain(review.stats),plain(C.totals(DB,s.player.history)));assert.equal(review.leagues.length,DB.leagues.filter(l=>!['continental','postseason'].includes(l.kind)).length);assert.deepEqual(plain(review.leagues.find(l=>l.id===league).goals),plain(C.leaders(DB,s,league,'goals').slice(0,DB.seasonReviewRules.leaderLimit)));ctx.V.validateSave({schema:DB.meta.schema,db:DB,state:s});const snapshot=JSON.stringify(review.leagues);s.fixtures[league][0].result.home.stats.goals=9;assert.equal(JSON.stringify(review.leagues),snapshot);assert.equal(C.nextSeason(DB,s),true);assert.equal(s.seasonRecaps[0].final,true);assert.equal(s.seasonRecaps[0].season,1);assert.equal(s.seasonBaseline.season,2);ctx.V.validateSave({schema:DB.meta.schema,db:DB,state:s});
 });
+test('European appointments draw mainly from the local league and older generated names migrate once',()=>{
+ const s=create(),pools=DB.managerRules.europeanPools;
+ const clubs=DB.clubs.filter(club=>pools[C.indexes(DB).leagues[club.league].country]);
+ const localCount=()=>clubs.filter(club=>pools[C.indexes(DB).leagues[club.league].country].includes(s.world.clubs[club.id].manager.name)).length;
+ assert.ok(localCount()>clubs.length*.8);
+ const eastAsian=DB.managerRules.legacyEastAsianNames[0];
+ for(const club of clubs)s.world.clubs[club.id].manager.name=eastAsian;
+ delete s.world.regionalManagerNames;
+ C.normalizeCareerSave(DB,s);
+ assert.ok(localCount()>clubs.length*.8);
+ const first=s.world.clubs[clubs[0].id].manager;
+ const name=first.name;C.normalizeCareerSave(DB,s);assert.equal(first.name,name);
+});

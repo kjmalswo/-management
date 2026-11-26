@@ -21,3 +21,22 @@ test('the shared renderer uses association emblems, missing-emblem flags, away k
 test('association assets take precedence where national-kit symbols differ',()=>{
  for(const [code,source] of [['CH','Swiss_Football_Association'],['TR','Turkish_Football_Federation'],['VN','Vietnam_Football_Federation'],['PL','Polish_Football_Association'],['HU','Hungarian_Football_Federation'],['ID','aseanfootball.org']])assert.ok(manifest.teams.find(t=>t.country===code).sourceURL.includes(source));
 });
+
+test('every competition resolves to a club-sized offline mark and the next match shows the opponent',()=>{
+ const ui=section('game-ui'),assets=JSON.parse(section('competition-emblem-assets'));
+ for(const competition of [...DB.leagues,...DB.nationalCompetitions]){
+  const src=assets.logos[assets.aliases[competition.id]||competition.id];
+  const data=Buffer.from(src.split(',')[1],'base64');
+  assert.equal(data.toString('ascii',12,16),'VP8L',competition.id);
+  const dimensions=data.readUInt32LE(21);
+  assert.equal((dimensions&0x3fff)+1,clubs.width);
+  assert.equal(((dimensions>>>14)&0x3fff)+1,clubs.height);
+ }
+ const teams={home:{name:'홈팀'},away:{name:'원정팀'}};
+ const view=vm.createContext({COMPETITION_EMBLEMS:assets,CLUB_EMBLEM_ASSETS:clubs,h:String,t:()=>'',idx:()=>({clubs:teams}),crest:club=>club.name,state:{player:{club:'home'},nations:{team:'away'}}});
+ vm.runInContext(ui.slice(ui.indexOf('function competitionCrest('),ui.indexOf('function fixtureCard(')),view);
+ const fixture={home:'home',away:'away'},competition=DB.leagues.find(c=>c.id==='ucl');
+ assert.match(view.nextMatchBadge(fixture,competition),/title="원정팀"/);
+ assert.match(view.nextMatchBadge({...fixture,national:true},competition),/title="홈팀"/);
+ assert.equal(view.nextMatchBadge(null,null),'');
+});
